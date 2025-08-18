@@ -38,8 +38,3 @@ Hyphos is a programming language designed for bio-inspired computing with native
 
 Language specification: `language_specification/`
 Metaword syntax definitions: `language_specification/syntax/`
-
-
-### .hyph
-
-The extension we will use for hyphos coded files is .hyph
