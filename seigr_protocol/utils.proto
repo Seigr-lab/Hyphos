@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package seigr.utils;
+
+// Utility operation types
+enum UtilityOperation {
+    UTIL_UNKNOWN = 0;
+    VALIDATE_DATA = 1;
+    ENCODE_STRING = 2;
+    DECODE_STRING = 3;
+    CALCULATE_ENERGY = 4;
+    CONVERT_FORMAT = 5;
+}
+
+// Data validation request
+message ValidationRequest {
+    bytes data = 1;
+    string validation_type = 2;
+    map<string, string> parameters = 3;
+}
+
+// Utility request
+message UtilityRequest {
+    UtilityOperation operation = 1;
+    bytes input_data = 2;
+    map<string, string> parameters = 3;
+}
+
+// Utility response
+message UtilityResponse {
+    bool success = 1;
+    bytes result_data = 2;
+    string error_message = 3;
+    map<string, string> metadata = 4;
+}
+
+// Utilities service
+service UtilitiesService {
+    rpc PerformUtilityOperation(UtilityRequest) returns (UtilityResponse);
+    rpc ValidateData(ValidationRequest) returns (UtilityResponse);
+}

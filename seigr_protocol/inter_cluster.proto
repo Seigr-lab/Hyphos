@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+package seigr.intercluster;
+
+import "common.proto"; // For ThreatLevel, PriorityLevel, Timestamp
+import "error_handling.proto"; // For enhanced error logging and strategies
+
+/**
+ * Inter-Cluster Protocol
+ *
+ * Defines communication structures, request-response patterns, and monitoring mechanisms
+ * for efficient interaction and data transfer between clusters in the Seigr ecosystem.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Enum representing types of inter-cluster requests.
+ */
+enum ClusterRequestType {
+    REQUEST_TYPE_UNDEFINED = 0;        // Default undefined request type.
+    REQUEST_RESOURCE = 1;              // Request for cluster resources (e.g., compute power).
+    REQUEST_DATA = 2;                  // Request for specific datasets or files.
+    REQUEST_WORKLOAD_BALANCE = 3;      // Request for workload distribution.
+    REQUEST_STATUS = 4;                // Request for cluster status or health check.
+    REQUEST_CUSTOM = 5;                // Custom-defined cluster request.
+    REQUEST_COMPLIANCE_CHECK = 6;      // Request for compliance validation.
+    REQUEST_REPLICATION_TASK = 7;      // Request for initiating a replication task.
+}
+
+/**
+ * Enum representing types of cluster responses.
+ */
+enum ClusterResponseType {
+    RESPONSE_TYPE_UNDEFINED = 0;       // Default undefined response type.
+    RESPONSE_ACKNOWLEDGED = 1;         // Acknowledgment of the request.
+    RESPONSE_DATA_DELIVERED = 2;       // Data successfully delivered.
+    RESPONSE_ACCEPTED = 3;             // Request accepted for further processing.
+    RESPONSE_DECLINED = 4;             // Request declined due to constraints.
+    RESPONSE_PENDING = 5;              // Request processing is pending.
+    RESPONSE_FAILED = 6;               // Request failed due to an error.
+    RESPONSE_COMPLIANCE_VALIDATED = 7; // Compliance check successfully validated.
+}
+
+// ===========================
+// MESSAGES
+// ===========================
+
+/**
+ * Represents a request sent from one cluster to another.
+ */
+message ClusterRequest {
+    string request_id = 1;                       // Unique identifier for the request.
+    ClusterRequestType request_type = 2;         // Type of request being made.
+    string origin_cluster_id = 3;                // ID of the cluster initiating the request.
+    string target_cluster_id = 4;                // ID of the target cluster.
+    map<string, string> request_parameters = 5;  // Parameters specific to the request.
+    seigr.common.Timestamp initiated_at = 6;     // Timestamp when the request was initiated.
+    map<string, string> security_context = 7;    // Authentication and authorization tokens.
+    bool require_acknowledgment = 8;             // Flag indicating if acknowledgment is mandatory.
+    seigr.common.ThreatLevel threat_level = 9;   // Threat level associated with the request.
+    map<string, string> request_metadata = 10;   // Additional metadata for context.
+}
+
+/**
+ * Represents a response to an inter-cluster request.
+ */
+message ClusterResponse {
+    string response_id = 1;                      // Unique identifier for the response.
+    string request_id = 2;                       // ID of the associated request.
+    ClusterResponseType response_type = 3;       // Type of response.
+    string origin_cluster_id = 4;                // ID of the responding cluster.
+    string target_cluster_id = 5;                // ID of the target cluster.
+    seigr.common.Timestamp response_timestamp = 6; // Timestamp of response generation.
+    map<string, string> response_metadata = 7;   // Metadata for response tracking.
+    string status_message = 8;                   // Descriptive status message.
+    map<string, bytes> payload = 9;              // Optional payload with response data.
+    seigr.error_handling.ErrorImpactAnalysis impact_analysis = 10; // Error impact analysis in case of failures.
+}
+
+/**
+ * Defines parameters for secure and efficient data transfers between clusters.
+ */
+message DataTransfer {
+    string transfer_id = 1;                      // Unique identifier for the transfer.
+    string source_cluster_id = 2;                // ID of the source cluster.
+    string destination_cluster_id = 3;           // ID of the destination cluster.
+    bytes data_payload = 4;                      // Encrypted data payload.
+    string data_type = 5;                        // Type of data being transferred (e.g., JSON, XML).
+    string encryption_scheme = 6;                // Encryption scheme used (e.g., AES-256).
+    string compression_method = 7;               // Compression method (e.g., GZIP).
+    string transfer_format = 8;                  // Data format (e.g., JSON, PROTOBUF).
+    int64 data_size_bytes = 9;                   // Size of the data payload in bytes.
+    bool validate_integrity = 10;                // Flag for integrity validation.
+    int32 transfer_timeout = 11;                 // Timeout in seconds for the transfer.
+    map<string, string> transfer_metadata = 12;  // Contextual metadata.
+    seigr.common.PriorityLevel priority = 13;    // Priority level for the transfer.
+}
+
+/**
+ * Tracks the status of ongoing data transfers.
+ */
+message TransferStatus {
+    string transfer_id = 1;                      // Unique ID of the transfer.
+    string current_status = 2;                   // Status (e.g., "IN_PROGRESS").
+    seigr.common.Timestamp last_updated = 3;     // Last update timestamp.
+    double progress_percentage = 4;              // Transfer completion percentage.
+    string source_cluster_id = 5;                // Source cluster ID.
+    string destination_cluster_id = 6;           // Destination cluster ID.
+    map<string, string> status_metadata = 7;     // Additional status details.
+    string failure_reason = 8;                   // Reason for failure, if applicable.
+}
+
+/**
+ * Logs errors or failures encountered during cluster communication.
+ */
+message ClusterCommunicationErrorLog {
+    string error_id = 1;                         // Unique identifier for the error.
+    string affected_cluster_id = 2;              // ID of the affected cluster.
+    seigr.common.Timestamp timestamp = 3;        // Timestamp of the error.
+    string error_message = 4;                    // Detailed error message.
+    string request_id = 5;                       // Associated request ID, if applicable.
+    string response_id = 6;                      // Associated response ID, if applicable.
+    seigr.error_handling.ErrorResolutionStrategy resolution_strategy = 7; // Resolution strategy applied.
+    map<string, string> error_metadata = 8;      // Metadata for diagnostic context.
+}
+
+/**
+ * Acknowledgment response for a cluster response.
+ */
+message ClusterResponseAck {
+    string ack_id = 1;                       // Unique identifier for the acknowledgment.
+    string response_id = 2;                  // ID of the acknowledged response.
+    string origin_cluster_id = 3;            // ID of the cluster sending the acknowledgment.
+    string target_cluster_id = 4;            // ID of the target cluster receiving the acknowledgment.
+    seigr.common.Timestamp ack_timestamp = 5; // Timestamp of the acknowledgment.
+    map<string, string> ack_metadata = 6;    // Additional metadata for the acknowledgment.
+    string status_message = 7;               // Descriptive status or note for the acknowledgment.
+}
+
+/**
+ * Request to monitor the status of a specific transfer.
+ */
+message TransferStatusRequest {
+    string transfer_id = 1;                  // Unique ID of the transfer to monitor.
+    string requesting_cluster_id = 2;        // ID of the cluster making the request.
+    map<string, string> request_metadata = 3; // Additional metadata for context.
+}
+
+/**
+ * Request to log a communication error between clusters.
+ */
+message CommunicationErrorRequest {
+    string error_id = 1;                     // Unique identifier for the error.
+    string affected_cluster_id = 2;          // ID of the affected cluster.
+    string origin_cluster_id = 3;            // ID of the originating cluster.
+    seigr.common.Timestamp timestamp = 4;    // Timestamp of the error.
+    string error_message = 5;                // Detailed error message.
+    string resolution_suggestion = 6;        // Suggested resolution or next steps.
+    map<string, string> error_metadata = 7;  // Metadata for diagnostic purposes.
+}
+
+/**
+ * Response to a communication error logging request.
+ */
+message CommunicationErrorResponse {
+    string error_id = 1;                     // ID of the logged error.
+    bool success = 2;                        // Success flag for the logging operation.
+    string message = 3;                      // Descriptive status or additional information.
+    map<string, string> response_metadata = 4; // Additional metadata for context.
+}
+
+/**
+ * Request for subscribing to cluster events.
+ */
+message ClusterEventSubscription {
+    string subscription_id = 1;              // Unique identifier for the subscription.
+    string cluster_id = 2;                   // ID of the subscribing cluster.
+    repeated string event_types = 3;         // List of event types to subscribe to (e.g., "TRANSFER_STATUS").
+    seigr.common.Timestamp subscription_start = 4; // Start timestamp of the subscription.
+    seigr.common.Timestamp subscription_end = 5;   // End timestamp of the subscription.
+    map<string, string> subscription_metadata = 6; // Metadata for subscription context.
+}
+
+/**
+ * Response to a cluster event subscription request.
+ */
+message ClusterEventSubscriptionResponse {
+    string subscription_id = 1;              // ID of the subscription.
+    bool success = 2;                        // Success flag for the subscription operation.
+    string message = 3;                      // Descriptive status or feedback.
+    map<string, string> response_metadata = 4; // Additional metadata for context.
+}
+
+// ===========================
+// SERVICE DEFINITIONS
+// ===========================
+
+/**
+ * Service for managing inter-cluster communication and data transfers.
+ */
+service InterClusterCommunicationService {
+    rpc SendClusterRequest (ClusterRequest) returns (ClusterResponse); // Initiate a cluster request.
+    rpc AcknowledgeClusterResponse (ClusterResponse) returns (ClusterResponseAck); // Acknowledge a cluster response.
+    rpc InitiateDataTransfer (DataTransfer) returns (TransferStatus); // Start a data transfer process.
+    rpc MonitorTransferStatus (TransferStatusRequest) returns (TransferStatus); // Monitor an active transfer.
+    rpc LogCommunicationError (CommunicationErrorRequest) returns (CommunicationErrorResponse); // Log communication errors.
+    rpc ManageEventSubscription (ClusterEventSubscription) returns (ClusterEventSubscriptionResponse); // Manage event subscriptions.
+}

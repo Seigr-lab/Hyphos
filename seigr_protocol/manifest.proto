@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package seigr.manifest;
+
+import "seigr_timestamp.proto";
+
+// Manifest registration and negotiation for Seigr nodes, capsules, and agents.
+message Manifest {
+  string manifest_id = 1; // Unique manifest identifier
+  string node_id = 2; // Node or capsule/agent ID
+  string version = 3; // Version of the manifest
+  repeated string capabilities = 4; // List of supported capabilities
+  repeated string protocols = 5; // Supported protocol versions
+  string compliance = 6; // Compliance/certification string
+  seigr.protocol.timestamp.SeigrTimestamp registered_at = 7;
+  string lineage_hash = 8; // Hash of lineage or previous manifest
+  bytes signature = 9; // Cryptographic signature
+}
+
+// Event for manifest registration, update, or negotiation
+message ManifestRegistrationEvent {
+  string event_id = 1;
+  Manifest manifest = 2;
+  string event_type = 3; // onboarding, update, negotiation
+  seigr.protocol.timestamp.SeigrTimestamp timestamp = 4;
+  bytes signature = 5;
+}

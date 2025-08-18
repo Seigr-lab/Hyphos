@@ -1,0 +1,411 @@
+syntax = "proto3";
+
+package seigr.protocol.network_time;
+
+import "seigr_timestamp.proto";
+
+/**
+ * Seigr Network Time Protocol (SNTP)
+ * 
+ * Defines the protocol for distributed time synchronization across the Seigr ecosystem
+ * with cryptographic verification, senary optimization, and Byzantine fault tolerance.
+ * 
+ * This protocol ensures "steel solid and reliable" temporal consensus for all
+ * distributed operations while maintaining 100% Seigr-native implementation.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Time authority status indicating operational state
+ */
+enum TimeAuthorityStatus {
+    TIME_AUTHORITY_STATUS_UNKNOWN = 0;
+    TIME_AUTHORITY_STATUS_ACTIVE = 1;
+    TIME_AUTHORITY_STATUS_DEGRADED = 2;
+    TIME_AUTHORITY_STATUS_OFFLINE = 3;
+    TIME_AUTHORITY_STATUS_BYZANTINE = 4;  // Detected malicious behavior
+    TIME_AUTHORITY_STATUS_RECOVERY = 5;   // Recovering from failure
+}
+
+/**
+ * Client synchronization state
+ */
+enum SyncStatus {
+    SYNC_STATUS_UNKNOWN = 0;
+    SYNC_STATUS_SYNCING = 1;
+    SYNC_STATUS_SYNCED = 2;
+    SYNC_STATUS_DRIFT = 3;        // Time drift detected
+    SYNC_STATUS_FAULT = 4;        // Synchronization fault
+    SYNC_STATUS_CONSENSUS = 5;    // Participating in consensus
+}
+
+/**
+ * Consensus algorithm type for time agreement
+ */
+enum ConsensusType {
+    CONSENSUS_TYPE_UNKNOWN = 0;
+    CONSENSUS_TYPE_MEDIAN = 1;           // Median-based consensus
+    CONSENSUS_TYPE_WEIGHTED_MEDIAN = 2;  // Trust-weighted median
+    CONSENSUS_TYPE_BYZANTINE = 3;        // Byzantine fault tolerant
+    CONSENSUS_TYPE_SENARY = 4;           // Senary-optimized consensus
+}
+
+/**
+ * Temporal message types for protocol communication
+ */
+enum MessageType {
+    MESSAGE_TYPE_UNKNOWN = 0;
+    MESSAGE_TYPE_TIME_REQUEST = 1;       // Client requesting time
+    MESSAGE_TYPE_TIME_RESPONSE = 2;      // Authority providing time
+    MESSAGE_TYPE_CONSENSUS_PROPOSAL = 3; // Consensus round proposal
+    MESSAGE_TYPE_CONSENSUS_VOTE = 4;     // Vote in consensus round
+    MESSAGE_TYPE_SYNC_STATUS = 5;        // Synchronization status update
+    MESSAGE_TYPE_AUTHORITY_ANNOUNCE = 6; // Authority availability announcement
+}
+
+// ===========================
+// CORE MESSAGES
+// ===========================
+
+/**
+ * Network timestamp with consensus metadata
+ */
+message SeigrNetworkTimestamp {
+    seigr.protocol.timestamp.SeigrTimestamp timestamp = 1;   // Seigr-native timestamp
+    string consensus_id = 2;                    // Consensus session identifier
+    double confidence_level = 3;                // Confidence in accuracy (0.0-1.0)
+    string senary_representation = 4;           // Base-6 time representation
+    bytes cryptographic_signature = 5;          // Temporal signature
+    string authority_quorum = 6;                // Participating authorities
+    int32 consensus_round = 7;                  // Consensus round number
+    map<string, string> metadata = 8;           // Additional temporal metadata
+}
+
+/**
+ * Time authority information and capabilities
+ */
+message TimeAuthority {
+    string authority_id = 1;                    // Unique authority identifier
+    string node_id = 2;                         // Network node identifier
+    TimeAuthorityStatus status = 3;             // Current operational status
+    SeigrNetworkTimestamp reference_time = 4;   // Authority's reference time
+    double trust_level = 5;                     // Trust score (0.0-1.0)
+    double precision_level = 6;                 // Time precision capability
+    string energy_state = 7;                    // Energy/power state
+    int32 threat_level = 8;                     // Threat assessment level
+    repeated string supported_protocols = 9;    // Supported time protocols
+    map<string, string> capabilities = 10;      // Authority capabilities
+    seigr.protocol.timestamp.SeigrTimestamp last_seen = 11;   // Last activity timestamp
+}
+
+/**
+ * Time client configuration and state
+ */
+message TimeClient {
+    string client_id = 1;                       // Unique client identifier
+    string node_id = 2;                         // Network node identifier
+    SyncStatus sync_status = 3;                 // Current sync status
+    SeigrNetworkTimestamp local_time = 4;       // Local time estimate
+    SeigrNetworkTimestamp network_time = 5;     // Network-synchronized time
+    double time_offset = 6;                     // Offset from network time (seconds)
+    double confidence_level = 7;                // Confidence in sync (0.0-1.0)
+    repeated string authority_preferences = 8;   // Preferred authorities
+    int32 sync_interval = 9;                    // Synchronization interval (seconds)
+    map<string, string> configuration = 10;     // Client configuration
+}
+
+/**
+ * Temporal consensus message for distributed time agreement
+ */
+message TemporalConsensus {
+    string consensus_id = 1;                    // Unique consensus identifier
+    ConsensusType consensus_type = 2;           // Consensus algorithm type
+    int32 round_number = 3;                     // Current consensus round
+    repeated TimeAuthority participating_authorities = 4; // Authorities in consensus
+    SeigrNetworkTimestamp proposed_time = 5;    // Proposed consensus time
+    repeated ConsensusBallot votes = 6;         // Authority votes
+    double confidence_threshold = 7;            // Required confidence level
+    bool consensus_reached = 8;                 // Whether consensus achieved
+    SeigrNetworkTimestamp final_time = 9;       // Final agreed time
+    bytes consensus_signature = 10;             // Cryptographic consensus proof
+    map<string, string> senary_metrics = 11;    // Senary optimization metrics
+}
+
+/**
+ * Individual consensus vote from time authority
+ */
+message ConsensusBallot {
+    string authority_id = 1;                    // Voting authority
+    SeigrNetworkTimestamp time_vote = 2;        // Authority's time vote
+    double confidence = 3;                      // Vote confidence (0.0-1.0)
+    bytes vote_signature = 4;                   // Cryptographic vote signature
+    string reasoning = 5;                       // Vote reasoning/justification
+    map<string, string> metadata = 6;          // Additional vote metadata
+}
+
+/**
+ * Time synchronization request from client to authority
+ */
+message TimeRequest {
+    string client_id = 1;                       // Requesting client
+    SeigrNetworkTimestamp client_time = 2;      // Client's current time
+    int32 precision_requirement = 3;            // Required precision (microseconds)
+    repeated string preferred_authorities = 4;   // Preferred authority list
+    bool require_consensus = 5;                 // Whether consensus required
+    map<string, string> request_metadata = 6;   // Request metadata
+}
+
+/**
+ * Time synchronization response from authority to client
+ */
+message TimeResponse {
+    string authority_id = 1;                    // Responding authority
+    SeigrNetworkTimestamp authority_time = 2;   // Authority's reference time
+    SeigrNetworkTimestamp network_time = 3;     // Network consensus time
+    double precision_estimate = 4;              // Time precision estimate
+    double network_delay = 5;                   // Estimated network delay
+    string consensus_id = 6;                    // Associated consensus session
+    bytes response_signature = 7;               // Cryptographic response signature
+    map<string, string> authority_metadata = 8; // Authority metadata
+}
+
+// ===========================
+// PROTOCOL MESSAGES
+// ===========================
+
+/**
+ * Complete SNTP protocol message envelope
+ */
+message SNTPMessage {
+    MessageType message_type = 1;               // Message type
+    string message_id = 2;                      // Unique message identifier
+    string sender_id = 3;                       // Sender node identifier
+    string recipient_id = 4;                    // Recipient node identifier
+    seigr.protocol.timestamp.SeigrTimestamp sent_time = 5;    // Message transmission time
+    
+    oneof payload {
+        TimeRequest time_request = 10;
+        TimeResponse time_response = 11;
+        TemporalConsensus consensus = 12;
+        ConsensusBallot vote = 13;
+        AuthorityAnnouncement announcement = 14;
+        SyncStatusUpdate status_update = 15;
+    }
+    
+    bytes message_signature = 20;               // Message cryptographic signature
+    map<string, string> protocol_metadata = 21; // Protocol-specific metadata
+}
+
+/**
+ * Time authority availability announcement
+ */
+message AuthorityAnnouncement {
+    TimeAuthority authority_info = 1;           // Authority information
+    repeated string service_endpoints = 2;      // Service endpoint URLs
+    double service_quality = 3;                 // Quality of service metric
+    int32 max_clients = 4;                      // Maximum supported clients
+    int32 current_load = 5;                     // Current client load
+    repeated string supported_consensus = 6;    // Supported consensus types
+    map<string, string> service_metadata = 7;   // Service metadata
+}
+
+/**
+ * Client synchronization status update
+ */
+message SyncStatusUpdate {
+    TimeClient client_info = 1;                 // Client information
+    double sync_quality = 2;                    // Synchronization quality metric
+    repeated string active_authorities = 3;     // Currently used authorities
+    double average_offset = 4;                  // Average time offset
+    double offset_variance = 5;                 // Offset variance metric
+    int32 successful_syncs = 6;                 // Successful sync count
+    int32 failed_syncs = 7;                     // Failed sync count
+    map<string, string> performance_metrics = 8; // Performance metrics
+}
+
+// ===========================
+// CONFIGURATION MESSAGES
+// ===========================
+
+/**
+ * SNTP network configuration
+ */
+message SNTPNetworkConfig {
+    repeated TimeAuthority bootstrap_authorities = 1; // Initial authorities
+    int32 default_sync_interval = 2;            // Default sync interval (seconds)
+    double consensus_threshold = 3;             // Consensus confidence threshold
+    int32 max_authorities_per_consensus = 4;    // Max authorities in consensus
+    ConsensusType default_consensus_type = 5;   // Default consensus algorithm
+    int32 byzantine_tolerance = 6;              // Byzantine fault tolerance level
+    bool enable_senary_optimization = 7;       // Enable senary features
+    map<string, string> network_parameters = 8; // Network configuration
+}
+
+/**
+ * Quality of Service metrics for time synchronization
+ */
+message QualityMetrics {
+    double accuracy = 1;                        // Time accuracy (seconds)
+    double precision = 2;                       // Time precision (seconds)
+    double availability = 3;                    // Service availability (0.0-1.0)
+    double reliability = 4;                     // Service reliability (0.0-1.0)
+    double network_latency = 5;                 // Average network latency
+    double consensus_time = 6;                  // Average consensus time
+    int32 byzantine_incidents = 7;              // Detected Byzantine incidents
+    map<string, double> senary_metrics = 8;     // Senary optimization metrics
+}
+
+// ===========================
+// AUDIT AND SECURITY
+// ===========================
+
+/**
+ * Temporal audit record for time synchronization events
+ */
+message TemporalAuditRecord {
+    string audit_id = 1;                        // Unique audit identifier
+    seigr.protocol.timestamp.SeigrTimestamp event_time = 2;   // Event occurrence time
+    string event_type = 3;                      // Type of temporal event
+    string actor_id = 4;                        // Actor performing action
+    string target_id = 5;                       // Target of action
+    SeigrNetworkTimestamp before_time = 6;      // Time state before event
+    SeigrNetworkTimestamp after_time = 7;       // Time state after event
+    string consensus_session = 8;               // Associated consensus session
+    bytes audit_signature = 9;                  // Audit record signature
+    map<string, string> audit_metadata = 10;    // Additional audit data
+}
+
+/**
+ * Security threat detection for temporal anomalies
+ */
+message TemporalThreatAlert {
+    string alert_id = 1;                        // Unique alert identifier
+    seigr.protocol.timestamp.SeigrTimestamp detected_time = 2; // Threat detection time
+    string threat_type = 3;                     // Type of temporal threat
+    string affected_node = 4;                   // Affected network node
+    double severity_level = 5;                  // Threat severity (0.0-1.0)
+    string description = 6;                     // Threat description
+    repeated string evidence = 7;               // Supporting evidence
+    string mitigation_action = 8;               // Recommended mitigation
+    bool consensus_impacted = 9;                // Whether consensus affected
+    map<string, string> threat_metadata = 10;   // Threat analysis metadata
+}
+
+// ===========================
+// SERVICES
+// ===========================
+
+/**
+ * SNTP service interface for time synchronization operations
+ */
+service SNTPService {
+    // Basic time synchronization
+    rpc RequestTime(TimeRequest) returns (TimeResponse);
+    
+    // Authority management
+    rpc RegisterAuthority(TimeAuthority) returns (AuthorityRegistrationResponse);
+    rpc UpdateAuthorityStatus(AuthorityStatusUpdate) returns (StatusUpdateResponse);
+    rpc GetAuthorityList(AuthorityListRequest) returns (AuthorityListResponse);
+    
+    // Consensus operations
+    rpc InitiateConsensus(ConsensusInitiationRequest) returns (TemporalConsensus);
+    rpc SubmitVote(ConsensusBallot) returns (VoteSubmissionResponse);
+    rpc GetConsensusStatus(ConsensusStatusRequest) returns (TemporalConsensus);
+    
+    // Client operations
+    rpc RegisterClient(TimeClient) returns (ClientRegistrationResponse);
+    rpc UpdateSyncStatus(SyncStatusUpdate) returns (StatusUpdateResponse);
+    rpc GetNetworkTime(NetworkTimeRequest) returns (SeigrNetworkTimestamp);
+    
+    // Quality and monitoring
+    rpc GetQualityMetrics(QualityMetricsRequest) returns (QualityMetrics);
+    rpc ReportThreat(TemporalThreatAlert) returns (ThreatReportResponse);
+    rpc GetAuditRecords(AuditRecordsRequest) returns (AuditRecordsResponse);
+}
+
+// ===========================
+// SERVICE REQUEST/RESPONSE MESSAGES
+// ===========================
+
+message AuthorityRegistrationResponse {
+    bool success = 1;
+    string message = 2;
+    string assigned_authority_id = 3;
+}
+
+message AuthorityStatusUpdate {
+    string authority_id = 1;
+    TimeAuthorityStatus new_status = 2;
+    string reason = 3;
+}
+
+message StatusUpdateResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message AuthorityListRequest {
+    bool active_only = 1;
+    int32 max_results = 2;
+}
+
+message AuthorityListResponse {
+    repeated TimeAuthority authorities = 1;
+    int32 total_count = 2;
+}
+
+message ConsensusInitiationRequest {
+    string initiator_id = 1;
+    ConsensusType consensus_type = 2;
+    repeated string participant_authorities = 3;
+}
+
+message VoteSubmissionResponse {
+    bool accepted = 1;
+    string message = 2;
+    bool consensus_complete = 3;
+}
+
+message ConsensusStatusRequest {
+    string consensus_id = 1;
+}
+
+message ClientRegistrationResponse {
+    bool success = 1;
+    string message = 2;
+    string assigned_client_id = 3;
+    repeated TimeAuthority recommended_authorities = 4;
+}
+
+message NetworkTimeRequest {
+    bool require_consensus = 1;
+    double precision_requirement = 2;
+}
+
+message QualityMetricsRequest {
+    seigr.protocol.timestamp.SeigrTimestamp start_time = 1;
+    seigr.protocol.timestamp.SeigrTimestamp end_time = 2;
+    repeated string node_filter = 3;
+}
+
+message ThreatReportResponse {
+    bool accepted = 1;
+    string tracking_id = 2;
+    string message = 3;
+}
+
+message AuditRecordsRequest {
+    seigr.protocol.timestamp.SeigrTimestamp start_time = 1;
+    seigr.protocol.timestamp.SeigrTimestamp end_time = 2;
+    repeated string event_types = 3;
+    int32 max_results = 4;
+}
+
+message AuditRecordsResponse {
+    repeated TemporalAuditRecord records = 1;
+    int32 total_count = 2;
+    bool has_more = 3;
+}

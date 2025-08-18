@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package seigr.ubsb;
+
+import "seigr_timestamp.proto";
+import "manifest.proto";
+
+// Universal Binary-Senary Bridge registration and event
+message UBSBRegistration {
+  string registration_id = 1;
+  string binary_app_id = 2;
+  seigr.manifest.Manifest capsule_manifest = 3;
+  seigr.protocol.timestamp.SeigrTimestamp registered_at = 4;
+  bytes signature = 5;
+}
+
+// UBSB onboarding event
+message UBSBOnboardingEvent {
+  string event_id = 1;
+  UBSBRegistration registration = 2;
+  string event_type = 3; // onboarding, update
+  seigr.protocol.timestamp.SeigrTimestamp timestamp = 4;
+  bytes signature = 5;
+}

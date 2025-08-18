@@ -1,0 +1,179 @@
+syntax = "proto3";
+
+package seigr.error_handling;
+
+import "alerting.proto"; // ✅ Import AlertSeverity from alerting.proto
+
+/**
+ * Error Handling Protocol
+ *
+ * This protocol provides a standardized structure for error logging, monitoring,
+ * resolution strategies, and impact analysis across the Seigr ecosystem. It supports
+ * advanced error diagnostics, recovery configurations, and real-time notifications.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Enum defining automated error handling strategies.
+ */
+enum ErrorResolutionStrategy {
+    ERROR_STRATEGY_UNDEFINED = 0;
+    ERROR_STRATEGY_RETRY = 1;                  // Retry the operation.
+    ERROR_STRATEGY_LOG_AND_CONTINUE = 2;       // Log and continue execution.
+    ERROR_STRATEGY_TERMINATE = 3;              // Terminate the operation.
+    ERROR_STRATEGY_ALERT_AND_PAUSE = 4;        // Notify and pause the operation.
+    ERROR_STRATEGY_FALLBACK_OPERATION = 5;     // Perform a fallback action.
+    ERROR_STRATEGY_ESCALATE_IMMEDIATELY = 6;   // Escalate to a higher authority.
+    ERROR_STRATEGY_ROLLING_BACK_DEPENDENCIES = 7; // Rollback related changes.
+    ERROR_STRATEGY_ADAPTIVE_RETRY = 8;         // Retry with adaptive adjustments.
+    ERROR_STRATEGY_TRIGGER_RECOVERY_PLAYBOOK = 9; // Execute predefined recovery playbook.
+}
+
+/**
+ * Enum defining the source of the error.
+ */
+enum ErrorSource {
+    ERROR_SOURCE_UNDEFINED = 0;
+    ERROR_SOURCE_INTERNAL = 1;       // System-generated errors.
+    ERROR_SOURCE_EXTERNAL = 2;       // Errors caused by external dependencies.
+    ERROR_SOURCE_USER = 3;           // Errors initiated by user actions.
+    ERROR_SOURCE_HARDWARE = 4;       // Errors caused by hardware failures.
+    ERROR_SOURCE_NETWORK = 5;        // Errors originating from network issues.
+}
+
+/**
+ * Enum for error lifecycle states.
+ */
+enum ErrorLifecycleState {
+    ERROR_STATE_UNDEFINED = 0;
+    ERROR_STATE_REPORTED = 1;        // Error has been reported.
+    ERROR_STATE_ACKNOWLEDGED = 2;    // Error acknowledged by the system or user.
+    ERROR_STATE_IN_PROGRESS = 3;     // Error is actively being resolved.
+    ERROR_STATE_RESOLVED = 4;        // Error has been resolved.
+    ERROR_STATE_ESCALATED = 5;       // Error has been escalated.
+}
+
+// ===========================
+// MESSAGES
+// ===========================
+
+/**
+ * Metadata key-value pairs for errors.
+ */
+message ErrorMetadata {
+    string key = 1;                  // Metadata key.
+    string value = 2;                // Metadata value.
+}
+
+/**
+ * Contextual details about the error event.
+ */
+message ErrorContext {
+    string environment = 1;          // Environment (e.g., production, staging).
+    string request_id = 2;           // Request or trace ID for debugging.
+    string session_id = 3;           // User or system session identifier.
+    string user_id = 4;              // User identifier, if applicable.
+    map<string, string> additional_context = 5; // Custom key-value pairs for context.
+}
+
+/**
+ * Lifecycle tracking details for errors.
+ */
+message ErrorLifecycle {
+    string reported_at = 1;          // Timestamp when error was reported.
+    string acknowledged_at = 2;      // Timestamp when error was acknowledged.
+    string in_progress_at = 3;       // Timestamp when resolution began.
+    string resolved_at = 4;          // Timestamp when error was resolved.
+    ErrorLifecycleState state = 5;   // Current lifecycle state.
+}
+
+/**
+ * Impact analysis for errors, detailing the scope of the issue.
+ */
+message ErrorImpactAnalysis {
+    string affected_service = 1;     // Name of the affected service.
+    string affected_users = 2;       // Approximate number of impacted users.
+    string performance_impact = 3;   // Description of performance degradation.
+    string outage_duration = 4;      // Duration of any outage caused by the error.
+    string recovery_time = 5;        // Time taken to recover.
+    map<string, string> additional_impact_details = 6; // Custom impact details.
+}
+
+/**
+ * Detailed audit log for error resolution steps.
+ */
+message ResolutionAuditLog {
+    string action_taken = 1;         // Description of the resolution action.
+    string performed_by = 2;         // User or system responsible for the action.
+    string action_timestamp = 3;     // Timestamp of the resolution action.
+    map<string, string> metadata = 4; // Custom metadata for the action.
+}
+
+/**
+ * Log entry capturing all details about a specific error event.
+ */
+message ErrorLogEntry {
+    string error_id = 1;                     // Unique identifier for the error.
+    seigr.alerting.AlertSeverity severity = 2; // ✅ Use imported AlertSeverity
+    ErrorSource source = 3;                 // Source of the error.
+    string component = 4;                   // Affected system component.
+    string message = 5;                     // Brief description of the error.
+    string details = 6;                     // Detailed error information.
+    string timestamp = 7;                   // Timestamp of the error event.
+    bool resolved = 8;                      // Whether the error has been resolved.
+    string resolution_timestamp = 9;        // When the error was resolved.
+    ErrorResolutionStrategy resolution_strategy = 10; // Strategy used for resolution.
+    repeated string dependency_ids = 11;    // IDs of affected dependencies.
+    ErrorContext context = 12;              // Contextual information about the error.
+    ErrorLifecycle lifecycle = 13;          // Lifecycle tracking for the error.
+    ErrorImpactAnalysis impact_analysis = 14; // Analysis of the error's impact.
+    repeated ResolutionAuditLog resolution_audit_logs = 15; // Logs of resolution actions.
+    map<string, string> metadata = 16;      // Additional metadata for the error.
+}
+
+/**
+ * Aggregated error statistics for diagnostics and monitoring.
+ */
+message ErrorStats {
+    int32 total_errors = 1;                 // Total number of logged errors.
+    int32 unresolved_errors = 2;            // Count of unresolved errors.
+    map<string, int32> severity_counts = 3; // Count of errors by severity.
+    string most_recent_error = 4;           // Most recent error ID.
+    map<string, int32> component_error_counts = 5; // Errors grouped by component.
+    map<string, int32> resolution_counts = 6;      // Resolution counts by strategy.
+    double avg_resolution_time_seconds = 7; // Average resolution time in seconds.
+    int32 disaster_error_count = 8;         // Count of disaster-level errors.
+}
+
+/**
+ * Configuration for automated recovery and error handling.
+ */
+message RecoveryConfig {
+    string component = 1;                  // Target system component.
+    seigr.alerting.AlertSeverity max_severity_to_retry = 2; // ✅ Use imported AlertSeverity
+    int32 max_retry_attempts = 3;          // Maximum number of retry attempts.
+    int32 retry_interval_seconds = 4;     // Interval between retries.
+    ErrorResolutionStrategy default_strategy = 5; // Default handling strategy.
+    map<string, ErrorResolutionStrategy> severity_strategies = 6; // Strategy per severity.
+    string escalation_contact = 7;        // Contact for escalation.
+    string recovery_playbook = 8;         // Reference to a recovery playbook.
+    bool enable_adaptive_strategy = 9;    // Whether adaptive strategies are enabled.
+    bool enable_dynamic_recovery = 10;    // Enable dynamic recovery based on conditions.
+}
+
+/**
+ * Notification triggered on critical errors.
+ */
+message ErrorNotification {
+    string error_id = 1;                   // Error ID triggering the notification.
+    seigr.alerting.AlertSeverity severity = 2; // ✅ Use imported AlertSeverity
+    string affected_component = 3;        // Component affected by the error.
+    string alert_message = 4;             // Notification message.
+    string contact_info = 5;              // Contact details for escalation.
+    string triggered_at = 6;              // Timestamp when the notification was triggered.
+    map<string, string> alert_metadata = 7; // Additional metadata for alerts.
+    repeated string escalation_pathways = 8; // Escalation pathways for resolution.
+}

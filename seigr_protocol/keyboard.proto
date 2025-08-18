@@ -1,0 +1,265 @@
+syntax = "proto3";
+
+package seigr.keyboard;
+
+// Keyboard input protocol for comprehensive key handling
+// Supports physical keyboards, virtual keyboards, and accessibility input
+
+// Keyboard layout types
+enum KeyboardLayout {
+    LAYOUT_UNKNOWN = 0;
+    QWERTY_US = 1;
+    QWERTY_UK = 2;
+    AZERTY_FR = 3;
+    QWERTZ_DE = 4;
+    DVORAK = 5;
+    COLEMAK = 10;
+    SENARY_OPTIMIZED = 11;    // Seigr-native senary keyboard layout
+    CUSTOM_LAYOUT = 12;
+}
+
+// Key types and categories
+enum KeyType {
+    KEY_UNKNOWN = 0;
+    ALPHANUMERIC = 1;
+    FUNCTION_KEY = 2;         // F1-F12
+    MODIFIER_KEY = 3;         // Ctrl, Alt, Shift, etc.
+    NAVIGATION_KEY = 4;       // Arrow keys, Page Up/Down, etc.
+    SPECIAL_KEY = 5;          // Space, Enter, Tab, etc.
+    NUMERIC_KEYPAD = 10;      // Numeric keypad keys
+    MEDIA_KEY = 11;           // Volume, play/pause, etc.
+    SENARY_KEY = 12;          // Special senary input keys
+}
+
+// Key states
+enum KeyState {
+    KEY_RELEASED = 0;
+    KEY_PRESSED = 1;
+    KEY_REPEAT = 2;          // Key being held down and repeating
+    KEY_STICKY = 3;          // Accessibility sticky key
+}
+
+// Modifier key states (bitfield-compatible)
+enum ModifierKey {
+    NO_MODIFIER = 0;
+    LEFT_SHIFT = 1;
+    RIGHT_SHIFT = 2;
+    LEFT_CTRL = 3;
+    RIGHT_CTRL = 4;
+    LEFT_ALT = 5;
+    LEFT_META = 10;          // Windows/Cmd key
+    RIGHT_META = 11;
+    CAPS_LOCK = 12;
+    NUM_LOCK = 13;
+    SCROLL_LOCK = 14;
+    SENARY_MODE = 15;        // Special Seigr senary input mode
+}
+
+// Individual key event
+message KeyEvent {
+    string event_id = 1;
+    string key_code = 2;           // Physical key identifier
+    string key_char = 3;           // Character produced (considering layout/modifiers)
+    KeyType key_type = 4;
+    KeyState key_state = 5;
+    
+    // Modifier context
+    repeated ModifierKey active_modifiers = 6;
+    bool is_auto_repeat = 7;
+    
+    // Timing information
+    uint64 timestamp_ns = 8;
+    uint32 repeat_count = 9;       // How many repeats if auto-repeating
+    
+    // Input context
+    string keyboard_id = 10;       // For multiple keyboards
+    KeyboardLayout active_layout = 11;
+    
+    // Energy and optimization
+    float energy_cost = 12;
+    bool senary_optimized = 13;
+    
+    // Accessibility
+    bool accessibility_enhanced = 14;
+    string accessibility_context = 15;
+}
+
+// Keyboard combination/shortcut
+message KeyCombination {
+    string combination_id = 1;
+    string name = 2;                    // Human-readable name
+    repeated string key_sequence = 3;   // Keys in combination
+    repeated ModifierKey required_modifiers = 4;
+    
+    // Combination properties
+    bool requires_exact_order = 5;      // Sequential vs simultaneous
+    uint32 max_interval_ms = 6;         // Max time between keys
+    
+    // Action binding
+    string bound_action = 7;
+    map<string, string> action_parameters = 8;
+    
+    // Context
+    string application_context = 9;     // When this combination is active
+    bool global_shortcut = 10;          // System-wide vs app-specific
+    
+    // Customization
+    bool user_customizable = 11;
+    string custom_description = 12;
+}
+
+// Keyboard configuration and settings
+message KeyboardConfiguration {
+    string keyboard_id = 1;
+    string device_name = 2;
+    KeyboardLayout layout = 3;
+    
+    // Timing settings
+    uint32 repeat_delay_ms = 4;         // Delay before key repeat starts
+    uint32 repeat_rate_ms = 5;          // Time between repeats
+    
+    // Input behavior
+    bool auto_repeat_enabled = 6;
+    bool sticky_keys_enabled = 7;       // Accessibility
+    bool filter_keys_enabled = 8;       // Ignore brief key presses
+    bool toggle_keys_enabled = 9;       // Audio feedback for locks
+    
+    // Layout and language
+    string language_code = 10;          // Language for text input
+    repeated string available_layouts = 11;
+    
+    // Senary optimization
+    bool senary_mode_enabled = 12;
+    string senary_layout_config = 13;
+    float senary_efficiency_target = 14;
+    
+    // Energy management
+    bool energy_optimization_enabled = 15;
+    float energy_budget = 16;
+    
+    // Custom key mappings
+    map<string, string> custom_key_mappings = 17;
+    repeated KeyCombination custom_shortcuts = 18;
+}
+
+// Keyboard input request for text processing
+message KeyboardInputRequest {
+    string input_session_id = 1;
+    repeated KeyEvent key_events = 2;
+    
+    // Input context
+    string input_context = 3;          // "text_field", "password", "numeric", etc.
+    string language_hint = 4;          // Expected input language
+    bool predictive_text_enabled = 5;
+    
+    // Processing preferences
+    bool auto_correction_enabled = 6;
+    bool senary_optimization_enabled = 7;
+    bool accessibility_enhanced = 8;
+    
+    // Energy constraints
+    float max_processing_energy = 9;
+    uint32 max_processing_time_ms = 10;
+    
+    // Security context
+    bool secure_input = 11;            // For passwords, etc.
+    string security_level = 12;
+}
+
+// Keyboard input response with processed text
+message KeyboardInputResponse {
+    string input_session_id = 1;
+    bool success = 2;
+    string error_message = 3;
+    
+    // Processed output
+    string raw_text = 4;               // Direct key-to-character mapping
+    string processed_text = 5;         // After auto-correction, etc.
+    repeated string text_suggestions = 6;
+    
+    // Input analysis
+    uint32 characters_typed = 7;
+    uint32 keys_pressed = 8;
+    float typing_speed_wpm = 9;
+    
+    // Performance metrics
+    uint32 processing_time_ms = 10;
+    float energy_consumed = 11;
+    bool senary_optimized = 12;
+    
+    // Feedback for user
+    bool requires_user_confirmation = 13;
+    string user_feedback_message = 14;
+    
+    // Session metadata
+    string timestamp = 15;
+    map<string, string> metadata = 16;
+}
+
+// Keyboard capabilities and features
+message KeyboardCapabilities {
+    string keyboard_id = 1;
+    string manufacturer = 2;
+    string model = 3;
+    string firmware_version = 4;
+    
+    // Physical characteristics
+    uint32 total_keys = 5;
+    bool has_numeric_keypad = 6;
+    bool has_function_keys = 7;
+    bool has_media_keys = 8;
+    repeated KeyType supported_key_types = 9;
+    
+    // Layout support
+    repeated KeyboardLayout supported_layouts = 10;
+    KeyboardLayout default_layout = 11;
+    bool programmable_layout = 12;
+    
+    // Advanced features
+    bool backlighting_available = 13;
+    bool programmable_keys = 14;
+    bool macro_support = 15;
+    bool n_key_rollover = 16;          // Can handle multiple simultaneous keys
+    uint32 max_simultaneous_keys = 17;
+    
+    // Connectivity
+    string connection_type = 18;        // "USB", "Bluetooth", "Wireless", etc.
+    bool hot_swappable = 19;
+    
+    // Seigr-specific features
+    bool senary_optimization_support = 20;
+    bool energy_reporting_available = 21;
+    bool accessibility_enhanced = 22;
+    
+    // Performance characteristics
+    uint32 polling_rate_hz = 23;
+    float latency_ms = 24;
+    uint32 battery_life_hours = 25;    // For wireless keyboards
+}
+
+// Keyboard service definitions
+service KeyboardService {
+    // Input processing
+    rpc ProcessKeyInput(KeyboardInputRequest) returns (KeyboardInputResponse);
+    rpc ProcessKeyEvent(KeyEvent) returns (KeyboardInputResponse);
+    rpc ProcessKeyCombination(KeyCombination) returns (KeyboardInputResponse);
+    
+    // Configuration management
+    rpc GetKeyboardConfiguration(KeyboardConfiguration) returns (KeyboardConfiguration);
+    rpc UpdateKeyboardConfiguration(KeyboardConfiguration) returns (KeyboardInputResponse);
+    rpc GetKeyboardCapabilities(KeyboardCapabilities) returns (KeyboardCapabilities);
+    
+    // Layout and language
+    rpc SwitchKeyboardLayout(KeyboardConfiguration) returns (KeyboardInputResponse);
+    rpc GetAvailableLayouts(KeyboardCapabilities) returns (KeyboardConfiguration);
+    
+    // Shortcut and macro management
+    rpc RegisterKeyCombination(KeyCombination) returns (KeyboardInputResponse);
+    rpc RemoveKeyCombination(KeyCombination) returns (KeyboardInputResponse);
+    rpc ListKeyCombinations(KeyboardConfiguration) returns (KeyboardInputResponse);
+    
+    // Optimization and analysis
+    rpc OptimizeForSenary(KeyboardConfiguration) returns (KeyboardConfiguration);
+    rpc AnalyzeTypingPattern(KeyboardInputRequest) returns (KeyboardInputResponse);
+    rpc CalculateEnergyConsumption(KeyboardInputRequest) returns (KeyboardInputResponse);
+}

@@ -1,0 +1,231 @@
+syntax = "proto3";
+
+package seigr.touchscreen;
+
+// Touchscreen interaction types
+enum TouchInteractionType {
+    TOUCH_UNKNOWN = 0;
+    SINGLE_TAP = 1;
+    DOUBLE_TAP = 2;
+    LONG_PRESS = 3;
+    SWIPE = 4;
+    PINCH = 5;
+    ZOOM = 10;
+    MULTI_TOUCH = 11;
+    GESTURE_PATTERN = 12;
+    PRESSURE_SENSITIVE = 13;
+    NEURAL_TOUCH = 14;        // Neural interface simulation of touch
+    HAPTIC_FEEDBACK = 15;     // Outgoing haptic response
+}
+
+// Touch pressure levels (senary-optimized)
+enum TouchPressure {
+    PRESSURE_UNKNOWN = 0;
+    LIGHT_TOUCH = 1;         // Minimal pressure
+    NORMAL_TOUCH = 2;        // Standard interaction
+    FIRM_TOUCH = 3;          // Intentional pressure
+    STRONG_TOUCH = 4;        // High pressure
+    MAXIMUM_TOUCH = 5;       // Maximum supported pressure
+}
+
+// Touch coordinate with pressure and temporal data
+message TouchCoordinate {
+    float x = 1;
+    float y = 2;
+    TouchPressure pressure = 3;
+    int64 timestamp_ns = 4;
+    
+    // Advanced touch properties
+    float contact_area = 5;     // Contact surface area
+    float velocity_x = 6;       // Touch movement velocity
+    float velocity_y = 7;
+    float acceleration_x = 8;   // Touch acceleration
+    float acceleration_y = 9;
+    
+    // Energy-aware tracking
+    float energy_cost = 10;     // Processing energy for this touch point
+    bool senary_optimized = 11;
+}
+
+// Multi-touch gesture definition
+message TouchGesture {
+    string gesture_id = 1;
+    TouchInteractionType gesture_type = 2;
+    repeated TouchCoordinate touch_points = 3;
+    
+    // Gesture characteristics
+    int64 start_timestamp = 4;
+    int64 end_timestamp = 5;
+    int64 duration_ms = 6;
+    
+    // Gesture properties
+    float gesture_velocity = 7;
+    float gesture_magnitude = 8;
+    string gesture_direction = 9; // "up", "down", "left", "right", "circular", "complex"
+    
+    // Recognition confidence
+    float recognition_confidence = 10;
+    bool validated = 11;
+    
+    // Context information
+    string screen_region = 12;
+    string ui_element_id = 13;
+    string application_context = 14;
+}
+
+// Touchscreen capabilities and configuration
+message TouchscreenCapabilities {
+    // Physical specifications
+    float screen_width_mm = 1;
+    float screen_height_mm = 2;
+    int32 resolution_x = 3;
+    int32 resolution_y = 4;
+    
+    // Touch specifications
+    int32 max_touch_points = 5;
+    bool pressure_sensitive = 6;
+    bool haptic_feedback_available = 7;
+    bool neural_interface_compatible = 8;
+    
+    // Supported interactions
+    repeated TouchInteractionType supported_interactions = 9;
+    repeated TouchPressure supported_pressures = 10;
+    
+    // Performance characteristics
+    int32 max_sampling_rate_hz = 11;
+    float min_detectable_pressure = 12;
+    float max_detectable_pressure = 13;
+    
+    // Energy specifications
+    float idle_energy_consumption = 14;
+    float active_energy_consumption = 15;
+    bool senary_optimization_available = 16;
+}
+
+// Touch event for real-time processing
+message TouchEvent {
+    string event_id = 1;
+    TouchInteractionType interaction_type = 2;
+    TouchCoordinate primary_coordinate = 3;
+    repeated TouchCoordinate additional_coordinates = 4; // For multi-touch
+    
+    // Event timing
+    int64 event_timestamp = 5;
+    int64 processing_deadline = 6; // When response is needed
+    
+    // Event context
+    string session_id = 7;
+    string user_id = 8;
+    string application_id = 9;
+    string ui_element_id = 10;
+    
+    // Response requirements
+    bool requires_immediate_response = 11;
+    bool requires_haptic_feedback = 12;
+    string expected_response_type = 13;
+    
+    // Energy constraints
+    float max_processing_energy = 14;
+    bool force_senary_optimization = 15;
+}
+
+// Touch response for feedback and acknowledgment
+message TouchResponse {
+    string event_id = 1;
+    bool success = 2;
+    string error_message = 3;
+    
+    // Processing results
+    TouchGesture recognized_gesture = 4;
+    string action_taken = 5;
+    string ui_feedback = 6;
+    
+    // Haptic feedback configuration
+    bool haptic_enabled = 7;
+    string haptic_pattern = 8;
+    float haptic_intensity = 9;
+    int32 haptic_duration_ms = 10;
+    
+    // Performance metrics
+    int64 processing_time_ns = 11;
+    float energy_consumption = 12;
+    bool senary_optimized = 13;
+    
+    // Response metadata
+    string timestamp = 14;
+    map<string, string> metadata = 15;
+}
+
+// Haptic feedback pattern definition
+message HapticPattern {
+    string pattern_id = 1;
+    string pattern_name = 2;
+    string pattern_type = 3; // "vibration", "texture", "temperature", "neural"
+    
+    // Pattern characteristics
+    repeated float intensity_curve = 4;    // Intensity over time
+    repeated int32 timing_curve_ms = 5;    // Timing points for intensity
+    float base_frequency = 6;              // For vibration patterns
+    float frequency_modulation = 7;
+    
+    // Energy and optimization
+    float energy_requirement = 8;
+    bool senary_optimized = 9;
+    string optimization_profile = 10;
+    
+    // Pattern metadata
+    string description = 11;
+    repeated string use_cases = 12;
+    map<string, string> parameters = 13;
+}
+
+// Touch calibration and sensitivity configuration
+message TouchCalibration {
+    string calibration_id = 1;
+    string user_id = 2;
+    string device_id = 3;
+    
+    // Sensitivity settings
+    float touch_sensitivity = 4;
+    float pressure_sensitivity = 5;
+    float gesture_sensitivity = 6;
+    
+    // Timing settings
+    int32 tap_timeout_ms = 7;
+    int32 long_press_timeout_ms = 8;
+    int32 double_tap_interval_ms = 9;
+    
+    // Energy optimization settings
+    bool adaptive_sensitivity = 10;        // Adjust based on energy state
+    bool senary_optimization_enabled = 11;
+    float energy_budget = 12;
+    
+    // Calibration metadata
+    string calibration_timestamp = 13;
+    bool needs_recalibration = 14;
+    map<string, string> calibration_data = 15;
+}
+
+// Touchscreen service definitions
+service TouchscreenService {
+    // Touch event processing
+    rpc ProcessTouchEvent(TouchEvent) returns (TouchResponse);
+    rpc ProcessMultiTouchGesture(TouchGesture) returns (TouchResponse);
+    
+    // Haptic feedback
+    rpc TriggerHapticFeedback(HapticPattern) returns (TouchResponse);
+    rpc CreateHapticPattern(HapticPattern) returns (TouchResponse);
+    
+    // Calibration and configuration
+    rpc CalibrateTouch(TouchCalibration) returns (TouchResponse);
+    rpc GetTouchCapabilities(TouchscreenCapabilities) returns (TouchscreenCapabilities);
+    rpc UpdateTouchSettings(TouchCalibration) returns (TouchResponse);
+    
+    // Gesture recognition and learning
+    rpc RecognizeGesture(TouchGesture) returns (TouchResponse);
+    rpc TrainGesturePattern(TouchGesture) returns (TouchResponse);
+    
+    // Energy optimization
+    rpc OptimizeForSenary(TouchEvent) returns (TouchEvent);
+    rpc CalculateEnergyRequirements(TouchEvent) returns (TouchResponse);
+}

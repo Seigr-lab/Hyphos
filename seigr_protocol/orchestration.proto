@@ -1,0 +1,205 @@
+syntax = "proto3";
+
+package seigr.orchestration;
+
+/**
+ * Orchestration Protocol
+ *
+ * Defines structures and services for managing complex workflows, task execution, monitoring,
+ * scheduling, and adaptive orchestration within the Seigr ecosystem.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Status of individual tasks within the orchestration workflow.
+ */
+enum TaskStatus {
+    TASK_STATUS_UNDEFINED = 0;
+    TASK_STATUS_QUEUED = 1;                  // Waiting for execution.
+    TASK_STATUS_RUNNING = 2;                 // Task currently executing.
+    TASK_STATUS_COMPLETED = 3;               // Successfully completed.
+    TASK_STATUS_FAILED = 4;                  // Execution failed.
+    TASK_STATUS_CANCELED = 5;                // Task was canceled.
+    TASK_STATUS_RETRYING = 6;                // Retry attempt ongoing.
+    TASK_STATUS_PAUSED = 7;                  // Temporarily paused.
+    TASK_STATUS_WAITING_RESOURCES = 8;       // Waiting for resource availability.
+    TASK_STATUS_RESOLVING_DEPENDENCIES = 9;  // Awaiting dependencies resolution.
+}
+
+/**
+ * Priority levels for task execution.
+ */
+enum TaskPriority {
+    TASK_PRIORITY_UNDEFINED = 0;
+    TASK_PRIORITY_LOW = 1;                   // Low urgency.
+    TASK_PRIORITY_MEDIUM = 2;                // Medium urgency.
+    TASK_PRIORITY_HIGH = 3;                  // High priority.
+    TASK_PRIORITY_CRITICAL = 4;              // Critical priority.
+    TASK_PRIORITY_URGENT = 5;                // Emergency-level priority.
+}
+
+/**
+ * Stages of a workflow lifecycle.
+ */
+enum WorkflowStage {
+    STAGE_UNDEFINED = 0;
+    STAGE_INITIALIZING = 1;                  // Preparing workflow.
+    STAGE_EXECUTING = 2;                     // Actively executing.
+    STAGE_VALIDATING = 3;                    // Validating results.
+    STAGE_FINALIZING = 4;                    // Final clean-up phase.
+    STAGE_COMPLETED = 5;                     // Workflow finished successfully.
+    STAGE_ABORTED = 6;                       // Workflow was aborted.
+    STAGE_ADAPTIVE_RECONFIGURATION = 7;      // Adjustments due to requirements.
+}
+
+/**
+ * Types of dependencies between tasks.
+ */
+enum TaskDependencyType {
+    DEPENDENCY_HARD = 0;                     // Must complete before proceeding.
+    DEPENDENCY_SOFT = 1;                     // Can proceed even if unmet.
+    DEPENDENCY_CONDITIONAL = 2;              // Conditional dependency.
+}
+
+// ===========================
+// TASK DEFINITIONS
+// ===========================
+
+/**
+ * Represents a single task in a workflow.
+ */
+message Task {
+    string task_id = 1;                          // Unique task identifier.
+    string task_type = 2;                        // Type/category of the task.
+    TaskStatus status = 3;                       // Current task status.
+    TaskPriority priority = 4;                   // Priority level of the task.
+    string assigned_hyphen = 5;                  // Assigned hyphen for execution.
+    repeated string dependencies = 6;            // Task IDs this task depends on.
+    map<string, TaskDependencyType> dependency_types = 7; // Type of each dependency.
+    int32 max_retries = 8;                       // Max retry attempts allowed.
+    string created_at = 9;                       // Task creation timestamp.
+    string completed_at = 10;                    // Task completion timestamp.
+    map<string, string> parameters = 11;         // Task-specific parameters.
+    map<string, string> result_data = 12;        // Result metadata.
+    string last_attempt_timestamp = 13;          // Timestamp of last attempt.
+    string error_message = 14;                   // Reason for failure, if any.
+    map<string, string> resource_requirements = 15; // CPU, memory, bandwidth, etc.
+    string retry_policy = 16;                    // Retry strategy (e.g., exponential backoff).
+    bool rollback_on_failure = 17;               // Rollback flag on failure.
+    map<string, string> adaptive_settings = 18;  // Dynamic configuration options.
+    string escalation_policy_id = 19;            // Linked escalation policy.
+    string task_group_id = 20;                   // Group ID for parallel execution context.
+    bool enable_timeout_handling = 21;           // Flag for enabling timeout management.
+}
+
+/**
+ * Represents an entire workflow composed of tasks.
+ */
+message Workflow {
+    string workflow_id = 1;                      // Unique workflow identifier.
+    repeated Task tasks = 2;                     // List of tasks.
+    TaskStatus overall_status = 3;               // Overall workflow status.
+    string initiated_by = 4;                     // Who initiated the workflow.
+    string started_at = 5;                       // Start timestamp.
+    string ended_at = 6;                         // End timestamp.
+    map<string, string> workflow_metadata = 7;   // Metadata for the workflow.
+    WorkflowStage current_stage = 8;             // Current stage of execution.
+    TaskPriority priority = 9;                   // Workflow priority level.
+    string failure_reason = 10;                  // Reason for workflow failure.
+    bool rollback_on_failure = 11;               // Rollback on failure.
+    bool adaptive_reconfiguration_enabled = 12;  // Adaptive adjustments enabled.
+    map<string, string> resilience_parameters = 13; // Configs for resilience.
+    string reconfiguration_timestamp = 14;       // Last adaptive change timestamp.
+    string audit_log_id = 15;                    // Linked audit log for this workflow.
+    bool allow_parallel_execution = 16;          // Enables parallel execution of tasks.
+}
+
+// ===========================
+// SCHEDULING AND MONITORING
+// ===========================
+
+/**
+ * Scheduling details for recurring tasks.
+ */
+message TaskSchedule {
+    string task_id = 1;                          // Task ID.
+    string cron_expression = 2;                  // Cron-style scheduling.
+    string timezone = 3;                         // Timezone for scheduling.
+    bool is_recurring = 4;                       // Recurrence flag.
+    string next_run_time = 5;                    // Next scheduled run.
+    map<string, string> schedule_metadata = 6;   // Metadata for schedule.
+    map<string, string> trigger_conditions = 7;  // Conditions triggering scheduling.
+    bool adaptive_rescheduling_enabled = 8;      // Dynamic rescheduling enabled.
+    string last_scheduled_adjustment = 9;        // Timestamp of last adjustment.
+    int32 grace_period_minutes = 10;             // Grace period for late execution.
+}
+
+/**
+ * Real-time monitoring for task execution.
+ */
+message TaskMonitoring {
+    string task_id = 1;                          // Task ID.
+    TaskStatus status = 2;                       // Current status.
+    int32 current_attempt = 3;                   // Retry attempt count.
+    string last_update = 4;                      // Last update timestamp.
+    string assigned_hyphen = 5;                  // Assigned executor.
+    string error_message = 6;                    // Last error message.
+    map<string, string> monitoring_data = 7;     // Real-time metrics.
+    int64 execution_duration_ms = 8;            // Task execution duration.
+    int64 memory_usage_bytes = 9;               // Memory used.
+    float cpu_load_percentage = 10;             // CPU load percentage.
+    float progress_percentage = 11;             // Execution progress.
+    bool is_critical = 12;                       // Indicates if the task is critical.
+}
+
+// ===========================
+// CONFIGURATION AND ESCALATION
+// ===========================
+
+/**
+ * Workflow orchestration global configurations.
+ */
+message OrchestrationConfig {
+    int32 max_parallel_tasks = 1;                // Maximum concurrent tasks.
+    int32 default_retry_limit = 2;               // Default retries allowed.
+    string global_timeout = 3;                   // Global timeout value.
+    bool enable_adaptive_retry = 4;              // Adaptive retry enabled.
+    map<string, string> escalation_policies = 5; // Escalation configurations.
+    string audit_log_policy = 6;                 // Policy for workflow audit logging.
+}
+
+/**
+ * Logs escalation actions taken on tasks/workflows.
+ */
+message EscalationAction {
+    string escalation_id = 1;                    // Unique escalation identifier.
+    string affected_task_id = 2;                 // Affected task.
+    string triggered_by = 3;                     // Cause of escalation.
+    TaskPriority priority_adjustment = 4;        // Adjusted priority.
+    string escalation_timestamp = 5;             // Initiation timestamp.
+    string escalation_policy_id = 6;             // Linked escalation policy.
+    string resolution_status = 7;                // Status after escalation.
+    string resolved_at = 8;                      // Resolution timestamp.
+    map<string, string> resolution_metadata = 9; // Metadata for resolution context.
+}
+
+/**
+ * Service for managing workflows and tasks.
+ */
+service OrchestrationService {
+    rpc StartWorkflow(Workflow) returns (Workflow);                      // Starts a new workflow.
+    rpc UpdateTask(Task) returns (TaskMonitoring);                       // Updates a task and monitors progress.
+    rpc GetWorkflowStatus(GetWorkflowStatusRequest) returns (Workflow);  // Retrieves the status of a workflow.
+    rpc ScheduleTask(TaskSchedule) returns (TaskSchedule);               // Schedules a new task.
+    rpc EscalateTask(EscalationAction) returns (EscalationAction);       // Escalates a task for attention.
+}
+
+/**
+ * Request to retrieve the status of a specific workflow.
+ */
+message GetWorkflowStatusRequest {
+    string workflow_id = 1;  // Unique identifier for the workflow.
+}

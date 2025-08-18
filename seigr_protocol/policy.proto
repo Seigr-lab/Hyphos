@@ -1,0 +1,255 @@
+syntax = "proto3";
+
+package seigr.policy;
+
+/**
+ * Policy Protocol
+ *
+ * Defines structures and services for managing governance, compliance,
+ * and enforcement policies within the Seigr ecosystem.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Actions taken as part of governance procedures.
+ */
+enum GovernanceAction {
+    ACTION_UNDEFINED = 0;
+    ACTION_REVIEW = 1;               // Review policy details.
+    ACTION_ESCALATE = 2;             // Escalate to higher authorities.
+    ACTION_APPROVE = 3;              // Approve compliance or adherence.
+    ACTION_REJECT = 4;               // Reject access or request.
+    ACTION_NOTIFY = 5;               // Notify stakeholders of violations.
+    ACTION_WARN = 6;                 // Issue a warning.
+    ACTION_REVOKE_ACCESS = 7;        // Revoke user access.
+    ACTION_TERMINATE_PROCESS = 8;    // Terminate non-compliant activities.
+    ACTION_SUSPEND = 9;              // Temporarily suspend a user or process.
+    ACTION_REMEDIATE = 10;           // Apply remediation actions.
+}
+
+/**
+ * Types of policy rules within the ecosystem.
+ */
+enum PolicyRuleType {
+    POLICY_RULE_UNDEFINED = 0;
+    ACCESS_RULE = 1;                // Rules for access control.
+    DATA_RETENTION_RULE = 2;        // Data retention and disposal rules.
+    RESOURCE_ALLOCATION_RULE = 3;   // Rules for resource quotas.
+    USER_ACTIVITY_RULE = 4;         // User activity monitoring.
+    PRIVACY_RULE = 5;               // Privacy and data protection rules.
+    COMPLIANCE_RULE = 6;            // Compliance with regulations.
+    CUSTOM_RULE = 7;                // Custom, user-defined rules.
+    SECURITY_RULE = 8;              // Security-specific rules.
+}
+
+// ===========================
+// POLICY RULE
+// ===========================
+
+/**
+ * Defines individual rules within a policy.
+ */
+message PolicyRule {
+    string rule_id = 1;                     // Unique identifier for the rule.
+    PolicyRuleType rule_type = 2;           // Type of policy rule.
+    string description = 3;                 // Rule description.
+    repeated GovernanceAction actions = 4;  // Actions upon rule triggers.
+    string created_at = 5;                  // Timestamp of rule creation.
+    string last_modified = 6;               // Last modified timestamp.
+    map<string, string> rule_conditions = 7; // Conditions to evaluate rule.
+    map<string, string> penalty_conditions = 8; // Penalties for violations.
+    bool is_active = 9;                     // Activation status.
+    bool adaptive_enforcement = 10;         // Adaptive enforcement enabled.
+    map<string, string> rule_metadata = 11; // Additional metadata.
+    string escalation_policy_id = 12;       // Linked escalation policy.
+}
+
+// ===========================
+// SYSTEM POLICY
+// ===========================
+
+/**
+ * Represents a system policy containing multiple rules.
+ */
+message SystemPolicy {
+    string policy_id = 1;                   // Unique policy ID.
+    string policy_name = 2;                 // Descriptive name.
+    string policy_scope = 3;                // Scope (e.g., "global").
+    repeated PolicyRule rules = 4;          // List of rules.
+    bool mandatory = 5;                     // Mandatory policy flag.
+    map<string, string> policy_metadata = 6; // Metadata for management.
+    string created_by = 7;                  // Creator identifier.
+    string created_at = 8;                  // Creation timestamp.
+    string modified_at = 9;                 // Last modification.
+    string associated_compliance_id = 10;   // Compliance reference ID.
+    bool enable_policy_versioning = 11;     // Enables version tracking.
+}
+
+// ===========================
+// POLICY ENFORCEMENT
+// ===========================
+
+/**
+ * Real-time policy enforcement mechanism.
+ */
+message PolicyEnforcement {
+    string policy_id = 1;                   // Policy ID to enforce.
+    string target_component_id = 2;         // Target system/module.
+    repeated PolicyRule rules = 3;          // Rules to enforce.
+    bool enforce_immediately = 4;           // Immediate enforcement flag.
+    string enforcement_level = 5;           // Criticality level.
+    map<string, string> enforcement_metadata = 6; // Metadata for context.
+    string initiated_by = 7;                // Enforcement initiator.
+    string initiated_at = 8;                // Timestamp of initiation.
+    string remediation_plan_id = 9;         // Linked remediation plan.
+}
+
+// ===========================
+// COMPLIANCE AUDIT
+// ===========================
+
+/**
+ * Records compliance audit logs.
+ */
+message ComplianceAudit {
+    string audit_id = 1;                    // Unique audit entry ID.
+    string policy_id = 2;                   // Policy being audited.
+    string user_id = 3;                     // User/system under audit.
+    string timestamp = 4;                   // Audit timestamp.
+    bool compliance_status = 5;             // Compliance state.
+    string violation_description = 6;       // Violation details.
+    GovernanceAction recommended_action = 7; // Suggested governance action.
+    map<string, string> audit_metadata = 8; // Additional metadata.
+    string audit_summary = 9;               // Summary of audit findings.
+}
+
+// ===========================
+// POLICY VIOLATION
+// ===========================
+
+/**
+ * Defines a policy violation instance.
+ */
+message PolicyViolation {
+    string violation_id = 1;                // Unique violation ID.
+    string policy_id = 2;                   // Violated policy.
+    string rule_id = 3;                     // Violated rule.
+    string user_id = 4;                     // User or system causing violation.
+    string timestamp = 5;                   // Violation timestamp.
+    GovernanceAction response_action = 6;   // Immediate response action.
+    string resolution_status = 7;           // Resolution status.
+    string escalated_to = 8;                // Escalation authority.
+    map<string, string> violation_metadata = 9; // Metadata for context.
+    string corrective_action = 10;          // Corrective actions taken.
+}
+
+// ===========================
+// POLICY MANAGEMENT SERVICE
+// ===========================
+
+/**
+ * Service for managing policies, compliance, and enforcement.
+ */
+service PolicyManagementService {
+    rpc CreatePolicy (PolicyDefinitionRequest) returns (PolicyDefinitionResponse);
+    rpc UpdatePolicy (PolicyUpdateRequest) returns (PolicyUpdateResponse);
+    rpc EnforcePolicy (PolicyEnforcementRequest) returns (PolicyEnforcementResponse);
+    rpc CheckCompliance (ComplianceCheckRequest) returns (ComplianceCheckResponse);
+    rpc LogViolation (PolicyViolationLogRequest) returns (PolicyViolationLogResponse);
+    rpc AuditPolicyCompliance (ComplianceAuditRequest) returns (ComplianceAuditResponse);
+    rpc GetPolicyDetails (PolicyDetailsRequest) returns (PolicyDetailsResponse);
+}
+
+// ===========================
+// SERVICE REQUESTS & RESPONSES
+// ===========================
+
+/**
+ * Create a new system policy.
+ */
+message PolicyDefinitionRequest {
+    SystemPolicy policy = 1;                // Policy details.
+}
+
+message PolicyDefinitionResponse {
+    bool success = 1;                       // Success flag.
+    string policy_id = 2;                   // Created policy ID.
+    string message = 3;                     // Response message.
+}
+
+/**
+ * Update an existing policy.
+ */
+message PolicyUpdateRequest {
+    SystemPolicy updated_policy = 1;        // Updated policy details.
+}
+
+message PolicyUpdateResponse {
+    bool success = 1;                       // Success flag.
+    string message = 2;                     // Response message.
+}
+
+/**
+ * Enforce a policy in real-time.
+ */
+message PolicyEnforcementRequest {
+    PolicyEnforcement enforcement = 1;      // Enforcement details.
+}
+
+message PolicyEnforcementResponse {
+    bool success = 1;                       // Success flag.
+    string enforcement_id = 2;              // Enforcement identifier.
+    string message = 3;                     // Response message.
+}
+
+/**
+ * Check compliance for a user or system.
+ */
+message ComplianceCheckRequest {
+    string user_id = 1;                     // User/system identifier.
+    string policy_id = 2;                   // Policy to check against.
+}
+
+message ComplianceCheckResponse {
+    bool is_compliant = 1;                  // Compliance status.
+    string message = 2;                     // Compliance details.
+}
+
+/**
+ * Log a policy violation.
+ */
+message PolicyViolationLogRequest {
+    PolicyViolation violation = 1;          // Violation details.
+}
+
+message PolicyViolationLogResponse {
+    bool success = 1;                       // Success flag.
+    string message = 2;                     // Response message.
+}
+
+/**
+ * Conduct a compliance audit.
+ */
+message ComplianceAuditRequest {
+    ComplianceAudit audit = 1;              // Audit details.
+}
+
+message ComplianceAuditResponse {
+    bool success = 1;                       // Success flag.
+    string message = 2;                     // Audit results.
+}
+
+/**
+ * Get policy details.
+ */
+message PolicyDetailsRequest {
+    string policy_id = 1;                   // Policy ID.
+}
+
+message PolicyDetailsResponse {
+    SystemPolicy policy = 1;                // Policy details.
+    string message = 2;                     // Response message.
+}

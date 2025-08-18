@@ -1,0 +1,282 @@
+syntax = "proto3";
+
+package seigr.protocol.seigbit;
+
+import "common.proto";
+import "seigr_math.proto";
+import "consciousness.proto";
+import "crypto.proto";
+
+// ============================================================================
+// SEIGBIT Protocol Definition - Quantum-Inspired Data Storage Protocol
+// ============================================================================
+
+// Quantum state enumeration for SEIGBITs
+enum SeigrQuantumState {
+  QUANTUM_STATE_UNKNOWN = 0;
+  QUANTUM_STATE_0 = 1;        // Senary digit 0
+  QUANTUM_STATE_1 = 2;        // Senary digit 1
+  QUANTUM_STATE_2 = 3;        // Senary digit 2
+  QUANTUM_STATE_3 = 4;        // Senary digit 3
+  QUANTUM_STATE_4 = 5;        // Senary digit 4
+  QUANTUM_STATE_5 = 6;        // Senary digit 5
+  QUANTUM_STATE_POSITIVE_NEGATIVE = 7;  // ± (superposition)
+  QUANTUM_STATE_INFINITE = 8;           // ∞ (infinite potential)
+  QUANTUM_STATE_COLLAPSED = 9;          // ⊥ (collapsed state)
+  QUANTUM_STATE_SUMMATION = 10;         // ∑ (summation state)
+}
+
+// Quantum coherence levels
+enum SeigrQuantumCoherence {
+  COHERENCE_UNKNOWN = 0;
+  FEMTO_COHERENT = 1;    // Femtosecond-level coherence
+  PICO_COHERENT = 2;     // Picosecond-level coherence
+  NANO_COHERENT = 3;     // Nanosecond-level coherence
+  MICRO_COHERENT = 4;    // Microsecond-level coherence
+  MILLI_COHERENT = 5;    // Millisecond-level coherence
+  SECOND_COHERENT = 6;   // Second-level coherence (consciousness threshold)
+  ETERNAL_COHERENT = 7;  // Persistent coherence
+}
+
+// Quantum measurement result
+message QuantumMeasurement {
+  SeigrQuantumState measured_state = 1;
+  seigr.protocol.math.SenaryNumber probability = 2;
+  seigr.protocol.common.SeigrTimestamp measurement_time = 3;
+  string measurement_context = 4;
+  bool is_destructive = 5;
+}
+
+// Quantum superposition definition
+message QuantumSuperposition {
+  repeated SeigrQuantumState states = 1;
+  repeated seigr.protocol.math.SenaryNumber amplitudes = 2;
+  seigr.protocol.math.SenaryNumber coherence_factor = 3;
+  seigr.protocol.common.SeigrTimestamp creation_time = 4;
+  seigr.protocol.common.SeigrTimestamp decoherence_time = 5;
+}
+
+// Quantum entanglement relationship
+message QuantumEntanglement {
+  string seigbit_id_a = 1;
+  string seigbit_id_b = 2;
+  seigr.protocol.math.SenaryNumber entanglement_strength = 3;
+  seigr.protocol.common.SeigrTimestamp entanglement_time = 4;
+  string entanglement_protocol = 5;
+  bool is_active = 6;
+}
+
+// SEIGBIT consciousness evolution metrics
+message SeigrQuantumConsciousness {
+  seigr.protocol.math.SenaryNumber consciousness_level = 1;
+  seigr.protocol.math.SenaryNumber learning_rate = 2;
+  seigr.protocol.math.SenaryNumber adaptation_speed = 3;
+  repeated string learned_patterns = 4;
+  seigr.protocol.consciousness.ConsciousnessMetrics consciousness_metrics = 5;
+  map<string, seigr.protocol.math.SenaryNumber> environmental_responses = 6;
+}
+
+// Core SEIGBIT message
+message SeigrQuantumBit {
+  // Identity and metadata
+  string seigbit_id = 1;
+  seigr.protocol.common.SeigrTimestamp creation_time = 2;
+  seigr.protocol.common.SeigrTimestamp last_modified = 3;
+  
+  // Quantum state information
+  SeigrQuantumState current_state = 4;
+  SeigrQuantumCoherence coherence_level = 5;
+  QuantumSuperposition superposition = 6;
+  repeated QuantumEntanglement entanglements = 7;
+  
+  // Consciousness and evolution
+  SeigrQuantumConsciousness consciousness = 8;
+  seigr.protocol.math.SenaryNumber stability_factor = 9;
+  
+  // Data storage
+  bytes quantum_data = 10;
+  seigr.protocol.crypto.HyphaHash data_hash = 11;
+  bool is_compressed = 12;
+  
+  // Protocol versioning
+  string protocol_version = 13;
+  map<string, string> metadata = 14;
+}
+
+// SEIGBIT array for quantum data structures
+message SeigrQuantumBitArray {
+  string array_id = 1;
+  repeated SeigrQuantumBit seigbits = 2;
+  
+  // Array-level quantum properties
+  bool has_entanglement_network = 3;
+  seigr.protocol.math.SenaryNumber collective_consciousness = 4;
+  seigr.protocol.math.SenaryNumber compression_ratio = 5;
+  
+  // Array metadata
+  seigr.protocol.common.SeigrTimestamp creation_time = 6;
+  int64 total_data_size = 7;
+  string encoding_format = 8;
+  map<string, string> array_metadata = 9;
+}
+
+// ============================================================================
+// SEIGBIT Operation Messages
+// ============================================================================
+
+// Quantum read operation
+message QuantumReadRequest {
+  string seigbit_id = 1;
+  bool destructive_read = 2;
+  string measurement_context = 3;
+  seigr.protocol.common.RequestMetadata request_metadata = 4;
+}
+
+message QuantumReadResponse {
+  bytes data = 1;
+  QuantumMeasurement measurement = 2;
+  SeigrQuantumBit updated_seigbit = 3;
+  seigr.protocol.common.ResponseMetadata response_metadata = 4;
+}
+
+// Quantum write operation  
+message QuantumWriteRequest {
+  string seigbit_id = 1;
+  bytes data = 2;
+  SeigrQuantumState target_state = 3;
+  bool preserve_entanglements = 4;
+  seigr.protocol.common.RequestMetadata request_metadata = 5;
+}
+
+message QuantumWriteResponse {
+  bool success = 1;
+  SeigrQuantumBit updated_seigbit = 2;
+  seigr.protocol.crypto.HyphaHash data_hash = 3;
+  seigr.protocol.common.ResponseMetadata response_metadata = 4;
+}
+
+// Superposition creation
+message CreateSuperpositionRequest {
+  string seigbit_id = 1;
+  repeated SeigrQuantumState target_states = 2;
+  repeated seigr.protocol.math.SenaryNumber amplitudes = 3;
+  seigr.protocol.common.RequestMetadata request_metadata = 4;
+}
+
+message CreateSuperpositionResponse {
+  bool success = 1;
+  QuantumSuperposition created_superposition = 2;
+  SeigrQuantumBit updated_seigbit = 3;
+  seigr.protocol.common.ResponseMetadata response_metadata = 4;
+}
+
+// Quantum entanglement
+message QuantumEntangleRequest {
+  string seigbit_id_a = 1;
+  string seigbit_id_b = 2;
+  string entanglement_protocol = 3;
+  seigr.protocol.math.SenaryNumber desired_strength = 4;
+  seigr.protocol.common.RequestMetadata request_metadata = 5;
+}
+
+message QuantumEntangleResponse {
+  bool success = 1;
+  QuantumEntanglement entanglement = 2;
+  SeigrQuantumBit updated_seigbit_a = 3;
+  SeigrQuantumBit updated_seigbit_b = 4;
+  seigr.protocol.common.ResponseMetadata response_metadata = 5;
+}
+
+// Consciousness evolution trigger
+message EvolveConsciousnessRequest {
+  string seigbit_id = 1;
+  map<string, seigr.protocol.math.SenaryNumber> environmental_input = 2;
+  seigr.protocol.math.SenaryNumber learning_intensity = 3;
+  seigr.protocol.common.RequestMetadata request_metadata = 4;
+}
+
+message EvolveConsciousnessResponse {
+  bool evolution_occurred = 1;
+  SeigrQuantumConsciousness new_consciousness_state = 2;
+  seigr.protocol.math.SenaryNumber consciousness_delta = 3;
+  seigr.protocol.common.ResponseMetadata response_metadata = 4;
+}
+
+// Quantum compression
+message QuantumCompressionRequest {
+  string array_id = 1;
+  string compression_algorithm = 2;
+  seigr.protocol.math.SenaryNumber target_ratio = 3;
+  seigr.protocol.common.RequestMetadata request_metadata = 4;
+}
+
+message QuantumCompressionResponse {
+  bool success = 1;
+  seigr.protocol.math.SenaryNumber achieved_ratio = 2;
+  SeigrQuantumBitArray compressed_array = 3;
+  seigr.protocol.common.ResponseMetadata response_metadata = 4;
+}
+
+// ============================================================================
+// SEIGBIT Service Definition
+// ============================================================================
+
+service SeigrQuantumBitService {
+  // Core quantum operations
+  rpc QuantumRead(QuantumReadRequest) returns (QuantumReadResponse);
+  rpc QuantumWrite(QuantumWriteRequest) returns (QuantumWriteResponse);
+  rpc CreateSuperposition(CreateSuperpositionRequest) returns (CreateSuperpositionResponse);
+  rpc QuantumEntangle(QuantumEntangleRequest) returns (QuantumEntangleResponse);
+  
+  // Consciousness and evolution
+  rpc EvolveConsciousness(EvolveConsciousnessRequest) returns (EvolveConsciousnessResponse);
+  
+  // Array operations
+  rpc CompressQuantumArray(QuantumCompressionRequest) returns (QuantumCompressionResponse);
+  
+  // Streaming operations for large data
+  rpc StreamQuantumData(stream QuantumWriteRequest) returns (stream QuantumWriteResponse);
+  rpc StreamQuantumRead(stream QuantumReadRequest) returns (stream QuantumReadResponse);
+}
+
+// ============================================================================
+// SEIGBIT Factory Protocol Messages  
+// ============================================================================
+
+message CreateSeigrQuantumBitRequest {
+  SeigrQuantumState initial_state = 1;
+  SeigrQuantumCoherence coherence_level = 2;
+  bool enable_superposition = 3;
+  bool enable_consciousness = 4;
+  map<string, string> creation_metadata = 5;
+  seigr.protocol.common.RequestMetadata request_metadata = 6;
+}
+
+message CreateSeigrQuantumBitResponse {
+  SeigrQuantumBit created_seigbit = 1;
+  string seigbit_id = 2;
+  seigr.protocol.common.ResponseMetadata response_metadata = 3;
+}
+
+message CreateQuantumArrayRequest {
+  bytes initial_data = 1;
+  bool enable_entanglement = 2;
+  bool enable_consciousness = 3;
+  bool enable_compression = 4;
+  string encoding_format = 5;
+  seigr.protocol.common.RequestMetadata request_metadata = 6;
+}
+
+message CreateQuantumArrayResponse {
+  SeigrQuantumBitArray created_array = 1;
+  string array_id = 2;
+  seigr.protocol.math.SenaryNumber conversion_efficiency = 3;
+  seigr.protocol.common.ResponseMetadata response_metadata = 4;
+}
+
+// Factory service for creating SEIGBITs
+service SeigrQuantumBitFactory {
+  rpc CreateSeigrQuantumBit(CreateSeigrQuantumBitRequest) returns (CreateSeigrQuantumBitResponse);
+  rpc CreateQuantumArray(CreateQuantumArrayRequest) returns (CreateQuantumArrayResponse);
+  rpc CreateEntangledPair(QuantumEntangleRequest) returns (QuantumEntangleResponse);
+}

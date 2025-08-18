@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package seigr.math;
+
+// Senary number representation
+message SenaryNumber {
+    repeated uint32 digits = 1;      // Base-6 digits
+    bool is_negative = 2;            // Sign
+    uint32 fractional_point = 3;     // Position of fractional point
+}
+
+// Mathematics operation types
+enum MathOperation {
+    MATH_UNKNOWN = 0;
+    ADD = 1;
+    SUBTRACT = 2;
+    MULTIPLY = 3;
+    DIVIDE = 4;
+    POWER = 5;
+    ROOT = 6;
+    LOGARITHM = 7;
+    MATRIX_MULTIPLY = 8;
+    STATISTICAL_ANALYSIS = 9;
+}
+
+// Senary matrix
+message SenaryMatrix {
+    repeated SenaryMatrixRow rows = 1;
+    uint32 row_count = 2;
+    uint32 column_count = 3;
+}
+
+message SenaryMatrixRow {
+    repeated SenaryNumber values = 1;
+}
+
+// Math request
+message MathRequest {
+    MathOperation operation = 1;
+    repeated SenaryNumber operands = 2;
+    repeated SenaryMatrix matrices = 3;
+    map<string, string> parameters = 4;
+}
+
+// Math response
+message MathResponse {
+    bool success = 1;
+    SenaryNumber result = 2;
+    SenaryMatrix matrix_result = 3;
+    string error_message = 4;
+}
+
+// Mathematical service
+service MathematicalService {
+    rpc PerformOperation(MathRequest) returns (MathResponse);
+    rpc ConvertToSenary(MathRequest) returns (MathResponse);
+    rpc ConvertFromSenary(MathRequest) returns (MathResponse);
+}

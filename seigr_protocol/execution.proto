@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+package seigr.execution;
+
+// ================================
+// Seigr Code Execution Protocol
+// ================================
+
+// Execution operation types
+enum ExecutionOperation {
+    EXEC_UNKNOWN = 0;
+    EXECUTE_CODE = 1;
+    CREATE_PROCESS = 2;
+    TERMINATE_PROCESS = 3;
+    SUSPEND_PROCESS = 4;
+    RESUME_PROCESS = 5;
+    GET_STATUS = 6;
+    ALLOCATE_RESOURCES = 7;
+    DEALLOCATE_RESOURCES = 8;
+    CREATE_CONTAINER = 9;
+    DESTROY_CONTAINER = 10;
+}
+
+// Execution environment types
+enum ExecutionEnvironment {
+    ENV_UNKNOWN = 0;
+    NATIVE_SEIGR = 1;        // Native Seigr execution
+    SEIGR_CONTAINER = 2;     // Containerized execution
+    SEIGR_SANDBOX = 3;       // Sandboxed execution
+    ENERGY_OPTIMIZED = 4;    // Energy-aware execution
+    SENARY_OPTIMIZED = 5;    // Senary mathematics optimized
+}
+
+// Process state
+enum ProcessState {
+    PROCESS_UNKNOWN = 0;
+    CREATED = 1;
+    RUNNING = 2;
+    SUSPENDED = 3;
+    TERMINATED = 4;
+    ERROR = 5;
+    RESOURCE_LIMITED = 6;
+}
+
+// Resource types
+enum ResourceType {
+    RESOURCE_UNKNOWN = 0;
+    CPU_CORES = 1;
+    MEMORY_BYTES = 2;
+    DISK_SPACE = 3;
+    NETWORK_BANDWIDTH = 4;
+    ENERGY_BUDGET = 5;
+    EXECUTION_TIME = 6;
+}
+
+// Code execution request
+message ExecutionRequest {
+    ExecutionOperation operation = 1;
+    string code = 2;                    // Code to execute
+    string language = 3;                // Programming language
+    ExecutionEnvironment environment = 4;
+    map<string, string> parameters = 5;
+    ResourceAllocation resources = 6;
+    SecurityContext security = 7;
+    uint64 timeout_seconds = 8;
+    bool enable_energy_monitoring = 9;
+    uint64 requested_at = 10;
+}
+
+// Resource allocation specification
+message ResourceAllocation {
+    uint32 cpu_cores = 1;
+    uint64 memory_bytes = 2;
+    uint64 disk_bytes = 3;
+    uint32 network_bandwidth = 4;
+    uint32 energy_budget = 5;
+    uint64 max_execution_time = 6;
+    map<string, string> custom_limits = 7;
+}
+
+// Security context for execution
+message SecurityContext {
+    string user_id = 1;
+    repeated string permissions = 2;
+    string sandbox_level = 3;
+    bool allow_network_access = 4;
+    bool allow_file_system = 5;
+    repeated string allowed_modules = 6;
+    map<string, string> security_policies = 7;
+}
+
+// Process information
+message ProcessInfo {
+    string process_id = 1;
+    string parent_process_id = 2;
+    ProcessState state = 3;
+    ResourceUsage resource_usage = 4;
+    uint64 start_time = 5;
+    uint64 last_activity = 6;
+    string execution_environment = 7;
+    map<string, string> metadata = 8;
+}
+
+// Resource usage metrics
+message ResourceUsage {
+    double cpu_usage_percent = 1;
+    uint64 memory_used_bytes = 2;
+    uint64 disk_read_bytes = 3;
+    uint64 disk_write_bytes = 4;
+    uint64 network_sent_bytes = 5;
+    uint64 network_received_bytes = 6;
+    uint32 energy_consumed = 7;
+    uint64 execution_time_ms = 8;
+}
+
+// Container specification
+message ContainerSpec {
+    string container_id = 1;
+    string image_name = 2;
+    ResourceAllocation resources = 3;
+    SecurityContext security = 4;
+    map<string, string> environment_vars = 5;
+    repeated string mount_points = 6;
+    NetworkConfig network = 7;
+}
+
+// Network configuration
+message NetworkConfig {
+    bool enable_networking = 1;
+    repeated string allowed_hosts = 2;
+    repeated uint32 allowed_ports = 3;
+    string network_mode = 4;
+    map<string, string> dns_config = 5;
+}
+
+// Execution result
+message ExecutionResult {
+    bool success = 1;
+    string output = 2;
+    string error_output = 3;
+    int32 exit_code = 4;
+    ResourceUsage resource_usage = 5;
+    uint64 execution_time_ms = 6;
+    ProcessInfo process_info = 7;
+    map<string, string> result_metadata = 8;
+}
+
+// Execution response
+message ExecutionResponse {
+    bool success = 1;
+    string message = 2;
+    ExecutionResult result = 3;
+    string process_id = 4;
+    uint64 response_time = 5;
+}
+
+// Process list request
+message ProcessListRequest {
+    string filter_user = 1;
+    ProcessState filter_state = 2;
+    string filter_environment = 3;
+    uint32 max_results = 4;
+}
+
+// Process list response
+message ProcessListResponse {
+    repeated ProcessInfo processes = 1;
+    uint32 total_count = 2;
+    uint64 query_time = 3;
+}
+
+// Resource monitoring request
+message ResourceMonitorRequest {
+    repeated ResourceType resource_types = 1;
+    uint64 monitoring_duration_seconds = 2;
+    uint32 sample_interval_seconds = 3;
+    string process_id = 4;
+}
+
+// Resource monitoring response
+message ResourceMonitorResponse {
+    repeated ResourceUsage samples = 1;
+    uint64 monitoring_start = 2;
+    uint64 monitoring_end = 3;
+    ResourceUsage average_usage = 4;
+    ResourceUsage peak_usage = 5;
+}
+
+// Execution service interface
+service ExecutionService {
+    rpc ExecuteCode(ExecutionRequest) returns (ExecutionResponse);
+    rpc CreateProcess(ExecutionRequest) returns (ExecutionResponse);
+    rpc TerminateProcess(ExecutionRequest) returns (ExecutionResponse);
+    rpc GetProcessStatus(ExecutionRequest) returns (ProcessInfo);
+    rpc ListProcesses(ProcessListRequest) returns (ProcessListResponse);
+    rpc MonitorResources(ResourceMonitorRequest) returns (ResourceMonitorResponse);
+    rpc CreateContainer(ContainerSpec) returns (ExecutionResponse);
+    rpc DestroyContainer(ExecutionRequest) returns (ExecutionResponse);
+    rpc AllocateResources(ResourceAllocation) returns (ExecutionResponse);
+    rpc DeallocateResources(ExecutionRequest) returns (ExecutionResponse);
+}

@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package seigr.filesystem;
+
+// ================================
+// SeigrFS Filesystem Protocol
+// ================================
+
+// Filesystem operation types
+enum FilesystemOperation {
+    FS_UNKNOWN = 0;
+    READ_FILE = 1;
+    WRITE_FILE = 2;
+    DELETE_FILE = 3;
+    CREATE_DIRECTORY = 4;
+    LIST_DIRECTORY = 5;
+    MOUNT = 6;
+    UNMOUNT = 7;
+    STAT = 8;
+    CHMOD = 9;
+    MOVE = 10;
+    COPY = 11;
+}
+
+// Filesystem modes
+enum FilesystemMode {
+    MODE_UNKNOWN = 0;
+    READ_ONLY = 1;
+    READ_WRITE = 2;
+    APPEND_ONLY = 3;
+    SENARY_OPTIMIZED = 4;
+    ENERGY_AWARE = 5;
+}
+
+// File types
+enum FileType {
+    FILE_TYPE_UNKNOWN = 0;
+    REGULAR_FILE = 1;
+    DIRECTORY = 2;
+    SYMBOLIC_LINK = 3;
+    SEIGR_CAPSULE = 4;
+    SEIGR_CELL = 5;
+    PROTOCOL_BUFFER = 6;
+}
+
+// Senary-optimized data block
+message SenaryBlock {
+    uint32 block_id = 1;
+    bytes data = 2;
+    uint32 senary_checksum = 3;
+    uint32 compression_ratio = 4;
+    bool is_energy_optimized = 5;
+}
+
+// File metadata
+message FileMetadata {
+    string path = 1;
+    FileType file_type = 2;
+    uint64 size_bytes = 3;
+    uint32 permissions = 4;
+    string owner = 5;
+    string group = 6;
+    uint32 senary_block_count = 7;
+    uint64 created_at = 8;
+    uint64 last_accessed = 9;
+    uint64 modified_at = 10;
+    map<string, string> extended_attributes = 11;
+}
+
+// Directory entry
+message DirectoryEntry {
+    string name = 1;
+    FileType type = 2;
+    uint64 size = 3;
+    uint32 permissions = 4;
+    string owner = 5;
+    string group = 6;
+    uint64 created_at = 7;
+    uint64 modified_at = 8;
+    uint64 accessed_at = 9;
+    map<string, string> attributes = 10;
+}
+
+// Mount information
+message MountInfo {
+    string device_path = 1;
+    string mount_point = 2;
+    string filesystem_type = 3;
+    FilesystemMode mode = 4;
+    uint64 mount_time = 5;
+    map<string, string> mount_options = 6;
+}
+
+// Filesystem request
+message FilesystemRequest {
+    FilesystemOperation operation = 1;
+    string path = 2;
+    bytes data = 3;
+    map<string, string> parameters = 4;
+    uint32 energy_budget = 5;
+    bool use_senary_optimization = 6;
+    bool enable_energy_awareness = 7;
+    uint64 requested_at = 8;
+}
+
+// Filesystem response
+message FilesystemResponse {
+    bool success = 1;
+    string error_message = 2;
+    bytes data = 3;
+    FileMetadata metadata = 4;
+    repeated DirectoryEntry entries = 5;
+    uint32 energy_consumed = 6;
+    uint64 completed_at = 7;
+    map<string, string> response_metadata = 8;
+}
+
+// Cache management
+message CacheEntry {
+    string key = 1;
+    bytes value = 2;
+    uint64 expires_at = 3;
+    uint32 access_count = 4;
+    uint64 last_verified = 5;
+    bool is_energy_optimized = 6;
+}
+
+// Health check result
+message HealthCheckResult {
+    bool is_healthy = 1;
+    repeated string warnings = 2;
+    repeated string errors = 3;
+    uint32 corruption_blocks = 4;
+    uint64 scanned_at = 5;
+    map<string, string> metrics = 6;
+}
+
+// Filesystem statistics
+message FilesystemStats {
+    uint64 total_space = 1;
+    uint64 used_space = 2;
+    uint64 available_space = 3;
+    uint64 total_inodes = 4;
+    uint64 used_inodes = 5;
+    uint64 available_inodes = 6;
+    uint32 read_operations = 7;
+    uint32 write_operations = 8;
+    uint64 bytes_read = 9;
+    uint64 bytes_written = 10;
+    uint32 energy_efficiency_rating = 11;
+    uint64 stats_since = 12;
+}
+
+// Filesystem service interface
+service FilesystemService {
+    rpc PerformFilesystemOperation(FilesystemRequest) returns (FilesystemResponse);
+    rpc ReadFile(FilesystemRequest) returns (FilesystemResponse);
+    rpc WriteFile(FilesystemRequest) returns (FilesystemResponse);
+    rpc ListDirectory(FilesystemRequest) returns (FilesystemResponse);
+    rpc GetFileMetadata(FilesystemRequest) returns (FileMetadata);
+    rpc CreateDirectory(FilesystemRequest) returns (FilesystemResponse);
+    rpc DeleteFile(FilesystemRequest) returns (FilesystemResponse);
+    rpc MountFilesystem(MountInfo) returns (FilesystemResponse);
+    rpc UnmountFilesystem(FilesystemRequest) returns (FilesystemResponse);
+    rpc GetFilesystemStats(FilesystemRequest) returns (FilesystemStats);
+    rpc PerformHealthCheck(FilesystemRequest) returns (HealthCheckResult);
+    rpc ManageCache(CacheEntry) returns (FilesystemResponse);
+}

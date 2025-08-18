@@ -1,0 +1,147 @@
+syntax = "proto3";
+
+package seigr.lineage;
+
+
+// ===========================
+// IMPORTS
+// ===========================
+import "segment_metadata.proto"; // For seigr.segment_metadata.SegmentMetadata
+import "seigr_timestamp.proto"; // For Seigr-native timestamp fields
+import "common.proto"; // For Feedback integration, LineageEntry ...
+
+/**
+ * Lineage Protocol
+ *
+ * Defines structures and processes for managing object history, state tracking,
+ * and lineage integrity across the Seigr ecosystem. Supports branching,
+ * merging, auditing, and adaptive updates.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Represents the structural type of lineage.
+ */
+enum LineageType {
+    STANDARD = 0;        // Linear and sequential lineage.
+    BRANCHED = 1;        // Lineage includes branching or forks.
+    MERGED = 2;          // Lineage resulting from merging branches.
+    ARCHIVED = 3;        // Archived lineage, no further changes allowed.
+}
+
+/**
+ * Represents the current operational state of the lineage.
+ */
+enum LineageStatus {
+    LINEAGE_STATUS_UNDEFINED = 0; // Default undefined state.
+    LINEAGE_ACTIVE = 1;           // Lineage is active and modifiable.
+    LINEAGE_ARCHIVED = 2;         // Lineage archived for historical reference.
+    LINEAGE_LOCKED = 3;           // Lineage is locked for security reasons.
+    LINEAGE_RETIRED = 4;          // Lineage is retired from active use.
+}
+
+// ===========================
+// MESSAGES
+// ===========================
+
+/**
+ * Core protocol buffer message for lineage operations and storage.
+ * Provides a unified interface for lineage management across the Seigr ecosystem.
+ */
+message LineageProtobuf {
+    string protobuf_id = 1;                  // Unique identifier for the protobuf instance
+    string version = 2;                      // Schema version for compatibility
+    Lineage lineage = 3;                     // The primary lineage data
+    repeated LineageValidationSummary validation_history = 4;  // History of validations
+    repeated LineageAuditTrail audit_trails = 5;              // Audit trails for this lineage
+    map<string, string> metadata = 6;        // Additional metadata
+    repeated TemporalLayer temporal_layers = 7;  // Associated temporal layers
+    bytes signature = 8;                     // Cryptographic signature for authentication
+    string owner_id = 9;                     // Owner of this lineage protobuf
+    seigr.protocol.timestamp.SeigrTimestamp timestamp = 10;  // Creation/modification timestamp
+    repeated string access_control = 11;     // Access control rules
+    string serialization_format = 12;        // Format used for serialization
+    int32 schema_version = 13;               // Version of the schema for migration
+}
+
+/**
+ * Represents a complete lineage structure for tracking an object's history.
+ */
+message Lineage {
+    string lineage_id = 1;                   // Unique identifier for the lineage.
+    string creator_id = 2;                   // ID of the creator initiating the lineage.
+    string current_hash = 3;                 // Current hash representing the latest state.
+    string format_version = 4;               // Version of the lineage data structure.
+    LineageType lineage_type = 5;            // Structural type of the lineage.
+    LineageStatus status = 6;                // Current operational status of the lineage.
+    repeated seigr.common.LineageEntry entries = 7;       // Detailed entries representing lineage actions.
+    string integrity_checksum = 8;           // Checksum for verifying lineage data integrity.
+    map<string, string> metadata = 9;        // Additional metadata or contextual details.
+    string parent_lineage_id = 10;           // Parent lineage ID for nested structures.
+    seigr.protocol.timestamp.SeigrTimestamp archive_timestamp = 11; // Timestamp indicating when lineage was archived.
+    repeated string associated_files = 12;   // Associated file IDs or paths.
+    string network_reference_id = 13;        // Network ID for distributed tracking across clusters.
+    repeated string access_permissions = 14; // Access control rules for this lineage.
+    repeated string linked_lineages = 15;    // References to merged or related lineages.
+    seigr.protocol.timestamp.SeigrTimestamp last_modified = 16; // Timestamp of the most recent modification.
+    map<string, seigr.common.Feedback> adaptive_triggers = 17; // Feedback-driven triggers for adaptive updates.
+    string deprecation_policy = 18;          // Policy defining deprecation or retirement rules.
+    map<string, string> network_protocol_data = 19; // Protocol details for distributed lineage tracking.
+}
+
+
+/**
+ * Represents a summary of lineage analysis and validation.
+ */
+message LineageValidationSummary {
+    string validation_id = 1;                // Unique identifier for validation activity.
+    string lineage_id = 2;                   // ID of the validated lineage.
+    bool validation_successful = 3;          // Indicates if validation passed.
+    repeated string warnings = 4;            // List of warnings encountered during validation.
+    repeated string errors = 5;              // List of errors identified.
+    seigr.protocol.timestamp.SeigrTimestamp validation_timestamp = 6; // Timestamp of validation completion.
+    string validated_by = 7;                 // Entity or user who performed validation.
+    string integrity_checksum = 8;           // Checksum after validation.
+    map<string, string> validation_metadata = 9; // Metadata about validation parameters.
+    string recommended_action = 10;          // Suggested actions after validation.
+    repeated string dependency_checks = 11;  // Dependency checks performed.
+    string rollback_advice = 12;             // Recommendation for rollback if validation fails.
+}
+
+/**
+ * Represents audit trails of lineage operations.
+ */
+message LineageAuditTrail {
+    string audit_id = 1;                     // Unique ID for the audit entry.
+    string lineage_id = 2;                   // ID of the associated lineage.
+    string event_description = 3;            // Description of the audit event.
+    string performed_by = 4;                 // ID of the performing user or system.
+    seigr.protocol.timestamp.SeigrTimestamp event_timestamp = 5; // Timestamp of the audit event.
+    string event_status = 6;                 // Status after performing the event.
+    map<string, string> audit_metadata = 7;  // Metadata for detailed audit tracking.
+    repeated string affected_entries = 8;    // Entries affected by the audit event.
+    bool compliance_verified = 9;            // Flag for compliance validation status.
+}
+
+/**
+ * TemporalLayer
+ * Represents a snapshot of state at a specific point in time, enabling rollback, auditing, and state recovery.
+ */
+message TemporalLayer {
+    string layer_id = 1;                    // Unique identifier for the temporal layer.
+    seigr.protocol.timestamp.SeigrTimestamp timestamp = 2; // ISO 8601 timestamp for layer creation.
+    string state_snapshot = 3;              // Serialized state data for recovery.
+    string description = 4;                 // Descriptive note for the snapshot.
+    string created_by = 5;                  // Identifier of the creator.
+    string layer_hash = 6;                  // Integrity hash for the entire layer.
+    string previous_layer_hash = 7;         // Hash reference to the previous layer.
+    bool rollback_allowed = 8;              // Indicates if rollback to this layer is permitted.
+    repeated seigr.segment_metadata.SegmentMetadata segments = 9; // Metadata for segments in this layer.
+    repeated string checksum_segments = 10; // Segment checksums for integrity verification.
+    map<string, bytes> data_snapshot = 11;  // Snapshot data for rollback purposes.
+    string backup_location = 12;            // Storage location for the backup layer.
+    map<string, string> metadata = 13;      // Contextual metadata for extensibility.
+}

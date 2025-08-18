@@ -1,0 +1,136 @@
+syntax = "proto3";
+
+package seigr.monitoring;
+
+import "common.proto"; // For ThreatLevel, OperationalStatus, etc.
+
+/**
+ * Monitoring Protocol
+ *
+ * Defines adaptive threat detection, escalation strategies, monitoring cycles,
+ * and analytics for the Seigr ecosystem, enabling scalable and proactive management.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Specifies the escalation strategy during a threat detection event.
+ */
+enum EscalationType {
+    ESCALATION_TYPE_UNDEFINED = 0; // Undefined escalation type.
+    ESCALATION_TYPE_THREAT_REPLICATION = 1; // Trigger replication for high-threat segments.
+    ESCALATION_TYPE_ALERT_ONLY = 2; // Issue alerts without additional action.
+    ESCALATION_TYPE_SYSTEM_LOCKDOWN = 3; // Perform a partial or full system lockdown.
+    ESCALATION_TYPE_ADAPTIVE_RECONFIGURATION = 4; // Reconfigure system adaptively.
+    ESCALATION_TYPE_USER_ALERT_ESCALATION = 5; // Escalate to users for intervention.
+    ESCALATION_TYPE_PREDICTIVE = 6; // Proactively address predicted issues.
+}
+
+// ===========================
+// MESSAGES
+// ===========================
+
+/**
+ * Represents an escalation event triggered by a high-risk detection.
+ */
+message Escalation {
+    string escalation_id = 1; // Unique identifier for escalation instance.
+    string segment_hash = 2; // Hash of the high-risk segment.
+    seigr.common.ThreatLevel threat_level = 3; // Detected threat level.
+    EscalationType escalation_type = 4; // Type of escalation.
+    seigr.common.Timestamp escalated_at = 5; // Timestamp of escalation initiation.
+    bool replication_triggered = 6; // Whether replication was triggered.
+    string escalation_reason = 7; // Reason for escalation.
+    repeated string alert_recipients = 8; // List of alerted entities.
+    map<string, string> metadata = 9; // Metadata for auditing.
+    string response_status = 10; // Status of escalation response.
+    string responder_id = 11; // ID of the responder managing escalation.
+    seigr.common.Timestamp resolution_timestamp = 12; // Timestamp of escalation resolution.
+    string response_details = 13; // Detailed response actions taken.
+    seigr.common.Timestamp next_review_timestamp = 14; // Next review timestamp for escalation.
+    repeated EscalationHistory escalation_history = 15; // Historical updates.
+    bool critical_protocol_override = 16; // Indicates if overrides were applied.
+    bool user_intervention_required = 17; // Manual intervention required flag.
+    float escalation_probability = 18; // Probability of escalation based on detection trends.
+}
+
+/**
+ * Tracks the history of escalation events with updates.
+ */
+message EscalationHistory {
+    string update_id = 1; // Unique identifier for the escalation update.
+    seigr.common.Timestamp timestamp = 2; // Timestamp of the escalation step.
+    string status = 3; // Current status (e.g., "In Progress", "Resolved").
+    string action_taken = 4; // Description of the action.
+    string updated_by = 5; // Entity performing the update.
+    map<string, string> additional_info = 6; // Metadata for each update.
+    bool adaptive_action_flag = 7; // Whether an adaptive response was applied.
+    float threat_escalation_score = 8; // Calculated threat escalation score.
+}
+
+/**
+ * Configuration for the monitoring system, including escalation and adaptive controls.
+ */
+message MonitoringConfig {
+    int32 critical_threshold = 1; // Threshold for critical replication.
+    int32 severe_threshold = 2; // Threshold for severe-level escalation.
+    int32 moderate_threshold = 3; // Threshold for moderate-level escalation.
+    int32 adaptive_check_interval_seconds = 4; // Interval for adaptive monitoring.
+    int32 alert_frequency_minutes = 5; // Frequency of alerts.
+    bool enable_auto_lockdown = 6; // Enable automatic lockdowns.
+    map<string, string> config_metadata = 7; // Metadata for configuration.
+    string config_version = 8; // Version of the configuration.
+    seigr.common.Timestamp last_updated = 9; // Timestamp of the last configuration update.
+    bool enable_severity_scaling = 10; // Enable scaling responses dynamically.
+    string default_response_strategy = 11; // Default escalation strategy.
+    bool dynamic_alert_scaling = 12; // Enable adaptive alert scaling.
+    string fallback_strategy = 13; // Fallback strategy if primary fails.
+    int32 data_volume_threshold = 14; // Volume threshold for monitoring triggers.
+    int32 high_frequency_monitoring_interval = 15; // Interval for high-frequency checks.
+    float adaptive_threshold_adjustment = 16; // Adjustment factor for thresholds.
+    bool enable_centralized_logging = 17; // Enable centralized logging.
+    bool prioritize_high_risk_zones = 18; // Prioritize zones with high threats.
+}
+
+/**
+ * Logs events during adaptive monitoring cycles, including escalations and responses.
+ */
+message AdaptiveMonitoringLog {
+    string log_id = 1; // Unique identifier for the log.
+    string monitored_segment = 2; // Monitored segment or component.
+    seigr.common.ThreatLevel detected_threat_level = 3; // Detected threat level.
+    seigr.common.Timestamp check_timestamp = 4; // Timestamp of the monitoring check.
+    bool triggered_escalation = 5; // Flag for escalation.
+    string escalation_id = 6; // Related escalation ID.
+    map<string, string> log_metadata = 7; // Contextual log metadata.
+    string response_action_taken = 8; // Actions taken during monitoring.
+    seigr.common.Timestamp next_check_scheduled = 9; // Next scheduled check timestamp.
+    float detection_accuracy = 10; // Accuracy of the detection.
+    string monitoring_operator = 11; // User/system triggering the check.
+    map<string, string> adaptive_parameters = 12; // Adaptive parameters applied.
+    float escalation_probability_score = 13; // Prediction score for escalation.
+    string protocol_adjustment_notes = 14; // Notes on protocol adjustments.
+    string data_source_id = 15; // Source of monitoring data.
+    bool proactive_response_enabled = 16; // Flag for proactive responses.
+}
+
+/**
+ * Summarizes a monitoring cycle, including escalations, detections, and trends.
+ */
+message MonitoringCycleSummary {
+    string summary_id = 1; // Unique identifier for the monitoring summary.
+    seigr.common.Timestamp cycle_timestamp = 2; // Timestamp of the monitoring cycle.
+    int32 total_checks_conducted = 3; // Number of checks conducted.
+    int32 escalations_triggered = 4; // Number of escalations triggered.
+    int32 critical_detections = 5; // Count of critical detections.
+    float average_detection_accuracy = 6; // Average accuracy across checks.
+    repeated string highlighted_segments = 7; // Segments flagged during the cycle.
+    map<string, string> cycle_metadata = 8; // Context metadata.
+    seigr.common.Timestamp next_cycle_scheduled = 9; // Scheduled timestamp for next cycle.
+    bool adaptive_measures_applied = 10; // If adaptive responses were applied.
+    map<string, int32> escalation_summary = 11; // Summary of escalations by type.
+    map<string, float> detection_trend_analysis = 12; // Analysis of detection trends.
+    string cycle_summary_notes = 13; // Additional notes for the summary.
+}

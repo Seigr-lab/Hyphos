@@ -1,0 +1,267 @@
+syntax = "proto3";
+
+package seigr.system_resources;
+
+// ================================
+// Seigr System Resources Protocol
+// ================================
+
+// Resource operation types
+enum ResourceOperation {
+    RESOURCE_UNKNOWN = 0;
+    MONITOR_RESOURCES = 1;
+    ALLOCATE_RESOURCE = 2;
+    DEALLOCATE_RESOURCE = 3;
+    GET_RESOURCE_STATUS = 4;
+    SET_RESOURCE_LIMITS = 5;
+    GET_SYSTEM_INFO = 6;
+    SCHEDULE_PROCESS = 7;
+    MANAGE_MEMORY = 8;
+    CONTROL_CPU = 9;
+    MANAGE_STORAGE = 10;
+}
+
+// System resource types
+enum SystemResourceType {
+    SYS_RESOURCE_UNKNOWN = 0;
+    CPU_CORES = 1;
+    MEMORY = 2;
+    STORAGE = 3;
+    NETWORK = 4;
+    ENERGY = 5;
+    GPU = 6;
+    SENSORS = 7;
+    PERIPHERALS = 8;
+}
+
+// Resource allocation states
+enum AllocationState {
+    ALLOCATION_UNKNOWN = 0;
+    AVAILABLE = 1;
+    ALLOCATED = 2;
+    RESERVED = 3;
+    OVERCOMMITTED = 4;
+    EXHAUSTED = 5;
+    FAILED = 6;
+}
+
+// System priority levels
+enum PriorityLevel {
+    PRIORITY_UNKNOWN = 0;
+    CRITICAL = 1;
+    HIGH = 2;
+    NORMAL = 3;
+    LOW = 4;
+    BACKGROUND = 5;
+}
+
+// CPU information
+message CPUInfo {
+    uint32 core_count = 1;
+    uint32 thread_count = 2;
+    double base_frequency_ghz = 3;
+    double max_frequency_ghz = 4;
+    string architecture = 5;
+    string vendor = 6;
+    string model = 7;
+    repeated string features = 8;
+    uint32 cache_size_kb = 9;
+}
+
+// Memory information
+message MemoryInfo {
+    uint64 total_bytes = 1;
+    uint64 available_bytes = 2;
+    uint64 used_bytes = 3;
+    uint64 cached_bytes = 4;
+    uint64 swap_total_bytes = 5;
+    uint64 swap_used_bytes = 6;
+    double usage_percentage = 7;
+    string memory_type = 8;
+}
+
+// Storage information
+message StorageInfo {
+    string device_name = 1;
+    string mount_point = 2;
+    string filesystem_type = 3;
+    uint64 total_bytes = 4;
+    uint64 used_bytes = 5;
+    uint64 available_bytes = 6;
+    double usage_percentage = 7;
+    bool is_ssd = 8;
+    uint32 read_speed_mbps = 9;
+    uint32 write_speed_mbps = 10;
+}
+
+// Network interface information
+message NetworkInfo {
+    string interface_name = 1;
+    string ip_address = 2;
+    string mac_address = 3;
+    uint64 bytes_sent = 4;
+    uint64 bytes_received = 5;
+    uint32 speed_mbps = 6;
+    bool is_active = 7;
+    string interface_type = 8;
+}
+
+// Energy information (Pi 5 specific)
+message EnergyInfo {
+    double voltage_v = 1;
+    double current_a = 2;
+    double power_w = 3;
+    double temperature_c = 4;
+    uint32 energy_consumed_j = 5;
+    string power_source = 6;
+    bool is_throttled = 7;
+    double efficiency_rating = 8;
+}
+
+// Resource allocation request
+message ResourceAllocationRequest {
+    SystemResourceType resource_type = 1;
+    uint64 amount_requested = 2;
+    PriorityLevel priority = 3;
+    string requesting_process = 4;
+    uint64 duration_seconds = 5;
+    bool exclusive_access = 6;
+    map<string, string> constraints = 7;
+}
+
+// Resource allocation response
+message ResourceAllocationResponse {
+    bool success = 1;
+    string allocation_id = 2;
+    uint64 amount_allocated = 3;
+    AllocationState state = 4;
+    uint64 expires_at = 5;
+    string error_message = 6;
+}
+
+// System resource status
+message ResourceStatus {
+    SystemResourceType type = 1;
+    uint64 total_capacity = 2;
+    uint64 available_capacity = 3;
+    uint64 allocated_capacity = 4;
+    double utilization_percentage = 5;
+    AllocationState state = 6;
+    repeated string active_allocations = 7;
+    map<string, string> metadata = 8;
+}
+
+// System information
+message SystemInfo {
+    string hostname = 1;
+    string operating_system = 2;
+    string kernel_version = 3;
+    uint64 uptime_seconds = 4;
+    uint32 process_count = 5;
+    double system_load = 6;
+    CPUInfo cpu = 7;
+    MemoryInfo memory = 8;
+    repeated StorageInfo storage = 9;
+    repeated NetworkInfo network = 10;
+    EnergyInfo energy = 11;
+}
+
+// Process scheduling request
+message SchedulingRequest {
+    string process_id = 1;
+    PriorityLevel priority = 2;
+    uint32 cpu_affinity = 3;
+    uint64 memory_limit = 4;
+    uint32 time_slice_ms = 5;
+    bool real_time = 6;
+    map<string, string> scheduling_params = 7;
+}
+
+// Memory management request
+message MemoryManagementRequest {
+    string operation = 1;           // allocate, deallocate, compress, etc.
+    uint64 size_bytes = 2;
+    string process_id = 3;
+    bool use_swap = 4;
+    bool lock_memory = 5;
+    string memory_pool = 6;
+}
+
+// Resource monitoring request
+message ResourceMonitoringRequest {
+    repeated SystemResourceType resources = 1;
+    uint32 interval_seconds = 2;
+    uint64 duration_seconds = 3;
+    bool include_processes = 4;
+    bool include_energy = 5;
+    string output_format = 6;
+}
+
+// Resource monitoring data
+message ResourceMonitoringData {
+    uint64 timestamp = 1;
+    SystemInfo system_snapshot = 2;
+    repeated ProcessResourceUsage processes = 3;
+    EnergyInfo energy_snapshot = 4;
+    map<string, double> custom_metrics = 5;
+}
+
+// Process resource usage
+message ProcessResourceUsage {
+    string process_id = 1;
+    string process_name = 2;
+    double cpu_usage_percentage = 3;
+    uint64 memory_usage_bytes = 4;
+    uint64 disk_read_bytes = 5;
+    uint64 disk_write_bytes = 6;
+    uint64 network_sent_bytes = 7;
+    uint64 network_received_bytes = 8;
+    uint32 thread_count = 9;
+    PriorityLevel priority = 10;
+}
+
+// Resource limits
+message ResourceLimits {
+    SystemResourceType resource_type = 1;
+    uint64 soft_limit = 2;
+    uint64 hard_limit = 3;
+    bool enforce_limits = 4;
+    string limit_scope = 5;        // system, user, process, container
+    map<string, string> limit_policies = 6;
+}
+
+// System resource request
+message SystemResourceRequest {
+    ResourceOperation operation = 1;
+    ResourceAllocationRequest allocation = 2;
+    SchedulingRequest scheduling = 3;
+    MemoryManagementRequest memory = 4;
+    ResourceMonitoringRequest monitoring = 5;
+    ResourceLimits limits = 6;
+    map<string, string> parameters = 7;
+}
+
+// System resource response
+message SystemResourceResponse {
+    bool success = 1;
+    string message = 2;
+    SystemInfo system_info = 3;
+    ResourceAllocationResponse allocation = 4;
+    repeated ResourceStatus resource_status = 5;
+    ResourceMonitoringData monitoring_data = 6;
+    uint64 response_time = 7;
+}
+
+// System resources service interface
+service SystemResourcesService {
+    rpc MonitorResources(ResourceMonitoringRequest) returns (stream ResourceMonitoringData);
+    rpc AllocateResource(ResourceAllocationRequest) returns (ResourceAllocationResponse);
+    rpc DeallocateResource(SystemResourceRequest) returns (SystemResourceResponse);
+    rpc GetResourceStatus(SystemResourceRequest) returns (SystemResourceResponse);
+    rpc SetResourceLimits(ResourceLimits) returns (SystemResourceResponse);
+    rpc GetSystemInfo(SystemResourceRequest) returns (SystemInfo);
+    rpc ScheduleProcess(SchedulingRequest) returns (SystemResourceResponse);
+    rpc ManageMemory(MemoryManagementRequest) returns (SystemResourceResponse);
+    rpc ControlCPU(SystemResourceRequest) returns (SystemResourceResponse);
+    rpc ManageStorage(SystemResourceRequest) returns (SystemResourceResponse);
+}

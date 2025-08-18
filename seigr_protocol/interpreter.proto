@@ -1,0 +1,266 @@
+syntax = "proto3";
+
+package seigr.interpreter;
+
+// ================================
+// Seigr Code Interpreter Protocol
+// ================================
+
+// Interpreter operation types
+enum InterpreterOperation {
+    INTERP_UNKNOWN = 0;
+    PARSE_CODE = 1;
+    COMPILE_CODE = 2;
+    INTERPRET_CODE = 3;
+    GENERATE_AST = 4;
+    OPTIMIZE_CODE = 5;
+    VALIDATE_SYNTAX = 6;
+    EVALUATE_EXPRESSION = 7;
+    CREATE_CONTEXT = 8;
+    DESTROY_CONTEXT = 9;
+    GET_SYMBOLS = 10;
+}
+
+// Supported programming languages
+enum ProgrammingLanguage {
+    LANG_UNKNOWN = 0;
+    SEIGR_NATIVE = 1;        // Native Seigr language
+    PYTHON = 2;
+    JAVASCRIPT = 3;
+    RUST = 4;
+    C = 5;
+    CPP = 6;
+    SENARY_SCRIPT = 7;       // Senary-optimized scripting
+    PROTOCOL_BUFFERS = 8;
+}
+
+// Code optimization levels
+enum OptimizationLevel {
+    OPT_UNKNOWN = 0;
+    NO_OPTIMIZATION = 1;
+    BASIC_OPTIMIZATION = 2;
+    ENERGY_OPTIMIZATION = 3;
+    SENARY_OPTIMIZATION = 4;
+    AGGRESSIVE_OPTIMIZATION = 5;
+}
+
+// AST node types
+enum ASTNodeType {
+    NODE_UNKNOWN = 0;
+    EXPRESSION = 1;
+    STATEMENT = 2;
+    FUNCTION_DEF = 3;
+    CLASS_DEF = 4;
+    VARIABLE_DEF = 5;
+    LITERAL = 6;
+    OPERATOR = 7;
+    CONTROL_FLOW = 8;
+}
+
+// Interpreter request
+message InterpreterRequest {
+    InterpreterOperation operation = 1;
+    string source_code = 2;
+    ProgrammingLanguage language = 3;
+    OptimizationLevel optimization = 4;
+    ExecutionContext context = 5;
+    map<string, string> compile_options = 6;
+    bool enable_debugging = 7;
+    bool enable_profiling = 8;
+    uint64 requested_at = 9;
+}
+
+// Execution context
+message ExecutionContext {
+    string context_id = 1;
+    map<string, Variable> variables = 2;
+    repeated string imported_modules = 3;
+    map<string, Function> functions = 4;
+    map<string, string> environment_vars = 5;
+    string working_directory = 6;
+    SecurityPolicy security = 7;
+}
+
+// Variable definition
+message Variable {
+    string name = 1;
+    string type = 2;
+    bytes value = 3;
+    bool is_constant = 4;
+    string scope = 5;
+    map<string, string> attributes = 6;
+}
+
+// Function definition
+message Function {
+    string name = 1;
+    repeated Parameter parameters = 2;
+    string return_type = 3;
+    string body = 4;
+    bool is_builtin = 5;
+    map<string, string> metadata = 6;
+}
+
+// Function parameter
+message Parameter {
+    string name = 1;
+    string type = 2;
+    bytes default_value = 3;
+    bool is_optional = 4;
+}
+
+// Security policy for interpreter
+message SecurityPolicy {
+    repeated string allowed_imports = 1;
+    repeated string forbidden_functions = 2;
+    bool allow_file_access = 3;
+    bool allow_network_access = 4;
+    bool allow_system_calls = 5;
+    uint32 memory_limit_mb = 6;
+    uint32 execution_timeout_seconds = 7;
+}
+
+// Abstract Syntax Tree node
+message ASTNode {
+    string node_id = 1;
+    ASTNodeType type = 2;
+    string value = 3;
+    repeated ASTNode children = 4;
+    uint32 line_number = 5;
+    uint32 column_number = 6;
+    map<string, string> attributes = 7;
+}
+
+// Compilation result
+message CompilationResult {
+    bool success = 1;
+    bytes bytecode = 2;
+    repeated CompileError errors = 3;
+    repeated CompileWarning warnings = 4;
+    CompilationMetadata metadata = 5;
+    OptimizationReport optimization = 6;
+}
+
+// Compilation error
+message CompileError {
+    string message = 1;
+    uint32 line_number = 2;
+    uint32 column_number = 3;
+    string error_type = 4;
+    string suggestion = 5;
+}
+
+// Compilation warning
+message CompileWarning {
+    string message = 1;
+    uint32 line_number = 2;
+    uint32 column_number = 3;
+    string warning_type = 4;
+}
+
+// Compilation metadata
+message CompilationMetadata {
+    uint64 compile_time_ms = 1;
+    uint32 lines_of_code = 2;
+    uint32 bytecode_size = 3;
+    string compiler_version = 4;
+    repeated string optimization_passes = 5;
+    map<string, string> flags = 6;
+}
+
+// Optimization report
+message OptimizationReport {
+    OptimizationLevel level_applied = 1;
+    uint32 original_size = 2;
+    uint32 optimized_size = 3;
+    double size_reduction_percent = 4;
+    uint64 optimization_time_ms = 5;
+    repeated string optimizations_applied = 6;
+}
+
+// Interpretation result
+message InterpretationResult {
+    bool success = 1;
+    bytes result_value = 2;
+    string result_type = 3;
+    string output = 4;
+    repeated RuntimeError errors = 5;
+    ExecutionMetrics metrics = 6;
+    ExecutionContext final_context = 7;
+}
+
+// Runtime error
+message RuntimeError {
+    string message = 1;
+    uint32 line_number = 2;
+    string error_type = 3;
+    repeated string stack_trace = 4;
+}
+
+// Execution metrics
+message ExecutionMetrics {
+    uint64 execution_time_ms = 1;
+    uint32 memory_used_bytes = 2;
+    uint32 instructions_executed = 3;
+    uint32 function_calls = 4;
+    uint32 energy_consumed = 5;
+}
+
+// Syntax validation result
+message SyntaxValidationResult {
+    bool is_valid = 1;
+    repeated SyntaxError errors = 2;
+    ASTNode syntax_tree = 3;
+    uint64 validation_time_ms = 4;
+}
+
+// Syntax error
+message SyntaxError {
+    string message = 1;
+    uint32 line_number = 2;
+    uint32 column_number = 3;
+    string expected_token = 4;
+    string actual_token = 5;
+}
+
+// Symbol information
+message SymbolInfo {
+    string name = 1;
+    string type = 2;
+    string scope = 3;
+    uint32 line_defined = 4;
+    bool is_exported = 5;
+    map<string, string> documentation = 6;
+}
+
+// Symbol table
+message SymbolTable {
+    repeated SymbolInfo symbols = 1;
+    map<string, string> scopes = 2;
+    uint64 generation_time = 3;
+}
+
+// Interpreter response
+message InterpreterResponse {
+    bool success = 1;
+    string message = 2;
+    CompilationResult compilation = 3;
+    InterpretationResult interpretation = 4;
+    SyntaxValidationResult validation = 5;
+    SymbolTable symbols = 6;
+    uint64 response_time = 7;
+}
+
+// Interpreter service interface
+service InterpreterService {
+    rpc ParseCode(InterpreterRequest) returns (InterpreterResponse);
+    rpc CompileCode(InterpreterRequest) returns (InterpreterResponse);
+    rpc InterpretCode(InterpreterRequest) returns (InterpreterResponse);
+    rpc GenerateAST(InterpreterRequest) returns (InterpreterResponse);
+    rpc OptimizeCode(InterpreterRequest) returns (InterpreterResponse);
+    rpc ValidateSyntax(InterpreterRequest) returns (InterpreterResponse);
+    rpc EvaluateExpression(InterpreterRequest) returns (InterpreterResponse);
+    rpc CreateContext(ExecutionContext) returns (InterpreterResponse);
+    rpc DestroyContext(InterpreterRequest) returns (InterpreterResponse);
+    rpc GetSymbols(InterpreterRequest) returns (SymbolTable);
+}

@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+package seigr.visualization;
+
+import "seigr_timestamp.proto"; // For consistent timestamp usage
+
+// ===========================
+// ENUMERATIONS
+// ===========================
+
+/**
+ * WidgetType
+ * Defines the types of visual widgets for user dashboards.
+ */
+enum WidgetType {
+    WIDGET_TYPE_UNDEFINED = 0;   // Undefined widget type
+    WIDGET_TYPE_CHART = 1;       // Chart visualization
+    WIDGET_TYPE_TABLE = 2;       // Tabular data visualization
+    WIDGET_TYPE_MAP = 3;         // Geospatial or map widget
+    WIDGET_TYPE_GRAPH = 4;       // Network or graph widget
+    WIDGET_TYPE_GAUGE = 5;       // Gauge visualization for KPIs
+    WIDGET_TYPE_METRIC = 6;      // Single metric visualization
+    WIDGET_TYPE_TREND = 7;       // Trend analysis visualization
+}
+
+/**
+ * ChartType
+ * Defines types of chart visualizations.
+ */
+enum ChartType {
+    CHART_TYPE_UNDEFINED = 0;    // Undefined chart type
+    CHART_TYPE_LINE = 1;         // Line chart for time series
+    CHART_TYPE_BAR = 2;          // Bar chart for comparisons
+    CHART_TYPE_PIE = 3;          // Pie chart for proportions
+    CHART_TYPE_SCATTER = 4;      // Scatter plot for distribution
+    CHART_TYPE_HEATMAP = 5;      // Heatmap for density visualization
+    CHART_TYPE_AREA = 6;         // Area chart for cumulative trends
+}
+
+/**
+ * ExportFormat
+ * Supported export formats for visualizations.
+ */
+enum ExportFormat {
+    EXPORT_FORMAT_UNDEFINED = 0; // Undefined export format
+    EXPORT_FORMAT_PDF = 1;       // Export as PDF
+    EXPORT_FORMAT_PNG = 2;       // Export as PNG image
+    EXPORT_FORMAT_CSV = 3;       // Export as CSV file
+}
+
+/**
+ * StreamingState
+ * Represents the streaming state for real-time updates.
+ */
+enum StreamingState {
+    STREAMING_STATE_UNDEFINED = 0; // Undefined state
+    STREAMING_ACTIVE = 1;          // Streaming is active
+    STREAMING_INACTIVE = 2;        // Streaming is inactive
+    STREAMING_PAUSED = 3;          // Streaming is paused
+    STREAMING_ERROR = 4;           // Error in streaming
+}
+
+// ===========================
+// INTERACTIVE ELEMENT
+// ===========================
+
+/**
+ * InteractiveElement
+ * Defines interactive components in widgets.
+ */
+message InteractiveElement {
+    string element_id = 1;                    // Unique element identifier
+    string widget_id = 2;                     // Parent widget ID
+    string type = 3;                          // Type (e.g., "TOGGLE", "SLIDER")
+    map<string, string> options = 4;          // Element options (e.g., dropdown labels)
+    bool is_required = 5;                     // Mandatory interaction flag
+    map<string, string> behavior_rules = 6;   // Rules for dynamic behavior
+}
+
+// ===========================
+// WIDGET CONFIGURATION
+// ===========================
+
+/**
+ * WidgetConfig
+ * Represents widget configuration on a dashboard.
+ */
+message WidgetConfig {
+    string widget_id = 1;                     // Unique widget identifier
+    WidgetType widget_type = 2;               // Type of widget
+    string title = 3;                         // Display title of the widget
+    ChartType chart_type = 4;                 // Chart type if applicable
+    string data_source = 5;                   // Data source identifier
+    int32 refresh_interval_seconds = 6;       // Data refresh interval in seconds
+    map<string, string> display_options = 7;  // Display settings (e.g., axis labels)
+    map<string, string> widget_metadata = 8;  // Widget metadata
+    string tooltip = 9;                       // Tooltip for guidance
+    string font_style = 10;                   // Font styling
+    bool enable_interactivity = 11;           // Flag for user interaction
+    repeated InteractiveElement interactive_elements = 12; // Interactive elements
+}
+
+// ===========================
+// DASHBOARD LAYOUT
+// ===========================
+
+/**
+ * DashboardLayout
+ * Represents the configuration and structure of a dashboard.
+ */
+message DashboardLayout {
+    string dashboard_id = 1;                  // Dashboard unique identifier
+    string dashboard_name = 2;                // Name of the dashboard
+    repeated WidgetConfig widgets = 3;        // List of widgets
+    map<string, int32> layout_positions = 4;  // Widget layout positions
+    string created_by = 5;                    // Creator user ID
+    seigr.protocol.timestamp.SeigrTimestamp created_at = 6; // Creation timestamp
+    map<string, string> dashboard_metadata = 7; // Metadata for dashboard details
+    string background_image_url = 8;          // Background image URL
+    string theme_id = 9;                      // Associated theme ID
+}
+
+// ===========================
+// THEME SETTINGS
+// ===========================
+
+/**
+ * ThemeSettings
+ * Defines dashboard-wide visual themes.
+ */
+message ThemeSettings {
+    string theme_id = 1;                      // Unique theme identifier
+    string theme_name = 2;                    // Name of the theme
+    string primary_color = 3;                 // Primary theme color
+    string secondary_color = 4;               // Secondary theme color
+    string background_color = 5;              // Background color
+    string font_family = 6;                   // Font family
+    string font_size = 7;                     // Base font size
+    map<string, string> additional_styles = 8; // Custom styles (e.g., CSS-like overrides)
+    bool is_dark_mode = 9;                    // Dark mode flag
+}
+
+// ===========================
+// DATA PACKETS AND POINTS
+// ===========================
+
+/**
+ * DataPoint
+ * Represents an individual data value for visualization.
+ */
+message DataPoint {
+    string label = 1;                         // Data point label
+    double value = 2;                         // Numeric value
+    map<string, string> attributes = 3;       // Additional attributes
+    string color = 4;                         // Data point color
+    string icon = 5;                          // Optional icon
+}
+
+/**
+ * VisualizationData
+ * Streaming data updates for widgets.
+ */
+message VisualizationData {
+    string data_source_id = 1;                // Data source ID
+    string widget_id = 2;                     // Widget receiving data
+    repeated DataPoint data_points = 3;       // Collection of data points
+    seigr.protocol.timestamp.SeigrTimestamp timestamp = 4; // Data timestamp
+    map<string, string> data_metadata = 5;    // Data context
+    bool is_historical_data = 6;              // Historical data flag
+}
+
+// ===========================
+// USAGE & ERROR LOGGING
+// ===========================
+
+/**
+ * VisualizationUsageStats
+ * Tracks usage metrics for dashboards and widgets.
+ */
+message VisualizationUsageStats {
+    string user_id = 1;                       // User accessing the visualization
+    string dashboard_id = 2;                  // Dashboard ID
+    string widget_id = 3;                     // Widget ID
+    int32 view_count = 4;                     // View count
+    seigr.protocol.timestamp.SeigrTimestamp last_accessed = 5; // Last accessed timestamp
+}
+
+/**
+ * VisualizationErrorLog
+ * Captures errors in visualization workflows.
+ */
+message VisualizationErrorLog {
+    string error_id = 1;                      // Unique error identifier
+    string widget_id = 2;                     // Widget ID
+    string data_source_id = 3;                // Data source
+    string error_message = 4;                 // Error description
+    seigr.protocol.timestamp.SeigrTimestamp timestamp = 5;  // Error occurrence time
+}

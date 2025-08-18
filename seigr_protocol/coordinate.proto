@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package seigr.coordinate;
+
+import "seigr_timestamp.proto";
+import "cell_metadata.proto";         // For CellMetadata
+import "common.proto";
+
+/**
+ * Coordinate Protocol Definitions
+ * 
+ * This protocol defines the structure, relationships, and lifecycle management 
+ * of coordinates within the Seigr network. It establishes standardized formats 
+ * for defining connections, layers, and operational paths.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Enum defining the type of relationship between Seigr hyphens or nodes.
+ */
+enum CoordinateRelationType {
+    RELATION_TYPE_UNDEFINED = 0;        // Undefined or unknown relationship type.
+    RELATION_TYPE_PRIMARY_PATH = 1;     // Direct primary path between hyphens.
+    RELATION_TYPE_SECONDARY_PATH = 2;   // Backup path for redundancy.
+    RELATION_TYPE_HIERARCHICAL_LAYER = 3; // Hierarchical organization structure.
+    RELATION_TYPE_CLUSTER_CONNECTION = 4; // Intra-cluster connection.
+    RELATION_TYPE_PEER_LINK = 5;        // Peer-to-peer direct connection.
+    RELATION_TYPE_CROSS_CLUSTER_LINK = 6; // Cross-cluster network link.
+    RELATION_TYPE_BACKUP_LINK = 7;      // Dedicated backup communication link.
+    RELATION_TYPE_LOAD_BALANCED = 8;    // Optimized path for load balancing.
+}
+
+/**
+ * Enum defining flags for managing the status or attributes of a coordinate.
+ */
+enum CoordinateFlag {
+    COORDINATE_FLAG_UNDEFINED = 0;      // Undefined coordinate state.
+    COORDINATE_FLAG_ACTIVE = 1;         // Coordinate is active and operational.
+    COORDINATE_FLAG_INACTIVE = 2;       // Coordinate is currently inactive.
+    COORDINATE_FLAG_ARCHIVED = 3;       // Archived coordinate for historical reference.
+    COORDINATE_FLAG_TEMPORARY = 4;      // Temporary coordinate for transient states.
+    COORDINATE_FLAG_LOCKED = 5;         // Locked coordinate, no modifications allowed.
+    COORDINATE_FLAG_PRIORITY = 6;       // High-priority coordinate in the network.
+    COORDINATE_FLAG_SYNC_REQUIRED = 7;  // Synchronization required with peers.
+    COORDINATE_FLAG_VALIDATOR = 8;      // Serves as a validator in network operations.
+    COORDINATE_FLAG_CACHE_HYPHEN = 9;   // Acts as a cache node in the network.
+}
+
+/**
+ * Enum defining the type of layer associated with a coordinate in multidimensional structures.
+ */
+enum LayerType {
+    LAYER_TYPE_UNDEFINED = 0;           // Undefined layer type.
+    LAYER_TYPE_TEMPORAL = 1;            // Time-based layer.
+    LAYER_TYPE_SPATIAL = 2;             // Geographical or spatial layer.
+    LAYER_TYPE_LOGICAL = 3;             // Logical/abstract structural layer.
+    LAYER_TYPE_SECURITY = 4;           // Security-centric layer for access control.
+    LAYER_TYPE_NETWORK_TOPOLOGY = 5;    // Represents network topology layers.
+    LAYER_TYPE_ADAPTIVE = 6;            // Adaptive layer, dynamically adjusts based on load.
+}
+
+// ===========================
+// MESSAGES
+// ===========================
+
+/**
+ * Unified message representing a 4D coordinate or position within the Seigr ecosystem.
+ * Combines spatial-temporal indexing with network-specific metadata for dynamic tracing,
+ * alignment, and retrieval of Seigr Cells and related entities.
+ */
+message CoordinateIndex {
+    // Spatial and Temporal Indexing
+    int32 x = 1;                             // Spatial X coordinate.
+    int32 y = 2;                             // Spatial Y coordinate.
+    int32 z = 3;                             // Spatial Z coordinate.
+    string t = 4;                            // Temporal index (ISO-8601 timestamp or version tag).
+    string reference_frame = 5;              // Reference frame for spatial indexing.
+
+    // Network-Specific Metadata
+    CoordinateRelationType relation_type = 6; // Type of connection (e.g., primary, secondary).
+    string layer_id = 7;                      // Unique identifier for the layer.
+    LayerType layer_type = 8;                 // Type of layer (e.g., temporal, spatial).
+    string hyphen_id = 9;                     // Unique identifier for the hyphen.
+    string branch_id = 10;                    // Identifier for branch paths from the hyphen.
+    int32 depth_level = 11;                   // Depth level in the network hierarchy.
+
+    repeated string connected_hyphens = 12;   // List of directly connected hyphens.
+    float path_weight = 13;                   // Weight assigned for path prioritization.
+
+    // Extended Metadata
+    string parent_hyphen = 14;                // Identifier of the parent hyphen.
+    repeated CoordinateFlag flags = 15;       // Flags representing the state or role.
+    string version = 16;                      // Version of the coordinate schema.
+    string last_modified = 17;                // Timestamp for the last modification.
+    repeated seigr.cell_metadata.CellMetadata metadata = 18; // Comprehensive metadata for the coordinate.
+
+    // Geographic Information
+    string geographic_location = 19;          // Geolocation data (e.g., latitude, longitude).
+    string active_period = 20;                // Time range for coordinate activity.
+    repeated string geo_boundaries = 21;      // Geographic boundaries or restrictions.
+    string role_description = 22;             // Description of the hyphen's role.
+
+    // Compliance Metadata (optional)
+    string compliance_tag = 23;               // Compliance or classification tag for the coordinate.
+}
+
+/**
+ * Message for defining a path or route between two or more coordinates.
+ */
+message CoordinatePath {
+    string start_hyphen = 1;                   // Starting hyphen identifier.
+    string end_hyphen = 2;                     // Ending hyphen identifier.
+    repeated string intermediate_hyphens = 3;  // List of intermediate hyphens in the path.
+
+    float total_weight = 4;                    // Aggregate weight of the path.
+    CoordinateRelationType path_type = 5;      // Relationship type defining the path.
+
+    map<string, string> metadata = 6;          // Metadata for additional path details.
+    string direction = 7;                      // Path direction (e.g., "one-way", "bidirectional").
+    string time_constraint = 8;                // Time restriction for path activity.
+    float directional_strength = 9;            // Strength indicator based on directionality.
+    int32 load_threshold = 10;                 // Maximum load or capacity for the path.
+    string backup_path_id = 11;                // Identifier for an alternate/backup path.
+    string latency_constraint = 12;            // Maximum acceptable latency for this path.
+    repeated seigr.common.RouteUpdate dynamic_routes = 13;  // Dynamic updates for routing configurations.
+}
+
+/**
+ * Message for handling feedback specific to coordinates.
+ */
+message CoordinateFeedback {
+    string feedback_id = 1; // Unique identifier for feedback.
+    string coordinate_id = 2; // Associated coordinate ID.
+    seigr.common.Feedback feedback_details = 3; // Feedback details from machine_learning.proto.
+    string context = 4; // Context or scope of feedback (e.g., performance, alignment).
+    seigr.protocol.timestamp.SeigrTimestamp timestamp = 5; // Timestamp of feedback creation.
+}
+
+/**
+ * Message for defining network-level rules for coordinate validation.
+ */
+message CoordinateRule {
+    string rule_id = 1;                        // Unique identifier for the rule.
+    string rule_name = 2;                      // Human-readable rule name.
+    string description = 3;                    // Brief description of the rule's purpose.
+    repeated CoordinateFlag applicable_flags = 4; // Flags defining rule applicability.
+    LayerType target_layer = 5;                // Layer targeted by this rule.
+    CoordinateRelationType relation_type = 6;  // Relationship type targeted by the rule.
+    repeated seigr.cell_metadata.CellMetadata metadata = 7; // Comprehensive metadata for the rule.
+    bool is_mandatory = 8;                     // If true, rule enforcement is mandatory.
+    string creation_timestamp = 9;             // Timestamp when the rule was created.
+    string updated_timestamp = 10;             // Timestamp of the last update.
+}
+
+/**
+ * Message representing a summary of coordinate statuses across the network.
+ */
+message CoordinateSummary {
+    int32 total_coordinates = 1;              // Total number of coordinates.
+    int32 active_coordinates = 2;             // Number of active coordinates.
+    int32 inactive_coordinates = 3;           // Number of inactive coordinates.
+    int32 flagged_coordinates = 4;            // Number of flagged coordinates.
+    string last_updated = 5;                  // Timestamp for the last summary update.
+    repeated seigr.cell_metadata.CellMetadata metadata = 6; // Metadata for additional summary details.
+}

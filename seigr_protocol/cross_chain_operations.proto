@@ -1,0 +1,199 @@
+syntax = "proto3";
+
+package seigr.crosschain;
+
+/**
+ * Cross-Chain Operations Protocol
+ *
+ * This protocol defines structures and services for managing cross-chain
+ * token operations, including wrapping, unwrapping, governance synchronization,
+ * transaction history retrieval, and status updates.
+ */
+
+// ===========================
+// ENUMS
+// ===========================
+
+/**
+ * Enum representing the status of cross-chain operations.
+ */
+enum CrossChainStatus {
+    CROSS_CHAIN_STATUS_UNDEFINED = 0;    // Undefined operation status.
+    CROSS_CHAIN_ACTIVE = 1;              // Operation is active and ongoing.
+    CROSS_CHAIN_SYNCED = 2;              // Operation has been synchronized successfully.
+    CROSS_CHAIN_INACTIVE = 3;            // Operation is currently inactive.
+    CROSS_CHAIN_PENDING_WRAP = 4;        // Awaiting wrapping confirmation.
+    CROSS_CHAIN_PENDING_UNWRAP = 5;      // Awaiting unwrapping confirmation.
+    CROSS_CHAIN_FAILED = 6;              // Operation failed.
+}
+
+/**
+ * Enum defining transaction types in cross-chain operations.
+ */
+enum TransactionType {
+    TRANSACTION_TYPE_UNDEFINED = 0;      // Undefined transaction type.
+    TRANSACTION_TYPE_WRAP = 1;           // Token wrap transaction.
+    TRANSACTION_TYPE_UNWRAP = 2;         // Token unwrap transaction.
+    TRANSACTION_TYPE_GOVERNANCE_SYNC = 3; // Governance synchronization transaction.
+    TRANSACTION_TYPE_STATUS_UPDATE = 4;  // Status update transaction.
+}
+
+/**
+ * Enum defining possible compliance levels for cross-chain operations.
+ */
+enum ComplianceLevel {
+    COMPLIANCE_LEVEL_UNDEFINED = 0;      // Undefined compliance level.
+    COMPLIANCE_LEVEL_GDPR = 1;           // GDPR-compliant transaction.
+    COMPLIANCE_LEVEL_CCPA = 2;           // CCPA-compliant transaction.
+    COMPLIANCE_LEVEL_NONE = 3;           // No specific compliance level.
+}
+
+// ===========================
+// MESSAGES
+// ===========================
+
+/**
+ * Represents details of a cross-chain token operation.
+ */
+message CrossChainToken {
+    string chain_name = 1;                         // Name of the originating blockchain.
+    string token_id = 2;                           // Unique identifier for the token.
+    uint64 amount = 3;                             // Amount of tokens involved.
+    CrossChainStatus status = 4;                   // Current status of the token operation.
+    string originating_chain = 5;                  // Source blockchain.
+    string destination_chain = 6;                  // Target blockchain.
+    ComplianceLevel compliance_level = 7;          // Compliance level.
+    string destination_wallet_id = 8;              // Target wallet for the operation.
+    map<string, string> token_metadata = 9;        // Additional metadata for the token.
+    string created_at = 10;                        // Timestamp for operation creation.
+}
+
+/**
+ * Represents an individual cross-chain transaction record.
+ */
+message CrossChainTransaction {
+    string transaction_id = 1;                     // Unique transaction ID.
+    string from_chain = 2;                         // Source blockchain.
+    string to_chain = 3;                           // Destination blockchain.
+    uint64 amount = 4;                             // Amount of tokens transferred.
+    string timestamp = 5;                          // Timestamp of the transaction.
+    TransactionType type = 6;                      // Type of transaction.
+    CrossChainStatus status = 7;                   // Status of the transaction.
+    string fee = 8;                                // Transaction fee, if applicable.
+    string wallet_id = 9;                          // Wallet involved.
+    map<string, string> metadata = 10;             // Additional metadata.
+}
+
+/**
+ * Request for wrapping tokens across blockchains.
+ */
+message WrapTokenRequest {
+    string chain_name = 1;                         // Source blockchain name.
+    uint64 amount = 2;                             // Amount of tokens to wrap.
+    string destination_chain = 3;                  // Target blockchain.
+    string destination_wallet_id = 4;              // Wallet for wrapped tokens.
+    map<string, string> metadata = 5;              // Additional metadata.
+}
+
+/**
+ * Response for wrapping tokens.
+ */
+message WrapTokenResponse {
+    bool success = 1;                              // Indicates wrapping success.
+    string message = 2;                            // Detailed result message.
+    string transaction_id = 3;                     // ID of the wrapping transaction.
+    string error_code = 4;                         // Error code for failures.
+}
+
+/**
+ * Request for unwrapping tokens across blockchains.
+ */
+message UnwrapTokenRequest {
+    string chain_name = 1;                         // Source blockchain name.
+    uint64 amount = 2;                             // Amount of tokens to unwrap.
+    string destination_chain = 3;                  // Target blockchain.
+    string destination_wallet_id = 4;              // Wallet for unwrapped tokens.
+    map<string, string> metadata = 5;              // Additional metadata.
+}
+
+/**
+ * Response for unwrapping tokens.
+ */
+message UnwrapTokenResponse {
+    bool success = 1;                              // Indicates unwrapping success.
+    string message = 2;                            // Result message.
+    string transaction_id = 3;                     // ID of the unwrapping transaction.
+    string error_code = 4;                         // Error code for failures.
+}
+
+/**
+ * Request to synchronize governance configurations across blockchains.
+ */
+message SyncGovernanceRequest {
+    string chain_name = 1;                         // Source blockchain name.
+    map<string, string> sync_metadata = 2;         // Metadata for the synchronization.
+}
+
+/**
+ * Response for governance synchronization.
+ */
+message SyncGovernanceResponse {
+    bool success = 1;                              // Indicates success.
+    string message = 2;                            // Result message.
+    string transaction_id = 3;                     // ID of the sync transaction.
+    string error_code = 4;                         // Error code for failures.
+}
+
+/**
+ * Request for retrieving cross-chain transaction history.
+ */
+message GetTransactionHistoryRequest {
+    string chain_name = 1;                         // Blockchain name.
+    uint32 limit = 2;                              // Max number of transactions to fetch.
+    repeated TransactionType filters = 3;          // Transaction type filters.
+    string start_date = 4;                         // Start date for filtering.
+    string end_date = 5;                           // End date for filtering.
+}
+
+/**
+ * Response containing transaction history.
+ */
+message GetTransactionHistoryResponse {
+    string chain_name = 1;                         // Blockchain name.
+    repeated CrossChainTransaction transactions = 2; // List of transactions.
+}
+
+/**
+ * Request for updating the status of a cross-chain operation.
+ */
+message UpdateCrossChainStatusRequest {
+    string chain_name = 1;                         // Blockchain name.
+    string transaction_id = 2;                     // ID of the transaction to update.
+    CrossChainStatus new_status = 3;               // Updated status.
+    string reason = 4;                             // Reason for status change.
+    map<string, string> metadata = 5;              // Metadata for the update.
+}
+
+/**
+ * Response for status updates.
+ */
+message UpdateCrossChainStatusResponse {
+    bool success = 1;                              // Indicates success.
+    string message = 2;                            // Result message.
+    string error_code = 3;                         // Error code for failures.
+}
+
+// ===========================
+// SERVICE
+// ===========================
+
+/**
+ * Service for managing cross-chain operations.
+ */
+service CrossChainService {
+    rpc WrapToken(WrapTokenRequest) returns (WrapTokenResponse);
+    rpc UnwrapToken(UnwrapTokenRequest) returns (UnwrapTokenResponse);
+    rpc SyncGovernance(SyncGovernanceRequest) returns (SyncGovernanceResponse);
+    rpc GetTransactionHistory(GetTransactionHistoryRequest) returns (GetTransactionHistoryResponse);
+    rpc UpdateCrossChainStatus(UpdateCrossChainStatusRequest) returns (UpdateCrossChainStatusResponse);
+}

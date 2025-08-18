@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package seigr.onboarding;
+
+import "seigr_timestamp.proto";
+import "manifest.proto";
+import "identity.proto";
+
+// Onboarding request for a new node or capsule
+message OnboardingRequest {
+  string request_id = 1;
+  string node_id = 2;
+  IdentityType identity_type = 3; // FIX: Use imported enum directly
+  seigr.manifest.Manifest manifest = 4;
+  seigr.protocol.timestamp.SeigrTimestamp requested_at = 5;
+}
+
+// Onboarding response with status and manifest
+message OnboardingResponse {
+  string response_id = 1;
+  string node_id = 2;
+  bool success = 3;
+  string message = 4;
+  seigr.manifest.Manifest manifest = 5;
+  seigr.protocol.timestamp.SeigrTimestamp responded_at = 6;
+}

@@ -1,0 +1,199 @@
+// Seigr-Native Timestamp Protocol Definition
+// 100% Seigr-aligned timestamp system eliminating Google protobuf dependencies
+//
+// This protocol definition provides:
+// - Energy-efficient senary time representation  
+// - Cryptographic integrity verification
+// - Protocol-compliant metadata emission
+// - Full audit trail capabilities
+// - Backward compatibility with existing systems
+
+syntax = "proto3";
+
+package seigr.protocol.timestamp;
+
+option go_package = "github.com/seigr-lab/seigr-ecosystem/pkg/protocol/timestamp";
+option java_package = "io.seigr.protocol.timestamp";
+option java_outer_classname = "SeigrTimestampProto";
+
+// Core Seigr timestamp message with senary optimization
+message SeigrTimestamp {
+    // Primary timestamp data
+    double unix_timestamp = 1;              // Unix timestamp (seconds since epoch)
+    string senary_timestamp = 2;            // Energy-efficient senary representation
+    string iso_string = 3;                  // ISO 8601 formatted string
+    
+    // Seigr protocol compliance
+    bool energy_efficient = 4;              // Energy efficiency flag
+    string cryptographic_hash = 5;          // Integrity verification hash
+    string protocol_version = 6;            // Protocol version (default: "1.0.0")
+    
+    // Audit and traceability
+    map<string, string> creation_context = 7;  // Creation context metadata
+    map<string, string> metadata = 8;          // Additional metadata
+    
+    // Precision and timezone
+    int32 nanoseconds = 9;                  // Nanosecond precision
+    string timezone_id = 10;                // Timezone identifier
+    
+    // Lineage and provenance
+    string source_node_id = 11;             // Node that created timestamp
+    string lineage_hash = 12;               // Lineage tracking hash
+    uint64 sequence_number = 13;            // Sequence number for ordering
+}
+
+// Timestamp range for queries and filtering
+message SeigrTimestampRange {
+    SeigrTimestamp start_time = 1;          // Range start timestamp
+    SeigrTimestamp end_time = 2;            // Range end timestamp
+    bool inclusive_start = 3;               // Include start time in range
+    bool inclusive_end = 4;                 // Include end time in range
+}
+
+// Timestamp precision configuration
+message TimestampPrecision {
+    enum Precision {
+        SECOND = 0;                         // Second precision
+        MILLISECOND = 1;                    // Millisecond precision  
+        MICROSECOND = 2;                    // Microsecond precision
+        NANOSECOND = 3;                     // Nanosecond precision
+    }
+    
+    Precision level = 1;                    // Precision level
+    bool energy_optimized = 2;              // Use energy-optimized calculations
+}
+
+// Timestamp validation result
+message TimestampValidation {
+    bool is_valid = 1;                      // Validation result
+    string validation_hash = 2;             // Validation hash
+    repeated string errors = 3;             // Validation errors
+    SeigrTimestamp validated_at = 4;        // When validation occurred
+    string validator_node_id = 5;           // Node that performed validation
+}
+
+// Timezone information
+message TimezoneInfo {
+    string timezone_id = 1;                 // IANA timezone identifier
+    string offset_string = 2;               // UTC offset string (e.g., "+05:30")
+    int32 offset_seconds = 3;               // UTC offset in seconds
+    bool is_dst = 4;                        // Daylight saving time flag
+    string dst_name = 5;                    // DST zone name
+}
+
+// Duration between timestamps
+message SeigrDuration {
+    double total_seconds = 1;               // Total duration in seconds
+    string senary_duration = 2;             // Senary representation
+    int64 days = 3;                         // Days component
+    int32 hours = 4;                        // Hours component
+    int32 minutes = 5;                      // Minutes component
+    int32 seconds = 6;                      // Seconds component
+    int32 microseconds = 7;                 // Microseconds component
+    
+    // Metadata
+    string duration_hash = 8;               // Integrity hash
+    map<string, string> metadata = 9;       // Additional metadata
+}
+
+// Timestamp synchronization message
+message TimestampSync {
+    SeigrTimestamp reference_time = 1;      // Reference timestamp
+    SeigrTimestamp local_time = 2;          // Local timestamp
+    double drift_seconds = 3;               // Time drift in seconds
+    string sync_source = 4;                 // Synchronization source
+    double confidence_score = 5;            // Sync confidence (0.0-1.0)
+    SeigrTimestamp sync_timestamp = 6;      // When sync occurred
+    
+    // Sync metadata
+    string sync_method = 7;                 // Synchronization method
+    map<string, string> sync_metadata = 8;  // Sync-specific metadata
+}
+
+// Timestamp event for audit trails
+message TimestampEvent {
+    enum EventType {
+        CREATED = 0;                        // Timestamp created
+        VALIDATED = 1;                      // Timestamp validated
+        SYNCHRONIZED = 2;                   // Time synchronized
+        ARCHIVED = 3;                       // Timestamp archived
+        RESTORED = 4;                       // Timestamp restored
+        CORRUPTED = 5;                      // Corruption detected
+        REPAIRED = 6;                       // Corruption repaired
+    }
+    
+    EventType event_type = 1;               // Type of event
+    SeigrTimestamp event_time = 2;          // When event occurred
+    string source_node_id = 3;              // Node that triggered event
+    string target_timestamp_hash = 4;       // Hash of affected timestamp
+    string description = 5;                 // Event description
+    map<string, string> event_metadata = 6; // Event-specific metadata
+    
+    // Audit trail
+    string audit_hash = 7;                  // Audit trail hash
+    string previous_event_hash = 8;         // Previous event in chain
+}
+
+// Service definitions for timestamp operations
+service SeigrTimestampService {
+    // Create new timestamp
+    rpc CreateTimestamp(CreateTimestampRequest) returns (SeigrTimestamp);
+    
+    // Validate timestamp integrity
+    rpc ValidateTimestamp(ValidateTimestampRequest) returns (TimestampValidation);
+    
+    // Synchronize timestamps
+    rpc SynchronizeTime(SynchronizeTimeRequest) returns (TimestampSync);
+    
+    // Convert between formats
+    rpc ConvertTimestamp(ConvertTimestampRequest) returns (SeigrTimestamp);
+    
+    // Query timestamp ranges
+    rpc QueryTimestampRange(QueryTimestampRangeRequest) returns (QueryTimestampRangeResponse);
+}
+
+// Request messages for service operations
+message CreateTimestampRequest {
+    double unix_timestamp = 1;              // Optional: specific timestamp
+    TimestampPrecision precision = 2;       // Precision requirements
+    map<string, string> metadata = 3;       // Creation metadata
+    string timezone_id = 4;                 // Timezone identifier
+}
+
+message ValidateTimestampRequest {
+    SeigrTimestamp timestamp = 1;           // Timestamp to validate
+    bool deep_validation = 2;               // Perform deep validation
+    string validation_context = 3;          // Validation context
+}
+
+message SynchronizeTimeRequest {
+    SeigrTimestamp reference_time = 1;      // Reference time source
+    string sync_method = 2;                 // Synchronization method
+    double max_drift_tolerance = 3;         // Maximum acceptable drift
+}
+
+message ConvertTimestampRequest {
+    oneof source {
+        SeigrTimestamp seigr_timestamp = 1; // Seigr timestamp
+        double unix_timestamp = 2;          // Unix timestamp
+        string iso_string = 3;              // ISO string
+        string senary_timestamp = 4;        // Senary timestamp
+    }
+    
+    TimestampPrecision target_precision = 5; // Target precision
+    string target_timezone = 6;             // Target timezone
+}
+
+message QueryTimestampRangeRequest {
+    SeigrTimestampRange range = 1;          // Query range
+    int32 max_results = 2;                  // Maximum results
+    string filter_expression = 3;           // Filter expression
+    bool include_metadata = 4;              // Include metadata in results
+}
+
+message QueryTimestampRangeResponse {
+    repeated SeigrTimestamp timestamps = 1; // Matching timestamps
+    int32 total_count = 2;                  // Total available count
+    string next_page_token = 3;             // Pagination token
+    map<string, string> query_metadata = 4; // Query metadata
+}
