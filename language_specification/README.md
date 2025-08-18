@@ -11,18 +11,21 @@
 This directory contains minimal reference documentation for Hyphos integration with the Seigr ecosystem. All active development and comprehensive documentation occurs in the main repository.
 
 ### **Local Files**
+
 - `hyphos_glossary.md` - Bio-inspired language constructs reference
 - This reference file
 
 ### **Complete Documentation**
+
 Visit the main repository for full specifications:
 [https://github.com/Seigr-lab/Hyphos](https://github.com/Seigr-lab/Hyphos)
 
 ---
 
-## 🧬 **Core Language Concepts**
+## **Core Language Concepts**
 
 ### **Bio-Inspired Syntax**
+
 ```hyphos
 // Consciousness as native type
 noesis ai = noesis.spawn("processor");
@@ -36,6 +39,7 @@ senary calculation = S6::123 + S6::45;
 ```
 
 ### **Protocol Integration**
+
 ```hyphos
 // Native protocol support
 protocol seigbit.QuantumReadRequest request = {
@@ -47,15 +51,17 @@ service quantum_service = seigr.connect("SeigrQuantumBitService");
 
 ---
 
-## 🔗 **Integration Points**
+## **Integration Points**
 
 ### **Seigr Ecosystem Compatibility**
+
 - All existing `.proto` files compatible
 - Python reference implementation validates capabilities
 - Native senary mathematics prevents binary contamination
 - Noesis consciousness system integration
 
 ### **Development Commands**
+
 ```bash
 # Update Hyphos submodule
 git submodule update --remote src/hyphos
