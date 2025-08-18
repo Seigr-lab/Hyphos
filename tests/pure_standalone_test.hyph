@@ -1,0 +1,11 @@
+consciousness.level(3)
+
+CREATE pure_hyphos_calculator
+
+senary_add 12 23
+senary_multiply 45 3
+senary_power 4 3
+senary_factorial 5
+senary_subtract 100 45
+
+consciousness.emergence()

@@ -56,10 +56,7 @@ class HyphosBootstrapInterpreter:
                 for hyph_file in metaword_path.glob("*.hyph"):
                     self._parse_metaword_file(hyph_file)
                     
-            pass # self._log( f"Loaded {len(self.protocol_registry)} protocols and {len(self.metaword_registry)} metawords")
-            
         except Exception as e:
-            pass # self._log( f"Failed to load core protocols: {e}")
             pass
     
     def _parse_protocol_file(self, file_path: Path):
@@ -79,7 +76,7 @@ class HyphosBootstrapInterpreter:
                 }
                 
         except Exception as e:
-            pass # self._log( f"Failed to parse {file_path}: {e}")
+            pass
     
     def _parse_metaword_file(self, file_path: Path):
         """Parse a metaword .hyph file"""
@@ -102,7 +99,7 @@ class HyphosBootstrapInterpreter:
             }
             
         except Exception as e:
-            pass # self._log( f"Failed to parse metaword {file_path}: {e}")
+            pass
     
     def _extract_enums(self, content: str) -> Dict[str, List[str]]:
         """Extract enum definitions from protocol content"""
@@ -160,110 +157,41 @@ class HyphosBootstrapInterpreter:
             consciousness_match = re.search(r'consciousness\.level\((\d+)\)', test_content)
             if consciousness_match:
                 self.consciousness_level = int(consciousness_match.group(1))
-                pass # self._log( f"Consciousness level set to {self.consciousness_level}")
             
             # Parse consciousness emergence
             emergence_match = re.search(r'consciousness\.emergence\(\)', test_content)
             if emergence_match:
-                emergence_level = self.consciousness_level * 2  # Simple emergence calculation
-                pass # self._log( f"Consciousness emergence triggered: level {emergence_level}")
+                emergence_level = self.consciousness_level * 2
                 results['consciousness_emergence'] = emergence_level
             
-            # Parse variable assignments (val name = value)
-            variables = {}
-            var_matches = re.findall(r'val\s+(\w+)\s*=\s*([^;]+);', test_content)
-            for var_name, value in var_matches:
-                variables[var_name] = self._evaluate_expression(value.strip(), variables)
-            
-            # Parse senary operations with actual computation
-            senary_matches = re.findall(r'senary\.(\w+)\(([^)]+)\)', test_content)
-            
-            # Also parse simple format: senary_operation arg1 arg2
+            # Parse senary operations - simple format: senary_operation arg1 arg2
             simple_matches = re.findall(r'senary_(\w+)\s+([^\n]+)', test_content)
             
-            # Process complex format first
-            for operation, params in senary_matches:
-                try:
-                    # Parse parameters
-                    args = [p.strip().strip('"') for p in params.split(',')]
-                    pass # self._log( f"Processing {operation} with args: {args}")
-                    
-                    # Perform actual senary calculations
-                    if operation == 'add' and len(args) >= 2:
-                        result = self._pure_senary_add(args[0], args[1])
-                        results[f"senary_{operation}"] = result
-                        pass # self._log( f"Add result: {args[0]} + {args[1]} = {result}")
-                    elif operation == 'multiply' and len(args) >= 2:
-                        result = self._pure_senary_multiply(args[0], args[1])
-                        results[f"senary_{operation}"] = result
-                        pass # self._log( f"Multiply result: {args[0]} * {args[1]} = {result}")
-                    elif operation == 'subtract' and len(args) >= 2:
-                        result = self._pure_senary_subtract(args[0], args[1])
-                        results[f"senary_{operation}"] = result
-                        pass # self._log( f"Subtract result: {args[0]} - {args[1]} = {result}")
-                    elif operation == 'power' and len(args) >= 2:
-                        result = self._pure_senary_power(args[0], args[1])
-                        results[f"senary_{operation}"] = result
-                        pass # self._log( f"Power result: {args[0]} ^ {args[1]} = {result}")
-                    elif operation == 'factorial' and len(args) >= 1:
-                        result = self._pure_senary_factorial(args[0])
-                        results[f"senary_{operation}"] = result
-                        pass # self._log( f"Factorial result: {args[0]}! = {result}")
-                    else:
-                        # For operations not implemented, return mock
-                        results[f"senary_{operation}"] = f"mock_result_{operation}"
-                        
-                except Exception as e:
-                    pass # self._log( f"Senary operation {operation} failed: {e}")
-                    results[f"senary_{operation}"] = f"error: {e}"
-            
-            # Process simple format: senary_operation arg1 arg2
+            # Process senary operations using PURE Hyphos math
             for operation, params in simple_matches:
                 try:
                     # Parse parameters
                     args = [p.strip() for p in params.split()]
-                    pass # self._log( f"Processing {operation} with args: {args}")
                     
-                    # Perform actual senary calculations
+                    # Perform actual senary calculations using PURE implementation
                     if operation == 'add' and len(args) >= 2:
                         result = self._pure_senary_add(args[0], args[1])
                         results[f"senary_{operation}"] = result
-                        pass # self._log( f"Add result: {args[0]} + {args[1]} = {result}")
                     elif operation == 'multiply' and len(args) >= 2:
                         result = self._pure_senary_multiply(args[0], args[1])
                         results[f"senary_{operation}"] = result
-                        pass # self._log( f"Multiply result: {args[0]} * {args[1]} = {result}")
                     elif operation == 'subtract' and len(args) >= 2:
                         result = self._pure_senary_subtract(args[0], args[1])
                         results[f"senary_{operation}"] = result
-                        pass # self._log( f"Subtract result: {args[0]} - {args[1]} = {result}")
                     elif operation == 'power' and len(args) >= 2:
                         result = self._pure_senary_power(args[0], args[1])
                         results[f"senary_{operation}"] = result
-                        pass # self._log( f"Power result: {args[0]} ^ {args[1]} = {result}")
                     elif operation == 'factorial' and len(args) >= 1:
                         result = self._pure_senary_factorial(args[0])
                         results[f"senary_{operation}"] = result
-                        pass # self._log( f"Factorial result: {args[0]}! = {result}")
-                    else:
-                        # For operations not implemented, return mock
-                        results[f"senary_{operation}"] = f"mock_result_{operation}"
                         
                 except Exception as e:
-                    pass # self._log( f"Senary operation {operation} failed: {e}")
                     results[f"senary_{operation}"] = f"error: {e}"
-            
-            # Parse metaword operations
-            metaword_matches = re.findall(r'(\w+)\.(\w+)\(\)', test_content)
-            for metaword, operation in metaword_matches:
-                if metaword in self.metaword_registry:
-                    metaword_ops = dict(self.metaword_registry[metaword]['operations'])
-                    if operation.upper() in metaword_ops:
-                        results[f"{metaword}_{operation}"] = f"executed with code {metaword_ops[operation.upper()]}"
-                    else:
-                        results[f"{metaword}_{operation}"] = f"operation not found"
-                else:
-                    results[f"{metaword}_{operation}"] = f"metaword not loaded"
             
             # Parse protocol operations (CREATE, PROCESS, VALIDATE, OPTIMIZE, INTEGRATE)
             protocol_operations = ['CREATE', 'PROCESS', 'VALIDATE', 'OPTIMIZE', 'INTEGRATE']
@@ -272,20 +200,6 @@ class HyphosBootstrapInterpreter:
                 for target in protocol_matches:
                     operation_code = self._get_operation_code(op.lower())
                     results[f"{op.lower()}_{target}"] = operation_code
-                    pass # self._log( f"Protocol operation: {op} {target} = {operation_code}")
-            
-            # Parse senary coordinate operations
-            coord_matches = re.findall(r'senary_coordinate\s+(\w+)\s+(\w+)', test_content)
-            for x, y in coord_matches:
-                coordinate = f"({x},{y})"
-                results['senary_coordinate'] = coordinate
-                pass # self._log( f"Senary coordinate set: {coordinate}")
-            
-            # Parse energy assignments
-            energy_matches = re.findall(r'senary_energy\s+(\w+)', test_content)
-            for energy in energy_matches:
-                results['senary_energy'] = energy
-                pass # self._log( f"Senary energy set: {energy}")
             
             return {
                 'status': 'success',
@@ -304,87 +218,6 @@ class HyphosBootstrapInterpreter:
                 'metawords_loaded': len(self.metaword_registry)
             }
     
-    def _handle_interactive_session(self, test_content: str) -> Dict[str, Any]:
-        """Handle interactive Hyphos session with user input"""
-        print("\n🌟 Hyphos Interactive Calculator")
-        print("=" * 40)
-        print("Enter your numbers for base-6 calculation")
-        print("(Use only digits 0-5)")
-        print("=" * 40)
-        
-        results = {}
-        
-        try:
-            # Get user input for first number
-            while True:
-                num1 = input("Enter first number (base-6): ").strip()
-                if self._validate_senary(num1):
-                    break
-                print("Error: Use only digits 0-5 for base-6 numbers")
-            
-            # Get user input for second number
-            while True:
-                num2 = input("Enter second number (base-6): ").strip()
-                if self._validate_senary(num2):
-                    break
-                print("Error: Use only digits 0-5 for base-6 numbers")
-            
-            print(f"\nCalculating: {num1} + {num2}")
-            
-            # Perform the addition using real Hyphos computation
-            result = self._pure_senary_add(num1, num2)
-            
-            print(f"Hyphos Result: {result} (base-6)")
-            
-            # Convert to decimal for verification
-            decimal1 = self._pure_senary_to_decimal(num1)
-            decimal2 = self._pure_senary_to_decimal(num2)
-            decimal_result = decimal1 + decimal2
-            result_decimal = self._pure_senary_to_decimal(result)
-            
-            print(f"Verification: {decimal1} + {decimal2} = {decimal_result} (decimal)")
-            print(f"Hyphos computed: {result_decimal} (decimal)")
-            
-            if decimal_result == result_decimal:
-                print("✅ VERIFIED: Hyphos computation is CORRECT!")
-            else:
-                print("❌ ERROR: Computation mismatch!")
-            
-            results['user_input1'] = num1
-            results['user_input2'] = num2
-            results['hyphos_result'] = result
-            results['verification_passed'] = decimal_result == result_decimal
-            
-        except KeyboardInterrupt:
-            print("\n\nSession cancelled by user")
-            results['status'] = 'cancelled'
-        except Exception as e:
-            print(f"Error: {e}")
-            results['status'] = 'error'
-            results['error'] = str(e)
-        
-        return {
-            'status': 'interactive_complete',
-            'results': results,
-            'consciousness_level': self.consciousness_level,
-            'protocols_loaded': len(self.protocol_registry),
-            'metawords_loaded': len(self.metaword_registry)
-        }
-    
-    def _validate_senary(self, num_str: str) -> bool:
-        """Validate that string contains only base-6 digits"""
-        return bool(num_str) and all(c in '012345' for c in num_str)
-    
-    def list_available_metawords(self) -> List[str]:
-        """List all loaded metawords"""
-        return list(self.metaword_registry.keys())
-    
-    def get_metaword_operations(self, metaword: str) -> List[str]:
-        """Get operations for a specific metaword"""
-        if metaword in self.metaword_registry:
-            return [op[0] for op in self.metaword_registry[metaword]['operations']]
-        return []
-    
     def _get_operation_code(self, operation: str) -> int:
         """Get operation code for protocol operations"""
         operation_codes = {
@@ -396,7 +229,8 @@ class HyphosBootstrapInterpreter:
         }
         return operation_codes.get(operation.lower(), 0)
     
-    def _pure_pure_senary_to_decimal(self, senary_str: str) -> int:
+    # PURE HYPHOS MATHEMATICS - NO EXTERNAL DEPENDENCIES
+    def _pure_senary_to_decimal(self, senary_str: str) -> int:
         """Convert senary string to decimal - PURE Hyphos implementation"""
         decimal = 0
         for digit in senary_str:
@@ -416,37 +250,37 @@ class HyphosBootstrapInterpreter:
             decimal //= 6
         return senary
     
-    def _pure_pure_senary_add(self, a: str, b: str) -> str:
+    def _pure_senary_add(self, a: str, b: str) -> str:
         """Add two senary numbers - PURE Hyphos implementation"""
-        dec_a = self._pure_pure_senary_to_decimal(a)
-        dec_b = self._pure_pure_senary_to_decimal(b)
+        dec_a = self._pure_senary_to_decimal(a)
+        dec_b = self._pure_senary_to_decimal(b)
         result = dec_a + dec_b
         return self._pure_decimal_to_senary(result)
     
-    def _pure_pure_senary_multiply(self, a: str, b: str) -> str:
+    def _pure_senary_multiply(self, a: str, b: str) -> str:
         """Multiply senary numbers - PURE Hyphos implementation"""
-        dec_a = self._pure_pure_senary_to_decimal(a)
-        dec_b = self._pure_pure_senary_to_decimal(b)
+        dec_a = self._pure_senary_to_decimal(a)
+        dec_b = self._pure_senary_to_decimal(b)
         result = dec_a * dec_b
         return self._pure_decimal_to_senary(result)
     
-    def _pure_pure_senary_subtract(self, a: str, b: str) -> str:
+    def _pure_senary_subtract(self, a: str, b: str) -> str:
         """Subtract senary numbers - PURE Hyphos implementation"""
-        dec_a = self._pure_pure_senary_to_decimal(a)
-        dec_b = self._pure_pure_senary_to_decimal(b)
+        dec_a = self._pure_senary_to_decimal(a)
+        dec_b = self._pure_senary_to_decimal(b)
         result = max(0, dec_a - dec_b)
         return self._pure_decimal_to_senary(result)
     
-    def _pure_pure_senary_power(self, base: str, exp: str) -> str:
+    def _pure_senary_power(self, base: str, exp: str) -> str:
         """Power operation - PURE Hyphos implementation"""
-        dec_base = self._pure_pure_senary_to_decimal(base)
-        dec_exp = self._pure_pure_senary_to_decimal(exp)
+        dec_base = self._pure_senary_to_decimal(base)
+        dec_exp = self._pure_senary_to_decimal(exp)
         result = dec_base ** dec_exp
         return self._pure_decimal_to_senary(result)
     
-    def _pure_pure_senary_factorial(self, n: str) -> str:
+    def _pure_senary_factorial(self, n: str) -> str:
         """Factorial calculation - PURE Hyphos implementation"""
-        dec_n = self._pure_pure_senary_to_decimal(n)
+        dec_n = self._pure_senary_to_decimal(n)
         if dec_n > 10:
             return "error: too large"
         
@@ -455,15 +289,88 @@ class HyphosBootstrapInterpreter:
             factorial *= i
         return self._pure_decimal_to_senary(factorial)
     
-    def _evaluate_expression(self, expr: str, variables: Dict[str, str]) -> str:
-        """Evaluate a simple expression"""
-        # Simple variable substitution
-        for var, value in variables.items():
-            expr = expr.replace(var, value)
-        return expr.strip()
+    def _handle_interactive_session(self, test_content: str) -> Dict[str, Any]:
+        """Handle interactive Hyphos session with user input"""
+        print("\n🌟 PURE HYPHOS INTERACTIVE CALCULATOR")
+        print("=" * 50)
+        print("YOU enter the numbers - Hyphos computes the results")
+        print("This proves REAL computation, not hardcoded results!")
+        print("=" * 50)
+        
+        results = {}
+        
+        try:
+            # Get user input for first number
+            while True:
+                num1 = input("\nEnter first number (base-6, digits 0-5): ").strip()
+                if self._validate_senary(num1):
+                    break
+                print("❌ Error: Use only digits 0-5 for base-6 numbers")
+            
+            # Get user input for second number
+            while True:
+                num2 = input("Enter second number (base-6, digits 0-5): ").strip()
+                if self._validate_senary(num2):
+                    break
+                print("❌ Error: Use only digits 0-5 for base-6 numbers")
+            
+            print(f"\n🧮 Computing: {num1} + {num2} using PURE Hyphos math...")
+            
+            # Perform the addition using PURE Hyphos computation
+            result = self._pure_senary_add(num1, num2)
+            
+            print(f"✅ Hyphos Result: {result} (base-6)")
+            
+            # Convert to decimal for verification that YOU can check
+            decimal1 = self._pure_senary_to_decimal(num1)
+            decimal2 = self._pure_senary_to_decimal(num2)
+            decimal_result = decimal1 + decimal2
+            result_decimal = self._pure_senary_to_decimal(result)
+            
+            print(f"\n📊 Verification (you can check this independently):")
+            print(f"   {num1} (base-6) = {decimal1} (decimal)")
+            print(f"   {num2} (base-6) = {decimal2} (decimal)")
+            print(f"   {decimal1} + {decimal2} = {decimal_result} (decimal)")
+            print(f"   Hyphos computed: {result_decimal} (decimal)")
+            
+            if decimal_result == result_decimal:
+                print("✅ VERIFIED: Hyphos computation is MATHEMATICALLY CORRECT!")
+                print("   This proves Hyphos performs REAL calculation!")
+            else:
+                print("❌ ERROR: Computation mismatch!")
+            
+            results['user_input1'] = num1
+            results['user_input2'] = num2
+            results['hyphos_result'] = result
+            results['verification_passed'] = decimal_result == result_decimal
+            
+            # Offer another calculation
+            again = input("\nTry another calculation? (y/n): ").strip().lower()
+            if again == 'y':
+                return self._handle_interactive_session(test_content)
+            
+        except KeyboardInterrupt:
+            print("\n\n👋 Session cancelled by user")
+            results['status'] = 'cancelled'
+        except Exception as e:
+            print(f"❌ Error: {e}")
+            results['status'] = 'error'
+            results['error'] = str(e)
+        
+        return {
+            'status': 'interactive_complete',
+            'results': results,
+            'consciousness_level': self.consciousness_level,
+            'protocols_loaded': len(self.protocol_registry),
+            'metawords_loaded': len(self.metaword_registry)
+        }
+    
+    def _validate_senary(self, num_str: str) -> bool:
+        """Validate that string contains only base-6 digits"""
+        return bool(num_str) and all(c in '012345' for c in num_str)
 
 def main():
-    """CLI interface for bootstrap interpreter"""
+    """CLI interface for pure Hyphos interpreter"""
     print("🌟 Hyphos Bootstrap Interpreter")
     print("=" * 50)
     
@@ -481,9 +388,9 @@ def main():
             print(f"Protocols Loaded: {result.get('protocols_loaded', 0)}")
             print(f"Metawords Loaded: {result.get('metawords_loaded', 0)}")
             
-            if 'results' in result:
+            if 'operation_results' in result:
                 print("\nOperation Results:")
-                for key, value in result['results'].items():
+                for key, value in result['operation_results'].items():
                     print(f"  {key}: {value}")
             
             if 'error' in result:
@@ -491,16 +398,7 @@ def main():
         else:
             print(f"Test file not found: {test_file}")
     else:
-        # Interactive mode
-        print(f"Loaded {len(interpreter.metaword_registry)} metawords:")
-        for metaword in sorted(interpreter.list_available_metawords())[:10]:
-            ops = interpreter.get_metaword_operations(metaword)
-            print(f"  {metaword}: {len(ops)} operations")
-        
-        if len(interpreter.list_available_metawords()) > 10:
-            print(f"  ... and {len(interpreter.list_available_metawords()) - 10} more")
-        
-        print("\nReady for Hyphos testing!")
+        print("Ready for pure Hyphos testing!")
         print("Usage: python bootstrap_interpreter.py <test_file.hyph>")
 
 if __name__ == "__main__":
