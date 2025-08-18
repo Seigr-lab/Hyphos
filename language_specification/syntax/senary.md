@@ -1,38 +1,42 @@
 # senary Metaword
 
-**Purpose**: Define pure base-6 mathematical operations forming the foundation of all Seigr computations
+**Purpose**: Define pure base-6 mathematical operations forming the foundation of all Seigr computations using existing tested algorithms
+
+> **CRITICAL**: All code examples show Python reference implementations ONLY.  
+> Actual Seigr ecosystem uses **Hyphos language** compiled from these Python prototypes via protobuf.  
+> **References existing tested algorithms**: src/seigr_math/senary_numbers.py, src/seigr_math/senary_arrays.py
 
 ## Senary Number Core Operations
 
 ```hyphos
-senary.create_number()             // Create SenaryNumber with clean notation (no prefixes)
+senary.create_number()             // Create SenaryNumber with clean notation (no "0s" prefixes)
 senary.parse_from_string()         // Parse senary numbers from string representation
 senary.to_decimal_conversion()     // Convert senary to decimal for external interfaces
 senary.from_decimal_conversion()   // Convert decimal to senary representation
-senary.validate_senary_format()    // Validate proper senary number format
+senary.validate_senary_format()    // Validate proper senary number format (clean notation)
 senary.normalize_representation()  // Normalize senary number representation
 ```
 
-## Senary Arithmetic Operations
+## Senary Arithmetic Operations (Tested Algorithms)
 
 ```hyphos
-senary.addition()                  // Pure senary addition operations
-senary.subtraction()               // Pure senary subtraction operations
-senary.multiplication()            // Pure senary multiplication operations
+senary.addition()                  // Pure senary addition (existing SenaryNumber.__add__)
+senary.subtraction()               // Pure senary subtraction (existing SenaryNumber.__sub__)
+senary.multiplication()            // Pure senary multiplication (existing SenaryNumber.__mul__)
 senary.division()                  // Pure senary division with fractional support
 senary.modulo()                    // Senary modulo operations
 senary.power()                     // Senary exponentiation operations
 ```
 
-## Senary Array Operations
+## Senary Array Operations (489 Lines Tested)
 
 ```hyphos
-senary.create_array()              // Create SenaryArray for matrix operations
-senary.zeros()                     // Create senary arrays filled with zeros
-senary.ones()                      // Create senary arrays filled with ones
-senary.array_arithmetic()          // Element-wise array arithmetic operations
-senary.matrix_multiplication()     // Senary matrix multiplication
-senary.array_statistical_ops()     // Statistical operations on senary arrays
+senary.create_array()              // Create SenaryArray (existing tested implementation)
+senary.zeros()                     // Create senary arrays filled with zeros (existing)
+senary.ones()                      // Create senary arrays filled with ones (existing)
+senary.array_arithmetic()          // Element-wise array arithmetic (tested operations)
+senary.matrix_multiplication()     // Senary matrix multiplication (existing)
+senary.array_statistical_ops()     // Statistical operations (sum, mean, etc. - tested)
 ```
 
 ## Advanced Senary Mathematics Operations

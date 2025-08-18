@@ -1,8 +1,14 @@
 # Hyphos Language Dictionary - Metawords for Protocol Mapping
 
-**Purpose**: Alphabetical dictionary of Hyphos metawords requiring protobuf protocol definitions  
+**Purpose**: Alphabetical dictionary of Hyphos metaword- **edit**: Consciousness-aware content editing operations with bio-inspired organization, senary text processing, intelligent completion, collaborative features, security measures, accessibility support, and protocol-aligned filesystem integration requiring protobuf protocol definitions  
 **Usage**: Reference for creating protocol buffer messages and services  
 **Status**: Active development - metawords mapped to protocol operations
+
+> **🚨 CRITICAL IMPLEMENTATION NOTE**  
+> **All code examples in this document show Python reference implementations ONLY.**  
+> **The actual Seigr ecosystem uses Hyphos language compiled from these Python prototypes via protobuf.**  
+> **DO NOT implement new features in Python - use these as reference for Hyphos development.**  
+> **Python → protobuf → Hyphos is the required compilation path.**
 
 ---
 
@@ -16,7 +22,7 @@
 - **adaptive** - Self-adjusting system behavior
 - **aggregate** - Data aggregation and analytics operations
 - **alert** - Immune system threat notification
-- **algorithm** - Detection and processing algorithm operations
+- **algorithm** - Detection and processing algorithm operations (reference existing tested algorithms)
 - **align** - Text and element alignment operations
 - **allocate** - Memory and resource allocation operations
 - **analyze** - Noesis pattern analysis and interpretation
@@ -41,7 +47,7 @@
 - **bold** - Bold typography weight operations
 - **border** - UI element border and boundary operations
 - **branch** - Conditional growth and expansion operator
-- **branch_if** - Biomimetic conditional that considers growth patterns
+- **branch_if** - Consciousness-aware conditional branching with bio-inspired decision trees, senary logic mathematics, intelligent path selection, cognitive load management, predictive branching, and protocol-aligned control flow
 - **bridge** - Communication bridge and connection operations
 - **brightness** - Display brightness sensor and control
 - **buffer** - Graphics buffer and rendering operations
@@ -79,7 +85,7 @@
 - **crash** - System crash detection and recovery
 - **crosschain** - Cross-chain blockchain operations
 - **crypt** - HyphaCrypt cryptographic operations
-- **cu** - Contribution Units for ecosystem participation
+- **cu** - Contribution Units for mathematically verified ecosystem participation and CU-weighted governance
 - **current_time** - Current sidereal timestamp
 - **cursor** - Cursor and pointer management operations
 - **curve** - Mathematical curve rendering using senary-native algorithms
@@ -88,29 +94,30 @@
 
 ### **D**
 
-- **dashboard** - Noesis human interface visualization
+- **dashboard** - Consciousness-aware dashboard operations with bio-inspired visualization, senary analytics, interactive interface
 - **database** - Data storage and retrieval operations
-- **debug** - Development debugging operations
-- **decision** - Conscious decision-making construct
-- **decrypt** - HyphaCrypt decryption operation
-- **defend** - Immune system defense mechanisms
-- **delay** - Time delay and scheduling operations
+- **debug** - Consciousness-aware debugging operations with bio-inspired diagnostics, senary trace analysis, real-time monitoring
+- **decision** - Consciousness-aware decision-making operations with bio-inspired intelligence, senary optimization, multi-agent coordination
+- **democracy** - Democratic participation and consensus operations for flat governance
+- **decrypt** - HyphaCrypt decryption operations using pure senary cryptographic algorithms, key management, bio-digital decryption
+- **defend** - Bio-inspired immune system defense operations with adaptive threat response, anomaly detection, self-healing
+- **delay** - Consciousness-aware temporal delay operations with bio-inspired timing, senary precision control, femtosecond accuracy
 - **delete** - Seigr-native deletion operations
-- **detect** - Sensor detection and monitoring
-- **directory** - File system directory operations
+- **detect** - Consciousness-aware detection operations with bio-inspired pattern recognition, senary anomaly analysis, real-time monitoring
+- **directory** - Consciousness-aware directory operations with bio-inspired hierarchical organization, senary filesystem management
 - **disconnect** - Connection termination operations
 - **display** - Display hardware operations and management
 - **dpi** - Dots per inch resolution operations
-- **drag** - Drag and drop interaction operations
-- **draw** - Basic drawing and rendering operations
-- **drop** - Drop target and placement operations
+- **drag** - Consciousness-aware drag-and-drop operations with bio-inspired spatial physics, senary coordinate mathematics, multi-modal input support, advanced gesture recognition, collaborative features, accessibility modes, and protocol-aligned UI integration
+- **draw** - Consciousness-aware drawing operations with bio-inspired graphics, senary-optimized rendering, energy-aware algorithms
+- **drop** - Consciousness-aware drop target operations with bio-inspired acceptance zones, senary placement mathematics, intelligent target recognition, multi-modal support, security validation, collaborative features, accessibility modes, and protocol-aligned data transfer
 - **duplicate** - Seigr-native duplication operations
 - **duration** - Time duration and measurement operations
 
 ### **E**
 
 - **echo** - Audio echo and reverb effects
-- **ecosystem** - Complete Seigr ecosystem operations
+- **ecosystem** - Bio-digital ecosystem operations with consciousness-aware management, senary environmental modeling, conservation protocols
 - **edit** - Content editing and modification operations
 - **emerge** - Natural arising of complex behavior operator
 - **emergent** - Spontaneous emergence and self-organization
@@ -125,7 +132,7 @@
 - **evolve** - Adaptive change and improvement operator
 - **evolve_when** - Loop that adapts based on environmental change
 - **exception** - Exception handling and recovery
-- **exp** - Senary exponential function
+- **exp** - Exponential function operations using pure senary Taylor series mathematics, natural exponential (e^x), complex exponentials
 - **export** - Data export operations
 
 ### **F**
@@ -155,7 +162,7 @@
 - **garbage** - Garbage collection and memory cleanup
 - **geometry** - Geometric shape and calculation operations
 - **glyph** - Individual character glyph operations
-- **governance** - Mycelith voting and decision-making system
+- **governance** - Flat mycelial democratic governance with proposal-driven improvement and CU-weighted voting
 - **gradient** - Color gradient and smooth transition operations
 - **gps** - GPS location sensor operations
 - **graphics** - Graphics rendering and visual operations
@@ -167,14 +174,14 @@
 
 - **handshake** - Protocol handshake and negotiation
 - **hardware** - Hardware detection and enumeration
-- **hash** - HyphaCrypt hash function operations
+- **hash** - HyphaCrypt hash function operations (reference existing tested algorithms)
 - **heal** - Self-healing and recovery operations
 - **heap** - Heap memory management operations
-- **hierarchical** - Hierarchical organization and structure
+- **hierarchical** - Hierarchical organization and structure (DEPRECATED - use flat democratic patterns)
 - **holographic** - Holographic display and rendering
 - **human** - Human identity and registration system
 - **humidity** - Environmental humidity sensor operations
-- **hypha** - HyphaCrypt system reference
+- **hypha** - HyphaCrypt native cryptographic operations, mycelial key derivation, senary-based encryption, bio-digital security, quantum-resistant protocols
 - **hyphen** - Individual node in Seigr ecosystem network
 
 ### **I**
@@ -213,7 +220,8 @@
 - **license** - REL (Rebel Earthling License) operations
 - **light** - Ambient light sensor operations
 - **line** - Line drawing and vector operations
-- **ln** - Senary natural logarithm function
+- **lineage** - Immutable contribution tracking and CU verification lineage
+- **ln** - Senary natural logarithm function (reference existing tested algorithms)
 - **location** - Location services and positioning
 - **log** - Logging system operations
 - **loop** - Repetitive execution construct
@@ -240,7 +248,7 @@
 - **mute** - Audio muting operations
 - **mycelial** - Fungal network distributed structure
 - **mycelial_for** - Iteration following organic network expansion
-- **mycelith** - Governance voting system and consensus mechanism
+- **mycelith** - Democratic CU-weighted voting system and flat consensus mechanism
 
 ### **N**
 
@@ -251,7 +259,7 @@
 ### **O**
 
 - **organic** - Bio-inspired natural patterns and algorithms
-- **organism** - Self-organizing biological pattern
+- **organism** - Organism-level bio-digital interface operations, lifecycle management, multi-organism systems, consciousness integration
 - **organism_spawn** - Create new independent living processes
 - **owner** - Hardware ownership and caretaker assignment
 
@@ -273,11 +281,12 @@
 - **play** - Media playback operations
 - **playlist** - Media playlist management
 - **polygon** - Polygon shape rendering operations
-- **power** - Senary power function and power management
+- **power** - Exponentiation and power operations using pure senary mathematics, matrix powers, modular exponentiation, complex powers
 - **predict** - Predictive analytics and forecasting
 - **pressure** - Atmospheric pressure sensor operations
 - **priority** - Priority management and escalation
 - **process** - Process management and execution
+- **proposal** - Proposal-driven governance for flat democratic ecosystem improvement
 - **protect** - Immune system protection mechanisms
 - **protocol** - Communication message definition
 - **proximity** - Proximity sensor operations
@@ -330,7 +339,7 @@
 - **segment** - Data segmentation operations
 - **seig** - Native Seigr ecosystem token operations
 - **select** - Content selection operations
-- **senary** - Base-6 number system type
+- **senary** - Base-6 number system type (reference existing tested algorithms)
 - **sensor** - Hardware sensor abstraction
 - **service** - Protocol service definition
 - **session** - Session management and state
@@ -339,7 +348,7 @@
 - **shadow** - Shadow effects and depth operations
 - **shape** - Shape creation and manipulation
 - **share** - Content sharing operations
-- **sidereal** - Sidereal time operations
+- **sidereal** - Sidereal time operations for femtosecond precision Earth rotation tracking, astronomical calculations, celestial navigation
 - **signature** - Digital signature operations
 - **size** - Element sizing and dimension operations
 - **skip** - Media skip operations
@@ -348,7 +357,7 @@
 - **spatial** - 4D spatial coordinate operations
 - **speaker** - Audio output operations
 - **sprite** - Sprite graphics and animation operations
-- **sqrt** - Senary square root function
+- **sqrt** - Square root and nth root operations using pure senary mathematics, Newton-Raphson methods, complex roots, matrix square roots (reference existing tested algorithms)
 - **stack** - Stack memory and data structure operations
 - **state** - State management and transitions
 - **statistics** - Statistical analysis and metrics
@@ -372,7 +381,7 @@
 - **thread** - Threading and concurrent operations
 - **threshold** - Threshold monitoring and alerting
 - **threat** - Immune system threat detection and response
-- **time** - Time system operations
+- **time** - Time system operations (reference existing tested sidereal time system)
 - **timeout** - Timeout handling and management
 - **timer** - Timer operations and scheduling
 - **token** - Seigr ecosystem token management
@@ -384,7 +393,7 @@
 - **transition** - Animation transition operations
 - **transparency** - Alpha transparency operations
 - **trigger** - Event trigger and activation operations
-- **trust** - Trust calculation and metrics
+- **trust** - Trust calculation and metrics for democratic governance
 - **typography** - Typography and font rendering system
 
 ### **U**
@@ -403,13 +412,14 @@
 
 - **validate** - Validation and verification operations
 - **vector** - Vector graphics and mathematical operations
+- **verification** - Cryptographic verification and fraud prevention for CU and governance
 - **verify** - Verification and authentication operations
 - **vibration** - Haptic feedback and vibration operations
 - **video** - Video input/output and processing operations
 - **viewport** - Display viewport and viewing area operations
 - **visualize** - Noesis data visualization for human comprehension
 - **volume** - Audio volume control operations
-- **vote** - Mycelith governance voting operations
+- **vote** - Mycelith democratic CU-weighted voting operations
 - **volumetric** - 3D volumetric display operations
 
 ### **W**
