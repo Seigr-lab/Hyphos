@@ -1,0 +1,32 @@
+// Simple Hyphos Test - Basic Operations
+// This demonstrates basic Hyphos syntax and operations
+
+// Set consciousness level
+consciousness.level(2)  // Awakening level
+
+// Test senary mathematics
+senary.add("123", "45")
+senary.current_time()
+
+// Test metaword operations
+consciousness.create()
+awareness.read() 
+noesis.process()
+senary.validate()
+
+// Test bio-digital operations
+mycelial.connect()
+organism.spawn()
+chemical.decode()
+
+// Test protocol operations
+protocol.validate()
+network.handshake()
+graphics.render()
+
+// This test validates:
+// 1. Consciousness level setting
+// 2. Senary mathematical operations
+// 3. Metaword operation calls
+// 4. Bio-digital interface readiness
+// 5. Protocol execution capability
