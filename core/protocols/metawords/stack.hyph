@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.stack;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Stack operation types (senary-mapped 0-5)
+enum StackOperation {
+    STACK_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Stack processing states (senary-mapped 0-5)
+enum StackProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Stack data types (senary-mapped 0-5)
+enum StackDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core stack messages
+message StackObject {
+    string object_id = 1;
+    StackDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    StackProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message StackRequest {
+    StackOperation operation = 1;
+    StackObject target_object = 2;
+    SenaryArray parameters = 3;
+    StackProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message StackResponse {
+    bool success = 1;
+    StackObject result_object = 2;
+    SenaryArray result_data = 3;
+    StackProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Stack service definition
+service StackService {
+    rpc Create(StackRequest) returns (StackResponse);
+    rpc Process(StackRequest) returns (StackResponse);
+    rpc Validate(StackRequest) returns (StackResponse);
+    rpc Optimize(StackRequest) returns (StackResponse);
+    rpc Integrate(StackRequest) returns (StackResponse);
+}

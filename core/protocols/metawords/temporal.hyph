@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.temporal;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Temporal operation types (senary-mapped 0-5)
+enum TemporalOperation {
+    TEMPORAL_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Temporal processing states (senary-mapped 0-5)
+enum TemporalProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Temporal data types (senary-mapped 0-5)
+enum TemporalDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core temporal messages
+message TemporalObject {
+    string object_id = 1;
+    TemporalDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    TemporalProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message TemporalRequest {
+    TemporalOperation operation = 1;
+    TemporalObject target_object = 2;
+    SenaryArray parameters = 3;
+    TemporalProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message TemporalResponse {
+    bool success = 1;
+    TemporalObject result_object = 2;
+    SenaryArray result_data = 3;
+    TemporalProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Temporal service definition
+service TemporalService {
+    rpc Create(TemporalRequest) returns (TemporalResponse);
+    rpc Process(TemporalRequest) returns (TemporalResponse);
+    rpc Validate(TemporalRequest) returns (TemporalResponse);
+    rpc Optimize(TemporalRequest) returns (TemporalResponse);
+    rpc Integrate(TemporalRequest) returns (TemporalResponse);
+}

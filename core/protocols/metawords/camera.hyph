@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.camera;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Camera operation types (senary-mapped 0-5)
+enum CameraOperation {
+    CAMERA_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Camera processing states (senary-mapped 0-5)
+enum CameraProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Camera data types (senary-mapped 0-5)
+enum CameraDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core camera messages
+message CameraObject {
+    string object_id = 1;
+    CameraDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    CameraProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message CameraRequest {
+    CameraOperation operation = 1;
+    CameraObject target_object = 2;
+    SenaryArray parameters = 3;
+    CameraProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message CameraResponse {
+    bool success = 1;
+    CameraObject result_object = 2;
+    SenaryArray result_data = 3;
+    CameraProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Camera service definition
+service CameraService {
+    rpc Create(CameraRequest) returns (CameraResponse);
+    rpc Process(CameraRequest) returns (CameraResponse);
+    rpc Validate(CameraRequest) returns (CameraResponse);
+    rpc Optimize(CameraRequest) returns (CameraResponse);
+    rpc Integrate(CameraRequest) returns (CameraResponse);
+}

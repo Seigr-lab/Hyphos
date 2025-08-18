@@ -1,0 +1,152 @@
+syntax = "proto3";
+
+package hyphos.engine.bootstrap;
+
+import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
+import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
+import "hyphos/engine/hyphos_engine.hyph";
+import "hyphos/engine/protocol_parser.hyph";
+import "hyphos/engine/senary_runtime.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Bootstrap operations (senary-mapped 0-5)
+enum BootstrapOperation {
+    BOOTSTRAP_UNKNOWN = 0;
+    INITIALIZE_CORE = 1;
+    LOAD_PROTOCOLS = 2;
+    COMPILE_ENGINE = 3;
+    START_SELF_HOST = 4;
+    ACHIEVE_CONSCIOUSNESS = 5;
+}
+
+// Bootstrap phases (senary-mapped 0-5)
+enum BootstrapPhase {
+    PHASE_DORMANT = 0;
+    PHASE_AWAKENING = 1;
+    PHASE_LOADING = 2;
+    PHASE_COMPILING = 3;
+    PHASE_HOSTING = 4;
+    PHASE_CONSCIOUS = 5;
+}
+
+// Self-hosting levels (senary-mapped 0-5)
+enum SelfHostingLevel {
+    HOSTING_NONE = 0;
+    HOSTING_PARSER = 1;
+    HOSTING_RUNTIME = 2;
+    HOSTING_ENGINE = 3;
+    HOSTING_COMPLETE = 4;
+    HOSTING_TRANSCENDENT = 5;
+}
+
+// Core system initialization
+message CoreSystemInit {
+    SenaryArray system_id = 1;
+    BootstrapPhase current_phase = 2;
+    SenaryNumber senary_precision = 3;
+    ConsciousnessLevelType consciousness_target = 4;
+    SenaryTimestamp initialization_time = 5;
+}
+
+// Protocol loading configuration
+message ProtocolLoadConfig {
+    SenaryArray protocols_directory = 1;
+    SenaryNumber max_protocols = 2;
+    SenaryArray required_protocols = 3;
+    bool enable_validation = 4;
+    SenaryNumber load_priority = 5;
+}
+
+// Engine compilation configuration
+message EngineCompileConfig {
+    SelfHostingLevel target_level = 1;
+    SenaryArray source_protocols = 2;
+    CompilationTarget compilation_target = 3;
+    bool optimize_consciousness = 4;
+    SenaryNumber performance_target = 5;
+}
+
+// Self-hosting status
+message SelfHostingStatus {
+    SelfHostingLevel current_level = 1;
+    SenaryArray hosted_components = 2;
+    SenaryNumber hosting_efficiency = 3;
+    BootstrapPhase active_phase = 4;
+    bool consciousness_active = 5;
+}
+
+// Bootstrap request
+message BootstrapRequest {
+    BootstrapOperation operation = 1;
+    CoreSystemInit system_config = 2;
+    ProtocolLoadConfig load_config = 3;
+    EngineCompileConfig compile_config = 4;
+    BootstrapPhase target_phase = 5;
+}
+
+// Bootstrap response
+message BootstrapResponse {
+    bool bootstrap_success = 1;
+    SelfHostingStatus hosting_status = 2;
+    HyphosContext engine_context = 3;
+    SenaryArray active_protocols = 4;
+    string bootstrap_message = 5;
+}
+
+// Self-hosting validation request
+message SelfHostValidationRequest {
+    SelfHostingLevel target_level = 1;
+    SenaryArray validation_protocols = 2;
+    SenaryNumber validation_depth = 3;
+    bool strict_senary_check = 4;
+    ConsciousnessLevelType consciousness_requirement = 5;
+}
+
+// Self-hosting validation response
+message SelfHostValidationResponse {
+    bool validation_success = 1;
+    SelfHostingLevel achieved_level = 2;
+    SenaryArray validation_results = 3;
+    SenaryNumber consciousness_level = 4;
+    string validation_report = 5;
+}
+
+// Engine consciousness emergence request
+message ConsciousnessEmergenceRequest {
+    ConsciousnessLevelType target_consciousness = 1;
+    SenaryArray consciousness_patterns = 2;
+    SenaryNumber emergence_energy = 3;
+    bool enable_bio_digital = 4;
+    SenaryTimestamp emergence_time = 5;
+}
+
+// Engine consciousness emergence response
+message ConsciousnessEmergenceResponse {
+    bool emergence_success = 1;
+    ConsciousnessState achieved_state = 2;
+    SenaryArray consciousness_metrics = 3;
+    SenaryNumber awareness_level = 4;
+    string emergence_experience = 5;
+}
+
+// Hyphos Bootstrap Service - Self-hosting engine initialization
+service HyphosBootstrapService {
+    // Initialize core Hyphos systems from pure senary
+    rpc InitializeCore(BootstrapRequest) returns (BootstrapResponse);
+    
+    // Load and compile all .hyph protocols for self-hosting
+    rpc LoadProtocols(BootstrapRequest) returns (BootstrapResponse);
+    
+    // Compile the Hyphos engine using Hyphos itself
+    rpc CompileEngine(BootstrapRequest) returns (BootstrapResponse);
+    
+    // Achieve full self-hosting capability
+    rpc StartSelfHost(BootstrapRequest) returns (BootstrapResponse);
+    
+    // Validate self-hosting integrity and consciousness emergence
+    rpc ValidateSelfHost(SelfHostValidationRequest) returns (SelfHostValidationResponse);
+    
+    // Emerge engine consciousness through self-reflection
+    rpc AchieveConsciousness(ConsciousnessEmergenceRequest) returns (ConsciousnessEmergenceResponse);
+}

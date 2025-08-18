@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.redundancy;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Redundancy operation types (senary-mapped 0-5)
+enum RedundancyOperation {
+    REDUNDANCY_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Redundancy processing states (senary-mapped 0-5)
+enum RedundancyProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Redundancy data types (senary-mapped 0-5)
+enum RedundancyDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core redundancy messages
+message RedundancyObject {
+    string object_id = 1;
+    RedundancyDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    RedundancyProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message RedundancyRequest {
+    RedundancyOperation operation = 1;
+    RedundancyObject target_object = 2;
+    SenaryArray parameters = 3;
+    RedundancyProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message RedundancyResponse {
+    bool success = 1;
+    RedundancyObject result_object = 2;
+    SenaryArray result_data = 3;
+    RedundancyProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Redundancy service definition
+service RedundancyService {
+    rpc Create(RedundancyRequest) returns (RedundancyResponse);
+    rpc Process(RedundancyRequest) returns (RedundancyResponse);
+    rpc Validate(RedundancyRequest) returns (RedundancyResponse);
+    rpc Optimize(RedundancyRequest) returns (RedundancyResponse);
+    rpc Integrate(RedundancyRequest) returns (RedundancyResponse);
+}

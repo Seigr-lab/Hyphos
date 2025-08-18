@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.mycelith;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Mycelith operation types (senary-mapped 0-5)
+enum MycelithOperation {
+    MYCELITH_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Mycelith processing states (senary-mapped 0-5)
+enum MycelithProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Mycelith data types (senary-mapped 0-5)
+enum MycelithDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core mycelith messages
+message MycelithObject {
+    string object_id = 1;
+    MycelithDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    MycelithProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message MycelithRequest {
+    MycelithOperation operation = 1;
+    MycelithObject target_object = 2;
+    SenaryArray parameters = 3;
+    MycelithProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message MycelithResponse {
+    bool success = 1;
+    MycelithObject result_object = 2;
+    SenaryArray result_data = 3;
+    MycelithProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Mycelith service definition
+service MycelithService {
+    rpc Create(MycelithRequest) returns (MycelithResponse);
+    rpc Process(MycelithRequest) returns (MycelithResponse);
+    rpc Validate(MycelithRequest) returns (MycelithResponse);
+    rpc Optimize(MycelithRequest) returns (MycelithResponse);
+    rpc Integrate(MycelithRequest) returns (MycelithResponse);
+}

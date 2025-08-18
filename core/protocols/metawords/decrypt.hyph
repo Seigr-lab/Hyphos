@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.decrypt;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Decrypt operation types (senary-mapped 0-5)
+enum DecryptOperation {
+    DECRYPT_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Decrypt processing states (senary-mapped 0-5)
+enum DecryptProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Decrypt data types (senary-mapped 0-5)
+enum DecryptDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core decrypt messages
+message DecryptObject {
+    string object_id = 1;
+    DecryptDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    DecryptProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message DecryptRequest {
+    DecryptOperation operation = 1;
+    DecryptObject target_object = 2;
+    SenaryArray parameters = 3;
+    DecryptProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message DecryptResponse {
+    bool success = 1;
+    DecryptObject result_object = 2;
+    SenaryArray result_data = 3;
+    DecryptProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Decrypt service definition
+service DecryptService {
+    rpc Create(DecryptRequest) returns (DecryptResponse);
+    rpc Process(DecryptRequest) returns (DecryptResponse);
+    rpc Validate(DecryptRequest) returns (DecryptResponse);
+    rpc Optimize(DecryptRequest) returns (DecryptResponse);
+    rpc Integrate(DecryptRequest) returns (DecryptResponse);
+}

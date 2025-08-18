@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.ln;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Ln operation types (senary-mapped 0-5)
+enum LnOperation {
+    LN_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Ln processing states (senary-mapped 0-5)
+enum LnProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Ln data types (senary-mapped 0-5)
+enum LnDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core ln messages
+message LnObject {
+    string object_id = 1;
+    LnDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    LnProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message LnRequest {
+    LnOperation operation = 1;
+    LnObject target_object = 2;
+    SenaryArray parameters = 3;
+    LnProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message LnResponse {
+    bool success = 1;
+    LnObject result_object = 2;
+    SenaryArray result_data = 3;
+    LnProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Ln service definition
+service LnService {
+    rpc Create(LnRequest) returns (LnResponse);
+    rpc Process(LnRequest) returns (LnResponse);
+    rpc Validate(LnRequest) returns (LnResponse);
+    rpc Optimize(LnRequest) returns (LnResponse);
+    rpc Integrate(LnRequest) returns (LnResponse);
+}

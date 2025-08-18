@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.thread;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Thread operation types (senary-mapped 0-5)
+enum ThreadOperation {
+    THREAD_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Thread processing states (senary-mapped 0-5)
+enum ThreadProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Thread data types (senary-mapped 0-5)
+enum ThreadDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core thread messages
+message ThreadObject {
+    string object_id = 1;
+    ThreadDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    ThreadProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message ThreadRequest {
+    ThreadOperation operation = 1;
+    ThreadObject target_object = 2;
+    SenaryArray parameters = 3;
+    ThreadProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message ThreadResponse {
+    bool success = 1;
+    ThreadObject result_object = 2;
+    SenaryArray result_data = 3;
+    ThreadProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Thread service definition
+service ThreadService {
+    rpc Create(ThreadRequest) returns (ThreadResponse);
+    rpc Process(ThreadRequest) returns (ThreadResponse);
+    rpc Validate(ThreadRequest) returns (ThreadResponse);
+    rpc Optimize(ThreadRequest) returns (ThreadResponse);
+    rpc Integrate(ThreadRequest) returns (ThreadResponse);
+}

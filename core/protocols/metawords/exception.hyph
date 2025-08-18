@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.exception;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Exception operation types (senary-mapped 0-5)
+enum ExceptionOperation {
+    EXCEPTION_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Exception processing states (senary-mapped 0-5)
+enum ExceptionProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Exception data types (senary-mapped 0-5)
+enum ExceptionDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core exception messages
+message ExceptionObject {
+    string object_id = 1;
+    ExceptionDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    ExceptionProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message ExceptionRequest {
+    ExceptionOperation operation = 1;
+    ExceptionObject target_object = 2;
+    SenaryArray parameters = 3;
+    ExceptionProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message ExceptionResponse {
+    bool success = 1;
+    ExceptionObject result_object = 2;
+    SenaryArray result_data = 3;
+    ExceptionProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Exception service definition
+service ExceptionService {
+    rpc Create(ExceptionRequest) returns (ExceptionResponse);
+    rpc Process(ExceptionRequest) returns (ExceptionResponse);
+    rpc Validate(ExceptionRequest) returns (ExceptionResponse);
+    rpc Optimize(ExceptionRequest) returns (ExceptionResponse);
+    rpc Integrate(ExceptionRequest) returns (ExceptionResponse);
+}

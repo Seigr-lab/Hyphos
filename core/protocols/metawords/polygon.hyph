@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.polygon;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Polygon operation types (senary-mapped 0-5)
+enum PolygonOperation {
+    POLYGON_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Polygon processing states (senary-mapped 0-5)
+enum PolygonProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Polygon data types (senary-mapped 0-5)
+enum PolygonDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core polygon messages
+message PolygonObject {
+    string object_id = 1;
+    PolygonDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    PolygonProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message PolygonRequest {
+    PolygonOperation operation = 1;
+    PolygonObject target_object = 2;
+    SenaryArray parameters = 3;
+    PolygonProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message PolygonResponse {
+    bool success = 1;
+    PolygonObject result_object = 2;
+    SenaryArray result_data = 3;
+    PolygonProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Polygon service definition
+service PolygonService {
+    rpc Create(PolygonRequest) returns (PolygonResponse);
+    rpc Process(PolygonRequest) returns (PolygonResponse);
+    rpc Validate(PolygonRequest) returns (PolygonResponse);
+    rpc Optimize(PolygonRequest) returns (PolygonResponse);
+    rpc Integrate(PolygonRequest) returns (PolygonResponse);
+}

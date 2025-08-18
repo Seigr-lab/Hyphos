@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.border;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Border operation types (senary-mapped 0-5)
+enum BorderOperation {
+    BORDER_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Border processing states (senary-mapped 0-5)
+enum BorderProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Border data types (senary-mapped 0-5)
+enum BorderDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core border messages
+message BorderObject {
+    string object_id = 1;
+    BorderDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    BorderProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message BorderRequest {
+    BorderOperation operation = 1;
+    BorderObject target_object = 2;
+    SenaryArray parameters = 3;
+    BorderProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message BorderResponse {
+    bool success = 1;
+    BorderObject result_object = 2;
+    SenaryArray result_data = 3;
+    BorderProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Border service definition
+service BorderService {
+    rpc Create(BorderRequest) returns (BorderResponse);
+    rpc Process(BorderRequest) returns (BorderResponse);
+    rpc Validate(BorderRequest) returns (BorderResponse);
+    rpc Optimize(BorderRequest) returns (BorderResponse);
+    rpc Integrate(BorderRequest) returns (BorderResponse);
+}

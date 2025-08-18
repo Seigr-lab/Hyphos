@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.icon;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Icon operation types (senary-mapped 0-5)
+enum IconOperation {
+    ICON_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Icon processing states (senary-mapped 0-5)
+enum IconProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Icon data types (senary-mapped 0-5)
+enum IconDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core icon messages
+message IconObject {
+    string object_id = 1;
+    IconDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    IconProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message IconRequest {
+    IconOperation operation = 1;
+    IconObject target_object = 2;
+    SenaryArray parameters = 3;
+    IconProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message IconResponse {
+    bool success = 1;
+    IconObject result_object = 2;
+    SenaryArray result_data = 3;
+    IconProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Icon service definition
+service IconService {
+    rpc Create(IconRequest) returns (IconResponse);
+    rpc Process(IconRequest) returns (IconResponse);
+    rpc Validate(IconRequest) returns (IconResponse);
+    rpc Optimize(IconRequest) returns (IconResponse);
+    rpc Integrate(IconRequest) returns (IconResponse);
+}

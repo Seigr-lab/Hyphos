@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package hyphos.consciousness;
+
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+enum ConsciousnessOperation {
+    CONSCIOUSNESS_UNKNOWN = 0;
+    SET_LEVEL = 1;
+    GET_LEVEL = 2;
+    SET_AWARENESS = 3;
+    TRANSITION_STATE = 4;
+    ENABLE_CAPABILITY = 5;
+}
+
+enum ConsciousnessLevelType {
+    LEVEL_DORMANT = 0;
+    LEVEL_REACTIVE = 1;
+    LEVEL_AWARE = 2;
+    LEVEL_FOCUSED = 3;
+    LEVEL_REFLECTIVE = 4;
+    LEVEL_TRANSCENDENT = 5;
+}
+
+enum AwarenessStateType {
+    AWARENESS_UNFOCUSED = 0;
+    AWARENESS_FOCUSED = 1;
+    AWARENESS_LEARNING = 2;
+    AWARENESS_PROCESSING = 3;
+    AWARENESS_CREATING = 4;
+    AWARENESS_FLOWING = 5;
+}
+
+message ConsciousnessState {
+    ConsciousnessLevelType level = 1;
+    AwarenessStateType awareness = 2;
+    SenaryNumber intensity = 3;
+    SenaryTimestamp timestamp = 4;
+}
+
+message ConsciousnessRequest {
+    ConsciousnessOperation operation = 1;
+    ConsciousnessState target_state = 2;
+    SenaryArray parameters = 3;
+}
+
+message ConsciousnessResponse {
+    bool success = 1;
+    ConsciousnessState current_state = 2;
+    SenaryArray result_data = 3;
+    string error_message = 4;
+}
+
+service ConsciousnessService {
+    rpc SetLevel(ConsciousnessRequest) returns (ConsciousnessResponse);
+    rpc GetLevel(ConsciousnessRequest) returns (ConsciousnessResponse);
+    rpc SetAwareness(ConsciousnessRequest) returns (ConsciousnessResponse);
+    rpc TransitionState(ConsciousnessRequest) returns (ConsciousnessResponse);
+    rpc ProcessOperation(ConsciousnessRequest) returns (ConsciousnessResponse);
+}

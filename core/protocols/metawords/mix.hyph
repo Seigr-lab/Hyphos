@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.mix;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Mix operation types (senary-mapped 0-5)
+enum MixOperation {
+    MIX_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Mix processing states (senary-mapped 0-5)
+enum MixProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Mix data types (senary-mapped 0-5)
+enum MixDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core mix messages
+message MixObject {
+    string object_id = 1;
+    MixDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    MixProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message MixRequest {
+    MixOperation operation = 1;
+    MixObject target_object = 2;
+    SenaryArray parameters = 3;
+    MixProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message MixResponse {
+    bool success = 1;
+    MixObject result_object = 2;
+    SenaryArray result_data = 3;
+    MixProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Mix service definition
+service MixService {
+    rpc Create(MixRequest) returns (MixResponse);
+    rpc Process(MixRequest) returns (MixResponse);
+    rpc Validate(MixRequest) returns (MixResponse);
+    rpc Optimize(MixRequest) returns (MixResponse);
+    rpc Integrate(MixRequest) returns (MixResponse);
+}

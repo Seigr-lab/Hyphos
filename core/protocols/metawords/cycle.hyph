@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.cycle;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Cycle operation types (senary-mapped 0-5)
+enum CycleOperation {
+    CYCLE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Cycle processing states (senary-mapped 0-5)
+enum CycleProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Cycle data types (senary-mapped 0-5)
+enum CycleDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core cycle messages
+message CycleObject {
+    string object_id = 1;
+    CycleDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    CycleProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message CycleRequest {
+    CycleOperation operation = 1;
+    CycleObject target_object = 2;
+    SenaryArray parameters = 3;
+    CycleProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message CycleResponse {
+    bool success = 1;
+    CycleObject result_object = 2;
+    SenaryArray result_data = 3;
+    CycleProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Cycle service definition
+service CycleService {
+    rpc Create(CycleRequest) returns (CycleResponse);
+    rpc Process(CycleRequest) returns (CycleResponse);
+    rpc Validate(CycleRequest) returns (CycleResponse);
+    rpc Optimize(CycleRequest) returns (CycleResponse);
+    rpc Integrate(CycleRequest) returns (CycleResponse);
+}

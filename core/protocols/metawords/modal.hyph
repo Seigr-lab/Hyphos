@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.modal;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Modal operation types (senary-mapped 0-5)
+enum ModalOperation {
+    MODAL_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Modal processing states (senary-mapped 0-5)
+enum ModalProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Modal data types (senary-mapped 0-5)
+enum ModalDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core modal messages
+message ModalObject {
+    string object_id = 1;
+    ModalDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    ModalProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message ModalRequest {
+    ModalOperation operation = 1;
+    ModalObject target_object = 2;
+    SenaryArray parameters = 3;
+    ModalProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message ModalResponse {
+    bool success = 1;
+    ModalObject result_object = 2;
+    SenaryArray result_data = 3;
+    ModalProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Modal service definition
+service ModalService {
+    rpc Create(ModalRequest) returns (ModalResponse);
+    rpc Process(ModalRequest) returns (ModalResponse);
+    rpc Validate(ModalRequest) returns (ModalResponse);
+    rpc Optimize(ModalRequest) returns (ModalResponse);
+    rpc Integrate(ModalRequest) returns (ModalResponse);
+}

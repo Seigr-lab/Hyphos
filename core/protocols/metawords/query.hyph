@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.query;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Query operation types (senary-mapped 0-5)
+enum QueryOperation {
+    QUERY_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Query processing states (senary-mapped 0-5)
+enum QueryProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Query data types (senary-mapped 0-5)
+enum QueryDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core query messages
+message QueryObject {
+    string object_id = 1;
+    QueryDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    QueryProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message QueryRequest {
+    QueryOperation operation = 1;
+    QueryObject target_object = 2;
+    SenaryArray parameters = 3;
+    QueryProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message QueryResponse {
+    bool success = 1;
+    QueryObject result_object = 2;
+    SenaryArray result_data = 3;
+    QueryProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Query service definition
+service QueryService {
+    rpc Create(QueryRequest) returns (QueryResponse);
+    rpc Process(QueryRequest) returns (QueryResponse);
+    rpc Validate(QueryRequest) returns (QueryResponse);
+    rpc Optimize(QueryRequest) returns (QueryResponse);
+    rpc Integrate(QueryRequest) returns (QueryResponse);
+}

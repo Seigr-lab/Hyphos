@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.branch_if;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Branch_if operation types (senary-mapped 0-5)
+enum Branch_ifOperation {
+    BRANCH_IF_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Branch_if processing states (senary-mapped 0-5)
+enum Branch_ifProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Branch_if data types (senary-mapped 0-5)
+enum Branch_ifDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core branch_if messages
+message Branch_ifObject {
+    string object_id = 1;
+    Branch_ifDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    Branch_ifProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message Branch_ifRequest {
+    Branch_ifOperation operation = 1;
+    Branch_ifObject target_object = 2;
+    SenaryArray parameters = 3;
+    Branch_ifProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message Branch_ifResponse {
+    bool success = 1;
+    Branch_ifObject result_object = 2;
+    SenaryArray result_data = 3;
+    Branch_ifProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Branch_if service definition
+service Branch_ifService {
+    rpc Create(Branch_ifRequest) returns (Branch_ifResponse);
+    rpc Process(Branch_ifRequest) returns (Branch_ifResponse);
+    rpc Validate(Branch_ifRequest) returns (Branch_ifResponse);
+    rpc Optimize(Branch_ifRequest) returns (Branch_ifResponse);
+    rpc Integrate(Branch_ifRequest) returns (Branch_ifResponse);
+}

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.mycelial_for;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Mycelial_for operation types (senary-mapped 0-5)
+enum Mycelial_forOperation {
+    MYCELIAL_FOR_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Mycelial_for processing states (senary-mapped 0-5)
+enum Mycelial_forProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Mycelial_for data types (senary-mapped 0-5)
+enum Mycelial_forDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core mycelial_for messages
+message Mycelial_forObject {
+    string object_id = 1;
+    Mycelial_forDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    Mycelial_forProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message Mycelial_forRequest {
+    Mycelial_forOperation operation = 1;
+    Mycelial_forObject target_object = 2;
+    SenaryArray parameters = 3;
+    Mycelial_forProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message Mycelial_forResponse {
+    bool success = 1;
+    Mycelial_forObject result_object = 2;
+    SenaryArray result_data = 3;
+    Mycelial_forProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Mycelial_for service definition
+service Mycelial_forService {
+    rpc Create(Mycelial_forRequest) returns (Mycelial_forResponse);
+    rpc Process(Mycelial_forRequest) returns (Mycelial_forResponse);
+    rpc Validate(Mycelial_forRequest) returns (Mycelial_forResponse);
+    rpc Optimize(Mycelial_forRequest) returns (Mycelial_forResponse);
+    rpc Integrate(Mycelial_forRequest) returns (Mycelial_forResponse);
+}

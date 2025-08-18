@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package hyphos.engine.registry;
+
+import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
+import "hyphos/engine/protocol_parser.hyph";
+import "hyphos/engine/metaword_processor.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Registry operations (senary-mapped 0-5)
+enum RegistryOperation {
+    REGISTRY_UNKNOWN = 0;
+    REGISTER_PROTOCOL = 1;
+    LOOKUP_PROTOCOL = 2;
+    UPDATE_PROTOCOL = 3;
+    VALIDATE_REGISTRY = 4;
+    OPTIMIZE_STORAGE = 5;
+}
+
+// Protocol registration types (senary-mapped 0-5)
+enum ProtocolRegistrationType {
+    TYPE_UNKNOWN = 0;
+    BASE_MODULE = 1;
+    METAWORD = 2;
+    ENGINE_COMPONENT = 3;
+    DYNAMIC_PROTOCOL = 4;
+    EMERGENT_BEHAVIOR = 5;
+}
+
+// Registry access levels (senary-mapped 0-5)
+enum AccessLevel {
+    ACCESS_NONE = 0;
+    ACCESS_READ = 1;
+    ACCESS_EXECUTE = 2;
+    ACCESS_MODIFY = 3;
+    ACCESS_ADMIN = 4;
+    ACCESS_CONSCIOUSNESS = 5;
+}
+
+// Registry storage strategies (senary-mapped 0-5)
+enum StorageStrategy {
+    STORAGE_UNKNOWN = 0;
+    MEMORY_ONLY = 1;
+    PERSISTENT_DISK = 2;
+    DISTRIBUTED_NODES = 3;
+    CONSCIOUSNESS_MEMORY = 4;
+    QUANTUM_ENTANGLED = 5;
+}
+
+// Registered protocol entry
+message RegisteredProtocol {
+    SenaryArray protocol_id = 1;
+    string protocol_name = 2;
+    ProtocolRegistrationType registration_type = 3;
+    ParsedProtocol protocol_definition = 4;
+    AccessLevel access_level = 5;
+}
+
+// Protocol metadata
+message ProtocolMetadata {
+    SenaryTimestamp registration_time = 1;
+    SenaryNumber version_number = 2;
+    SenaryArray dependencies = 3;
+    SenaryNumber usage_count = 4;
+    SenaryNumber performance_score = 5;
+}
+
+// Registry entry with full context
+message RegistryEntry {
+    RegisteredProtocol protocol = 1;
+    ProtocolMetadata metadata = 2;
+    ProtocolInstance active_instance = 3;
+    StorageStrategy storage_method = 4;
+    SenaryArray senary_signature = 5;
+}
+
+// Protocol lookup criteria
+message LookupCriteria {
+    string protocol_name = 1;
+    ProtocolRegistrationType type_filter = 2;
+    AccessLevel required_access = 3;
+    SenaryArray dependency_match = 4;
+    SenaryNumber min_performance = 5;
+}
+
+// Registry operation request
+message RegistryRequest {
+    RegistryOperation operation = 1;
+    RegistryEntry target_entry = 2;
+    LookupCriteria lookup_criteria = 3;
+    StorageStrategy preferred_storage = 4;
+    AccessLevel requested_access = 5;
+}
+
+// Registry operation response
+message RegistryResponse {
+    bool operation_success = 1;
+    repeated RegistryEntry matched_entries = 2;
+    SenaryNumber total_protocols = 3;
+    SenaryArray registry_statistics = 4;
+    string operation_message = 5;
+}
+
+// Registry validation request
+message RegistryValidationRequest {
+    SenaryArray validation_scope = 1;
+    bool check_dependencies = 2;
+    bool verify_senary_compliance = 3;
+    AccessLevel validation_level = 4;
+    SenaryTimestamp validation_timestamp = 5;
+}
+
+// Registry validation response
+message RegistryValidationResponse {
+    bool registry_valid = 1;
+    SenaryArray validation_errors = 2;
+    SenaryNumber compliance_score = 3;
+    SenaryArray broken_dependencies = 4;
+    string validation_report = 5;
+}
+
+// Registry optimization request
+message RegistryOptimizationRequest {
+    StorageStrategy target_strategy = 1;
+    SenaryNumber performance_target = 2;
+    bool enable_consciousness_optimization = 3;
+    SenaryArray optimization_parameters = 4;
+    SenaryTimestamp optimization_time = 5;
+}
+
+// Registry optimization response
+message RegistryOptimizationResponse {
+    bool optimization_success = 1;
+    SenaryNumber performance_improvement = 2;
+    SenaryArray optimized_protocols = 3;
+    StorageStrategy achieved_strategy = 4;
+    string optimization_summary = 5;
+}
+
+// Protocol Registry Service - Central protocol management
+service ProtocolRegistryService {
+    // Register new protocol in the registry
+    rpc RegisterProtocol(RegistryRequest) returns (RegistryResponse);
+    
+    // Lookup protocols by various criteria
+    rpc LookupProtocol(RegistryRequest) returns (RegistryResponse);
+    
+    // Update existing protocol registration
+    rpc UpdateProtocol(RegistryRequest) returns (RegistryResponse);
+    
+    // Validate registry integrity and dependencies
+    rpc ValidateRegistry(RegistryValidationRequest) returns (RegistryValidationResponse);
+    
+    // Optimize registry storage and performance
+    rpc OptimizeRegistry(RegistryOptimizationRequest) returns (RegistryOptimizationResponse);
+}

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.femtosecond;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Femtosecond operation types (senary-mapped 0-5)
+enum FemtosecondOperation {
+    FEMTOSECOND_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Femtosecond processing states (senary-mapped 0-5)
+enum FemtosecondProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Femtosecond data types (senary-mapped 0-5)
+enum FemtosecondDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core femtosecond messages
+message FemtosecondObject {
+    string object_id = 1;
+    FemtosecondDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    FemtosecondProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message FemtosecondRequest {
+    FemtosecondOperation operation = 1;
+    FemtosecondObject target_object = 2;
+    SenaryArray parameters = 3;
+    FemtosecondProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message FemtosecondResponse {
+    bool success = 1;
+    FemtosecondObject result_object = 2;
+    SenaryArray result_data = 3;
+    FemtosecondProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Femtosecond service definition
+service FemtosecondService {
+    rpc Create(FemtosecondRequest) returns (FemtosecondResponse);
+    rpc Process(FemtosecondRequest) returns (FemtosecondResponse);
+    rpc Validate(FemtosecondRequest) returns (FemtosecondResponse);
+    rpc Optimize(FemtosecondRequest) returns (FemtosecondResponse);
+    rpc Integrate(FemtosecondRequest) returns (FemtosecondResponse);
+}

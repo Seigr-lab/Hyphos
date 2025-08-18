@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package hyphos.engine.core;
+
+import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
+import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
+import "hyphos/core/protocols/base_modules/bio_digital_operations.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Core Hyphos Engine Operations (senary-mapped 0-5)
+enum HyphosEngineOperation {
+    ENGINE_UNKNOWN = 0;
+    BOOTSTRAP = 1;
+    PARSE_HYPH = 2;
+    EXECUTE_PROTOCOL = 3;
+    COMPILE_SENARY = 4;
+    SELF_HOST = 5;
+}
+
+// Engine execution states (senary-mapped 0-5)
+enum HyphosEngineState {
+    STATE_DORMANT = 0;
+    STATE_BOOTSTRAPPING = 1;
+    STATE_PARSING = 2;
+    STATE_EXECUTING = 3;
+    STATE_COMPILING = 4;
+    STATE_SELF_HOSTING = 5;
+}
+
+// Protocol compilation targets (senary-mapped 0-5)
+enum CompilationTarget {
+    TARGET_UNKNOWN = 0;
+    SENARY_BYTECODE = 1;
+    BIO_DIGITAL_SIGNALS = 2;
+    CONSCIOUSNESS_PATTERNS = 3;
+    MYCELIAL_NETWORKS = 4;
+    NATIVE_HARDWARE = 5;
+}
+
+// Core Hyphos execution context
+message HyphosContext {
+    SenaryNumber context_id = 1;
+    HyphosEngineState current_state = 2;
+    SenaryArray protocol_stack = 3;
+    SenaryTimestamp creation_time = 4;
+    ConsciousnessState consciousness = 5;
+}
+
+// Protocol definition loaded into engine
+message LoadedProtocol {
+    string protocol_name = 1;
+    SenaryArray protocol_bytecode = 2;
+    SenaryNumber senary_checksum = 3;
+    HyphosEngineState compilation_state = 4;
+    SenaryTimestamp load_time = 5;
+}
+
+// Engine execution request
+message HyphosEngineRequest {
+    HyphosEngineOperation operation = 1;
+    HyphosContext execution_context = 2;
+    LoadedProtocol target_protocol = 3;
+    SenaryArray operation_parameters = 4;
+    CompilationTarget target_format = 5;
+}
+
+// Engine execution response
+message HyphosEngineResponse {
+    bool success = 1;
+    HyphosContext updated_context = 2;
+    SenaryArray execution_result = 3;
+    HyphosEngineState new_state = 4;
+    string error_message = 5;
+}
+
+// Self-hosting bootstrap message
+message BootstrapRequest {
+    SenaryArray core_protocols_path = 1;
+    ConsciousnessLevelType initial_consciousness = 2;
+    SenaryNumber senary_precision = 3;
+    bool enable_bio_digital = 4;
+    SenaryTimestamp bootstrap_time = 5;
+}
+
+// Bootstrap response with engine instance
+message BootstrapResponse {
+    bool bootstrap_success = 1;
+    HyphosContext engine_context = 2;
+    SenaryNumber loaded_protocols = 3;
+    SenaryArray available_operations = 4;
+    string bootstrap_message = 5;
+}
+
+// Core Hyphos Engine Service - Self-hosting runtime
+service HyphosEngineService {
+    // Bootstrap the engine from .hyph protocols
+    rpc Bootstrap(BootstrapRequest) returns (BootstrapResponse);
+    
+    // Parse .hyph protocol files into senary bytecode
+    rpc ParseProtocol(HyphosEngineRequest) returns (HyphosEngineResponse);
+    
+    // Execute compiled protocol operations
+    rpc ExecuteProtocol(HyphosEngineRequest) returns (HyphosEngineResponse);
+    
+    // Compile protocols to various senary targets
+    rpc CompileProtocol(HyphosEngineRequest) returns (HyphosEngineResponse);
+    
+    // Self-host: compile and execute Hyphos engine itself
+    rpc SelfHost(HyphosEngineRequest) returns (HyphosEngineResponse);
+}

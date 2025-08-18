@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.organism;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Organism operation types (senary-mapped 0-5)
+enum OrganismOperation {
+    ORGANISM_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Organism processing states (senary-mapped 0-5)
+enum OrganismProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Organism data types (senary-mapped 0-5)
+enum OrganismDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core organism messages
+message OrganismObject {
+    string object_id = 1;
+    OrganismDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    OrganismProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message OrganismRequest {
+    OrganismOperation operation = 1;
+    OrganismObject target_object = 2;
+    SenaryArray parameters = 3;
+    OrganismProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message OrganismResponse {
+    bool success = 1;
+    OrganismObject result_object = 2;
+    SenaryArray result_data = 3;
+    OrganismProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Organism service definition
+service OrganismService {
+    rpc Create(OrganismRequest) returns (OrganismResponse);
+    rpc Process(OrganismRequest) returns (OrganismResponse);
+    rpc Validate(OrganismRequest) returns (OrganismResponse);
+    rpc Optimize(OrganismRequest) returns (OrganismResponse);
+    rpc Integrate(OrganismRequest) returns (OrganismResponse);
+}

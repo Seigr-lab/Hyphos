@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.bandwidth;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Bandwidth operation types (senary-mapped 0-5)
+enum BandwidthOperation {
+    BANDWIDTH_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Bandwidth processing states (senary-mapped 0-5)
+enum BandwidthProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Bandwidth data types (senary-mapped 0-5)
+enum BandwidthDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core bandwidth messages
+message BandwidthObject {
+    string object_id = 1;
+    BandwidthDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    BandwidthProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message BandwidthRequest {
+    BandwidthOperation operation = 1;
+    BandwidthObject target_object = 2;
+    SenaryArray parameters = 3;
+    BandwidthProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message BandwidthResponse {
+    bool success = 1;
+    BandwidthObject result_object = 2;
+    SenaryArray result_data = 3;
+    BandwidthProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Bandwidth service definition
+service BandwidthService {
+    rpc Create(BandwidthRequest) returns (BandwidthResponse);
+    rpc Process(BandwidthRequest) returns (BandwidthResponse);
+    rpc Validate(BandwidthRequest) returns (BandwidthResponse);
+    rpc Optimize(BandwidthRequest) returns (BandwidthResponse);
+    rpc Integrate(BandwidthRequest) returns (BandwidthResponse);
+}

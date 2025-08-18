@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.dpi;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Dpi operation types (senary-mapped 0-5)
+enum DpiOperation {
+    DPI_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Dpi processing states (senary-mapped 0-5)
+enum DpiProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Dpi data types (senary-mapped 0-5)
+enum DpiDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core dpi messages
+message DpiObject {
+    string object_id = 1;
+    DpiDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    DpiProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message DpiRequest {
+    DpiOperation operation = 1;
+    DpiObject target_object = 2;
+    SenaryArray parameters = 3;
+    DpiProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message DpiResponse {
+    bool success = 1;
+    DpiObject result_object = 2;
+    SenaryArray result_data = 3;
+    DpiProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Dpi service definition
+service DpiService {
+    rpc Create(DpiRequest) returns (DpiResponse);
+    rpc Process(DpiRequest) returns (DpiResponse);
+    rpc Validate(DpiRequest) returns (DpiResponse);
+    rpc Optimize(DpiRequest) returns (DpiResponse);
+    rpc Integrate(DpiRequest) returns (DpiResponse);
+}

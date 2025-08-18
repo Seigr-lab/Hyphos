@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.fork;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Fork operation types (senary-mapped 0-5)
+enum ForkOperation {
+    FORK_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Fork processing states (senary-mapped 0-5)
+enum ForkProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Fork data types (senary-mapped 0-5)
+enum ForkDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core fork messages
+message ForkObject {
+    string object_id = 1;
+    ForkDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    ForkProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message ForkRequest {
+    ForkOperation operation = 1;
+    ForkObject target_object = 2;
+    SenaryArray parameters = 3;
+    ForkProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message ForkResponse {
+    bool success = 1;
+    ForkObject result_object = 2;
+    SenaryArray result_data = 3;
+    ForkProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Fork service definition
+service ForkService {
+    rpc Create(ForkRequest) returns (ForkResponse);
+    rpc Process(ForkRequest) returns (ForkResponse);
+    rpc Validate(ForkRequest) returns (ForkResponse);
+    rpc Optimize(ForkRequest) returns (ForkResponse);
+    rpc Integrate(ForkRequest) returns (ForkResponse);
+}

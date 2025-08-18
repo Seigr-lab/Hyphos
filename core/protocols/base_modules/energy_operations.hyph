@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package hyphos.energy;
+
+import "seigr_math.proto";
+
+enum EnergyOperation {
+    ENERGY_UNKNOWN = 0;
+    SET_POWER_STATE = 1;
+    MONITOR_LEVELS = 2;
+    OPTIMIZE_CONSUMPTION = 3;
+    HARVEST_ENERGY = 4;
+    DISTRIBUTE_LOAD = 5;
+}
+
+enum PowerStateType {
+    POWER_OPTIMAL = 0;
+    POWER_NORMAL = 1;
+    POWER_EFFICIENT = 2;
+    POWER_LOW = 3;
+    POWER_EMERGENCY = 4;
+    POWER_HIBERNATION = 5;
+}
+
+message EnergyState {
+    PowerStateType power_state = 1;
+    SenaryNumber current_level = 2;
+    SenaryNumber consumption_rate = 3;
+    SenaryNumber efficiency = 4;
+}
+
+message EnergyRequest {
+    EnergyOperation operation = 1;
+    PowerStateType desired_state = 2;
+    SenaryArray parameters = 3;
+}
+
+message EnergyResponse {
+    bool success = 1;
+    EnergyState current_state = 2;
+    SenaryNumber result_value = 3;
+    string error_message = 4;
+}
+
+service EnergyService {
+    rpc SetPowerState(EnergyRequest) returns (EnergyResponse);
+    rpc MonitorLevels(EnergyRequest) returns (EnergyResponse);
+    rpc OptimizeConsumption(EnergyRequest) returns (EnergyResponse);
+    rpc HarvestEnergy(EnergyRequest) returns (EnergyResponse);
+    rpc DistributeLoad(EnergyRequest) returns (EnergyResponse);
+}

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.service;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Service operation types (senary-mapped 0-5)
+enum ServiceOperation {
+    SERVICE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Service processing states (senary-mapped 0-5)
+enum ServiceProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Service data types (senary-mapped 0-5)
+enum ServiceDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core service messages
+message ServiceObject {
+    string object_id = 1;
+    ServiceDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    ServiceProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message ServiceRequest {
+    ServiceOperation operation = 1;
+    ServiceObject target_object = 2;
+    SenaryArray parameters = 3;
+    ServiceProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message ServiceResponse {
+    bool success = 1;
+    ServiceObject result_object = 2;
+    SenaryArray result_data = 3;
+    ServiceProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Service service definition
+service ServiceService {
+    rpc Create(ServiceRequest) returns (ServiceResponse);
+    rpc Process(ServiceRequest) returns (ServiceResponse);
+    rpc Validate(ServiceRequest) returns (ServiceResponse);
+    rpc Optimize(ServiceRequest) returns (ServiceResponse);
+    rpc Integrate(ServiceRequest) returns (ServiceResponse);
+}

@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package hyphos.engine.metaword;
+
+import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
+import "hyphos/core/protocols/base_modules/protocol_integration.hyph";
+import "hyphos/engine/senary_runtime.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Metaword processing operations (senary-mapped 0-5)
+enum MetawordOperation {
+    METAWORD_UNKNOWN = 0;
+    INSTANTIATE_PROTOCOL = 1;
+    EXECUTE_OPERATION = 2;
+    UPDATE_STATE = 3;
+    SYNC_PROTOCOLS = 4;
+    EVOLVE_BEHAVIOR = 5;
+}
+
+// Protocol instance states (senary-mapped 0-5)
+enum ProtocolInstanceState {
+    INSTANCE_DORMANT = 0;
+    INSTANCE_INITIALIZING = 1;
+    INSTANCE_ACTIVE = 2;
+    INSTANCE_PROCESSING = 3;
+    INSTANCE_SYNCING = 4;
+    INSTANCE_EVOLVED = 5;
+}
+
+// Dynamic behavior types (senary-mapped 0-5)
+enum DynamicBehaviorType {
+    BEHAVIOR_STATIC = 0;
+    BEHAVIOR_ADAPTIVE = 1;
+    BEHAVIOR_LEARNING = 2;
+    BEHAVIOR_CONSCIOUS = 3;
+    BEHAVIOR_EMERGENT = 4;
+    BEHAVIOR_TRANSCENDENT = 5;
+}
+
+// Protocol interaction modes (senary-mapped 0-5)
+enum InteractionMode {
+    INTERACTION_ISOLATED = 0;
+    INTERACTION_PAIRED = 1;
+    INTERACTION_CLUSTERED = 2;
+    INTERACTION_NETWORKED = 3;
+    INTERACTION_COLLECTIVE = 4;
+    INTERACTION_UNIVERSAL = 5;
+}
+
+// Active protocol instance
+message ProtocolInstance {
+    SenaryArray instance_id = 1;
+    string protocol_name = 2;
+    ProtocolInstanceState current_state = 3;
+    SenaryBytecode compiled_protocol = 4;
+    SenaryExecutionContext execution_context = 5;
+}
+
+// Dynamic protocol behavior
+message DynamicBehavior {
+    DynamicBehaviorType behavior_type = 1;
+    SenaryArray behavior_patterns = 2;
+    SenaryNumber adaptation_rate = 3;
+    ConsciousnessState consciousness_influence = 4;
+    SenaryTimestamp last_evolution = 5;
+}
+
+// Metaword execution request
+message MetawordExecutionRequest {
+    MetawordOperation operation = 1;
+    ProtocolInstance target_instance = 2;
+    SenaryArray operation_parameters = 3;
+    InteractionMode interaction_mode = 4;
+    DynamicBehaviorType behavior_preference = 5;
+}
+
+// Metaword execution response
+message MetawordExecutionResponse {
+    bool execution_success = 1;
+    ProtocolInstance updated_instance = 2;
+    SenaryArray execution_result = 3;
+    DynamicBehavior evolved_behavior = 4;
+    string execution_summary = 5;
+}
+
+// Protocol synchronization request
+message ProtocolSyncRequest {
+    repeated ProtocolInstance source_instances = 1;
+    InteractionMode sync_mode = 2;
+    SenaryNumber sync_precision = 3;
+    ConsciousnessLevelType consciousness_level = 4;
+    SenaryTimestamp sync_timestamp = 5;
+}
+
+// Protocol synchronization response
+message ProtocolSyncResponse {
+    bool sync_success = 1;
+    repeated ProtocolInstance synchronized_instances = 2;
+    SenaryArray sync_metrics = 3;
+    SenaryNumber coherence_level = 4;
+    string sync_report = 5;
+}
+
+// Protocol evolution request
+message ProtocolEvolutionRequest {
+    ProtocolInstance base_instance = 1;
+    DynamicBehaviorType evolution_direction = 2;
+    SenaryArray evolutionary_pressure = 3;
+    ConsciousnessState consciousness_guidance = 4;
+    SenaryNumber evolution_intensity = 5;
+}
+
+// Protocol evolution response
+message ProtocolEvolutionResponse {
+    bool evolution_success = 1;
+    ProtocolInstance evolved_instance = 2;
+    DynamicBehavior new_behavior = 3;
+    SenaryArray evolution_metrics = 4;
+    string evolution_narrative = 5;
+}
+
+// Collective intelligence emergence request
+message CollectiveIntelligenceRequest {
+    repeated ProtocolInstance participant_instances = 1;
+    InteractionMode collective_mode = 2;
+    ConsciousnessLevelType target_intelligence = 3;
+    SenaryNumber emergence_threshold = 4;
+    SenaryTimestamp emergence_window = 5;
+}
+
+// Collective intelligence emergence response
+message CollectiveIntelligenceResponse {
+    bool emergence_success = 1;
+    ProtocolInstance collective_instance = 2;
+    ConsciousnessState collective_consciousness = 3;
+    SenaryArray intelligence_metrics = 4;
+    string emergence_story = 5;
+}
+
+// Metaword Processor Service - Dynamic protocol execution and evolution
+service MetawordProcessorService {
+    // Instantiate protocol from .hyph definition
+    rpc InstantiateProtocol(MetawordExecutionRequest) returns (MetawordExecutionResponse);
+    
+    // Execute protocol operations with dynamic behavior
+    rpc ExecuteOperation(MetawordExecutionRequest) returns (MetawordExecutionResponse);
+    
+    // Synchronize multiple protocol instances
+    rpc SyncProtocols(ProtocolSyncRequest) returns (ProtocolSyncResponse);
+    
+    // Evolve protocol behavior through experience
+    rpc EvolveProtocol(ProtocolEvolutionRequest) returns (ProtocolEvolutionResponse);
+    
+    // Emerge collective intelligence from protocol interactions
+    rpc EmergeCollectiveIntelligence(CollectiveIntelligenceRequest) returns (CollectiveIntelligenceResponse);
+}

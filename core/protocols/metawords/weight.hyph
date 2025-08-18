@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.weight;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Weight operation types (senary-mapped 0-5)
+enum WeightOperation {
+    WEIGHT_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Weight processing states (senary-mapped 0-5)
+enum WeightProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Weight data types (senary-mapped 0-5)
+enum WeightDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core weight messages
+message WeightObject {
+    string object_id = 1;
+    WeightDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    WeightProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message WeightRequest {
+    WeightOperation operation = 1;
+    WeightObject target_object = 2;
+    SenaryArray parameters = 3;
+    WeightProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message WeightResponse {
+    bool success = 1;
+    WeightObject result_object = 2;
+    SenaryArray result_data = 3;
+    WeightProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Weight service definition
+service WeightService {
+    rpc Create(WeightRequest) returns (WeightResponse);
+    rpc Process(WeightRequest) returns (WeightResponse);
+    rpc Validate(WeightRequest) returns (WeightResponse);
+    rpc Optimize(WeightRequest) returns (WeightResponse);
+    rpc Integrate(WeightRequest) returns (WeightResponse);
+}

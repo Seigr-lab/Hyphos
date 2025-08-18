@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.circle;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Circle operation types (senary-mapped 0-5)
+enum CircleOperation {
+    CIRCLE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Circle processing states (senary-mapped 0-5)
+enum CircleProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Circle data types (senary-mapped 0-5)
+enum CircleDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core circle messages
+message CircleObject {
+    string object_id = 1;
+    CircleDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    CircleProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message CircleRequest {
+    CircleOperation operation = 1;
+    CircleObject target_object = 2;
+    SenaryArray parameters = 3;
+    CircleProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message CircleResponse {
+    bool success = 1;
+    CircleObject result_object = 2;
+    SenaryArray result_data = 3;
+    CircleProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Circle service definition
+service CircleService {
+    rpc Create(CircleRequest) returns (CircleResponse);
+    rpc Process(CircleRequest) returns (CircleResponse);
+    rpc Validate(CircleRequest) returns (CircleResponse);
+    rpc Optimize(CircleRequest) returns (CircleResponse);
+    rpc Integrate(CircleRequest) returns (CircleResponse);
+}

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.current_time;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Current_time operation types (senary-mapped 0-5)
+enum Current_timeOperation {
+    CURRENT_TIME_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Current_time processing states (senary-mapped 0-5)
+enum Current_timeProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Current_time data types (senary-mapped 0-5)
+enum Current_timeDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core current_time messages
+message Current_timeObject {
+    string object_id = 1;
+    Current_timeDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    Current_timeProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message Current_timeRequest {
+    Current_timeOperation operation = 1;
+    Current_timeObject target_object = 2;
+    SenaryArray parameters = 3;
+    Current_timeProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message Current_timeResponse {
+    bool success = 1;
+    Current_timeObject result_object = 2;
+    SenaryArray result_data = 3;
+    Current_timeProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Current_time service definition
+service Current_timeService {
+    rpc Create(Current_timeRequest) returns (Current_timeResponse);
+    rpc Process(Current_timeRequest) returns (Current_timeResponse);
+    rpc Validate(Current_timeRequest) returns (Current_timeResponse);
+    rpc Optimize(Current_timeRequest) returns (Current_timeResponse);
+    rpc Integrate(Current_timeRequest) returns (Current_timeResponse);
+}

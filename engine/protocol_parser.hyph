@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package hyphos.engine.parser;
+
+import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
+import "hyphos/engine/hyphos_engine.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Protocol parsing operations (senary-mapped 0-5)
+enum ProtocolParserOperation {
+    PARSER_UNKNOWN = 0;
+    TOKENIZE_HYPH = 1;
+    PARSE_SYNTAX = 2;
+    VALIDATE_SENARY = 3;
+    COMPILE_BYTECODE = 4;
+    OPTIMIZE_PROTOCOLS = 5;
+}
+
+// Parsing stages (senary-mapped 0-5)
+enum ParsingStage {
+    STAGE_INITIAL = 0;
+    STAGE_TOKENIZING = 1;
+    STAGE_PARSING = 2;
+    STAGE_VALIDATING = 3;
+    STAGE_COMPILING = 4;
+    STAGE_COMPLETE = 5;
+}
+
+// Protocol element types (senary-mapped 0-5)
+enum ProtocolElementType {
+    ELEMENT_UNKNOWN = 0;
+    SYNTAX_DECLARATION = 1;
+    PACKAGE_DECLARATION = 2;
+    IMPORT_STATEMENT = 3;
+    ENUM_DEFINITION = 4;
+    MESSAGE_DEFINITION = 5;
+}
+
+// Service element types (additional senary range)
+enum ServiceElementType {
+    SERVICE_UNKNOWN = 0;
+    SERVICE_DEFINITION = 1;
+    RPC_METHOD = 2;
+    FIELD_DEFINITION = 3;
+    ENUM_VALUE = 4;
+    COMMENT_BLOCK = 5;
+}
+
+// Token representation in pure senary
+message HyphosToken {
+    ProtocolElementType element_type = 1;
+    SenaryArray token_content = 2;
+    SenaryNumber line_number = 3;
+    SenaryNumber column_position = 4;
+    SenaryNumber senary_value = 5;
+}
+
+// Parsed protocol element
+message ParsedElement {
+    string element_name = 1;
+    ProtocolElementType element_type = 2;
+    SenaryArray element_data = 3;
+    SenaryNumber senary_checksum = 4;
+    bool senary_compliant = 5;
+}
+
+// Complete parsed protocol
+message ParsedProtocol {
+    string protocol_name = 1;
+    SenaryArray protocol_package = 2;
+    repeated ParsedElement elements = 3;
+    SenaryNumber total_elements = 4;
+    bool fully_senary_compliant = 5;
+}
+
+// Protocol parsing request
+message ProtocolParseRequest {
+    ProtocolParserOperation operation = 1;
+    SenaryArray hyph_file_content = 2;
+    string source_file_path = 3;
+    ParsingStage target_stage = 4;
+    SenaryTimestamp parse_start_time = 5;
+}
+
+// Protocol parsing response
+message ProtocolParseResponse {
+    bool parse_success = 1;
+    ParsedProtocol parsed_protocol = 2;
+    SenaryArray compiled_bytecode = 3;
+    ParsingStage completed_stage = 4;
+    string error_details = 5;
+}
+
+// Senary validation request
+message SenaryValidationRequest {
+    ParsedProtocol target_protocol = 1;
+    SenaryNumber max_enum_value = 2;
+    SenaryNumber max_field_number = 3;
+    bool strict_validation = 4;
+    SenaryTimestamp validation_time = 5;
+}
+
+// Senary validation response
+message SenaryValidationResponse {
+    bool is_senary_compliant = 1;
+    SenaryArray validation_errors = 2;
+    SenaryNumber compliance_score = 3;
+    SenaryArray suggested_fixes = 4;
+    string validation_summary = 5;
+}
+
+// Protocol Parser Service - Pure Hyphos parsing
+service ProtocolParserService {
+    // Tokenize .hyph file content into senary tokens
+    rpc TokenizeHyph(ProtocolParseRequest) returns (ProtocolParseResponse);
+    
+    // Parse tokens into protocol definition
+    rpc ParseProtocol(ProtocolParseRequest) returns (ProtocolParseResponse);
+    
+    // Validate protocol for senary compliance
+    rpc ValidateSenary(SenaryValidationRequest) returns (SenaryValidationResponse);
+    
+    // Compile protocol to senary bytecode
+    rpc CompileToBytecode(ProtocolParseRequest) returns (ProtocolParseResponse);
+    
+    // Optimize compiled protocols for execution
+    rpc OptimizeProtocol(ProtocolParseRequest) returns (ProtocolParseResponse);
+}

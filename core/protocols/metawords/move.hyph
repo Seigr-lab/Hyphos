@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.move;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Move operation types (senary-mapped 0-5)
+enum MoveOperation {
+    MOVE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Move processing states (senary-mapped 0-5)
+enum MoveProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Move data types (senary-mapped 0-5)
+enum MoveDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core move messages
+message MoveObject {
+    string object_id = 1;
+    MoveDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    MoveProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message MoveRequest {
+    MoveOperation operation = 1;
+    MoveObject target_object = 2;
+    SenaryArray parameters = 3;
+    MoveProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message MoveResponse {
+    bool success = 1;
+    MoveObject result_object = 2;
+    SenaryArray result_data = 3;
+    MoveProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Move service definition
+service MoveService {
+    rpc Create(MoveRequest) returns (MoveResponse);
+    rpc Process(MoveRequest) returns (MoveResponse);
+    rpc Validate(MoveRequest) returns (MoveResponse);
+    rpc Optimize(MoveRequest) returns (MoveResponse);
+    rpc Integrate(MoveRequest) returns (MoveResponse);
+}

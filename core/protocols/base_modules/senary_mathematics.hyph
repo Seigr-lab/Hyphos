@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package hyphos.senary_math;
+
+import "seigr_math.proto";
+
+enum SenaryMathOperation {
+    SENARY_UNKNOWN = 0;
+    SENARY_ADD = 1;
+    SENARY_MULTIPLY = 2;
+    SENARY_TRANSFORM = 3;
+    SENARY_OPTIMIZE = 4;
+    SENARY_ANALYZE = 5;
+}
+
+message SenaryMathRequest {
+    SenaryMathOperation operation = 1;
+    repeated SenaryNumber operands = 2;
+    SenaryMatrix matrix_operand = 3;
+    SenaryArray array_operand = 4;
+}
+
+message SenaryMathResponse {
+    bool success = 1;
+    SenaryNumber scalar_result = 2;
+    SenaryMatrix matrix_result = 3;
+    SenaryArray array_result = 4;
+    string error_message = 5;
+}
+
+service SenaryMathService {
+    rpc Calculate(SenaryMathRequest) returns (SenaryMathResponse);
+    rpc Transform(SenaryMathRequest) returns (SenaryMathResponse);
+    rpc Optimize(SenaryMathRequest) returns (SenaryMathResponse);
+    rpc Analyze(SenaryMathRequest) returns (SenaryMathResponse);
+    rpc ProcessArray(SenaryMathRequest) returns (SenaryMathResponse);
+}

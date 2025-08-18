@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.verify;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Verify operation types (senary-mapped 0-5)
+enum VerifyOperation {
+    VERIFY_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Verify processing states (senary-mapped 0-5)
+enum VerifyProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Verify data types (senary-mapped 0-5)
+enum VerifyDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core verify messages
+message VerifyObject {
+    string object_id = 1;
+    VerifyDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    VerifyProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message VerifyRequest {
+    VerifyOperation operation = 1;
+    VerifyObject target_object = 2;
+    SenaryArray parameters = 3;
+    VerifyProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message VerifyResponse {
+    bool success = 1;
+    VerifyObject result_object = 2;
+    SenaryArray result_data = 3;
+    VerifyProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Verify service definition
+service VerifyService {
+    rpc Create(VerifyRequest) returns (VerifyResponse);
+    rpc Process(VerifyRequest) returns (VerifyResponse);
+    rpc Validate(VerifyRequest) returns (VerifyResponse);
+    rpc Optimize(VerifyRequest) returns (VerifyResponse);
+    rpc Integrate(VerifyRequest) returns (VerifyResponse);
+}

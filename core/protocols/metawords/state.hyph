@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.state;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// State operation types (senary-mapped 0-5)
+enum StateOperation {
+    STATE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// State processing states (senary-mapped 0-5)
+enum StateProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// State data types (senary-mapped 0-5)
+enum StateDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core state messages
+message StateObject {
+    string object_id = 1;
+    StateDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    StateProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message StateRequest {
+    StateOperation operation = 1;
+    StateObject target_object = 2;
+    SenaryArray parameters = 3;
+    StateProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message StateResponse {
+    bool success = 1;
+    StateObject result_object = 2;
+    SenaryArray result_data = 3;
+    StateProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// State service definition
+service StateService {
+    rpc Create(StateRequest) returns (StateResponse);
+    rpc Process(StateRequest) returns (StateResponse);
+    rpc Validate(StateRequest) returns (StateResponse);
+    rpc Optimize(StateRequest) returns (StateResponse);
+    rpc Integrate(StateRequest) returns (StateResponse);
+}

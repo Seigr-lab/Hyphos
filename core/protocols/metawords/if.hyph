@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.if;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// If operation types (senary-mapped 0-5)
+enum IfOperation {
+    IF_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// If processing states (senary-mapped 0-5)
+enum IfProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// If data types (senary-mapped 0-5)
+enum IfDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core if messages
+message IfObject {
+    string object_id = 1;
+    IfDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    IfProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message IfRequest {
+    IfOperation operation = 1;
+    IfObject target_object = 2;
+    SenaryArray parameters = 3;
+    IfProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message IfResponse {
+    bool success = 1;
+    IfObject result_object = 2;
+    SenaryArray result_data = 3;
+    IfProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// If service definition
+service IfService {
+    rpc Create(IfRequest) returns (IfResponse);
+    rpc Process(IfRequest) returns (IfResponse);
+    rpc Validate(IfRequest) returns (IfResponse);
+    rpc Optimize(IfRequest) returns (IfResponse);
+    rpc Integrate(IfRequest) returns (IfResponse);
+}

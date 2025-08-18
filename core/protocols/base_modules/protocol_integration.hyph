@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package hyphos.protocol;
+
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+enum ProtocolOperation {
+    PROTOCOL_UNKNOWN = 0;
+    SEND_MESSAGE = 1;
+    RECEIVE_MESSAGE = 2;
+    BROADCAST_MESSAGE = 3;
+    HANDLE_RESPONSE = 4;
+    SYNC_OPERATION = 5;
+}
+
+message ProtocolMessage {
+    string message_id = 1;
+    string source_metaword = 2;
+    string target_metaword = 3;
+    string operation_type = 4;
+    SenaryArray data_payload = 5;
+}
+
+message TimestampedProtocolMessage {
+    ProtocolMessage message = 1;
+    SenaryTimestamp timestamp = 2;
+}
+
+message ProtocolRequest {
+    ProtocolOperation operation = 1;
+    TimestampedProtocolMessage message = 2;
+    SenaryArray parameters = 3;
+}
+
+message ProtocolResponse {
+    bool success = 1;
+    TimestampedProtocolMessage result_message = 2;
+    SenaryArray result_data = 3;
+    string error_message = 4;
+}
+
+service ProtocolService {
+    rpc SendMessage(ProtocolRequest) returns (ProtocolResponse);
+    rpc ReceiveMessage(ProtocolRequest) returns (ProtocolResponse);
+    rpc BroadcastMessage(ProtocolRequest) returns (ProtocolResponse);
+    rpc HandleResponse(ProtocolRequest) returns (ProtocolResponse);
+    rpc SyncOperation(ProtocolRequest) returns (ProtocolResponse);
+}

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.caretaker;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Caretaker operation types (senary-mapped 0-5)
+enum CaretakerOperation {
+    CARETAKER_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Caretaker processing states (senary-mapped 0-5)
+enum CaretakerProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Caretaker data types (senary-mapped 0-5)
+enum CaretakerDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core caretaker messages
+message CaretakerObject {
+    string object_id = 1;
+    CaretakerDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    CaretakerProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message CaretakerRequest {
+    CaretakerOperation operation = 1;
+    CaretakerObject target_object = 2;
+    SenaryArray parameters = 3;
+    CaretakerProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message CaretakerResponse {
+    bool success = 1;
+    CaretakerObject result_object = 2;
+    SenaryArray result_data = 3;
+    CaretakerProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Caretaker service definition
+service CaretakerService {
+    rpc Create(CaretakerRequest) returns (CaretakerResponse);
+    rpc Process(CaretakerRequest) returns (CaretakerResponse);
+    rpc Validate(CaretakerRequest) returns (CaretakerResponse);
+    rpc Optimize(CaretakerRequest) returns (CaretakerResponse);
+    rpc Integrate(CaretakerRequest) returns (CaretakerResponse);
+}

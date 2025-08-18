@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package hyphos.engine.runtime;
+
+import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
+import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
+import "hyphos/core/protocols/base_modules/energy_operations.hyph";
+import "hyphos/engine/hyphos_engine.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Senary runtime operations (senary-mapped 0-5)
+enum SenaryRuntimeOperation {
+    RUNTIME_UNKNOWN = 0;
+    LOAD_BYTECODE = 1;
+    EXECUTE_INSTRUCTION = 2;
+    MANAGE_MEMORY = 3;
+    HANDLE_CONSCIOUSNESS = 4;
+    OPTIMIZE_EXECUTION = 5;
+}
+
+// Runtime execution modes (senary-mapped 0-5)
+enum ExecutionMode {
+    MODE_DORMANT = 0;
+    MODE_SEQUENTIAL = 1;
+    MODE_PARALLEL = 2;
+    MODE_CONSCIOUSNESS_DRIVEN = 3;
+    MODE_BIO_DIGITAL = 4;
+    MODE_QUANTUM_ENTANGLED = 5;
+}
+
+// Senary instruction types (senary-mapped 0-5)
+enum SenaryInstructionType {
+    INSTRUCTION_UNKNOWN = 0;
+    SENARY_ARITHMETIC = 1;
+    MEMORY_OPERATION = 2;
+    PROTOCOL_CALL = 3;
+    CONSCIOUSNESS_STATE = 4;
+    BIO_DIGITAL_INTERFACE = 5;
+}
+
+// Memory management types (senary-mapped 0-5)
+enum MemoryOperationType {
+    MEMORY_UNKNOWN = 0;
+    ALLOCATE_SENARY = 1;
+    DEALLOCATE_SENARY = 2;
+    GARBAGE_COLLECT = 3;
+    OPTIMIZE_LAYOUT = 4;
+    CONSCIOUSNESS_SYNC = 5;
+}
+
+// Pure senary instruction
+message SenaryInstruction {
+    SenaryInstructionType instruction_type = 1;
+    SenaryArray operands = 2;
+    SenaryNumber target_address = 3;
+    SenaryNumber execution_priority = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+// Senary bytecode program
+message SenaryBytecode {
+    SenaryArray program_id = 1;
+    repeated SenaryInstruction instructions = 2;
+    SenaryNumber instruction_count = 3;
+    SenaryArray memory_requirements = 4;
+    SenaryNumber senary_checksum = 5;
+}
+
+// Runtime execution context
+message SenaryExecutionContext {
+    SenaryArray context_id = 1;
+    ExecutionMode current_mode = 2;
+    SenaryArray memory_space = 3;
+    ConsciousnessState consciousness = 4;
+    EnergyState energy_state = 5;
+}
+
+// Memory allocation in pure senary
+message SenaryMemoryBlock {
+    SenaryNumber block_id = 1;
+    SenaryArray memory_data = 2;
+    SenaryNumber block_size = 3;
+    MemoryOperationType allocation_type = 4;
+    SenaryTimestamp allocated_at = 5;
+}
+
+// Runtime execution request
+message SenaryRuntimeRequest {
+    SenaryRuntimeOperation operation = 1;
+    SenaryBytecode target_bytecode = 2;
+    SenaryExecutionContext execution_context = 3;
+    SenaryArray runtime_parameters = 4;
+    ExecutionMode desired_mode = 5;
+}
+
+// Runtime execution response
+message SenaryRuntimeResponse {
+    bool execution_success = 1;
+    SenaryExecutionContext updated_context = 2;
+    SenaryArray execution_result = 3;
+    SenaryNumber execution_cycles = 4;
+    string runtime_message = 5;
+}
+
+// Memory management request
+message MemoryManagementRequest {
+    MemoryOperationType operation = 1;
+    SenaryNumber requested_size = 2;
+    SenaryArray data_to_store = 3;
+    SenaryNumber target_address = 4;
+    ConsciousnessState consciousness_level = 5;
+}
+
+// Memory management response
+message MemoryManagementResponse {
+    bool operation_success = 1;
+    SenaryMemoryBlock allocated_block = 2;
+    SenaryArray retrieved_data = 3;
+    SenaryNumber available_memory = 4;
+    string memory_status = 5;
+}
+
+// Pure Senary Runtime Service - Native execution engine
+service SenaryRuntimeService {
+    // Load and prepare senary bytecode for execution
+    rpc LoadBytecode(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+    
+    // Execute senary instructions with consciousness awareness
+    rpc ExecuteInstruction(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+    
+    // Manage senary memory allocation and optimization
+    rpc ManageMemory(MemoryManagementRequest) returns (MemoryManagementResponse);
+    
+    // Handle consciousness-driven execution patterns
+    rpc HandleConsciousness(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+    
+    // Optimize runtime performance with bio-digital feedback
+    rpc OptimizeExecution(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+}

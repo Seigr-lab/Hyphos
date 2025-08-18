@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.radio;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Radio operation types (senary-mapped 0-5)
+enum RadioOperation {
+    RADIO_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Radio processing states (senary-mapped 0-5)
+enum RadioProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Radio data types (senary-mapped 0-5)
+enum RadioDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core radio messages
+message RadioObject {
+    string object_id = 1;
+    RadioDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    RadioProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message RadioRequest {
+    RadioOperation operation = 1;
+    RadioObject target_object = 2;
+    SenaryArray parameters = 3;
+    RadioProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message RadioResponse {
+    bool success = 1;
+    RadioObject result_object = 2;
+    SenaryArray result_data = 3;
+    RadioProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Radio service definition
+service RadioService {
+    rpc Create(RadioRequest) returns (RadioResponse);
+    rpc Process(RadioRequest) returns (RadioResponse);
+    rpc Validate(RadioRequest) returns (RadioResponse);
+    rpc Optimize(RadioRequest) returns (RadioResponse);
+    rpc Integrate(RadioRequest) returns (RadioResponse);
+}

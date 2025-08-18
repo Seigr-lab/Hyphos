@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.fallback;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Fallback operation types (senary-mapped 0-5)
+enum FallbackOperation {
+    FALLBACK_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Fallback processing states (senary-mapped 0-5)
+enum FallbackProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Fallback data types (senary-mapped 0-5)
+enum FallbackDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core fallback messages
+message FallbackObject {
+    string object_id = 1;
+    FallbackDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    FallbackProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message FallbackRequest {
+    FallbackOperation operation = 1;
+    FallbackObject target_object = 2;
+    SenaryArray parameters = 3;
+    FallbackProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message FallbackResponse {
+    bool success = 1;
+    FallbackObject result_object = 2;
+    SenaryArray result_data = 3;
+    FallbackProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Fallback service definition
+service FallbackService {
+    rpc Create(FallbackRequest) returns (FallbackResponse);
+    rpc Process(FallbackRequest) returns (FallbackResponse);
+    rpc Validate(FallbackRequest) returns (FallbackResponse);
+    rpc Optimize(FallbackRequest) returns (FallbackResponse);
+    rpc Integrate(FallbackRequest) returns (FallbackResponse);
+}

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.ethernet;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Ethernet operation types (senary-mapped 0-5)
+enum EthernetOperation {
+    ETHERNET_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Ethernet processing states (senary-mapped 0-5)
+enum EthernetProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Ethernet data types (senary-mapped 0-5)
+enum EthernetDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core ethernet messages
+message EthernetObject {
+    string object_id = 1;
+    EthernetDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    EthernetProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message EthernetRequest {
+    EthernetOperation operation = 1;
+    EthernetObject target_object = 2;
+    SenaryArray parameters = 3;
+    EthernetProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message EthernetResponse {
+    bool success = 1;
+    EthernetObject result_object = 2;
+    SenaryArray result_data = 3;
+    EthernetProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Ethernet service definition
+service EthernetService {
+    rpc Create(EthernetRequest) returns (EthernetResponse);
+    rpc Process(EthernetRequest) returns (EthernetResponse);
+    rpc Validate(EthernetRequest) returns (EthernetResponse);
+    rpc Optimize(EthernetRequest) returns (EthernetResponse);
+    rpc Integrate(EthernetRequest) returns (EthernetResponse);
+}

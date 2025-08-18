@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.transparency;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Transparency operation types (senary-mapped 0-5)
+enum TransparencyOperation {
+    TRANSPARENCY_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Transparency processing states (senary-mapped 0-5)
+enum TransparencyProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Transparency data types (senary-mapped 0-5)
+enum TransparencyDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core transparency messages
+message TransparencyObject {
+    string object_id = 1;
+    TransparencyDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    TransparencyProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message TransparencyRequest {
+    TransparencyOperation operation = 1;
+    TransparencyObject target_object = 2;
+    SenaryArray parameters = 3;
+    TransparencyProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message TransparencyResponse {
+    bool success = 1;
+    TransparencyObject result_object = 2;
+    SenaryArray result_data = 3;
+    TransparencyProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Transparency service definition
+service TransparencyService {
+    rpc Create(TransparencyRequest) returns (TransparencyResponse);
+    rpc Process(TransparencyRequest) returns (TransparencyResponse);
+    rpc Validate(TransparencyRequest) returns (TransparencyResponse);
+    rpc Optimize(TransparencyRequest) returns (TransparencyResponse);
+    rpc Integrate(TransparencyRequest) returns (TransparencyResponse);
+}

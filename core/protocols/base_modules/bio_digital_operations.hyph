@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package hyphos.bio_digital;
+
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+enum BioDigigalOperation {
+    BIO_DIGITAL_UNKNOWN = 0;
+    MYCELIAL_CONNECT = 1;
+    BIOLOGICAL_MONITOR = 2;
+    CHEMICAL_PROCESS = 3;
+    ECOSYSTEM_INTERFACE = 4;
+    ORGANIC_ADAPT = 5;
+}
+
+enum EcosystemType {
+    ECOSYSTEM_UNKNOWN = 0;
+    FOREST = 1;
+    APIARY = 2;
+    SOIL = 3;
+    AQUATIC = 4;
+    ATMOSPHERIC = 5;
+}
+
+message BiologicalSignal {
+    EcosystemType source = 1;
+    SenaryNumber frequency = 2;
+    SenaryNumber amplitude = 3;
+    SenaryArray signal_data = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message BioDigitalRequest {
+    BioDigigalOperation operation = 1;
+    EcosystemType target_ecosystem = 2;
+    SenaryArray parameters = 3;
+}
+
+message BioDigitalResponse {
+    bool success = 1;
+    BiologicalSignal result_signal = 2;
+    SenaryArray result_data = 3;
+    string error_message = 4;
+}
+
+service BioDigitalService {
+    rpc MycelialConnect(BioDigitalRequest) returns (BioDigitalResponse);
+    rpc BiologicalMonitor(BioDigitalRequest) returns (BioDigitalResponse);
+    rpc ChemicalProcess(BioDigitalRequest) returns (BioDigitalResponse);
+    rpc EcosystemInterface(BioDigitalRequest) returns (BioDigitalResponse);
+    rpc OrganicAdapt(BioDigitalRequest) returns (BioDigitalResponse);
+}

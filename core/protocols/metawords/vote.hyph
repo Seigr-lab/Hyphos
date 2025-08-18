@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.vote;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Vote operation types (senary-mapped 0-5)
+enum VoteOperation {
+    VOTE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Vote processing states (senary-mapped 0-5)
+enum VoteProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Vote data types (senary-mapped 0-5)
+enum VoteDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core vote messages
+message VoteObject {
+    string object_id = 1;
+    VoteDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    VoteProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message VoteRequest {
+    VoteOperation operation = 1;
+    VoteObject target_object = 2;
+    SenaryArray parameters = 3;
+    VoteProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message VoteResponse {
+    bool success = 1;
+    VoteObject result_object = 2;
+    SenaryArray result_data = 3;
+    VoteProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Vote service definition
+service VoteService {
+    rpc Create(VoteRequest) returns (VoteResponse);
+    rpc Process(VoteRequest) returns (VoteResponse);
+    rpc Validate(VoteRequest) returns (VoteResponse);
+    rpc Optimize(VoteRequest) returns (VoteResponse);
+    rpc Integrate(VoteRequest) returns (VoteResponse);
+}

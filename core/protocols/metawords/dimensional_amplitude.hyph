@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.dimensional_amplitude;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Dimensional_amplitude operation types (senary-mapped 0-5)
+enum Dimensional_amplitudeOperation {
+    DIMENSIONAL_AMPLITUDE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Dimensional_amplitude processing states (senary-mapped 0-5)
+enum Dimensional_amplitudeProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Dimensional_amplitude data types (senary-mapped 0-5)
+enum Dimensional_amplitudeDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core dimensional_amplitude messages
+message Dimensional_amplitudeObject {
+    string object_id = 1;
+    Dimensional_amplitudeDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    Dimensional_amplitudeProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message Dimensional_amplitudeRequest {
+    Dimensional_amplitudeOperation operation = 1;
+    Dimensional_amplitudeObject target_object = 2;
+    SenaryArray parameters = 3;
+    Dimensional_amplitudeProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message Dimensional_amplitudeResponse {
+    bool success = 1;
+    Dimensional_amplitudeObject result_object = 2;
+    SenaryArray result_data = 3;
+    Dimensional_amplitudeProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Dimensional_amplitude service definition
+service Dimensional_amplitudeService {
+    rpc Create(Dimensional_amplitudeRequest) returns (Dimensional_amplitudeResponse);
+    rpc Process(Dimensional_amplitudeRequest) returns (Dimensional_amplitudeResponse);
+    rpc Validate(Dimensional_amplitudeRequest) returns (Dimensional_amplitudeResponse);
+    rpc Optimize(Dimensional_amplitudeRequest) returns (Dimensional_amplitudeResponse);
+    rpc Integrate(Dimensional_amplitudeRequest) returns (Dimensional_amplitudeResponse);
+}

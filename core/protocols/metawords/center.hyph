@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.center;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Center operation types (senary-mapped 0-5)
+enum CenterOperation {
+    CENTER_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Center processing states (senary-mapped 0-5)
+enum CenterProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Center data types (senary-mapped 0-5)
+enum CenterDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core center messages
+message CenterObject {
+    string object_id = 1;
+    CenterDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    CenterProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message CenterRequest {
+    CenterOperation operation = 1;
+    CenterObject target_object = 2;
+    SenaryArray parameters = 3;
+    CenterProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message CenterResponse {
+    bool success = 1;
+    CenterObject result_object = 2;
+    SenaryArray result_data = 3;
+    CenterProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Center service definition
+service CenterService {
+    rpc Create(CenterRequest) returns (CenterResponse);
+    rpc Process(CenterRequest) returns (CenterResponse);
+    rpc Validate(CenterRequest) returns (CenterResponse);
+    rpc Optimize(CenterRequest) returns (CenterResponse);
+    rpc Integrate(CenterRequest) returns (CenterResponse);
+}

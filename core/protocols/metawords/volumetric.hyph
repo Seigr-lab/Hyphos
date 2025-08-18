@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.volumetric;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Volumetric operation types (senary-mapped 0-5)
+enum VolumetricOperation {
+    VOLUMETRIC_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Volumetric processing states (senary-mapped 0-5)
+enum VolumetricProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Volumetric data types (senary-mapped 0-5)
+enum VolumetricDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core volumetric messages
+message VolumetricObject {
+    string object_id = 1;
+    VolumetricDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    VolumetricProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message VolumetricRequest {
+    VolumetricOperation operation = 1;
+    VolumetricObject target_object = 2;
+    SenaryArray parameters = 3;
+    VolumetricProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message VolumetricResponse {
+    bool success = 1;
+    VolumetricObject result_object = 2;
+    SenaryArray result_data = 3;
+    VolumetricProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Volumetric service definition
+service VolumetricService {
+    rpc Create(VolumetricRequest) returns (VolumetricResponse);
+    rpc Process(VolumetricRequest) returns (VolumetricResponse);
+    rpc Validate(VolumetricRequest) returns (VolumetricResponse);
+    rpc Optimize(VolumetricRequest) returns (VolumetricResponse);
+    rpc Integrate(VolumetricRequest) returns (VolumetricResponse);
+}

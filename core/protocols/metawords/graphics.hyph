@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.graphics;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Graphics operation types (senary-mapped 0-5)
+enum GraphicsOperation {
+    GRAPHICS_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Graphics processing states (senary-mapped 0-5)
+enum GraphicsProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Graphics data types (senary-mapped 0-5)
+enum GraphicsDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core graphics messages
+message GraphicsObject {
+    string object_id = 1;
+    GraphicsDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    GraphicsProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message GraphicsRequest {
+    GraphicsOperation operation = 1;
+    GraphicsObject target_object = 2;
+    SenaryArray parameters = 3;
+    GraphicsProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message GraphicsResponse {
+    bool success = 1;
+    GraphicsObject result_object = 2;
+    SenaryArray result_data = 3;
+    GraphicsProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Graphics service definition
+service GraphicsService {
+    rpc Create(GraphicsRequest) returns (GraphicsResponse);
+    rpc Process(GraphicsRequest) returns (GraphicsResponse);
+    rpc Validate(GraphicsRequest) returns (GraphicsResponse);
+    rpc Optimize(GraphicsRequest) returns (GraphicsResponse);
+    rpc Integrate(GraphicsRequest) returns (GraphicsResponse);
+}

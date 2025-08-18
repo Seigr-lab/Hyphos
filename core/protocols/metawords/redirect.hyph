@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.redirect;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Redirect operation types (senary-mapped 0-5)
+enum RedirectOperation {
+    REDIRECT_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Redirect processing states (senary-mapped 0-5)
+enum RedirectProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Redirect data types (senary-mapped 0-5)
+enum RedirectDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core redirect messages
+message RedirectObject {
+    string object_id = 1;
+    RedirectDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    RedirectProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message RedirectRequest {
+    RedirectOperation operation = 1;
+    RedirectObject target_object = 2;
+    SenaryArray parameters = 3;
+    RedirectProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message RedirectResponse {
+    bool success = 1;
+    RedirectObject result_object = 2;
+    SenaryArray result_data = 3;
+    RedirectProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Redirect service definition
+service RedirectService {
+    rpc Create(RedirectRequest) returns (RedirectResponse);
+    rpc Process(RedirectRequest) returns (RedirectResponse);
+    rpc Validate(RedirectRequest) returns (RedirectResponse);
+    rpc Optimize(RedirectRequest) returns (RedirectResponse);
+    rpc Integrate(RedirectRequest) returns (RedirectResponse);
+}

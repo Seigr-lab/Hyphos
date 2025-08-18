@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.certificate;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Certificate operation types (senary-mapped 0-5)
+enum CertificateOperation {
+    CERTIFICATE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Certificate processing states (senary-mapped 0-5)
+enum CertificateProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Certificate data types (senary-mapped 0-5)
+enum CertificateDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core certificate messages
+message CertificateObject {
+    string object_id = 1;
+    CertificateDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    CertificateProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message CertificateRequest {
+    CertificateOperation operation = 1;
+    CertificateObject target_object = 2;
+    SenaryArray parameters = 3;
+    CertificateProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message CertificateResponse {
+    bool success = 1;
+    CertificateObject result_object = 2;
+    SenaryArray result_data = 3;
+    CertificateProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Certificate service definition
+service CertificateService {
+    rpc Create(CertificateRequest) returns (CertificateResponse);
+    rpc Process(CertificateRequest) returns (CertificateResponse);
+    rpc Validate(CertificateRequest) returns (CertificateResponse);
+    rpc Optimize(CertificateRequest) returns (CertificateResponse);
+    rpc Integrate(CertificateRequest) returns (CertificateResponse);
+}

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.license;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// License operation types (senary-mapped 0-5)
+enum LicenseOperation {
+    LICENSE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// License processing states (senary-mapped 0-5)
+enum LicenseProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// License data types (senary-mapped 0-5)
+enum LicenseDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core license messages
+message LicenseObject {
+    string object_id = 1;
+    LicenseDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    LicenseProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message LicenseRequest {
+    LicenseOperation operation = 1;
+    LicenseObject target_object = 2;
+    SenaryArray parameters = 3;
+    LicenseProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message LicenseResponse {
+    bool success = 1;
+    LicenseObject result_object = 2;
+    SenaryArray result_data = 3;
+    LicenseProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// License service definition
+service LicenseService {
+    rpc Create(LicenseRequest) returns (LicenseResponse);
+    rpc Process(LicenseRequest) returns (LicenseResponse);
+    rpc Validate(LicenseRequest) returns (LicenseResponse);
+    rpc Optimize(LicenseRequest) returns (LicenseResponse);
+    rpc Integrate(LicenseRequest) returns (LicenseResponse);
+}

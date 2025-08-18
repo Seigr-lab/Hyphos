@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.widget;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Widget operation types (senary-mapped 0-5)
+enum WidgetOperation {
+    WIDGET_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Widget processing states (senary-mapped 0-5)
+enum WidgetProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Widget data types (senary-mapped 0-5)
+enum WidgetDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core widget messages
+message WidgetObject {
+    string object_id = 1;
+    WidgetDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    WidgetProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message WidgetRequest {
+    WidgetOperation operation = 1;
+    WidgetObject target_object = 2;
+    SenaryArray parameters = 3;
+    WidgetProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message WidgetResponse {
+    bool success = 1;
+    WidgetObject result_object = 2;
+    SenaryArray result_data = 3;
+    WidgetProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Widget service definition
+service WidgetService {
+    rpc Create(WidgetRequest) returns (WidgetResponse);
+    rpc Process(WidgetRequest) returns (WidgetResponse);
+    rpc Validate(WidgetRequest) returns (WidgetResponse);
+    rpc Optimize(WidgetRequest) returns (WidgetResponse);
+    rpc Integrate(WidgetRequest) returns (WidgetResponse);
+}

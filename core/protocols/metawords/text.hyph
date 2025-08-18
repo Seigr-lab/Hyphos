@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.text;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Text operation types (senary-mapped 0-5)
+enum TextOperation {
+    TEXT_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Text processing states (senary-mapped 0-5)
+enum TextProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Text data types (senary-mapped 0-5)
+enum TextDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core text messages
+message TextObject {
+    string object_id = 1;
+    TextDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    TextProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message TextRequest {
+    TextOperation operation = 1;
+    TextObject target_object = 2;
+    SenaryArray parameters = 3;
+    TextProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message TextResponse {
+    bool success = 1;
+    TextObject result_object = 2;
+    SenaryArray result_data = 3;
+    TextProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Text service definition
+service TextService {
+    rpc Create(TextRequest) returns (TextResponse);
+    rpc Process(TextRequest) returns (TextResponse);
+    rpc Validate(TextRequest) returns (TextResponse);
+    rpc Optimize(TextRequest) returns (TextResponse);
+    rpc Integrate(TextRequest) returns (TextResponse);
+}

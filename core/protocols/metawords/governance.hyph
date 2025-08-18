@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.governance;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Governance operation types (senary-mapped 0-5)
+enum GovernanceOperation {
+    GOVERNANCE_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Governance processing states (senary-mapped 0-5)
+enum GovernanceProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Governance data types (senary-mapped 0-5)
+enum GovernanceDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core governance messages
+message GovernanceObject {
+    string object_id = 1;
+    GovernanceDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    GovernanceProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message GovernanceRequest {
+    GovernanceOperation operation = 1;
+    GovernanceObject target_object = 2;
+    SenaryArray parameters = 3;
+    GovernanceProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message GovernanceResponse {
+    bool success = 1;
+    GovernanceObject result_object = 2;
+    SenaryArray result_data = 3;
+    GovernanceProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Governance service definition
+service GovernanceService {
+    rpc Create(GovernanceRequest) returns (GovernanceResponse);
+    rpc Process(GovernanceRequest) returns (GovernanceResponse);
+    rpc Validate(GovernanceRequest) returns (GovernanceResponse);
+    rpc Optimize(GovernanceRequest) returns (GovernanceResponse);
+    rpc Integrate(GovernanceRequest) returns (GovernanceResponse);
+}

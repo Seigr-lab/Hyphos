@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.undo;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Undo operation types (senary-mapped 0-5)
+enum UndoOperation {
+    UNDO_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Undo processing states (senary-mapped 0-5)
+enum UndoProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Undo data types (senary-mapped 0-5)
+enum UndoDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core undo messages
+message UndoObject {
+    string object_id = 1;
+    UndoDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    UndoProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message UndoRequest {
+    UndoOperation operation = 1;
+    UndoObject target_object = 2;
+    SenaryArray parameters = 3;
+    UndoProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message UndoResponse {
+    bool success = 1;
+    UndoObject result_object = 2;
+    SenaryArray result_data = 3;
+    UndoProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Undo service definition
+service UndoService {
+    rpc Create(UndoRequest) returns (UndoResponse);
+    rpc Process(UndoRequest) returns (UndoResponse);
+    rpc Validate(UndoRequest) returns (UndoResponse);
+    rpc Optimize(UndoRequest) returns (UndoResponse);
+    rpc Integrate(UndoRequest) returns (UndoResponse);
+}

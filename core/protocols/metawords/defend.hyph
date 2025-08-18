@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.defend;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Defend operation types (senary-mapped 0-5)
+enum DefendOperation {
+    DEFEND_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Defend processing states (senary-mapped 0-5)
+enum DefendProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Defend data types (senary-mapped 0-5)
+enum DefendDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core defend messages
+message DefendObject {
+    string object_id = 1;
+    DefendDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    DefendProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message DefendRequest {
+    DefendOperation operation = 1;
+    DefendObject target_object = 2;
+    SenaryArray parameters = 3;
+    DefendProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message DefendResponse {
+    bool success = 1;
+    DefendObject result_object = 2;
+    SenaryArray result_data = 3;
+    DefendProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Defend service definition
+service DefendService {
+    rpc Create(DefendRequest) returns (DefendResponse);
+    rpc Process(DefendRequest) returns (DefendResponse);
+    rpc Validate(DefendRequest) returns (DefendResponse);
+    rpc Optimize(DefendRequest) returns (DefendResponse);
+    rpc Integrate(DefendRequest) returns (DefendResponse);
+}

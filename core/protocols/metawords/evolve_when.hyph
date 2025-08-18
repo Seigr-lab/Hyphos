@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package hyphos.evolve_when;
+
+import "hyphos/base_modules/consciousness_operations.hyph";
+import "hyphos/base_modules/bio_digital_operations.hyph";
+import "hyphos/base_modules/senary_mathematics.hyph";
+import "hyphos/base_modules/energy_operations.hyph";
+import "hyphos/base_modules/protocol_integration.hyph";
+import "seigr_math.proto";
+import "seigr_timestamp.proto";
+
+// Evolve_when operation types (senary-mapped 0-5)
+enum Evolve_whenOperation {
+    EVOLVE_WHEN_UNKNOWN = 0;
+    CREATE = 1;
+    PROCESS = 2;
+    VALIDATE = 3;
+    OPTIMIZE = 4;
+    INTEGRATE = 5;
+}
+
+// Evolve_when processing states (senary-mapped 0-5)
+enum Evolve_whenProcessingState {
+    STATE_IDLE = 0;
+    STATE_ACTIVE = 1;
+    STATE_PROCESSING = 2;
+    STATE_OPTIMIZING = 3;
+    STATE_INTEGRATING = 4;
+    STATE_COMPLETE = 5;
+}
+
+// Evolve_when data types (senary-mapped 0-5)
+enum Evolve_whenDataType {
+    DATA_UNKNOWN = 0;
+    DATA_INPUT = 1;
+    DATA_OUTPUT = 2;
+    DATA_INTERMEDIATE = 3;
+    DATA_METADATA = 4;
+    DATA_RESULT = 5;
+}
+
+// Core evolve_when messages
+message Evolve_whenObject {
+    string object_id = 1;
+    Evolve_whenDataType data_type = 2;
+    SenaryArray data_payload = 3;
+    Evolve_whenProcessingState state = 4;
+    SenaryTimestamp created_at = 5;
+}
+
+message Evolve_whenRequest {
+    Evolve_whenOperation operation = 1;
+    Evolve_whenObject target_object = 2;
+    SenaryArray parameters = 3;
+    Evolve_whenProcessingState desired_state = 4;
+    SenaryTimestamp timestamp = 5;
+}
+
+message Evolve_whenResponse {
+    bool success = 1;
+    Evolve_whenObject result_object = 2;
+    SenaryArray result_data = 3;
+    Evolve_whenProcessingState new_state = 4;
+    string error_message = 5;
+}
+
+// Evolve_when service definition
+service Evolve_whenService {
+    rpc Create(Evolve_whenRequest) returns (Evolve_whenResponse);
+    rpc Process(Evolve_whenRequest) returns (Evolve_whenResponse);
+    rpc Validate(Evolve_whenRequest) returns (Evolve_whenResponse);
+    rpc Optimize(Evolve_whenRequest) returns (Evolve_whenResponse);
+    rpc Integrate(Evolve_whenRequest) returns (Evolve_whenResponse);
+}
