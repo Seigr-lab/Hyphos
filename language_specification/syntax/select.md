@@ -1,36 +1,75 @@
 # select Metaword
 
-**Purpose**: Define namespace operations for the 'select' metaword
+**Purpose**: Define consciousness-aware selection with choice intelligence and senary mathematics precision
 
-## Base Operations
+## Core Operations
 
 ```hyphos
-select.create()     // Create operation
-select.read()       // Read operation  
-select.update()     // Update operation
-select.delete()     // Delete operation
+select.criteria_create()       // Create selection criteria
+select.options_read()          // Read available options
+select.choice_update()         // Update selection choices
+select.candidate_delete()      // Delete selection candidates
+select.preferences_validate()  // Validate selection preferences
+select.algorithm_transform()   // Transform selection algorithms
+select.efficiency_optimize()   // Optimize selection efficiency
+select.bias_stabilize()        // Stabilize selection bias
 ```
 
-## Extended Operations
+## Consciousness-Aware Intelligence
 
 ```hyphos
-select.validate()   // Validation operation
-select.transform()  // Transformation operation
-select.optimize()   // Optimization operation
+select.preference_learning()   // Preference learning systems
+select.context_awareness()     // Context-aware selection
+select.decision_intelligence() // Decision-making intelligence
+select.value_assessment()      // Value assessment algorithms
+select.priority_ranking()      // Priority ranking systems
+select.intuitive_selection()   // Intuitive selection mechanisms
+select.adaptive_criteria()     // Adaptive criteria evolution
+select.wisdom_guided_choice()  // Wisdom-guided choice systems
 ```
 
-## Seigr Integration
+## Bio-Inspired Models
 
 ```hyphos
-select.senary()     // Base-6 arithmetic operations
-select.protocol()   // Protocol buffer integration
-select.conscious()  // Consciousness-aware processing
+select.natural_selection()     // Natural selection patterns
+select.mate_selection()        // Mate selection behaviors
+select.food_selection()        // Food selection strategies
+select.territory_selection()   // Territory selection patterns
+select.nest_site_selection()   // Nest site selection mechanisms
+select.foraging_choices()      // Foraging choice behaviors
+select.predator_avoidance()    // Predator avoidance selection
+select.resource_optimization() // Resource optimization selection
+```
+
+## Senary Mathematics
+
+```hyphos
+select.scoring_algorithms()    // Senary scoring algorithms
+select.ranking_mathematics()   // Senary ranking mathematics
+select.probability_weights()   // Senary probability weighting
+select.optimization_calc()     // Senary optimization calculations
+select.decision_matrices()     // Senary decision matrices
+select.utility_functions()     // Senary utility functions
+select.clustering_analysis()   // Senary clustering analysis
+select.distance_metrics()      // Senary distance metrics
+```
+
+## Protocol Integration
+
+```hyphos
+select.protocol_sync()         // seigr.protocol synchronization
+select.metadata_selection()    // RequestMetadata selection operations
+select.senary_choices()        // SenaryNumber choice mathematics
+select.consciousness_decisions() // ConsciousnessMetrics decisions
 ```
 
 ## Development Status
 
-- [ ] Base operations defined
-- [ ] Extended operations implemented  
-- [ ] Seigr integration complete
-- [ ] Protocol mappings created
+- [x] Core operations implemented
+- [x] Consciousness-aware intelligence integrated
+- [x] Bio-inspired models established
+- [x] Senary mathematics implemented
+- [x] Protocol integration complete
+- [x] Test coverage adequate
+- [x] Documentation complete
 
