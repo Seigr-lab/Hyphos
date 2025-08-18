@@ -6,6 +6,8 @@ Bio-inspired programming language specification.
 
 Hyphos is a programming language designed for bio-inspired computing with native consciousness-aware operations, senary mathematics, and biological network interfaces.
 
+**File Extension**: `.hyph`
+
 ## Features
 
 - Consciousness-aware programming constructs
