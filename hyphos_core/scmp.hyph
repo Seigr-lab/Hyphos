@@ -1,0 +1,1668 @@
+// ╔══════════════════════════════════════════════════════════════╗
+// ║                     HYPHOS SCMP METAWORD                    ║
+// ║            Seigr Capsule Management Protocol Engine         ║
+// ╚══════════════════════════════════════════════════════════════╝
+
+hypervisor scmp_metaword {
+    domain: "communication",
+    class: "core_metaword",
+    genesis_state: "adaptive",
+    protocol_version: "4.0.0",
+    energy_awareness: true,
+    secure_transport: true
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                   SENARY COMMUNICATION CONSTANTS
+// ═══════════════════════════════════════════════════════════════
+
+constant SENARY_MESSAGE_PRIORITIES = [1, 2, 3, 4, 5, 6]          // Base-6 priority levels
+constant MESSAGE_RETENTION_CYCLES = 216                          // 6^3 message retention
+constant TRANSPORT_RETRY_ATTEMPTS = 6                           // Senary retry count
+constant ENCRYPTION_ROUNDS = [3, 6, 12, 36]                     // Senary encryption levels
+constant QUEUE_BATCH_SIZE = 36                                  // 6^2 batch processing
+constant SYNC_INTERVALS = [6, 12, 36, 216]                      // Base-6 sync timing
+constant OFFLINE_STORAGE_LIMIT = 1296                           // 6^4 offline message limit
+
+constant MESSAGE_TYPES = {
+    "command": 1,           // Command execution
+    "data": 2,             // Data transfer
+    "sync_request": 3,     // Synchronization request
+    "status_update": 4,    // Status reporting
+    "emergency": 5,        // Emergency broadcast
+    "heartbeat": 6         // System heartbeat
+}
+
+constant TRANSPORT_CHANNELS = {
+    "direct_network": 1,   // Direct IP network
+    "hyphen_network": 2,   // Seigr hyphen network
+    "ipfs": 3,            // IPFS decentralized
+    "usb_offline": 4,     // USB offline transfer
+    "quantum_tunnel": 5,   // Quantum-encrypted tunnel
+    "emergency": 6        // Emergency fallback
+}
+
+constant ACKNOWLEDGMENT_MODES = {
+    "none": 0,            // No acknowledgment
+    "simple": 1,          // Simple receipt confirmation
+    "verified": 2,        // Cryptographic verification
+    "consensus": 3        // Multi-node consensus
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                    SECURE MESSAGE CAPSULE
+// ═══════════════════════════════════════════════════════════════
+
+entity MessageCapsule {
+    property sender_id: ""
+    property encryption_level: "standard"
+    property signature_key: null
+    property verification_manager: null
+    
+    method initialize_capsule(sender_id) {
+        // Initialize secure message capsule with cryptographic capabilities
+        self.sender_id = sender_id
+        self.encryption_level = "standard"
+        self.verification_manager = identity.get_verification_manager(sender_id)
+        self.signature_key = hypha_crypt.generate_signature_key(sender_id)
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP",
+            message: "MessageCapsule initialized for " + sender_id
+        )
+        
+        return true
+    }
+    
+    method create_capsule(message_type, recipient_id, payload, priority, requires_ack) {
+        // Create secure, encrypted message capsule
+        if not self.verify_recipient_identity(recipient_id) {
+            protocol.log_alert(
+                type: "SCMP_INVALID_RECIPIENT",
+                severity: "ERROR",
+                message: "Invalid recipient identity: " + recipient_id
+            )
+            return null
+        }
+        
+        // Generate unique capsule ID using senary hash
+        capsule_id = self.generate_capsule_id(self.sender_id, recipient_id, payload)
+        
+        // Create capsule structure
+        capsule = {
+            "capsule_id": capsule_id,
+            "message_type": message_type,
+            "sender_id": self.sender_id,
+            "recipient_id": recipient_id,
+            "priority": priority,
+            "requires_ack": requires_ack,
+            "timestamp": sidereal_time.now(),
+            "protocol": "HYPHOS_SCMP",
+            "energy_level": energy.get_current_level(),
+            "consciousness_level": consciousness.get_current_level()
+        }
+        
+        // Encrypt payload with energy-aware encryption
+        encryption_rounds = self.calculate_encryption_rounds()
+        encrypted_payload = hypha_crypt.encrypt(
+            payload,
+            recipient_key: recipient_id,
+            rounds: encryption_rounds,
+            sender_id: self.sender_id
+        )
+        
+        capsule.encrypted_payload = encrypted_payload
+        
+        // Create cryptographic signature
+        capsule_signature = hypha_crypt.sign_data(
+            capsule,
+            self.signature_key
+        )
+        capsule.signature = capsule_signature
+        
+        // Add sender verification
+        capsule.sender_verification = self.verification_manager.get_senary_id()
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP",
+            message: "Secure capsule created: " + capsule_id
+        )
+        
+        return capsule
+    }
+    
+    method verify_and_decrypt(capsule) {
+        // Verify capsule authenticity and decrypt payload
+        if not self.verify_capsule_signature(capsule) {
+            protocol.log_alert(
+                type: "SCMP_SIGNATURE_FAILED",
+                severity: "ERROR",
+                message: "Capsule signature verification failed: " + capsule.capsule_id
+            )
+            return null
+        }
+        
+        if not self.verify_sender_identity(capsule.sender_id) {
+            protocol.log_alert(
+                type: "SCMP_SENDER_INVALID",
+                severity: "ERROR",
+                message: "Invalid sender identity: " + capsule.sender_id
+            )
+            return null
+        }
+        
+        // Decrypt payload
+        try {
+            decrypted_payload = hypha_crypt.decrypt(
+                capsule.encrypted_payload,
+                recipient_key: capsule.recipient_id,
+                sender_id: capsule.sender_id
+            )
+            
+            if decrypted_payload {
+                protocol.log_audit_event(
+                    severity: "INFO",
+                    category: "SCMP",
+                    message: "Capsule decrypted successfully: " + capsule.capsule_id
+                )
+                
+                return decrypted_payload
+            }
+            
+        } catch error {
+            protocol.log_alert(
+                type: "SCMP_DECRYPTION_FAILED",
+                severity: "ERROR",
+                message: "Decryption failed for capsule: " + capsule.capsule_id
+            )
+        }
+        
+        return null
+    }
+    
+    method calculate_encryption_rounds() {
+        // Calculate encryption rounds based on energy and threat levels
+        current_energy = energy.get_current_level()
+        threat_level = immune_system.get_current_threat_level()
+        
+        if current_energy <= 2 {  // Low energy
+            return ENCRYPTION_ROUNDS[0]  // 3 rounds
+        } else if threat_level >= 4 {  // High threat
+            return ENCRYPTION_ROUNDS[3]  // 36 rounds
+        } else if current_energy >= 4 {  // High energy
+            return ENCRYPTION_ROUNDS[2]  // 12 rounds
+        } else {
+            return ENCRYPTION_ROUNDS[1]  // 6 rounds (standard)
+        }
+    }
+    
+    method generate_capsule_id(sender_id, recipient_id, payload) {
+        // Generate unique capsule ID using senary hash
+        hash_input = sender_id + recipient_id + payload + sidereal_time.now()
+        return senary.hash(hash_input, length: 12)  // 12-character senary hash
+    }
+    
+    method verify_capsule_signature(capsule) {
+        // Verify cryptographic signature of capsule
+        return hypha_crypt.verify_signature(
+            capsule,
+            capsule.signature,
+            capsule.sender_id
+        )
+    }
+    
+    method verify_sender_identity(sender_id) {
+        // Verify sender identity through verification manager
+        return identity.verify_identity_format(sender_id)
+    }
+    
+    method verify_recipient_identity(recipient_id) {
+        // Verify recipient identity through verification manager
+        return identity.verify_identity_format(recipient_id)
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                    MESSAGE HANDLER ENGINE
+// ═══════════════════════════════════════════════════════════════
+
+entity MessageHandler {
+    property node_id: ""
+    property message_capsule: null
+    property routing_table: {}
+    property handler_registry: {}
+    
+    method initialize_handler(node_id) {
+        // Initialize message handler with routing capabilities
+        self.node_id = node_id
+        self.message_capsule = MessageCapsule()
+        self.message_capsule.initialize_capsule(node_id)
+        self.routing_table = {}
+        self.handler_registry = {}
+        
+        // Register default message handlers
+        self.register_default_handlers()
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP",
+            message: "MessageHandler initialized for node " + node_id
+        )
+        
+        return true
+    }
+    
+    method register_default_handlers() {
+        // Register default message type handlers
+        self.register_message_handler("command", self.handle_command_message)
+        self.register_message_handler("data", self.handle_data_message)
+        self.register_message_handler("sync_request", self.handle_sync_request)
+        self.register_message_handler("status_update", self.handle_status_update)
+        self.register_message_handler("emergency", self.handle_emergency_message)
+        self.register_message_handler("heartbeat", self.handle_heartbeat_message)
+    }
+    
+    method register_message_handler(message_type, handler_function) {
+        // Register custom message handler for specific type
+        self.handler_registry[message_type] = handler_function
+        
+        protocol.log_event("Registered handler for message type: " + message_type)
+    }
+    
+    method process_incoming_message(capsule) {
+        // Process incoming SCMP message with security validation
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP",
+            message: "Processing incoming message: " + capsule.capsule_id
+        )
+        
+        // Verify sender identity
+        if not identity.verify_identity_format(capsule.sender_id) {
+            protocol.log_alert(
+                type: "SCMP_UNAUTHORIZED_SENDER",
+                severity: "ERROR",
+                message: "Unauthorized sender: " + capsule.sender_id
+            )
+            return self.generate_error_response(capsule, "Unauthorized sender")
+        }
+        
+        // Verify recipient (should be this node)
+        if capsule.recipient_id != self.node_id {
+            protocol.log_alert(
+                type: "SCMP_WRONG_RECIPIENT",
+                severity: "WARNING",
+                message: "Message not for this node: " + capsule.recipient_id
+            )
+            return self.generate_error_response(capsule, "Incorrect recipient")
+        }
+        
+        // Check consciousness compatibility
+        if not self.check_consciousness_compatibility(capsule) {
+            protocol.log_alert(
+                type: "SCMP_CONSCIOUSNESS_MISMATCH",
+                severity: "WARNING",
+                message: "Consciousness level mismatch for capsule: " + capsule.capsule_id
+            )
+        }
+        
+        // Decrypt and verify message
+        decrypted_payload = self.message_capsule.verify_and_decrypt(capsule)
+        
+        if not decrypted_payload {
+            return self.generate_error_response(capsule, "Decryption failed")
+        }
+        
+        // Route message by type
+        response = self.route_message_by_type(capsule, decrypted_payload)
+        
+        // Send acknowledgment if required
+        if capsule.requires_ack {
+            ack_response = self.generate_acknowledgment(capsule)
+            return ack_response
+        }
+        
+        return response
+    }
+    
+    method process_outgoing_message(message_type, recipient_id, payload, priority, requires_ack) {
+        // Process outgoing SCMP message with security encapsulation
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP",
+            message: "Preparing outgoing message to " + recipient_id
+        )
+        
+        # Validate message parameters
+        if not message_type in MESSAGE_TYPES {
+            protocol.log_alert(
+                type: "SCMP_INVALID_MESSAGE_TYPE",
+                severity: "ERROR",
+                message: "Invalid message type: " + message_type
+            )
+            return null
+        }
+        
+        if priority < 1 or priority > 6 {
+            priority = 3  // Default senary priority
+        }
+        
+        # Use Noesis intelligence for optimal message configuration
+        optimized_config = noesis.optimize_message_config(
+            message_type,
+            recipient_id,
+            len(payload),
+            priority,
+            energy.get_current_level()
+        )
+        
+        # Create encrypted capsule
+        capsule = self.message_capsule.create_capsule(
+            message_type,
+            recipient_id,
+            payload,
+            optimized_config.priority,
+            requires_ack
+        )
+        
+        if capsule {
+            protocol.log_audit_event(
+                severity: "INFO",
+                category: "SCMP",
+                message: "Outgoing message created: " + capsule.capsule_id
+            )
+            
+            return capsule
+        } else {
+            protocol.log_alert(
+                type: "SCMP_CAPSULE_CREATION_FAILED",
+                severity: "ERROR",
+                message: "Failed to create message capsule"
+            )
+            return null
+        }
+    }
+    
+    method route_message_by_type(capsule, decrypted_payload) {
+        // Route message to appropriate handler based on type
+        message_type = capsule.message_type
+        
+        if message_type in self.handler_registry {
+            handler = self.handler_registry[message_type]
+            return handler(capsule, decrypted_payload)
+        } else {
+            protocol.log_alert(
+                type: "SCMP_UNKNOWN_MESSAGE_TYPE",
+                severity: "WARNING",
+                message: "Unknown message type: " + message_type
+            )
+            return self.generate_error_response(capsule, "Unknown message type")
+        }
+    }
+    
+    method handle_command_message(capsule, payload) {
+        // Handle command execution messages
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Command",
+            message: "Executing command from " + capsule.sender_id
+        )
+        
+        # Parse command
+        command = dot_seigr.parse_command(payload)
+        
+        if command.valid {
+            # Execute command through consciousness system
+            result = consciousness.execute_command(command, sender: capsule.sender_id)
+            
+            return {
+                "success": result.success,
+                "output": result.output,
+                "timestamp": sidereal_time.now()
+            }
+        } else {
+            return self.generate_error_response(capsule, "Invalid command format")
+        }
+    }
+    
+    method handle_data_message(capsule, payload) {
+        // Handle data transfer messages
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Data",
+            message: "Received data: " + len(payload) + " bytes"
+        )
+        
+        # Store data using dot_seigr system
+        storage_result = dot_seigr.store_data(
+            payload,
+            sender: capsule.sender_id,
+            timestamp: capsule.timestamp
+        )
+        
+        if storage_result.success {
+            return {
+                "success": true,
+                "storage_id": storage_result.id,
+                "timestamp": sidereal_time.now()
+            }
+        } else {
+            return self.generate_error_response(capsule, "Data storage failed")
+        }
+    }
+    
+    method handle_sync_request(capsule, payload) {
+        // Handle synchronization requests
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Sync",
+            message: "Processing sync request from " + capsule.sender_id
+        )
+        
+        # Parse sync request
+        sync_request = dot_seigr.parse_sync_request(payload)
+        
+        if sync_request.valid {
+            # Execute synchronization
+            sync_result = replication.synchronize_with_node(
+                capsule.sender_id,
+                sync_request.segments
+            )
+            
+            return {
+                "success": sync_result.success,
+                "synchronized_segments": sync_result.segments,
+                "timestamp": sidereal_time.now()
+            }
+        } else {
+            return self.generate_error_response(capsule, "Invalid sync request")
+        }
+    }
+    
+    method handle_status_update(capsule, payload) {
+        // Handle node status updates
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Status",
+            message: "Status update from " + capsule.sender_id
+        )
+        
+        # Parse status update
+        status = dot_seigr.parse_status_update(payload)
+        
+        # Update routing table with node status
+        self.routing_table[capsule.sender_id] = {
+            "status": status,
+            "timestamp": capsule.timestamp,
+            "energy_level": status.energy_level or 3,
+            "consciousness_level": status.consciousness_level or 1
+        }
+        
+        return {
+            "success": true,
+            "acknowledged": true,
+            "timestamp": sidereal_time.now()
+        }
+    }
+    
+    method handle_emergency_message(capsule, payload) {
+        // Handle emergency broadcast messages
+        protocol.log_alert(
+            type: "SCMP_EMERGENCY_MESSAGE",
+            severity: "CRITICAL",
+            message: "Emergency message from " + capsule.sender_id
+        )
+        
+        # Parse emergency message
+        emergency = dot_seigr.parse_emergency_message(payload)
+        
+        # Forward to immune system for immediate response
+        immune_system.handle_emergency_broadcast(
+            emergency,
+            sender: capsule.sender_id
+        )
+        
+        # Notify consciousness system
+        consciousness.alert_emergency(emergency, sender: capsule.sender_id)
+        
+        return {
+            "success": true,
+            "emergency_handled": true,
+            "timestamp": sidereal_time.now()
+        }
+    }
+    
+    method handle_heartbeat_message(capsule, payload) {
+        // Handle system heartbeat messages
+        protocol.log_event("Heartbeat from " + capsule.sender_id)
+        
+        # Update node health status
+        self.routing_table[capsule.sender_id] = {
+            "last_heartbeat": sidereal_time.now(),
+            "energy_level": capsule.energy_level,
+            "consciousness_level": capsule.consciousness_level,
+            "status": "active"
+        }
+        
+        return {
+            "success": true,
+            "heartbeat_acknowledged": true,
+            "timestamp": sidereal_time.now()
+        }
+    }
+    
+    method generate_acknowledgment(capsule) {
+        // Generate acknowledgment response for message
+        ack = {
+            "capsule_id": capsule.capsule_id,
+            "recipient_id": capsule.recipient_id,
+            "success": true,
+            "received_at": sidereal_time.now(),
+            "acknowledged_by": self.node_id
+        }
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP",
+            message: "Acknowledgment sent for " + capsule.capsule_id
+        )
+        
+        return ack
+    }
+    
+    method generate_error_response(capsule, error_message) {
+        // Generate error response for failed message processing
+        error_response = {
+            "capsule_id": capsule.capsule_id,
+            "error_code": "SCMP_ERROR",
+            "description": error_message,
+            "occurred_at": sidereal_time.now(),
+            "node_id": self.node_id
+        }
+        
+        protocol.log_alert(
+            type: "SCMP_ERROR_RESPONSE",
+            severity: "ERROR",
+            message: "Error response for " + capsule.capsule_id + ": " + error_message
+        )
+        
+        return error_response
+    }
+    
+    method check_consciousness_compatibility(capsule) {
+        // Check consciousness level compatibility between nodes
+        local_level = consciousness.get_current_level()
+        remote_level = capsule.consciousness_level or 1
+        
+        # Allow communication within reasonable consciousness range
+        level_diff = abs(local_level - remote_level)
+        return level_diff <= 2  // Allow 2-level difference
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                    PRIORITY MESSAGE QUEUE
+// ═══════════════════════════════════════════════════════════════
+
+entity MessageQueue {
+    property node_id: ""
+    property priority_queue: []
+    property pending_messages: []
+    property storage_file: "scmp_queue.cbor"
+    property queue_lock: null
+    property processing_thread: null
+    
+    method initialize_queue(node_id) {
+        // Initialize priority message queue with persistent storage
+        self.node_id = node_id
+        self.priority_queue = []
+        self.pending_messages = []
+        self.queue_lock = system.create_lock()
+        
+        # Load pending messages from storage
+        self.load_pending_messages()
+        
+        # Start background processing thread
+        self.start_queue_processor()
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Queue",
+            message: "Message queue initialized for " + node_id
+        )
+        
+        return true
+    }
+    
+    method add_message_to_queue(capsule) {
+        // Add message to priority queue for processing
+        priority = capsule.priority or 3
+        
+        with self.queue_lock {
+            # Insert message in priority order (senary priorities 1-6)
+            inserted = false
+            for i in range(len(self.priority_queue)) {
+                if self.priority_queue[i].priority > priority {
+                    self.priority_queue.insert(i, capsule)
+                    inserted = true
+                    break
+                }
+            }
+            
+            if not inserted {
+                self.priority_queue.append(capsule)
+            }
+            
+            # Save to persistent storage
+            self.save_pending_messages()
+        }
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Queue",
+            message: "Message queued: " + capsule.capsule_id + " (Priority: " + priority + ")"
+        )
+    }
+    
+    method process_queue() {
+        // Process queued messages asynchronously
+        while true {
+            if len(self.priority_queue) > 0 {
+                capsule = null
+                
+                with self.queue_lock {
+                    if len(self.priority_queue) > 0 {
+                        capsule = self.priority_queue.pop(0)  // Get highest priority
+                    }
+                }
+                
+                if capsule {
+                    # Attempt to send message via transport layer
+                    send_result = transport_layer.send_message(capsule)
+                    
+                    if send_result.success {
+                        protocol.log_audit_event(
+                            severity: "INFO",
+                            category: "SCMP Queue",
+                            message: "Message sent successfully: " + capsule.capsule_id
+                        )
+                    } else {
+                        # Re-queue message if sending failed
+                        if capsule.retry_count < TRANSPORT_RETRY_ATTEMPTS {
+                            capsule.retry_count = (capsule.retry_count or 0) + 1
+                            self.add_message_to_queue(capsule)
+                            
+                            protocol.log_alert(
+                                type: "SCMP_MESSAGE_RETRY",
+                                severity: "WARNING",
+                                message: "Re-queuing message: " + capsule.capsule_id
+                            )
+                        } else {
+                            protocol.log_alert(
+                                type: "SCMP_MESSAGE_FAILED",
+                                severity: "ERROR",
+                                message: "Message failed after max retries: " + capsule.capsule_id
+                            )
+                        }
+                    }
+                }
+            }
+            
+            # Senary timing - sleep 6 seconds between processing cycles
+            sidereal_time.sleep(6)
+        }
+    }
+    
+    method start_queue_processor() {
+        // Start background thread for queue processing
+        self.processing_thread = system.create_thread(self.process_queue)
+        self.processing_thread.start()
+    }
+    
+    method save_pending_messages() {
+        // Save pending messages to persistent CBOR storage
+        try {
+            messages_to_store = []
+            
+            for capsule in self.priority_queue {
+                message_data = {
+                    "priority": capsule.priority,
+                    "capsule": dot_seigr.serialize_capsule(capsule),
+                    "timestamp": capsule.timestamp,
+                    "retry_count": capsule.retry_count or 0
+                }
+                messages_to_store.append(message_data)
+            }
+            
+            dot_seigr.write_cbor_file(self.storage_file, messages_to_store)
+            
+            protocol.log_event("Pending messages saved to storage")
+            
+        } catch error {
+            protocol.log_alert(
+                type: "SCMP_STORAGE_ERROR",
+                severity: "ERROR",
+                message: "Failed to save pending messages: " + error
+            )
+        }
+    }
+    
+    method load_pending_messages() {
+        // Load pending messages from persistent storage
+        if not dot_seigr.file_exists(self.storage_file) {
+            return
+        }
+        
+        try {
+            stored_messages = dot_seigr.read_cbor_file(self.storage_file)
+            
+            with self.queue_lock {
+                for message_data in stored_messages {
+                    capsule = dot_seigr.deserialize_capsule(message_data.capsule)
+                    capsule.retry_count = message_data.retry_count
+                    
+                    self.priority_queue.append(capsule)
+                }
+                
+                # Sort by priority
+                self.priority_queue.sort(key: lambda x: x.priority)
+            }
+            
+            protocol.log_audit_event(
+                severity: "INFO",
+                category: "SCMP Queue",
+                message: "Loaded " + len(stored_messages) + " pending messages"
+            )
+            
+        } catch error {
+            protocol.log_alert(
+                type: "SCMP_LOAD_ERROR",
+                severity: "ERROR",
+                message: "Failed to load pending messages: " + error
+            )
+        }
+    }
+    
+    method flush_pending_messages() {
+        // Attempt to flush all pending messages when connectivity restored
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Queue",
+            message: "Attempting to flush pending messages"
+        )
+        
+        flushed_count = 0
+        failed_count = 0
+        
+        with self.queue_lock {
+            temp_queue = []
+            
+            for capsule in self.priority_queue {
+                send_result = transport_layer.send_message(capsule)
+                
+                if send_result.success {
+                    flushed_count = flushed_count + 1
+                    protocol.log_event("Message flushed: " + capsule.capsule_id)
+                } else {
+                    failed_count = failed_count + 1
+                    temp_queue.append(capsule)
+                }
+            }
+            
+            self.priority_queue = temp_queue
+        }
+        
+        self.save_pending_messages()
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Queue",
+            message: "Flush complete: " + flushed_count + " sent, " + failed_count + " failed"
+        )
+    }
+    
+    method get_queue_status() {
+        // Get current queue status and statistics
+        with self.queue_lock {
+            priority_counts = {}
+            for i in range(1, 7) {
+                priority_counts[i] = 0
+            }
+            
+            for capsule in self.priority_queue {
+                priority = capsule.priority or 3
+                priority_counts[priority] = priority_counts[priority] + 1
+            }
+            
+            return {
+                "total_messages": len(self.priority_queue),
+                "priority_distribution": priority_counts,
+                "oldest_message": self.priority_queue[0].timestamp if len(self.priority_queue) > 0 else null,
+                "queue_health": "healthy" if len(self.priority_queue) < QUEUE_BATCH_SIZE else "congested"
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                    MULTI-TRANSPORT LAYER
+// ═══════════════════════════════════════════════════════════════
+
+entity TransportLayer {
+    property node_id: ""
+    property available_transports: {}
+    property transport_health: {}
+    property fallback_chain: []
+    
+    method initialize_transport(node_id) {
+        // Initialize multi-channel transport layer
+        self.node_id = node_id
+        self.available_transports = {}
+        self.transport_health = {}
+        
+        # Initialize transport channels
+        self.initialize_transport_channels()
+        
+        # Set up fallback chain
+        self.fallback_chain = [
+            "direct_network",
+            "hyphen_network", 
+            "ipfs",
+            "usb_offline",
+            "quantum_tunnel",
+            "emergency"
+        ]
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Transport",
+            message: "Transport layer initialized for " + node_id
+        )
+        
+        return true
+    }
+    
+    method initialize_transport_channels() {
+        // Initialize all available transport channels
+        self.available_transports = {
+            "direct_network": network.get_direct_transport(),
+            "hyphen_network": network.get_hyphen_transport(),
+            "ipfs": dot_seigr.get_ipfs_transport(),
+            "usb_offline": hardware.get_usb_transport(),
+            "quantum_tunnel": hypha_crypt.get_quantum_transport(),
+            "emergency": network.get_emergency_transport()
+        }
+        
+        # Check health of each transport
+        for transport_name, transport in self.available_transports.items() {
+            health = transport.check_health() if transport else false
+            self.transport_health[transport_name] = health
+        }
+    }
+    
+    method send_message(capsule) {
+        // Send message using optimal available transport
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Transport",
+            message: "Sending message: " + capsule.capsule_id
+        )
+        
+        # Verify sender authorization
+        if not identity.verify_identity_format(capsule.sender_id) {
+            protocol.log_alert(
+                type: "SCMP_UNAUTHORIZED_SENDER",
+                severity: "ERROR",
+                message: "Unauthorized sender: " + capsule.sender_id
+            )
+            return {"success": false, "error": "Unauthorized sender"}
+        }
+        
+        # Use Noesis intelligence to select optimal transport
+        optimal_transport = noesis.select_optimal_transport(
+            capsule,
+            self.transport_health,
+            energy.get_current_level()
+        )
+        
+        # Try optimal transport first
+        if optimal_transport in self.available_transports {
+            result = self.send_via_transport(capsule, optimal_transport)
+            if result.success {
+                return result
+            }
+        }
+        
+        # Try fallback chain if optimal transport failed
+        for transport_name in self.fallback_chain {
+            if transport_name != optimal_transport and transport_name in self.available_transports {
+                if self.transport_health[transport_name] {
+                    result = self.send_via_transport(capsule, transport_name)
+                    if result.success {
+                        protocol.log_event("Message sent via fallback: " + transport_name)
+                        return result
+                    }
+                }
+            }
+        }
+        
+        # All transports failed
+        protocol.log_alert(
+            type: "SCMP_TRANSPORT_FAILED",
+            severity: "ERROR",
+            message: "All transports failed for message: " + capsule.capsule_id
+        )
+        
+        return {"success": false, "error": "All transports failed"}
+    }
+    
+    method send_via_transport(capsule, transport_name) {
+        // Send message via specific transport channel
+        transport = self.available_transports[transport_name]
+        
+        if not transport {
+            return {"success": false, "error": "Transport not available"}
+        }
+        
+        try {
+            if transport_name == "direct_network" {
+                return self.send_via_network(capsule, transport)
+            } else if transport_name == "hyphen_network" {
+                return self.send_via_hyphen_network(capsule, transport)
+            } else if transport_name == "ipfs" {
+                return self.send_via_ipfs(capsule, transport)
+            } else if transport_name == "usb_offline" {
+                return self.send_via_usb(capsule, transport)
+            } else if transport_name == "quantum_tunnel" {
+                return self.send_via_quantum(capsule, transport)
+            } else if transport_name == "emergency" {
+                return self.send_via_emergency(capsule, transport)
+            }
+            
+        } catch error {
+            protocol.log_alert(
+                type: "SCMP_TRANSPORT_ERROR",
+                severity: "ERROR",
+                message: "Transport error (" + transport_name + "): " + error
+            )
+            
+            # Mark transport as unhealthy
+            self.transport_health[transport_name] = false
+        }
+        
+        return {"success": false, "error": "Transport method failed"}
+    }
+    
+    method send_via_network(capsule, transport) {
+        // Send via direct network connection
+        send_result = transport.send_direct(
+            capsule.recipient_id,
+            dot_seigr.serialize_capsule(capsule)
+        )
+        
+        if send_result.success {
+            protocol.log_event("Message sent via direct network")
+            return {"success": true, "transport": "direct_network"}
+        }
+        
+        return {"success": false, "error": "Network send failed"}
+    }
+    
+    method send_via_hyphen_network(capsule, transport) {
+        // Send via Seigr hyphen network
+        send_result = transport.send_via_hyphens(
+            capsule.recipient_id,
+            dot_seigr.serialize_capsule(capsule)
+        )
+        
+        if send_result.success {
+            protocol.log_event("Message sent via hyphen network")
+            return {"success": true, "transport": "hyphen_network"}
+        }
+        
+        return {"success": false, "error": "Hyphen network send failed"}
+    }
+    
+    method send_via_ipfs(capsule, transport) {
+        // Send via IPFS decentralized storage
+        try {
+            capsule_data = dot_seigr.serialize_capsule(capsule)
+            ipfs_hash = transport.upload_data(capsule_data)
+            
+            if ipfs_hash {
+                # Notify recipient about IPFS location
+                notification_result = network.notify_ipfs_message(
+                    capsule.recipient_id,
+                    ipfs_hash,
+                    capsule.capsule_id
+                )
+                
+                protocol.log_audit_event(
+                    severity: "INFO",
+                    category: "SCMP Transport",
+                    message: "Message stored on IPFS: " + ipfs_hash
+                )
+                
+                return {"success": true, "transport": "ipfs", "ipfs_hash": ipfs_hash}
+            }
+            
+        } catch error {
+            protocol.log_error("IPFS upload failed: " + error)
+        }
+        
+        return {"success": false, "error": "IPFS upload failed"}
+    }
+    
+    method send_via_usb(capsule, transport) {
+        // Send via USB offline storage
+        usb_path = transport.get_active_usb_path()
+        
+        if not usb_path {
+            return {"success": false, "error": "No USB device detected"}
+        }
+        
+        try {
+            capsule_data = dot_seigr.serialize_capsule(capsule)
+            file_path = usb_path + "/" + capsule.capsule_id + ".scmp"
+            
+            dot_seigr.write_file(file_path, capsule_data)
+            
+            protocol.log_audit_event(
+                severity: "INFO",
+                category: "SCMP Transport",
+                message: "Message stored on USB: " + file_path
+            )
+            
+            return {"success": true, "transport": "usb_offline", "file_path": file_path}
+            
+        } catch error {
+            protocol.log_error("USB storage failed: " + error)
+        }
+        
+        return {"success": false, "error": "USB storage failed"}
+    }
+    
+    method send_via_quantum(capsule, transport) {
+        // Send via quantum-encrypted tunnel
+        quantum_result = transport.send_quantum_encrypted(
+            capsule.recipient_id,
+            dot_seigr.serialize_capsule(capsule)
+        )
+        
+        if quantum_result.success {
+            protocol.log_audit_event(
+                severity: "INFO",
+                category: "SCMP Transport",
+                message: "Message sent via quantum tunnel"
+            )
+            return {"success": true, "transport": "quantum_tunnel"}
+        }
+        
+        return {"success": false, "error": "Quantum tunnel failed"}
+    }
+    
+    method send_via_emergency(capsule, transport) {
+        // Send via emergency fallback channel
+        emergency_result = transport.send_emergency(
+            capsule.recipient_id,
+            dot_seigr.serialize_capsule(capsule),
+            priority: "HIGH"
+        )
+        
+        if emergency_result.success {
+            protocol.log_alert(
+                type: "SCMP_EMERGENCY_TRANSPORT",
+                severity: "WARNING",
+                message: "Message sent via emergency channel"
+            )
+            return {"success": true, "transport": "emergency"}
+        }
+        
+        return {"success": false, "error": "Emergency transport failed"}
+    }
+    
+    method check_transport_health() {
+        // Check health of all transport channels
+        for transport_name, transport in self.available_transports.items() {
+            if transport {
+                health = transport.check_health()
+                self.transport_health[transport_name] = health
+                
+                if not health {
+                    protocol.log_alert(
+                        type: "SCMP_TRANSPORT_UNHEALTHY",
+                        severity: "WARNING",
+                        message: "Transport unhealthy: " + transport_name
+                    )
+                }
+            }
+        }
+        
+        return self.transport_health
+    }
+    
+    method get_transport_statistics() {
+        // Get transport usage and performance statistics
+        stats = {}
+        
+        for transport_name in self.available_transports.keys() {
+            transport = self.available_transports[transport_name]
+            
+            if transport {
+                transport_stats = transport.get_statistics()
+                stats[transport_name] = {
+                    "health": self.transport_health[transport_name],
+                    "messages_sent": transport_stats.messages_sent or 0,
+                    "success_rate": transport_stats.success_rate or 0.0,
+                    "avg_latency": transport_stats.avg_latency or 0
+                }
+            }
+        }
+        
+        return stats
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                    SCMP ROUTER & COORDINATOR
+// ═══════════════════════════════════════════════════════════════
+
+entity SCMPRouter {
+    property node_id: ""
+    property message_handler: null
+    property message_queue: null
+    property transport_layer: null
+    property routing_table: {}
+    property discovery_cache: {}
+    
+    method initialize_router(node_id) {
+        // Initialize SCMP router with all components
+        self.node_id = node_id
+        self.routing_table = {}
+        self.discovery_cache = {}
+        
+        # Initialize core components
+        self.message_handler = MessageHandler()
+        self.message_handler.initialize_handler(node_id)
+        
+        self.message_queue = MessageQueue()
+        self.message_queue.initialize_queue(node_id)
+        
+        self.transport_layer = TransportLayer()
+        self.transport_layer.initialize_transport(node_id)
+        
+        # Register router with network discovery
+        network.register_scmp_router(self)
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Router",
+            message: "SCMP Router initialized for " + node_id
+        )
+        
+        return true
+    }
+    
+    method send_message(message_type, recipient_id, payload, priority, requires_ack) {
+        // Main interface for sending SCMP messages
+        # Process outgoing message
+        capsule = self.message_handler.process_outgoing_message(
+            message_type,
+            recipient_id,
+            payload,
+            priority or 3,
+            requires_ack or false
+        )
+        
+        if not capsule {
+            return {"success": false, "error": "Failed to create message capsule"}
+        }
+        
+        # Add to queue for processing
+        self.message_queue.add_message_to_queue(capsule)
+        
+        return {
+            "success": true,
+            "capsule_id": capsule.capsule_id,
+            "queued": true
+        }
+    }
+    
+    method receive_message(capsule) {
+        // Main interface for receiving SCMP messages
+        response = self.message_handler.process_incoming_message(capsule)
+        
+        # If response generated, queue it for sending
+        if response and response.capsule_id {
+            response_capsule = self.message_handler.process_outgoing_message(
+                "response",
+                capsule.sender_id,
+                dot_seigr.serialize_data(response),
+                6,  // High priority for responses
+                false
+            )
+            
+            if response_capsule {
+                self.message_queue.add_message_to_queue(response_capsule)
+            }
+        }
+        
+        return response
+    }
+    
+    method broadcast_message(message_type, payload, priority) {
+        // Broadcast message to all known nodes
+        known_nodes = network.get_known_nodes()
+        broadcast_results = []
+        
+        for node_id in known_nodes {
+            if node_id != self.node_id {  // Don't send to self
+                result = self.send_message(
+                    message_type,
+                    node_id,
+                    payload,
+                    priority or 3,
+                    false
+                )
+                
+                broadcast_results.append({
+                    "node_id": node_id,
+                    "success": result.success,
+                    "capsule_id": result.capsule_id
+                })
+            }
+        }
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Router",
+            message: "Broadcast sent to " + len(broadcast_results) + " nodes"
+        )
+        
+        return {
+            "success": true,
+            "broadcast_count": len(broadcast_results),
+            "results": broadcast_results
+        }
+    }
+    
+    method discover_nodes() {
+        // Discover other SCMP-enabled nodes in network
+        discovery_result = network.discover_scmp_nodes()
+        
+        for node_info in discovery_result.nodes {
+            self.discovery_cache[node_info.node_id] = {
+                "capabilities": node_info.capabilities,
+                "last_seen": sidereal_time.now(),
+                "transport_methods": node_info.transports,
+                "consciousness_level": node_info.consciousness_level or 1
+            }
+        }
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP Router",
+            message: "Discovered " + len(discovery_result.nodes) + " SCMP nodes"
+        )
+        
+        return discovery_result
+    }
+    
+    method get_system_status() {
+        // Get comprehensive SCMP system status
+        queue_status = self.message_queue.get_queue_status()
+        transport_stats = self.transport_layer.get_transport_statistics()
+        
+        return {
+            "node_id": self.node_id,
+            "timestamp": sidereal_time.now(),
+            "queue_status": queue_status,
+            "transport_health": transport_stats,
+            "known_nodes": len(self.discovery_cache),
+            "consciousness_level": consciousness.get_current_level(),
+            "energy_level": energy.get_current_level(),
+            "system_health": "healthy"
+        }
+    }
+    
+    method handle_emergency_broadcast(emergency_message) {
+        // Handle incoming emergency broadcasts
+        protocol.log_alert(
+            type: "SCMP_EMERGENCY_BROADCAST",
+            severity: "CRITICAL",
+            message: "Emergency broadcast received"
+        )
+        
+        # Process emergency through immune system
+        immune_system.handle_scmp_emergency(emergency_message)
+        
+        # Forward to consciousness system
+        consciousness.process_emergency_alert(emergency_message)
+        
+        # Re-broadcast to other nodes if not already forwarded
+        if not emergency_message.forwarded {
+            emergency_message.forwarded = true
+            emergency_message.forwarded_by = self.node_id
+            
+            self.broadcast_message(
+                "emergency",
+                dot_seigr.serialize_data(emergency_message),
+                6  // Maximum priority
+            )
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                    ENERGY-AWARE OPERATIONS
+// ═══════════════════════════════════════════════════════════════
+
+entity EnergyAwareSCMP {
+    property energy_profiles: {}
+    property adaptive_strategies: {}
+    
+    method initialize_energy_awareness() {
+        // Initialize energy-aware SCMP modes
+        self.energy_profiles = {
+            1: {  // Critical power
+                "max_queue_size": 6,
+                "encryption_rounds": 3,
+                "transport_priority": ["emergency", "direct_network"],
+                "message_compression": true
+            },
+            2: {  // Low power
+                "max_queue_size": 12,
+                "encryption_rounds": 6,
+                "transport_priority": ["direct_network", "hyphen_network"],
+                "message_compression": true
+            },
+            3: {  // Normal power
+                "max_queue_size": 36,
+                "encryption_rounds": 12,
+                "transport_priority": ["direct_network", "hyphen_network", "ipfs"],
+                "message_compression": false
+            },
+            4: {  // High power
+                "max_queue_size": 216,
+                "encryption_rounds": 36,
+                "transport_priority": ["hyphen_network", "quantum_tunnel", "ipfs"],
+                "message_compression": false
+            },
+            5: {  // Maximum power
+                "max_queue_size": 1296,
+                "encryption_rounds": 36,
+                "transport_priority": ["quantum_tunnel", "hyphen_network", "ipfs", "direct_network"],
+                "message_compression": false
+            }
+        }
+        
+        return true
+    }
+    
+    method adapt_to_energy_level(current_level) {
+        // Adapt SCMP behavior to current energy level
+        if current_level in self.energy_profiles {
+            profile = self.energy_profiles[current_level]
+            
+            # Update message queue limits
+            message_queue.set_max_queue_size(profile.max_queue_size)
+            
+            # Update encryption settings
+            message_capsule.set_encryption_rounds(profile.encryption_rounds)
+            
+            # Update transport priorities
+            transport_layer.set_transport_priority(profile.transport_priority)
+            
+            # Update compression settings
+            message_handler.set_compression_enabled(profile.message_compression)
+            
+            protocol.log_audit_event(
+                severity: "INFO",
+                category: "SCMP Energy",
+                message: "Adapted SCMP to energy level " + current_level
+            )
+        }
+    }
+    
+    method calculate_message_energy_cost(message_type, payload_size, encryption_level) {
+        // Calculate energy cost for SCMP operations
+        base_costs = {
+            "command": 3,
+            "data": 2,
+            "sync_request": 4,
+            "status_update": 1,
+            "emergency": 5,
+            "heartbeat": 1
+        }
+        
+        base_cost = base_costs[message_type] or 2
+        size_factor = senary.logarithm(payload_size / 1024) + 1
+        encryption_factor = encryption_level / 6.0
+        
+        total_cost = base_cost * size_factor * (1 + encryption_factor)
+        
+        return total_cost
+    }
+    
+    method optimize_for_energy(message_type, payload, current_energy) {
+        // Optimize message for current energy constraints
+        available_energy = energy.get_available_power()
+        message_cost = self.calculate_message_energy_cost(
+            message_type,
+            len(payload),
+            12  // Standard encryption
+        )
+        
+        if message_cost > available_energy {
+            # Reduce encryption level
+            reduced_encryption = 6
+            reduced_cost = self.calculate_message_energy_cost(
+                message_type,
+                len(payload),
+                reduced_encryption
+            )
+            
+            if reduced_cost <= available_energy {
+                protocol.log_event("Reduced encryption for energy conservation")
+                return {
+                    "optimized": true,
+                    "encryption_level": reduced_encryption,
+                    "compression": true
+                }
+            }
+            
+            # If still too expensive, defer message
+            return {
+                "optimized": false,
+                "defer": true,
+                "reason": "insufficient_energy"
+            }
+        }
+        
+        return {
+            "optimized": false,
+            "encryption_level": 12,
+            "compression": false
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//                    PROTOCOL INTEGRATION
+// ═══════════════════════════════════════════════════════════════
+
+protocol SCMPProtocol {
+    version: "4.0.0",
+    compatibility: ["3.x", "4.x"],
+    encryption_required: true,
+    audit_required: true
+}
+
+// Main SCMP interface
+interface scmp {
+    
+    method initialize() {
+        // Initialize SCMP subsystem
+        message_capsule = MessageCapsule()
+        message_handler = MessageHandler()
+        message_queue = MessageQueue()
+        transport_layer = TransportLayer()
+        scmp_router = SCMPRouter()
+        energy_aware_scmp = EnergyAwareSCMP()
+        
+        # Get node identity
+        node_id = identity.get_node_id()
+        
+        # Initialize all components
+        message_capsule.initialize_capsule(node_id)
+        message_handler.initialize_handler(node_id)
+        message_queue.initialize_queue(node_id)
+        transport_layer.initialize_transport(node_id)
+        scmp_router.initialize_router(node_id)
+        energy_aware_scmp.initialize_energy_awareness()
+        
+        # Register with consciousness and immune systems
+        consciousness.register_subsystem("scmp", self)
+        immune_system.register_communication_handler(scmp_router)
+        
+        # Register with network for discovery
+        network.register_scmp_capability(node_id)
+        
+        protocol.log_audit_event(
+            severity: "INFO",
+            category: "SCMP",
+            message: "Hyphos SCMP subsystem initialized successfully"
+        )
+        
+        return true
+    }
+    
+    method send_message(message_type, recipient_id, payload, priority, requires_ack) {
+        // Primary SCMP message sending interface
+        current_energy = energy.get_current_level()
+        
+        # Energy optimization
+        optimization = energy_aware_scmp.optimize_for_energy(
+            message_type,
+            payload,
+            current_energy
+        )
+        
+        if optimization.defer {
+            protocol.log_event("Message deferred due to energy constraints")
+            return {"success": false, "deferred": true, "reason": optimization.reason}
+        }
+        
+        # Send via router
+        result = scmp_router.send_message(
+            message_type,
+            recipient_id,
+            payload,
+            priority,
+            requires_ack
+        )
+        
+        # Log to consciousness system
+        consciousness.record_operation("scmp_send", {
+            "message_type": message_type,
+            "recipient": recipient_id,
+            "success": result.success
+        })
+        
+        return result
+    }
+    
+    method broadcast_message(message_type, payload, priority) {
+        // Broadcast message to all known nodes
+        return scmp_router.broadcast_message(message_type, payload, priority)
+    }
+    
+    method receive_message(capsule) {
+        // Process incoming SCMP message
+        return scmp_router.receive_message(capsule)
+    }
+    
+    method send_command(recipient_id, command, priority) {
+        // Send command message with high security
+        return self.send_message("command", recipient_id, command, priority or 4, true)
+    }
+    
+    method send_data(recipient_id, data, priority) {
+        // Send data message
+        return self.send_message("data", recipient_id, data, priority or 3, false)
+    }
+    
+    method send_sync_request(recipient_id, sync_data, priority) {
+        // Send synchronization request
+        return self.send_message("sync_request", recipient_id, sync_data, priority or 2, true)
+    }
+    
+    method send_status_update(recipient_id, status, priority) {
+        // Send status update
+        return self.send_message("status_update", recipient_id, status, priority or 1, false)
+    }
+    
+    method send_emergency_broadcast(emergency_data) {
+        // Send emergency broadcast to all nodes
+        return self.broadcast_message("emergency", emergency_data, 6)
+    }
+    
+    method send_heartbeat(recipient_id) {
+        // Send heartbeat to specific node
+        heartbeat_data = {
+            "timestamp": sidereal_time.now(),
+            "node_id": identity.get_node_id(),
+            "energy_level": energy.get_current_level(),
+            "consciousness_level": consciousness.get_current_level()
+        }
+        
+        return self.send_message("heartbeat", recipient_id, heartbeat_data, 1, false)
+    }
+    
+    method register_message_handler(message_type, handler_function) {
+        // Register custom message handler
+        message_handler.register_message_handler(message_type, handler_function)
+    }
+    
+    method discover_nodes() {
+        // Discover SCMP-enabled nodes
+        return scmp_router.discover_nodes()
+    }
+    
+    method get_system_status() {
+        // Get comprehensive SCMP system status
+        return scmp_router.get_system_status()
+    }
+    
+    method flush_queue() {
+        // Flush pending message queue
+        message_queue.flush_pending_messages()
+    }
+    
+    method adapt_to_energy(energy_level) {
+        // Adapt to energy level changes
+        energy_aware_scmp.adapt_to_energy_level(energy_level)
+    }
+    
+    method check_transport_health() {
+        // Check health of transport channels
+        return transport_layer.check_transport_health()
+    }
+    
+    method handle_immune_request(emergency_type, data) {
+        // Handle immune system emergency requests
+        emergency_message = {
+            "type": emergency_type,
+            "data": data,
+            "timestamp": sidereal_time.now(),
+            "source": "immune_system"
+        }
+        
+        return self.send_emergency_broadcast(emergency_message)
+    }
+}
+
+// Register with system
+system.register_metaword("scmp", scmp)
