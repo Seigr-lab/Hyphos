@@ -29,7 +29,7 @@
  * - Enables middleware injection for monitoring and debugging
  * 
  * CONTEXT HANDLING:
- * - Optional context parameters for advanced use cases
+ * - Optional context parameters for enhanced use cases
  * - Automatic context propagation to underlying consciousness systems
  * - Support for specialized context types (pattern_memory, knowledge_base, etc.)
  * - Flexible parameter handling with sensible defaults
@@ -125,7 +125,7 @@ consciousness_operations {
         } else if (senary.less_than(input_complexity, "0.6")) {
             return consciousness_operations.intermediate_level(input_data)
         } else if (senary.less_than(input_complexity, "0.8")) {
-            return consciousness_operations.advanced_level(input_data)
+            return consciousness_operations.enhanced_level(input_data)
         } else {
             return consciousness_operations.transcendent_level(input_data)
         }
@@ -171,7 +171,7 @@ consciousness_operations {
         return consciousness.set_level(
             if (scope == "immediate") { consciousness.BASIC }
             else if (scope == "contextual") { consciousness.INTERMEDIATE }
-            else if (scope == "meta_cognitive") { consciousness.ADVANCED }
+            else if (scope == "meta_cognitive") { consciousness.ENHANCED }
             else if (scope == "system_wide") { consciousness.TRANSCENDENT }
             else if (scope == "network_universal") { consciousness.UNIVERSAL }
             else { consciousness.INTERMEDIATE }

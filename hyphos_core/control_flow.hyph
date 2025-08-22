@@ -111,7 +111,7 @@ metaword control {
      * ITERATIVE LOOP CONTROL WITH SAFETY LIMITS
      * ==========================================
      * 
-     * Implements while loop control with comprehensive safety mechanisms,
+     * Implements while loop control with complete safety mechanisms,
      * scope management, and execution monitoring. This function provides
      * traditional while loop semantics enhanced with Hyphos ecosystem
      * integration and protection against infinite loops.

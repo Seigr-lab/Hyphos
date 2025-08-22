@@ -105,7 +105,7 @@
 // mycelith_vote.hyph - Democratic Governance Metaword for Hyphos Native Runtime
 // Part of the Seigr Ecosystem - Pure Hyphos Implementation
 // 
-// Implements the comprehensive Mycelith Voting System with six-layer senary-based
+// Implements the complete Mycelith Voting System with six-layer senary-based
 // decision making, contribution-weighted voting, and RE-L ethical compliance.
 //
 // Mathematical Foundation:
@@ -221,7 +221,7 @@ struct MycelithVote {
     }
 }
 
-// Comprehensive Proposal Structure  
+// Complete Proposal Structure  
 struct MycelithProposal {
     proposal_id: string
     title: string
@@ -273,7 +273,7 @@ struct MycelithProposal {
     }
     
     function assess_rel_compliance() {
-        // Delegate to Noesis for comprehensive REL assessment
+        // Delegate to Noesis for complete REL assessment
         compliance_assessment = noesis.assess_proposal_rel_compliance(this)
         rel_compliance_score = compliance_assessment.compliance_score
         hyphen_review_required = compliance_assessment.requires_hyphen_review
@@ -326,7 +326,7 @@ struct RELCompliance {
     ethical_criteria: array[RELCriteria]
     
     function assess_proposal_compliance(proposal: MycelithProposal) -> RELAssessment {
-        // Delegate comprehensive ethical assessment to Noesis
+        // Delegate complete ethical assessment to Noesis
         noesis_assessment = noesis.evaluate_proposal_ethics(proposal)
         
         assessment = RELAssessment{
@@ -1261,7 +1261,7 @@ public struct MycelithVote {
             "rel_integration": "active",
             "noesis_intelligence": "operational",
             "cryptographic_integrity": "verified",
-            "consciousness_recording": "comprehensive",
+            "consciousness_recording": "complete",
             "energy_efficiency": energy.get_efficiency_metrics("mycelith_vote"),
             "immune_system": "monitoring",
             "protocol_version": "1.0.0"

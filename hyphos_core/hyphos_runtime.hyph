@@ -100,7 +100,7 @@ metaword hyphos_runtime {
      * STATEMENT EXECUTION FUNCTION
      * ============================
      * 
-     * Executes a single Hyphos statement with comprehensive type analysis,
+     * Executes a single Hyphos statement with complete type analysis,
      * context management, and adaptive execution optimization. This function
      * serves as the primary entry point for all Hyphos code execution.
      * 
@@ -329,7 +329,7 @@ hyphos.execute_consciousness_level_set = {
     } else if level == "INTERMEDIATE" {
         context.processing_depth = 2
         context.awareness_scope = "contextual"
-    } else if level == "ADVANCED" {
+    } else if level == "ENHANCED" {
         context.processing_depth = 3
         context.awareness_scope = "meta_cognitive"
     } else if level == "TRANSCENDENT" {
