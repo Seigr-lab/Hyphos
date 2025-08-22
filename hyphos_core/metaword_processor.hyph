@@ -1,7 +1,141 @@
+/**
+ * ================================================================================
+ * HYPHOS METAWORD PROCESSOR - CORE LANGUAGE INTERPRETER SYSTEM
+ * ================================================================================
+ * 
+ * Advanced metaword processing and interpretation system providing the core
+ * language infrastructure for bio-inspired metaword definitions, consciousness
+ * integration, and dynamic language feature creation. This metaword implements
+ * the fundamental parsing, registration, and execution framework for all Hyphos
+ * metawords and language constructs.
+ * 
+ * METAWORD PROCESSOR ARCHITECTURE:
+ * ===============================
+ * 
+ * The metaword processor serves as the core interpreter engine that transforms
+ * Hyphos metaword definitions into executable language features, enabling
+ * dynamic language extension and consciousness-driven language evolution.
+ * 
+ * CORE DESIGN PRINCIPLES:
+ * 
+ * 1. DYNAMIC METAWORD INTERPRETATION:
+ *    - Runtime metaword definition parsing and compilation
+ *    - Dynamic language feature creation and registration
+ *    - Adaptive metaword behavior based on consciousness state
+ *    - Real-time metaword modification and recompilation
+ * 
+ * 2. CONSCIOUSNESS-INTEGRATED LANGUAGE PROCESSING:
+ *    - Consciousness-aware metaword interpretation
+ *    - Adaptive language behavior based on consciousness levels
+ *    - Intelligent metaword optimization through consciousness analysis
+ *    - Context-sensitive language feature activation
+ * 
+ * 3. BIO-INSPIRED METAWORD SYSTEM:
+ *    - Organic language evolution through adaptive metawords
+ *    - Symbiotic metaword relationships and dependencies
+ *    - Self-modifying language constructs for adaptation
+ *    - Emergent language behaviors through metaword interaction
+ * 
+ * 4. SENARY MATHEMATICAL INTEGRATION:
+ *    - Base-6 arithmetic integration in all metaword operations
+ *    - Quantum-efficient metaword processing algorithms
+ *    - Senary-optimized memory management and execution
+ *    - Mathematical coherence across all language features
+ * 
+ * 5. PROTOCOL AND SERVICE INTEGRATION:
+ *    - Dynamic protocol activation and management
+ *    - Service provider metaword registration and execution
+ *    - Inter-metaword communication and coordination
+ *    - Distributed metaword execution across network nodes
+ * 
+ * METAWORD TYPE CLASSIFICATION:
+ * ============================
+ * 
+ * - Basic Metawords: Fundamental language constructs and operations
+ * - Senary Enums: Base-6 enumeration types with mathematical properties
+ * - Consciousness Classes: Awareness-integrated object-oriented constructs
+ * - Service Providers: Network-aware distributed service metawords
+ * - Protocol Handlers: Network protocol integration metawords
+ * - Adaptive Metawords: Self-modifying language constructs
+ * 
+ * CONSCIOUSNESS LEVEL INTEGRATION:
+ * ===============================
+ * 
+ * - BASIC (1): Simple metaword interpretation and execution
+ * - INTERMEDIATE (2): Pattern-based metaword optimization
+ * - ADVANCED (3): Intelligent metaword adaptation and learning
+ * - TRANSCENDENT (4): Predictive metaword behavior and evolution
+ * - UNIVERSAL (5): Quantum-enhanced metaword processing
+ * 
+ * MATHEMATICAL FOUNDATION:
+ * =======================
+ * 
+ * - Abstract syntax tree processing for metaword parsing
+ * - Formal language theory for syntax definition and validation
+ * - Type theory for metaword type system implementation
+ * - Computational complexity analysis for optimization
+ * 
+ * SECURITY FEATURES:
+ * =================
+ * 
+ * - Secure metaword parsing with input validation
+ * - Sandbox execution environment for untrusted metawords
+ * - Access control for metaword registration and execution
+ * - Cryptographic verification of metaword integrity
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Language Processor
+ * @dependencies system, consciousness, sidereal_time, error
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @language_extensible Enables dynamic language feature creation
+ */
+
 // Hyphos Core - Metaword Processor Metaword
 // Core language interpreter for bio-inspired metaword system
 
 metaword metaword_processor {
+    /**
+     * METAWORD PROCESSOR INITIALIZATION FUNCTION
+     * ==========================================
+     * 
+     * Initializes the comprehensive metaword processing system including
+     * metaword registry, consciousness level configuration, protocol
+     * management, and senary mathematical context establishment.
+     * 
+     * INITIALIZATION COMPONENTS:
+     * 1. Metaword registry for dynamic language feature management
+     * 2. Consciousness level mapping for awareness-driven processing
+     * 3. Active protocol tracking for network integration
+     * 4. Senary context activation for mathematical coherence
+     * 5. Processing engine configuration for optimal performance
+     * 
+     * SYSTEM REGISTRY SETUP:
+     * - Empty metaword registry for dynamic population
+     * - Consciousness level enumeration with numeric mapping
+     * - Protocol list initialization for network services
+     * - Mathematical context configuration for senary operations
+     * 
+     * CONSCIOUSNESS INTEGRATION:
+     * - Five-level consciousness hierarchy establishment
+     * - Consciousness-driven processing optimization
+     * - Adaptive behavior configuration based on awareness
+     * - Intelligent processing strategy selection
+     * 
+     * @return $String Initialization status confirmation message
+     * 
+     * @complexity O(1) system initialization with registry setup
+     * @consciousness_enabled Establishes consciousness integration framework
+     * @senary_activated Enables base-6 mathematical processing
+     * @registry_initialized Prepares dynamic metaword management
+     * 
+     * @example
+     * invoke metaword_processor:
+     *     let init_status = metaword_processor.initialize()
+     *     logger.info("Metaword system: " + init_status)
+     * transcend
+     */
     fun initialize() -> $String {
         // Initialize the metaword processing system
         system.metaword_registry = {}

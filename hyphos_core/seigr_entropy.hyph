@@ -1,4 +1,22 @@
-// Hyphos Core - Entropy Metaword
+/**
+ * ================================================================================
+ * HYPHOS SEIGR ENTROPY METAWORD - QUANTUM ENTROPY GENERATION SYSTEM
+ * ================================================================================
+ * 
+ * Advanced quantum entropy generation and management system providing
+ * cryptographically secure randomness with consciousness integration,
+ * cosmic entropy harvesting, and adaptive entropy quality optimization.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Quantum Entropy Generation
+ * @dependencies quantum, sidereal_time, consciousness, crypto
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @entropy_quantum Provides quantum-grade entropy generation
+ */
+
+// Hyphos Core - Seigr Entropy Metaword
 // Pure Hyphos implementation of cryptographically secure random generation
 
 metaword entropy {

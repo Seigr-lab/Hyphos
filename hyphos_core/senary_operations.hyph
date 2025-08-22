@@ -1,3 +1,21 @@
+/**
+ * ================================================================================
+ * HYPHOS SENARY OPERATIONS METAWORD - ADVANCED BASE-6 MATHEMATICAL SYSTEM
+ * ================================================================================
+ * 
+ * Advanced senary mathematical operations system providing comprehensive
+ * base-6 arithmetic, quantum mathematical functions, and consciousness-driven
+ * computational optimization for the Seigr ecosystem's mathematical foundation.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Advanced Senary Mathematics
+ * @dependencies senary, consciousness, quantum, optimization
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @quantum_mathematical Provides quantum-enhanced mathematical operations
+ */
+
 // Hyphos Core - Senary Operations Metaword
 // Native base-6 arithmetic and number handling
 

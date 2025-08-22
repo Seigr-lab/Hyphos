@@ -1,7 +1,94 @@
-// Hyphos Core - Bio Control Flow Metaword
-// Complete Bio-Inspired Control Flow Implementation
+/**
+ * HYPHOS CORE - BIO-INSPIRED CONTROL FLOW METAWORD
+ * =================================================
+ * 
+ * Revolutionary control flow paradigm inspired by biological systems, evolutionary
+ * algorithms, and natural adaptation mechanisms. This metaword implements control
+ * structures that mimic organic growth patterns, neural networks, and ecosystem
+ * behaviors for more intuitive and adaptive program flow.
+ * 
+ * BIOLOGICAL PARADIGMS IMPLEMENTED:
+ * - Evolutionary Loops: Control structures that adapt and evolve over iterations
+ * - Mycelial Networks: Distributed parallel processing like fungal networks
+ * - Neural Branching: Decision trees that learn and adapt based on outcomes
+ * - Ecosystem Feedback: Control flow influenced by environmental conditions
+ * - Genetic Algorithms: Self-modifying loops with fitness-based selection
+ * 
+ * ADAPTIVE CONTROL FEATURES:
+ * - Growth Probability: Conditions evaluated with biological growth patterns
+ * - Fitness Tracking: Loop performance monitoring and optimization
+ * - Generation Evolution: Iterative improvement of control flow efficiency
+ * - Environmental Adaptation: Control flow responds to system state changes
+ * - Symbiotic Execution: Cooperative parallel processing mechanisms
+ * 
+ * APPLICATIONS IN SEIGR ECOSYSTEM:
+ * - AI consciousness processing with organic decision patterns
+ * - Network routing with ecosystem-inspired load balancing
+ * - Resource allocation using natural selection principles
+ * - Error handling with immune system responses
+ * - Learning algorithms with evolutionary improvement
+ * 
+ * PERFORMANCE CHARACTERISTICS:
+ * - Self-optimizing: Control flow improves over time through adaptation
+ * - Resilient: Biological redundancy provides fault tolerance
+ * - Scalable: Mycelial patterns naturally distribute across resources
+ * - Efficient: Natural selection eliminates inefficient control paths
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 1.0.0
+ * @since Hyphos Core v1.0
+ * @paradigm Bio-inspired adaptive control flow
+ * @optimization Evolutionary algorithms with fitness tracking
+ */
 
 metaword bio_control_flow {
+    /**
+     * BIOLOGICAL CONDITIONAL BRANCHING
+     * ================================
+     * 
+     * Implements conditional execution using biological growth probability models
+     * rather than simple boolean logic. This approach mimics how organisms make
+     * decisions based on environmental conditions and resource availability.
+     * 
+     * BIOLOGICAL DECISION MODEL:
+     * - Evaluates conditions using organic growth patterns
+     * - Applies probability-based execution rather than deterministic branching
+     * - Considers environmental factors in decision making
+     * - Supports adaptive threshold adjustment over time
+     * 
+     * GROWTH PROBABILITY CALCULATION:
+     * - Analyzes condition strength and environmental factors
+     * - Applies biological growth curves (logistic, exponential)
+     * - Incorporates randomness found in natural systems
+     * - Threshold of 0.5 represents minimum viable growth condition
+     * 
+     * ADAPTIVE FEATURES:
+     * - Learns from execution outcomes to adjust probability models
+     * - Responds to system stress by modifying decision thresholds
+     * - Implements biological redundancy through fallback blocks
+     * - Tracks decision effectiveness for evolutionary improvement
+     * 
+     * @param condition Expression or data to evaluate biologically
+     * @param true_block Code block to execute when growth conditions favorable
+     * @param false_block Optional fallback block for unfavorable conditions
+     * @return $Object Execution result or null if no suitable conditions
+     * 
+     * @biological_model Logistic growth curve for probability calculation
+     * @adaptation Threshold adjustment based on execution history
+     * @resilience Graceful handling of null false_block conditions
+     * 
+     * @example
+     * invoke bio_control_flow:
+     *     let resource_level = system.get_available_resources()
+     *     let result = branch_if(resource_level > threshold, {
+     *         // High resource consumption operation
+     *         ai.process_complex_analysis(data)
+     *     }, {
+     *         // Conservative operation for low resources
+     *         ai.process_basic_analysis(data)
+     *     })
+     * transcend
+     */
     fun branch_if(condition, true_block, false_block = null) -> $Object {
         // Bio-inspired conditional branching
         
@@ -21,6 +108,64 @@ metaword bio_control_flow {
         }
     }
 
+    /**
+     * EVOLUTIONARY ADAPTIVE LOOPING
+     * =============================
+     * 
+     * Implements loops that evolve and adapt their behavior over iterations,
+     * mimicking natural selection and evolutionary improvement processes.
+     * Unlike traditional loops, this structure learns and optimizes its
+     * execution strategy based on fitness metrics and environmental feedback.
+     * 
+     * EVOLUTIONARY ALGORITHM:
+     * - Tracks fitness of each iteration/generation
+     * - Adapts loop conditions based on performance history
+     * - Implements mutation and selection pressure
+     * - Maintains genetic diversity through parameter variation
+     * - Applies survival of the fittest to control flow patterns
+     * 
+     * FITNESS EVALUATION:
+     * - Measures execution efficiency, resource usage, and outcome quality
+     * - Compares current generation against historical performance
+     * - Identifies optimal parameter combinations through evolution
+     * - Applies selection pressure to eliminate ineffective strategies
+     * 
+     * ADAPTATION MECHANISMS:
+     * - Condition thresholds evolve based on success rates
+     * - Loop body parameters mutate to explore solution space
+     * - Crossover between successful iterations creates hybrid approaches
+     * - Environmental pressure influences evolution direction
+     * 
+     * TERMINATION CONDITIONS:
+     * - Maximum generations prevent infinite evolution
+     * - Fitness convergence indicates optimal solution found
+     * - Resource exhaustion triggers graceful termination
+     * - Environmental changes may restart evolution process
+     * 
+     * @param condition Evolutionary condition that adapts over generations
+     * @param loop_body Code block that evolves and improves over time
+     * @param max_generations Maximum evolutionary cycles (default: 100)
+     * @return $Object Final evolved result with fitness history and optimal parameters
+     * 
+     * @evolution Implements genetic algorithms for control flow optimization
+     * @fitness Tracks and optimizes execution efficiency over generations
+     * @adaptation Responds to environmental changes and resource constraints
+     * @convergence Detects when optimal solution has been reached
+     * 
+     * @example
+     * invoke bio_control_flow:
+     *     let optimization_result = evolve_when(
+     *         system.performance_below_target(),
+     *         {
+     *             // This block evolves to find optimal processing strategy
+     *             let strategy = evolve_processing_parameters()
+     *             return ai.process_with_strategy(data, strategy)
+     *         },
+     *         50  // Allow 50 generations for optimization
+     *     )
+     *     logger.info("Evolved to fitness: " + optimization_result.final_fitness)
+     * transcend
+     */
     fun evolve_when(condition, loop_body, max_generations = 100) -> $Object {
         // Evolutionary loop with adaptation
         

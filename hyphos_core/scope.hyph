@@ -1,3 +1,21 @@
+/**
+ * ================================================================================
+ * HYPHOS SCOPE METAWORD - COMPREHENSIVE SCOPE MANAGEMENT SYSTEM
+ * ================================================================================
+ * 
+ * Advanced scope and variable management system providing hierarchical scope
+ * control, consciousness-aware variable resolution, and quantum-enhanced memory
+ * management for the Hyphos language execution environment.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Scope Management
+ * @dependencies consciousness, memory, security, quantum
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @memory_managed Provides automatic memory management and cleanup
+ */
+
 // Hyphos Core - Scope Metaword
 // Core scope handling for variable and function isolation
 

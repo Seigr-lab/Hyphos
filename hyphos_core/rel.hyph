@@ -1,4 +1,56 @@
 #!/usr/bin/env hyphos
+/**
+ * ================================================================================
+ * HYPHOS REL METAWORD - REBEL EARTHLING LICENSE FRAMEWORK
+ * ================================================================================
+ * 
+ * Comprehensive Rebel Earthling License (RE-L) framework implementation for
+ * ethical governance, contribution tracking, compliance monitoring, and automated
+ * license enforcement. This metaword provides the ethical foundation for all
+ * Seigr ecosystem operations with consciousness-integrated moral reasoning.
+ * 
+ * CORE RE-L PRINCIPLES:
+ * ====================
+ * 
+ * 1. COLLECTIVE WELFARE PRIORITY:
+ *    - Community benefit prioritized over individual profit maximization
+ *    - Resource distribution based on collective needs and sustainability
+ *    - Decision-making frameworks favoring collective welfare outcomes
+ * 
+ * 2. ENVIRONMENTAL SUSTAINABILITY:
+ *    - Net-positive ecological impact requirement for all operations
+ *    - Carbon-negative computing infrastructure and operations
+ *    - Regenerative technology development and deployment
+ * 
+ * 3. DEMOCRATIC GOVERNANCE:
+ *    - Community participation in all significant decisions
+ *    - Transparent governance processes with open deliberation
+ *    - Inclusive decision-making across diverse stakeholder groups
+ * 
+ * 4. TRANSPARENCY AND OPENNESS:
+ *    - Open-source development with full code transparency
+ *    - Public documentation of all processes and implementations
+ *    - Accessible governance records and decision rationale
+ * 
+ * 5. NON-EXPLOITATION PROTECTION:
+ *    - Fair compensation for all contributors and participants
+ *    - Protection of vulnerable populations from exploitation
+ *    - Ethical labor practices throughout the ecosystem
+ * 
+ * 6. REGENERATIVE INNOVATION:
+ *    - Technology development focused on healing damaged systems
+ *    - Innovation directed toward ecological and social restoration
+ *    - Sustainable development practices in all implementations
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Ethical Governance Framework
+ * @dependencies consciousness, governance, compliance, sustainability
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @ethics_compliant Enforces RE-L ethical principles across all operations
+ */
+
 // rel.hyph - Rebel Earthling License (RE-L) Framework Metaword for Hyphos Native Runtime
 // Part of the Seigr Ecosystem - Pure Hyphos Implementation
 //

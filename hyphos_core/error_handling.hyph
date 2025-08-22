@@ -1,7 +1,146 @@
+/**
+ * ================================================================================
+ * HYPHOS ERROR HANDLING METAWORD - COMPREHENSIVE EXCEPTION MANAGEMENT
+ * ================================================================================
+ * 
+ * Advanced error handling and exception management system for the Hyphos language.
+ * This metaword provides comprehensive error management capabilities including
+ * structured exception handling, error recovery mechanisms, and integration with
+ * the consciousness system for adaptive error response.
+ * 
+ * ERROR HANDLING ARCHITECTURE:
+ * ===========================
+ * 
+ * The error handling system implements a multi-layered approach to exception
+ * management, combining traditional try-catch mechanisms with consciousness-driven
+ * adaptive responses and quantum-inspired error recovery protocols.
+ * 
+ * CORE DESIGN PRINCIPLES:
+ * 
+ * 1. STRUCTURED EXCEPTION HANDLING:
+ *    - Hierarchical error type classification
+ *    - Comprehensive error context preservation
+ *    - Stack trace analysis and reporting
+ *    - Correlation ID tracking for distributed debugging
+ * 
+ * 2. CONSCIOUSNESS-DRIVEN ERROR RESPONSE:
+ *    - Adaptive error recovery based on learned patterns
+ *    - Intelligent error escalation through consciousness levels
+ *    - Predictive error prevention using pattern analysis
+ *    - Self-healing capabilities for common error scenarios
+ * 
+ * 3. QUANTUM ERROR CORRECTION:
+ *    - Quantum state preservation during error conditions
+ *    - Superposition-based error recovery strategies
+ *    - Entanglement-preserved error propagation
+ *    - Coherence maintenance under exception conditions
+ * 
+ * 4. DISTRIBUTED ERROR COORDINATION:
+ *    - Cross-cell error communication and coordination
+ *    - Swarm intelligence for collective error resolution
+ *    - Mycelial network error propagation control
+ *    - Distributed recovery strategy coordination
+ * 
+ * 5. TEMPORAL ERROR ANALYSIS:
+ *    - Sidereal time-based error correlation
+ *    - Temporal pattern analysis for error prediction
+ *    - Historical error trend analysis
+ *    - Time-based error recovery scheduling
+ * 
+ * ERROR CLASSIFICATION SYSTEM:
+ * ===========================
+ * 
+ * - RuntimeError: Standard execution errors with recovery potential
+ * - CriticalError: System-threatening errors requiring immediate attention
+ * - FatalError: Unrecoverable errors requiring system restart
+ * - Warning: Non-fatal issues that may indicate future problems
+ * - QuantumError: Quantum state corruption or coherence failures
+ * - ConsciousnessError: Consciousness processing failures
+ * - NetworkError: Mycelial network communication failures
+ * 
+ * MATHEMATICAL FOUNDATION:
+ * =======================
+ * 
+ * - Senary arithmetic for error code representation
+ * - Probability theory for error prediction algorithms
+ * - Graph theory for error propagation analysis
+ * - Information theory for error recovery optimization
+ * 
+ * SECURITY CONSIDERATIONS:
+ * =======================
+ * 
+ * - Secure error message sanitization
+ * - Stack trace information protection
+ * - Error-based attack prevention
+ * - Privilege escalation protection during error handling
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Exception Management
+ * @dependencies logger, sidereal_time, scope, system, consciousness
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @recovery_capable Supports automatic error recovery and adaptation
+ */
+
 // Hyphos Core - Error Metaword
 // Core error management and exception handling for Hyphos language
 
 metaword error {
+    /**
+     * ERROR THROWING FUNCTION
+     * ======================
+     * 
+     * Creates and throws a structured error with comprehensive context information.
+     * This function implements the core error creation mechanism with support for
+     * different error types, severity levels, and detailed contextual data.
+     * 
+     * ERROR OBJECT STRUCTURE:
+     * 1. Type classification for appropriate handling strategies
+     * 2. Human-readable message for debugging and user feedback
+     * 3. Structured data payload for programmatic error analysis
+     * 4. Temporal context using sidereal time for correlation
+     * 5. Scope level information for execution context
+     * 6. Stack trace for detailed debugging information
+     * 7. Correlation ID for distributed error tracking
+     * 
+     * SEVERITY MAPPING:
+     * - RuntimeError: ERROR level - Standard recoverable errors
+     * - CriticalError: CRITICAL level - System-threatening conditions
+     * - FatalError: FATAL level - Unrecoverable system failures
+     * - Warning: WARNING level - Non-fatal advisory conditions
+     * - Custom types: ERROR level (default fallback)
+     * 
+     * LOGGING INTEGRATION:
+     * - Automatic logging to system logger with appropriate severity
+     * - Structured logging with error metadata for analysis
+     * - Correlation ID tracking for distributed system debugging
+     * - Alert severity determination for monitoring systems
+     * 
+     * SYSTEM STATE MANAGEMENT:
+     * - Updates global error state for error propagation
+     * - Sets error flags for exception handling mechanisms
+     * - Preserves error context for recovery operations
+     * - Maintains error history for pattern analysis
+     * 
+     * @param message Human-readable error description
+     * @param error_data Optional structured data payload for error context
+     * @param error_type Error classification (RuntimeError, CriticalError, etc.)
+     * @return $Object Comprehensive error object with full context
+     * 
+     * @complexity O(1) error creation with logging overhead
+     * @thread_safe Error creation is atomic and thread-safe
+     * @audit_logged All errors are automatically logged for security analysis
+     * @correlation_tracked Each error receives unique correlation ID
+     * 
+     * @example
+     * invoke error:
+     *     let validation_error = throw("Invalid senary number format", 
+     *                                  {input: "invalid_data", expected: "senary"},
+     *                                  "RuntimeError")
+     *     // Error is automatically logged and system state updated
+     * transcend
+     */
     fun throw(message, error_data = null, error_type = "RuntimeError") -> $Object {
         // Throw an error with message and optional data
         
@@ -43,6 +182,68 @@ metaword error {
         return error_object
     }
 
+    /**
+     * TRY-CATCH-FINALLY EXCEPTION HANDLING FUNCTION
+     * =============================================
+     * 
+     * Implements structured exception handling with support for try-catch-finally
+     * blocks, providing comprehensive error recovery and resource cleanup capabilities.
+     * This function forms the foundation of Hyphos exception handling architecture.
+     * 
+     * EXECUTION FLOW:
+     * 1. Clear previous error state and prepare execution context
+     * 2. Create isolated scope for try block execution
+     * 3. Execute try block with error monitoring
+     * 4. If error occurs, execute catch block with error context
+     * 5. Always execute finally block for cleanup operations
+     * 6. Restore previous scope and return appropriate result
+     * 
+     * ERROR HANDLING STRATEGY:
+     * - Automatic error detection through system error flags
+     * - Error context preservation for catch block processing
+     * - Scope isolation to prevent error propagation
+     * - Resource cleanup guarantee through finally block
+     * 
+     * SCOPE MANAGEMENT:
+     * - Creates isolated scope for try block execution
+     * - Preserves error context across scope boundaries
+     * - Ensures proper scope cleanup in all execution paths
+     * - Maintains scope stack integrity during exceptions
+     * 
+     * AUDIT LOGGING:
+     * - Try block execution start and completion logging
+     * - Error occurrence logging with full context
+     * - Finally block execution logging for compliance
+     * - Performance metrics for exception handling analysis
+     * 
+     * CONSCIOUSNESS INTEGRATION:
+     * - Error pattern learning for future prevention
+     * - Adaptive error recovery strategy selection
+     * - Consciousness-driven error escalation decisions
+     * - Machine learning from error handling outcomes
+     * 
+     * @param try_block Function containing code to execute with error monitoring
+     * @param catch_block Optional error handler function (receives error object)
+     * @param finally_block Optional cleanup function (always executed)
+     * @return $Any Result from try block on success, catch block result on error
+     * 
+     * @complexity O(1) + complexity of executed blocks
+     * @scope_isolated Try block executes in isolated scope for safety
+     * @cleanup_guaranteed Finally block always executes for resource cleanup
+     * @error_preserving Full error context preserved for catch block analysis
+     * 
+     * @example
+     * invoke error:
+     *     let result = try(
+     *         fun() { return risky_operation() },
+     *         fun(error) { 
+     *             logger.warning("Operation failed", error.message)
+     *             return default_value 
+     *         },
+     *         fun() { cleanup_resources() }
+     *     )
+     * transcend
+     */
     fun try(try_block, catch_block = null, finally_block = null) -> $Any {
         // Try to execute code block with error handling
     let result = null

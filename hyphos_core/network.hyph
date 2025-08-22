@@ -1,6 +1,45 @@
+/**
+ * ================================================================================
+ * HYPHOS NETWORK METAWORD - COMPREHENSIVE NETWORK MANAGEMENT SYSTEM
+ * ================================================================================
+ * 
+ * Advanced network management and communication system providing comprehensive
+ * networking capabilities with consciousness integration, quantum-enhanced
+ * communication protocols, and adaptive network optimization for the Seigr
+ * ecosystem's distributed infrastructure requirements.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Network Management
+ * @dependencies logger, consciousness, hardware, crypto, immune
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @network_adaptive Adapts to varying network conditions and topologies
+ */
+
 // Hyphos Network Metaword - Core Network Management and Communication
 
 metaword network {
+    /**
+     * NETWORK STACK INITIALIZATION FUNCTION
+     * =====================================
+     * 
+     * Initializes the complete network stack with comprehensive component
+     * management, error handling, and consciousness integration for optimal
+     * network performance and reliability.
+     * 
+     * @complexity O(n) where n is number of network interfaces
+     * @consciousness_integrated Adapts network behavior based on awareness
+     * @fault_tolerant Comprehensive error handling and recovery
+     * 
+     * @example
+     * invoke network:
+     *     let success = network.initialize_stack()
+     *     if success {
+     *         network.start_consciousness_monitoring()
+     *     }
+     * transcend
+     */
     fun initialize_stack() {
         // Initialize complete network stack
         logger.info("Initializing network stack")

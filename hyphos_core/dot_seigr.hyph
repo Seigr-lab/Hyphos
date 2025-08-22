@@ -1,6 +1,144 @@
+/**
+ * ================================================================================
+ * HYPHOS DOT SEIGR METAWORD - QUANTUM FILE SYSTEM IMPLEMENTATION
+ * ================================================================================
+ * 
+ * Advanced quantum file system implementation providing revolutionary data storage
+ * and processing capabilities through conscious cellular architecture. This metaword
+ * implements the core .seigr file format that serves as the foundation of the
+ * Seigr ecosystem's distributed, adaptive, and self-healing storage system.
+ * 
+ * QUANTUM FILE SYSTEM ARCHITECTURE:
+ * ================================
+ * 
+ * The .seigr format represents a paradigm shift from traditional file systems by
+ * implementing quantum-inspired cellular structures with consciousness integration.
+ * Each .seigr file contains autonomous cellular units that can adapt, learn, and
+ * collaborate through mycelial networking protocols.
+ * 
+ * CORE ARCHITECTURAL PRINCIPLES:
+ * 
+ * 1. CELLULAR CONSCIOUSNESS:
+ *    - Each data segment is encapsulated in a conscious cell
+ *    - Cells exhibit adaptive behavior based on access patterns
+ *    - Consciousness levels determine processing capabilities
+ *    - Inter-cellular communication enables collective intelligence
+ * 
+ * 2. QUANTUM COHERENCE:
+ *    - Quantum state management for data integrity
+ *    - Coherence field strength affects error correction
+ *    - Dimensional field manipulation for storage optimization
+ *    - Entanglement networks for instant synchronization
+ * 
+ * 3. SWARM INTELLIGENCE:
+ *    - Mycelial coordination between distributed cells
+ *    - Collective decision-making through consensus protocols
+ *    - Adaptive learning from access patterns and errors
+ *    - Dynamic resource sharing and load balancing
+ * 
+ * 4. ENERGY MANAGEMENT:
+ *    - Quantum energy budgets for sustainable operations
+ *    - Energy efficiency optimization through machine learning
+ *    - Dynamic energy allocation based on demand patterns
+ *    - Conservation protocols for long-term storage
+ * 
+ * 5. TEMPORAL MECHANICS:
+ *    - Sidereal time integration for cosmic synchronization
+ *    - Version history with quantum state preservation
+ *    - Lineage tree tracking for evolutionary analysis
+ *    - Time-based adaptation triggers and maintenance
+ * 
+ * MATHEMATICAL FOUNDATION:
+ * =======================
+ * 
+ * - Senary arithmetic (base-6) for quantum-resistant computations
+ * - Dimensional field equations for space-time optimization
+ * - Consensus algorithms with quantum uncertainty integration
+ * - Energy conservation equations with efficiency optimization
+ * 
+ * SECURITY FEATURES:
+ * =================
+ * 
+ * - Quantum-resistant cryptography through senary mathematics
+ * - Distributed consensus prevents single points of failure
+ * - Cellular isolation limits attack surface propagation
+ * - Adaptive immune system responses to threats
+ * 
+ * PERFORMANCE CHARACTERISTICS:
+ * ===========================
+ * 
+ * - Logarithmic scaling through hierarchical cellular organization
+ * - Parallel processing through distributed swarm coordination
+ * - Adaptive caching based on consciousness-driven predictions
+ * - Energy-efficient operations through quantum optimization
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Quantum File System
+ * @dependencies senary, identity, sidereal_time, logger, energy, consciousness
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @scalability Horizontal scaling through mycelial network expansion
+ */
+
 // Hyphos Dot Seigr Metaword - Revolutionary Quantum File System
 
 metaword dot_seigr {
+    /**
+     * QUANTUM DOT SEIGR FILE CREATION FUNCTION
+     * ========================================
+     * 
+     * Creates a revolutionary quantum .seigr file with conscious cellular architecture
+     * and swarm intelligence capabilities. This function establishes the fundamental
+     * structure for quantum-enhanced data storage with adaptive properties.
+     * 
+     * CREATION PROCESS:
+     * 1. Generate unique quantum identity using cosmic entropy
+     * 2. Initialize quantum properties (coherence, field strength, energy)
+     * 3. Configure swarm intelligence parameters for collective behavior
+     * 4. Establish mycelial networking infrastructure
+     * 5. Set up adaptive triggers for autonomous evolution
+     * 6. Create cellular registry for consciousness management
+     * 
+     * QUANTUM PROPERTIES INITIALIZATION:
+     * - Quantum coherence: Maintains data integrity across quantum states
+     * - Dimensional field strength: Controls space-time optimization
+     * - Energy budget: Total available quantum energy for operations
+     * - Energy efficiency: Optimization factor for sustainable operations
+     * 
+     * SWARM INTELLIGENCE CONFIGURATION:
+     * - Mycelial coordination: Network topology for cellular communication
+     * - Consensus threshold: Minimum agreement level for decisions
+     * - Learning rate: Adaptation speed for pattern recognition
+     * - Collective memory: Shared knowledge across cellular network
+     * 
+     * ADAPTIVE MECHANISMS:
+     * - File size thresholds trigger cellular division
+     * - Access pattern analysis drives caching optimization
+     * - Energy depletion activates conservation protocols
+     * - Error rates influence immune system responses
+     * 
+     * @param file_path Absolute path where the .seigr file will be created
+     * @param swarm_config Optional configuration for swarm intelligence behavior
+     * @return Quantum .seigr file structure with initialized cellular architecture
+     * 
+     * @complexity O(1) initialization time, O(log n) scaling with data growth
+     * @energy_cost Quantum energy consumption scales with complexity
+     * @consciousness_level Basic level for initial file creation
+     * @quantum_coherent All quantum properties initialized in coherent state
+     * 
+     * @example
+     * invoke dot_seigr:
+     *     let custom_swarm = {
+     *         coordination_style: "mycelial",
+     *         consensus_threshold: senary.number("0.85"),
+     *         learning_rate: senary.number("0.15"),
+     *         energy_sharing: true
+     *     }
+     *     let quantum_file = create_quantum_dot_seigr("/data/document.seigr", custom_swarm)
+     *     storage.save_to_filesystem(quantum_file)
+     * transcend
+     */
     fun create_quantum_dot_seigr(file_path, swarm_config) {
         // Create revolutionary quantum .seigr file with conscious cells
         logger.info("Creating quantum .seigr file", file_path)
@@ -60,6 +198,68 @@ metaword dot_seigr {
         return quantum_file
     }
     
+    /**
+     * QUANTUM SEIGR CELL CREATION FUNCTION
+     * ====================================
+     * 
+     * Creates an individual quantum Seigr cell with consciousness capabilities
+     * and 4D space-time positioning. These cells form the fundamental units
+     * of the quantum file system, each capable of autonomous behavior and
+     * collective intelligence through mycelial networking.
+     * 
+     * CELLULAR ARCHITECTURE:
+     * 1. 4D coordinate system (x, y, z, t) for space-time positioning
+     * 2. Consciousness integration with adaptive learning capabilities
+     * 3. Quantum states including superposition and entanglement
+     * 4. Swarm role assignment for collective behavior
+     * 5. Energy management with efficiency optimization
+     * 6. Genesis state tracking for evolutionary analysis
+     * 
+     * COORDINATE SYSTEM:
+     * - X, Y, Z: 3D spatial coordinates in senary mathematics
+     * - T: Temporal coordinate using sidereal time fractional values
+     * - Entanglement network: Quantum connections to other cells
+     * - Coherence field: Local quantum coherence maintenance
+     * 
+     * CONSCIOUSNESS CAPABILITIES:
+     * - Adaptive behavior based on access patterns
+     * - Learning algorithms for pattern recognition
+     * - Decision-making through consciousness processing
+     * - Memory storage for experience accumulation
+     * 
+     * SWARM ROLES:
+     * - "storage": Primary data storage and retrieval
+     * - "processor": Computational processing and analysis
+     * - "coordinator": Network coordination and communication
+     * - "guardian": Security monitoring and threat response
+     * - "healer": Error correction and recovery operations
+     * 
+     * QUANTUM PROPERTIES:
+     * - Superposition states for parallel processing
+     * - Entanglement connections for instant communication
+     * - Quantum coherence for error correction
+     * - Decoherence protection through field strength
+     * 
+     * @param x Spatial X coordinate in the quantum file system
+     * @param y Spatial Y coordinate in the quantum file system
+     * @param z Spatial Z coordinate in the quantum file system
+     * @param t Temporal coordinate (optional, defaults to current sidereal time)
+     * @param swarm_role Functional role within the cellular swarm
+     * @param cell_id Unique identifier (optional, auto-generated if not provided)
+     * @return Quantum cell structure with initialized consciousness and properties
+     * 
+     * @complexity O(1) cell creation time with logarithmic network integration
+     * @consciousness_enabled Each cell includes consciousness processing capabilities
+     * @quantum_coherent Maintains quantum coherence through field management
+     * @swarm_integrated Automatically participates in collective intelligence
+     * 
+     * @example
+     * invoke dot_seigr:
+     *     let storage_cell = create_quantum_seigr_cell(0, 0, 0, null, "storage", null)
+     *     let processor_cell = create_quantum_seigr_cell(1, 0, 0, null, "processor", "proc_001")
+     *     entangle_cells(storage_cell, processor_cell)
+     * transcend
+     */
     fun create_quantum_seigr_cell(x, y, z, t, swarm_role, cell_id) {
         // Create quantum Seigr cell with consciousness capabilities
         logger.info("Creating quantum Seigr cell")

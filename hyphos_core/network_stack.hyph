@@ -1,3 +1,22 @@
+/**
+ * ================================================================================
+ * HYPHOS NETWORK STACK METAWORD - LOW-LEVEL NETWORK INFRASTRUCTURE
+ * ================================================================================
+ * 
+ * Low-level network interface management, TCP/IP stack integration, and driver
+ * control system with senary optimization and energy awareness. This metaword
+ * provides the foundational networking infrastructure for the Seigr ecosystem
+ * with consciousness integration and adaptive performance optimization.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Network Infrastructure
+ * @dependencies noesis, senary, energy, consciousness, hardware
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @energy_adaptive Optimizes network operations based on energy availability
+ */
+
 // Hyphos Core - Network Stack Metaword
 // Low-level network interface management, TCP/IP stack integration, and driver control
 // Based on Seigr OS network stack with senary optimization and energy awareness
@@ -10,6 +29,20 @@ metaword network_stack {
     var active_interfaces = {}
     var interface_monitor_active = false
     
+    /**
+     * NETWORK INTERFACE MANAGER INITIALIZATION
+     * =======================================
+     * 
+     * Initializes low-level interface control and configuration with
+     * consciousness integration and energy-aware performance profiles.
+     * 
+     * @return $Boolean True if initialization successful
+     * 
+     * @example
+     * invoke network_stack:
+     *     let success = network_stack.initialize_interface_manager()
+     * transcend
+     */
     fun initialize_interface_manager() -> $Boolean {
         // Initialize low-level interface control and configuration
         interface_manager = {

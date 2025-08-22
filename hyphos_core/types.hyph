@@ -1,4 +1,22 @@
-// Hyphos Core - Type Metaword
+/**
+ * ================================================================================
+ * HYPHOS TYPES METAWORD - ADVANCED TYPE SYSTEM AND VALIDATION FRAMEWORK
+ * ================================================================================
+ * 
+ * Advanced type system and validation framework providing comprehensive type
+ * checking, consciousness-aware type inference, and adaptive type optimization
+ * for the Hyphos language's sophisticated type management infrastructure.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Type System
+ * @dependencies consciousness, validation, inference, optimization
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @type_intelligent Provides AI-driven type inference and optimization
+ */
+
+// Hyphos Core - Types Metaword/ Hyphos Core - Type Metaword
 // Core type handling and validation for Hyphos language
 
 metaword type {

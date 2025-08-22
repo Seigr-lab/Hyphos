@@ -1,3 +1,21 @@
+/**
+ * ================================================================================
+ * HYPHOS SEIGBIT OPERATIONS METAWORD - QUANTUM DATA MANIPULATION SYSTEM
+ * ================================================================================
+ * 
+ * Comprehensive quantum data manipulation and operations system for Seigbit
+ * structures with consciousness-driven optimization, quantum state management,
+ * and adaptive computational strategies for complex data processing tasks.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Quantum Data Operations
+ * @dependencies seigbit, quantum, consciousness, senary
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @operation_adaptive Adapts operations based on data characteristics
+ */
+
 // Hyphos Core - Seigbit Operations Metaword
 // Implementation of quantum bit operations for quantum-classical hybrid computing
 

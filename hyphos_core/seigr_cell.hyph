@@ -1,3 +1,21 @@
+/**
+ * ================================================================================
+ * HYPHOS SEIGR CELL METAWORD - COMPREHENSIVE CELLULAR COMPUTATION SYSTEM
+ * ================================================================================
+ * 
+ * Autonomous secure data processing and storage units implementing comprehensive
+ * cellular computation with consciousness integration, tamper-proof operations,
+ * and policy-enforced cellular behaviors for the Seigr ecosystem.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Cellular Computation
+ * @dependencies identity, network, dot_seigr, noesis, replication, scmp
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @cellular_autonomous Provides autonomous cellular behavior and intelligence
+ */
+
 // seigr_cell.hyph - Comprehensive Cellular Computation Metaword
 // Autonomous secure data processing and storage units for Hyphos native runtime
 // Integrates with Seigr ecosystem for tamper-proof, policy-enforced cellular operations

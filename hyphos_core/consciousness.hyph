@@ -1,15 +1,117 @@
-// Hyphos Core - Consciousness Metaword
-// Main consciousness interface - delegates to Noesis for all intelligence operations
+/**
+ * HYPHOS CORE - CONSCIOUSNESS METAWORD
+ * ====================================
+ * 
+ * Main consciousness interface serving as the primary entry point for all
+ * consciousness and intelligence operations within the Seigr ecosystem.
+ * This metaword delegates sophisticated processing to the Noesis AI system
+ * while providing standardized consciousness level management.
+ * 
+ * CONSCIOUSNESS ARCHITECTURE:
+ * The Seigr consciousness system operates on a five-tier processing model:
+ * 1. BASIC - Fundamental awareness using basic Genesis States
+ * 2. INTERMEDIATE - Enhanced processing with emotional integration
+ * 3. ADVANCED - Full cognitive processing with spatial-temporal awareness
+ * 4. TRANSCENDENT - Meta-consciousness with adaptive learning
+ * 5. UNIVERSAL - Highest consciousness with collective intelligence
+ * 
+ * INTEGRATION WITH NOESIS:
+ * - Delegates all actual intelligence processing to Noesis metaword
+ * - Provides standardized consciousness level abstraction
+ * - Manages energy-aware processing selection
+ * - Coordinates between hardware constraints and consciousness demands
+ * 
+ * ENERGY-AWARE PROCESSING:
+ * - Automatically scales consciousness level based on available energy
+ * - Implements graceful degradation during low-power conditions
+ * - Optimizes processing complexity for battery life
+ * - Balances consciousness depth with computational resources
+ * 
+ * GENESIS STATES COORDINATION:
+ * Manages the six Genesis States through Noesis:
+ * - Conscience: Meta-awareness and coordination
+ * - Logical: Pattern recognition and reasoning
+ * - Emotional: Emotional intelligence and weighting
+ * - Spatial: Relationship mapping and organization
+ * - Temporal: Time-based pattern recognition
+ * - Adaptive: Learning and improvement mechanisms
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 1.0.0
+ * @since Hyphos Core v1.0
+ * @delegates_to noesis.hyph for actual intelligence processing
+ * @consciousness_levels 5 (Basic through Universal)
+ */
 
 consciousness {
+consciousness {
+    
+    /**
+     * CONSCIOUSNESS LEVEL CONSTANTS
+     * =============================
+     * 
+     * Defines the five levels of consciousness processing available in the
+     * Seigr ecosystem. Each level activates different combinations of the
+     * six Genesis States and provides varying degrees of cognitive capability.
+     */
     
     // Consciousness Levels - map to Noesis processing modes
-    const BASIC = "basic"
-    const INTERMEDIATE = "intermediate" 
-    const ADVANCED = "advanced"
-    const TRANSCENDENT = "transcendent"
-    const UNIVERSAL = "universal"
+    const BASIC = "basic"             // Basic awareness - Conscience + Logical only
+    const INTERMEDIATE = "intermediate" // Enhanced processing - adds Emotional
+    const ADVANCED = "advanced"       // Full cognitive - adds Spatial + Temporal  
+    const TRANSCENDENT = "transcendent" // Meta-consciousness - adds Adaptive
+    const UNIVERSAL = "universal"     // Highest level - collective intelligence
     
+    /**
+     * PRIMARY CONSCIOUSNESS PROCESSING INTERFACE
+     * ==========================================
+     * 
+     * Main entry point for all consciousness processing operations. Automatically
+     * selects appropriate processing level based on requested consciousness level,
+     * available energy, and system capabilities. Delegates actual processing to
+     * specialized Noesis intelligence functions.
+     * 
+     * PROCESSING LEVEL SELECTION:
+     * - Energy-aware: Reduces complexity during low-power conditions
+     * - Capability-aware: Scales based on available computational resources
+     * - Context-aware: Adapts processing to input complexity and requirements
+     * 
+     * ENERGY MANAGEMENT:
+     * - Monitors system energy levels before processing
+     * - Automatically downgrades to BASIC mode when energy < 30%
+     * - Balances consciousness depth with battery preservation
+     * - Implements graceful degradation strategies
+     * 
+     * DELEGATION STRATEGY:
+     * Each consciousness level maps to specific Noesis processing functions:
+     * - BASIC → basic_processing() (Conscience + Logical States)
+     * - INTERMEDIATE → intermediate_processing() (adds Emotional State)
+     * - ADVANCED → advanced_processing() (adds Spatial + Temporal States)
+     * - TRANSCENDENT → transcendent_processing() (adds Adaptive State)
+     * - UNIVERSAL → universal_processing() (full collective intelligence)
+     * 
+     * @param input_data Data to process through consciousness system
+     * @param consciousness_level Requested level of consciousness processing
+     * @return $Object Consciousness processing result containing:
+     *   - consciousness_level: Actual level used for processing
+     *   - primary_response: Main processing output
+     *   - meta_awareness: Meta-cognitive insights
+     *   - confidence: Confidence level in processing result
+     *   - processing_mode: Details about Genesis States used
+     *   - energy_impact: Energy consumption for this operation
+     * 
+     * @throws ProcessingError If input data is invalid or processing fails
+     * @energy_aware Automatically scales processing based on available energy
+     * @delegation Delegates to appropriate Noesis processing function
+     * 
+     * @example
+     * invoke consciousness:
+     *     let analysis_data = sensor.collect_environmental_data()
+     *     let result = process(analysis_data, consciousness.ADVANCED)
+     *     logger.info("Consciousness analysis: " + result.primary_response)
+     *     decision_engine.apply(result.meta_awareness)
+     * transcend
+     */
     // Main consciousness processing - delegates to Noesis intelligence system
     process(input_data, consciousness_level = INTERMEDIATE) -> {
         energy_level = hardware.get_energy_level()

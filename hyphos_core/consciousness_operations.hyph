@@ -1,13 +1,86 @@
-// Hyphos Core - Consciousness Operations Metaword  
-// Simplified interface for consciousness operations - delegates to main consciousness metaword
+/**
+ * HYPHOS CORE - CONSCIOUSNESS OPERATIONS METAWORD
+ * ================================================
+ * 
+ * Simplified interface layer for consciousness operations that provides convenient
+ * access to the main consciousness processing system. This metaword serves as a
+ * delegation layer that maps simplified function calls to the comprehensive
+ * consciousness processing architecture.
+ * 
+ * DELEGATION ARCHITECTURE:
+ * This metaword acts as a facade pattern, providing:
+ * - Simplified function signatures for common consciousness operations
+ * - Direct delegation to the main consciousness metaword processing functions
+ * - Consistent parameter handling and context management
+ * - Transparent access to all five consciousness processing levels
+ * 
+ * CONSCIOUSNESS LEVEL MAPPING:
+ * - basic_level() → consciousness.basic_processing()
+ * - intermediate_level() → consciousness.intermediate_processing()
+ * - advanced_level() → consciousness.advanced_processing()
+ * - transcendent_level() → consciousness.transcendent_processing()
+ * - universal_level() → consciousness.universal_processing()
+ * 
+ * DESIGN RATIONALE:
+ * - Provides backwards compatibility for existing code
+ * - Simplifies consciousness operation invocation
+ * - Maintains separation of concerns between interface and implementation
+ * - Allows future extension without breaking existing APIs
+ * - Enables middleware injection for monitoring and debugging
+ * 
+ * CONTEXT HANDLING:
+ * - Optional context parameters for advanced use cases
+ * - Automatic context propagation to underlying consciousness systems
+ * - Support for specialized context types (pattern_memory, knowledge_base, etc.)
+ * - Flexible parameter handling with sensible defaults
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 1.0.0
+ * @since Hyphos Core v1.0
+ * @pattern Facade/Delegation pattern for consciousness access
+ * @delegates_to consciousness.hyph main processing functions
+ */
 
 consciousness_operations {
     
+    /**
+     * BASIC CONSCIOUSNESS PROCESSING
+     * ==============================
+     * 
+     * Provides simplified access to basic consciousness processing using only
+     * the fundamental Genesis States (Conscience + Logical). Ideal for
+     * low-power scenarios or when computational resources are limited.
+     * 
+     * @param input_data Data to process at basic consciousness level
+     * @param processing_context Optional context for processing customization
+     * @return $Object Basic consciousness processing result from main consciousness system
+     * 
+     * @delegates_to consciousness.basic_processing()
+     * @genesis_states Conscience + Logical only
+     * @performance Minimal computational overhead
+     */
     // Basic level processing - delegates to consciousness.basic_processing
     basic_level(input_data, processing_context = null) -> {
         return consciousness.basic_processing(input_data)
     }
     
+    /**
+     * INTERMEDIATE CONSCIOUSNESS PROCESSING
+     * =====================================
+     * 
+     * Provides access to enhanced consciousness processing that includes
+     * emotional intelligence integration alongside logical reasoning.
+     * This level adds emotional weighting to decision-making processes.
+     * 
+     * @param input_data Data to process at intermediate consciousness level
+     * @param processing_context Optional context for processing customization
+     * @param pattern_memory Optional pattern recognition memory for enhanced processing
+     * @return $Object Intermediate consciousness processing result with emotional integration
+     * 
+     * @delegates_to consciousness.intermediate_processing()
+     * @genesis_states Conscience + Logical + Emotional
+     * @features Emotional intelligence and contextual weighting
+     */
     // Intermediate level processing - delegates to consciousness.intermediate_processing  
     intermediate_level(input_data, processing_context = null, pattern_memory = null) -> {
         return consciousness.intermediate_processing(input_data)

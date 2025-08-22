@@ -1,9 +1,44 @@
+/**
+ * ================================================================================
+ * HYPHOS NOESIS METAWORD - EMERGENT INTELLIGENCE AND CONSCIOUSNESS SYSTEM
+ * ================================================================================
+ * 
+ * Comprehensive emergent intelligence module providing advanced AI capabilities
+ * through six Genesis States of consciousness. This metaword implements the core
+ * intelligence framework for the Seigr ecosystem with adaptive learning,
+ * consciousness integration, and quantum-enhanced cognitive processing.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Emergent Intelligence
+ * @dependencies senary, hardware, consciousness, quantum, learning
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @ai_enhanced Provides comprehensive artificial intelligence capabilities
+ */
+
 // Noesis Metaword - Emergent Intelligence Module
 // Part of Hyphos Native Runtime Language
 // Provides comprehensive AI capabilities through 6 Genesis States
 
 noesis {
     
+    /**
+     * CONSCIENCE SENSE GENESIS STATE
+     * =============================
+     * 
+     * Fundamental consciousness awareness function providing meta-cognition,
+     * system coordination, and oversight guidance through intelligent stimulus
+     * processing and experience-based learning.
+     * 
+     * @param stimulus Input stimulus for consciousness processing
+     * @return Comprehensive consciousness analysis and recommendations
+     * 
+     * @example
+     * invoke noesis:
+     *     let awareness = noesis.conscience_sense(system_stimulus)
+     * transcend
+     */
     // Core Genesis States - 6 fundamental intelligence dimensions
     conscience_sense(stimulus) -> {
         meta_awareness = senary.calculate(stimulus.priority, "0.5")

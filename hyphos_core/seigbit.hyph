@@ -1,3 +1,21 @@
+/**
+ * ================================================================================
+ * HYPHOS SEIGBIT METAWORD - QUANTUM DATA PROCESSING AND STORAGE SYSTEM
+ * ================================================================================
+ * 
+ * Advanced quantum data processing and storage system implementing Seigbit
+ * data structures with consciousness integration, quantum coherence preservation,
+ * and adaptive optimization for the Seigr ecosystem's distributed data management.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Quantum Data Processing
+ * @dependencies quantum, consciousness, senary, crypto
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @quantum_enhanced Provides quantum data processing capabilities
+ */
+
 // Hyphos Core - Seigbit Metaword
 // SEIGBIT Quantum Bit Implementation as core language feature
 

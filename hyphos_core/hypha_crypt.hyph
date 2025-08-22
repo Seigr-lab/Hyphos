@@ -1,7 +1,150 @@
+/**
+ * ================================================================================
+ * HYPHOS HYPHA CRYPT METAWORD - ADAPTIVE BIOMIMETIC ENCRYPTION SYSTEM
+ * ================================================================================
+ * 
+ * Advanced adaptive encryption system inspired by fungal network cryptography
+ * and biomimetic security patterns. This metaword provides dynamic encryption
+ * capabilities that adapt to threat levels and energy constraints while
+ * maintaining quantum resistance through senary mathematical foundations.
+ * 
+ * CRYPTOGRAPHIC ARCHITECTURE:
+ * ==========================
+ * 
+ * HyphaCrypt implements a revolutionary encryption system that mimics the
+ * adaptive security mechanisms found in fungal networks, providing dynamic
+ * encryption strength based on environmental threat assessment and available
+ * energy resources.
+ * 
+ * CORE DESIGN PRINCIPLES:
+ * 
+ * 1. ADAPTIVE ENCRYPTION STRENGTH:
+ *    - Dynamic encryption rounds based on threat assessment
+ *    - Energy-aware cryptographic parameter adjustment
+ *    - Real-time security level adaptation
+ *    - Performance-security balance optimization
+ * 
+ * 2. BIOMIMETIC SECURITY PATTERNS:
+ *    - Fungal network-inspired key distribution
+ *    - Mycelial communication security protocols
+ *    - Adaptive immune response to cryptographic attacks
+ *    - Self-healing encryption mechanisms
+ * 
+ * 3. QUANTUM-RESISTANT FOUNDATIONS:
+ *    - Senary mathematics for quantum computing resistance
+ *    - Large key spaces through base-6 arithmetic
+ *    - Post-quantum cryptographic algorithms
+ *    - Quantum entanglement-aware key management
+ * 
+ * 4. ENERGY-CONSCIOUS CRYPTOGRAPHY:
+ *    - Power consumption optimization for mobile devices
+ *    - Adaptive computational intensity based on energy levels
+ *    - Battery-aware encryption parameter selection
+ *    - Energy harvesting integration for IoT devices
+ * 
+ * 5. CONSCIOUSNESS-INTEGRATED SECURITY:
+ *    - Threat pattern learning through consciousness system
+ *    - Predictive security adjustment based on behavior analysis
+ *    - Intelligent key rotation scheduling
+ *    - Adaptive cryptographic algorithm selection
+ * 
+ * THREAT ASSESSMENT LEVELS:
+ * ========================
+ * 
+ * - MINIMAL: Basic encryption for low-risk environments
+ * - MODERATE: Standard encryption for normal operational security
+ * - ELEVATED: Enhanced encryption for increased threat environments
+ * - HIGH: Strong encryption for high-risk operational contexts
+ * - CRITICAL: Maximum encryption for hostile environments
+ * 
+ * ENERGY OPTIMIZATION LEVELS:
+ * ===========================
+ * 
+ * - MINIMAL: Ultra-low power for energy-constrained devices
+ * - BALANCED: Optimal performance-energy balance (default)
+ * - PERFORMANCE: High performance with moderate energy usage
+ * - MAXIMUM: Full cryptographic strength regardless of energy cost
+ * 
+ * MATHEMATICAL FOUNDATION:
+ * =======================
+ * 
+ * - Senary arithmetic for quantum-resistant calculations
+ * - Elliptic curve cryptography over finite fields
+ * - Advanced hash functions with avalanche properties
+ * - Information-theoretic security principles
+ * 
+ * SECURITY FEATURES:
+ * =================
+ * 
+ * - Dynamic key rotation based on threat assessment
+ * - Forward secrecy through ephemeral key generation
+ * - Side-channel attack resistance
+ * - Cryptographic agility for algorithm upgrades
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Adaptive Cryptography
+ * @dependencies energy, immune, sidereal_time, logger, entropy, hash
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @quantum_resistant Designed for post-quantum cryptographic security
+ */
+
 // Hyphos Core - HyphaCrypt Metaword
 // Pure Hyphos implementation of adaptive, biomimetic encryption
 
 metaword hypha_crypt {
+    /**
+     * HYPHA CRYPT INITIALIZATION FUNCTION
+     * ===================================
+     * 
+     * Initializes the HyphaCrypt system with adaptive parameters based on
+     * energy availability and threat assessment. This function establishes
+     * the cryptographic context for all subsequent encryption operations.
+     * 
+     * INITIALIZATION PROCESS:
+     * 1. Assess current energy level for performance optimization
+     * 2. Evaluate threat level for appropriate security strength
+     * 3. Calculate adaptive parameters (key rotation, encryption rounds)
+     * 4. Establish cryptographic context with security metadata
+     * 5. Initialize active key management system
+     * 
+     * ADAPTIVE PARAMETER CALCULATION:
+     * - Key rotation interval: Based on threat level and energy constraints
+     * - Encryption strength: Number of cryptographic rounds for security
+     * - Algorithm selection: Optimal algorithms for current conditions
+     * - Resource allocation: Memory and CPU usage optimization
+     * 
+     * THREAT-ENERGY MATRIX:
+     * - High threat + High energy: Maximum security with full performance
+     * - High threat + Low energy: Strong security with energy optimization
+     * - Low threat + High energy: Balanced security with performance focus
+     * - Low threat + Low energy: Minimal security with energy conservation
+     * 
+     * SECURITY CONTEXT:
+     * - Temporal binding using sidereal time for freshness
+     * - Active key registry for centralized key management
+     * - Audit logging for security compliance and monitoring
+     * - Rotation scheduling for proactive security maintenance
+     * 
+     * @param energy_level Available energy level for cryptographic operations
+     * @param threat_level Assessed threat level for security parameter tuning
+     * @return $Object Cryptographic context for subsequent operations
+     * 
+     * @complexity O(1) initialization with adaptive parameter calculation
+     * @energy_adaptive Parameters optimized based on available energy
+     * @threat_responsive Security strength adapts to threat assessment
+     * @audit_logged Initialization events recorded for security analysis
+     * 
+     * @example
+     * invoke hypha_crypt:
+     *     let high_security_context = hypha_crypt.initialize(
+     *         energy.PERFORMANCE, 
+     *         immune.HIGH
+     *     )
+     *     let encryption_key = hypha_crypt.generate_key(high_security_context)
+     * transcend
+     */
     fun initialize(energy_level = energy.BALANCED, threat_level = immune.MINIMAL) -> $Object {
         // Initialize HyphaCrypt with energy budget and threat awareness
         

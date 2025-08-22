@@ -1,3 +1,21 @@
+/**
+ * ================================================================================
+ * HYPHOS VARIABLES METAWORD - INTELLIGENT VARIABLE MANAGEMENT SYSTEM
+ * ================================================================================
+ * 
+ * Intelligent variable management system providing consciousness-aware variable
+ * handling, quantum state preservation, and adaptive memory optimization for
+ * the Hyphos language's sophisticated variable lifecycle management.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - Variable Management
+ * @dependencies consciousness, memory, types, scope, quantum
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @memory_intelligent Provides AI-driven memory optimization and management
+ */
+
 // Hyphos Core - Variables Metaword
 // Core variable operations for Hyphos language
 

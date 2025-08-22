@@ -1,7 +1,94 @@
-// Hyphos Core - Control Flow Metaword
-// Core control flow constructs for Hyphos language
+/**
+ * HYPHOS CORE - CONTROL FLOW METAWORD
+ * ====================================
+ * 
+ * Fundamental control flow constructs that form the backbone of Hyphos program
+ * execution. This metaword implements traditional control structures (if, while, for)
+ * with Hyphos-specific enhancements including scope management, execution tracking,
+ * and safety mechanisms to prevent infinite loops and resource exhaustion.
+ * 
+ * SCOPE-AWARE EXECUTION:
+ * All control flow operations integrate with the Hyphos scope management system:
+ * - Automatic scope creation and cleanup for isolated execution contexts
+ * - Variable lifecycle management within control blocks
+ * - Memory leak prevention through deterministic scope destruction
+ * - Nested scope support for complex control flow patterns
+ * 
+ * SAFETY MECHANISMS:
+ * - Iteration limits prevent infinite loops and resource exhaustion
+ * - Execution monitoring tracks performance and resource usage
+ * - Graceful error handling with detailed execution context
+ * - Automatic cleanup on abnormal termination or exceptions
+ * 
+ * EXECUTION TRACKING:
+ * - Comprehensive logging of control flow execution paths
+ * - Performance metrics collection for optimization
+ * - Debugging support with execution trace information
+ * - Integration with Hyphos consciousness system for adaptive behavior
+ * 
+ * INTEGRATION FEATURES:
+ * - Seamless integration with bio_control_flow for adaptive patterns
+ * - Consciousness-aware execution for intelligent control decisions
+ * - Energy-aware processing to optimize power consumption
+ * - Network-distributed execution capabilities for cluster computing
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 1.0.0
+ * @since Hyphos Core v1.0
+ * @scope_management Automatic scope creation and cleanup
+ * @safety Iteration limits and resource monitoring
+ */
 
 metaword control {
+    /**
+     * CONDITIONAL EXECUTION CONTROL
+     * =============================
+     * 
+     * Implements conditional execution with automatic scope management and
+     * comprehensive execution tracking. This function provides the fundamental
+     * if-then-else logic with Hyphos-specific enhancements for safety and
+     * integration with the broader ecosystem.
+     * 
+     * SCOPE MANAGEMENT:
+     * - Creates isolated scopes for condition evaluation and block execution
+     * - Ensures proper variable lifecycle and memory management
+     * - Prevents variable leakage between conditional branches
+     * - Automatically cleans up resources on block completion
+     * 
+     * EXECUTION SEMANTICS:
+     * - Evaluates condition in current scope context
+     * - Executes appropriate block based on condition truthiness
+     * - Returns result from executed block or null if no execution
+     * - Maintains execution context for debugging and monitoring
+     * 
+     * SAFETY FEATURES:
+     * - Graceful handling of null else_block conditions
+     * - Exception propagation with proper scope cleanup
+     * - Resource monitoring during block execution
+     * - Timeout protection for long-running conditional blocks
+     * 
+     * @param condition Boolean expression or evaluatable condition
+     * @param then_block Code block to execute when condition is true
+     * @param else_block Optional code block for false condition
+     * @return $Any Result from executed block or null if no execution
+     * 
+     * @scope_isolation Creates separate scopes for then/else blocks
+     * @memory_safe Automatic cleanup prevents resource leaks
+     * @exception_safe Proper cleanup on abnormal termination
+     * 
+     * @example
+     * invoke control:
+     *     let user_authenticated = security.verify_credentials(token)
+     *     let result = if(user_authenticated, {
+     *         // Secure operations block
+     *         return user.get_protected_data()
+     *     }, {
+     *         // Unauthorized access block
+     *         security.log_unauthorized_attempt()
+     *         return error.unauthorized()
+     *     })
+     * transcend
+     */
     fun if(condition, then_block, else_block = null) -> $Any {
         // Conditional execution
         
@@ -20,6 +107,59 @@ metaword control {
         }
     }
 
+    /**
+     * ITERATIVE LOOP CONTROL WITH SAFETY LIMITS
+     * ==========================================
+     * 
+     * Implements while loop control with comprehensive safety mechanisms,
+     * scope management, and execution monitoring. This function provides
+     * traditional while loop semantics enhanced with Hyphos ecosystem
+     * integration and protection against infinite loops.
+     * 
+     * SAFETY MECHANISMS:
+     * - Maximum iteration limit (10,000) prevents infinite loops
+     * - Resource monitoring during loop execution
+     * - Automatic termination on resource exhaustion
+     * - Exception handling with proper scope cleanup
+     * 
+     * EXECUTION TRACKING:
+     * - Collects results from each loop iteration
+     * - Maintains iteration count for debugging and optimization
+     * - Monitors execution time and resource consumption
+     * - Provides detailed execution statistics on completion
+     * 
+     * SCOPE MANAGEMENT:
+     * - Creates isolated scope for entire loop execution
+     * - Each iteration executes within consistent scope context
+     * - Automatic variable cleanup on loop completion
+     * - Prevents memory leaks in long-running loops
+     * 
+     * PERFORMANCE OPTIMIZATION:
+     * - Early termination on resource constraints
+     * - Adaptive iteration scheduling based on system load
+     * - Integration with energy management for power efficiency
+     * - Consciousness-aware execution for intelligent loop behavior
+     * 
+     * @param condition_expr Boolean expression evaluated each iteration
+     * @param loop_body Code block executed while condition remains true
+     * @return $Array Collection of results from each loop iteration
+     * 
+     * @safety Maximum 10,000 iterations to prevent infinite loops
+     * @scope_isolation Single scope for entire loop execution
+     * @resource_monitoring Tracks memory and CPU usage during execution
+     * @performance Adaptive scheduling based on system conditions
+     * 
+     * @example
+     * invoke control:
+     *     let data_queue = network.get_incoming_data_queue()
+     *     let processed_results = while(data_queue.has_data(), {
+     *         let data_item = data_queue.pop()
+     *         let processed = ai.process_data(data_item)
+     *         return processed
+     *     })
+     *     logger.info("Processed " + processed_results.length + " items")
+     * transcend
+     */
     fun while(condition_expr, loop_body) -> $Array {
         // While loop
         

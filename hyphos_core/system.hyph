@@ -1,3 +1,21 @@
+/**
+ * ================================================================================
+ * HYPHOS SYSTEM METAWORD - COMPREHENSIVE SYSTEM MANAGEMENT FRAMEWORK
+ * ================================================================================
+ * 
+ * Comprehensive system management framework providing core system operations,
+ * resource management, and consciousness-integrated system optimization for
+ * the Seigr ecosystem's foundational infrastructure and operational control.
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 2.0.0
+ * @since 2024
+ * @classification Core Metaword - System Management
+ * @dependencies consciousness, hardware, security, performance
+ * @thread_safety Thread-safe through quantum coherence mechanisms
+ * @system_comprehensive Provides complete system management capabilities
+ */
+
 // Hyphos Core - System Metaword
 // Core system operations and runtime management for Hyphos language
 

@@ -1,5 +1,47 @@
-// Hyphos Core - Energy Metaword
-// Pure Hyphos implementation of sophisticated energy management as core feature
+/**
+ * HYPHOS CORE - ENERGY METAWORD  
+ * ==============================
+ * 
+ * Advanced energy management system implementing quantum-optimized power control
+ * with 6-layer energy architecture. This metaword provides comprehensive energy
+ * monitoring, optimization, and intelligent power state management throughout
+ * the Seigr ecosystem.
+ * 
+ * QUANTUM ENERGY ARCHITECTURE:
+ * Six-layer quantum energy management system:
+ * 1. Base Layer - Fundamental system power (CPU, memory)
+ * 2. Computation Layer - Processing-intensive operations
+ * 3. Network Layer - Communication and data transfer
+ * 4. Storage Layer - Data persistence and retrieval
+ * 5. Graphics Layer - Visual rendering and display
+ * 6. Consciousness Layer - AI and consciousness processing
+ * 
+ * POWER STATE MANAGEMENT:
+ * - NORMAL: Full operational capability with optimal performance
+ * - LOW_POWER: Reduced capabilities to extend battery life
+ * - CRITICAL: Essential operations only, maximum conservation
+ * - HARVESTING: Active energy collection and storage mode
+ * - EXTERNAL: Unlimited power from external source
+ * - UNKNOWN: Power state requires determination
+ * 
+ * INTELLIGENT OPTIMIZATION:
+ * - Predictive power management based on usage patterns
+ * - Adaptive scaling of consciousness processing complexity
+ * - Dynamic resource allocation across six energy layers
+ * - Automatic hibernation of non-essential subsystems
+ * 
+ * INTEGRATION WITH HARDWARE:
+ * - Real-time power consumption monitoring
+ * - Thermal management and throttling coordination
+ * - Battery life prediction and optimization
+ * - Energy harvesting from multiple sources
+ * 
+ * @author Sergi Saldaña-Massó (sergism77)
+ * @version 1.0.0
+ * @since Hyphos Core v1.0
+ * @energy_layers 6 (Base, Computation, Network, Storage, Graphics, Consciousness)
+ * @optimization Quantum-based energy distribution algorithms
+ */
 
 metaword energy {
     // Power states from centralized energy ecosystem
