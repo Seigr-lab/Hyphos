@@ -1,0 +1,386 @@
+// Hyphos Core - Metaword Processor Metaword
+// Core language interpreter for bio-inspired metaword system
+
+metaword metaword_processor {
+    fun initialize() -> $String {
+        // Initialize the metaword processing system
+        system.metaword_registry = {}
+        system.consciousness_levels = {
+            "BASIC": 1,
+            "INTERMEDIATE": 2, 
+            "ADVANCED": 3,
+            "TRANSCENDENT": 4,
+            "UNIVERSAL": 5
+        }
+        system.active_protocols = []
+        system.senary_context = true
+        
+        return "Metaword processor initialized"
+    }
+
+    fun parse_metaword_definition(definition_text) -> $Object {
+        // Parse metaword definition syntax
+        
+        // Extract metaword name and type
+        let metaword_pattern = "metaword\\s+(\\w+)\\s*\\{" // simplified pattern
+        let match_result = metaword_processor.match_pattern(definition_text, metaword_pattern)
+        
+        if match_result == null {
+        error("Invalid metaword definition syntax")
+    }
+    
+    metaword_name = match_result.groups[0]
+    metaword_type = match_result.groups[1]
+    
+    // Create metaword entry
+    metaword_entry = {
+        name: metaword_name,
+        type: metaword_type,
+        definition: definition_text,
+        consciousness_level: system.current_consciousness_level,
+        creation_time: sidereal.current_time(),
+        senary_enabled: true
+    }
+    
+    // Register based on type
+    if metaword_type == "senary_enum" {
+        metaword_processor.process_senary_enum(metaword_entry, definition_text)
+    } else if metaword_type == "consciousness_aware_class" {
+        metaword_processor.process_consciousness_class(metaword_entry, definition_text)
+    } else if metaword_type == "consciousness_service_provider" {
+        metaword_processor.process_service_provider(metaword_entry, definition_text)
+    } else {
+        metaword_processor.process_generic_metaword(metaword_entry, definition_text)
+    }
+    
+    // Store in registry
+    system.metaword_registry[metaword_name] = metaword_entry
+    
+    metaword_entry
+}
+
+metaword_processor.process_senary_enum = {
+    // Process senary enumeration definitions
+    metaword_entry = args.0
+    definition_text = args.1
+    
+    // Extract enum values
+    enum_pattern = /(\w+)\s*=\s*senary\((\d+)\)/g
+    enum_values = {}
+    
+    while (match = regex.match_next(definition_text, enum_pattern)) {
+        value_name = match.groups[0]
+        senary_value = senary.create(match.groups[1])
+        enum_values[value_name] = senary_value
+    }
+    
+    metaword_entry.enum_values = enum_values
+    metaword_entry.enum_type = "senary"
+    
+    // Create enum accessor functions
+    for value_name in enum_values.keys() {
+        full_name = metaword_entry.name + "." + value_name
+        functions.define(full_name, [], { enum_values[value_name] }, "senary")
+    }
+    
+    metaword_entry
+}
+
+metaword_processor.process_consciousness_class = {
+    // Process consciousness-aware class definitions
+    metaword_entry = args.0
+    definition_text = args.1
+    
+    // Extract consciousness level
+    consciousness_pattern = /consciousness_level\s+(\w+)/
+    consciousness_match = regex.match(definition_text, consciousness_pattern)
+    
+    if consciousness_match != null {
+        level_name = consciousness_match.groups[0]
+        metaword_entry.consciousness_level = system.consciousness_levels[level_name] or 1
+    }
+    
+    // Extract field definitions
+    field_pattern = /(private|public|protected)\s+seigbit_(\w+)\s+(\w+)/g
+    class_fields = {}
+    
+    while (field_match = regex.match_next(definition_text, field_pattern)) {
+        visibility = field_match.groups[0]
+        field_type = field_match.groups[1]
+        field_name = field_match.groups[2]
+        
+        class_fields[field_name] = {
+            type: field_type,
+            visibility: visibility,
+            seigbit_enabled: true
+        }
+    }
+    
+    metaword_entry.class_fields = class_fields
+    metaword_entry.class_type = "consciousness_aware"
+    
+    // Create class constructor
+    constructor_name = metaword_entry.name + ".create"
+    functions.define(constructor_name,
+        [{name: "initial_values", type: "object"}],
+        { metaword_processor.create_consciousness_instance(metaword_entry, args.0) },
+        "object"
+    )
+    
+    metaword_entry
+}
+
+metaword_processor.create_consciousness_instance = {
+    // Create instance of consciousness-aware class
+    metaword_entry = args.0
+    initial_values = args.1
+    
+    instance = {
+        metaword_type: metaword_entry.name,
+        consciousness_level: metaword_entry.consciousness_level,
+        creation_time: sidereal.current_time(),
+        instance_id: system.generate_seigbit_id(),
+        fields: {}
+    }
+    
+    // Initialize fields with default or provided values
+    for field_name in metaword_entry.class_fields.keys() {
+        field_def = metaword_entry.class_fields[field_name]
+        
+        if initial_values.has_key(field_name) {
+            instance.fields[field_name] = initial_values[field_name]
+        } else {
+            instance.fields[field_name] = metaword_processor.get_default_value(field_def.type)
+        }
+    }
+    
+    instance
+}
+
+metaword_processor.process_service_provider = {
+    // Process consciousness service provider definitions
+    metaword_entry = args.0
+    definition_text = args.1
+    
+    // Extract method definitions
+    method_pattern = /async\s+method\s+(\w+)\(([^)]*)\)\s*->\s*([^;]+);/g
+    service_methods = {}
+    
+    while (method_match = regex.match_next(definition_text, method_pattern)) {
+        method_name = method_match.groups[0]
+        parameters_text = method_match.groups[1]
+        return_type = method_match.groups[2]
+        
+        // Parse parameters
+        method_params = metaword_processor.parse_method_parameters(parameters_text)
+        
+        service_methods[method_name] = {
+            parameters: method_params,
+            return_type: return_type,
+            async: true,
+            consciousness_aware: true
+        }
+    }
+    
+    metaword_entry.service_methods = service_methods
+    metaword_entry.service_type = "consciousness_provider"
+    
+    // Create service interface
+    for method_name in service_methods.keys() {
+        service_method_name = metaword_entry.name + "." + method_name
+        method_def = service_methods[method_name]
+        
+        functions.define(service_method_name,
+            method_def.parameters,
+            { metaword_processor.invoke_service_method(metaword_entry, method_name, args) },
+            method_def.return_type
+        )
+    }
+    
+    metaword_entry
+}
+
+metaword_processor.parse_method_parameters = {
+    // Parse method parameter definitions
+    parameters_text = args.0
+    
+    if parameters_text.trim() == "" {
+        return []
+    }
+    
+    param_parts = string.split(parameters_text, ",")
+    parameters = []
+    
+    for param_part in param_parts {
+        param_trimmed = param_part.trim()
+        
+        // Parse "name: type" format
+        if param_trimmed.contains(":") {
+            name_type = string.split(param_trimmed, ":")
+            param_name = name_type[0].trim()
+            param_type = name_type[1].trim()
+            
+            parameters.append({
+                name: param_name,
+                type: param_type
+            })
+        }
+    }
+    
+    parameters
+}
+
+metaword_processor.get_default_value = {
+    // Get default value for a field type
+    field_type = args.0
+    
+    if field_type == "string" {
+        ""
+    } else if field_type == "bool" {
+        false
+    } else if field_type == "SenaryNumber" {
+        senary.create("0")
+    } else if field_type == "SenaryArray" {
+        []
+    } else if field_type == "SenaryMatrix" {
+        senary.create_matrix(1, 1)
+    } else {
+        null
+    }
+}
+
+metaword_processor.invoke_service_method = {
+    // Invoke consciousness service method
+    metaword_entry = args.0
+    method_name = args.1
+    method_args = args.2
+    
+    // Create service request context
+    service_context = {
+        service_name: metaword_entry.name,
+        method_name: method_name,
+        consciousness_level: metaword_entry.consciousness_level,
+        request_time: sidereal.current_time(),
+        arguments: method_args
+    }
+    
+    // Delegate to appropriate service implementation
+    if metaword_entry.name == "SenaryMathService" {
+        metaword_processor.handle_senary_math_service(service_context)
+    } else {
+        // Generic service handler
+        metaword_processor.handle_generic_service(service_context)
+    }
+}
+
+metaword_processor.handle_senary_math_service = {
+    // Handle senary mathematics service calls
+    service_context = args.0
+    method_name = service_context.method_name
+    method_args = service_context.arguments
+    
+    if method_name == "Calculate" {
+        request = method_args[0]
+        operation = request.fields.operation
+        operands = request.fields.operands
+        
+        if operation == senary.create("1") {  // SENARY_ADD
+            result = senary.create("0")
+            for operand in operands {
+                result = senary.add(result, operand)
+            }
+        } else if operation == senary.create("2") {  // SENARY_MULTIPLY
+            result = senary.create("1")
+            for operand in operands {
+                result = senary.multiply(result, operand)
+            }
+        } else {
+            error("Unsupported senary math operation")
+        }
+        
+        // Create response
+        response = {
+            metaword_type: "SenaryMathResponse",
+            fields: {
+                success: true,
+                scalar_result: result,
+                error_message: ""
+            }
+        }
+        
+        response
+    } else {
+        error("Unsupported senary math method: " + method_name)
+    }
+}
+
+metaword_processor.handle_generic_service = {
+    // Handle generic service method calls
+    service_context = args.0
+    
+    // Default implementation - log and return empty response
+    system.log("Generic service call: " + service_context.service_name + "." + service_context.method_name, "INFO")
+    
+    {
+        metaword_type: "GenericResponse",
+        fields: {
+            success: true,
+            message: "Service method executed"
+        }
+    }
+}
+
+metaword_processor.process_use_protocol = {
+    // Process protocol import statements
+    protocol_path = args.0
+    
+    if not system.active_protocols.contains(protocol_path) {
+        system.active_protocols.append(protocol_path)
+        
+        // Load protocol definitions if available
+        if filesystem.exists(protocol_path) {
+            protocol_content = filesystem.read_file(protocol_path)
+            metaword_processor.parse_protocol_file(protocol_content)
+        } else {
+            system.log("Warning: Protocol file not found: " + protocol_path, "WARN")
+        }
+    }
+    
+    true
+}
+
+metaword_processor.set_consciousness_level = {
+    // Set current consciousness level
+    level_name = args.0
+    
+    if system.consciousness_levels.has_key(level_name) {
+        system.current_consciousness_level = system.consciousness_levels[level_name]
+        system.log("Consciousness level set to: " + level_name, "INFO")
+    } else {
+        error("Unknown consciousness level: " + level_name)
+    }
+    
+    system.current_consciousness_level
+}
+
+metaword_processor.list_metawords = {
+    // List all registered metawords
+    metaword_names = []
+    
+    for name in system.metaword_registry.keys() {
+        metawords_names.append(name)
+    }
+    
+    metaword_names
+}
+
+metaword_processor.get_metaword_info = {
+    // Get information about a specific metaword
+    metaword_name = args.0
+    
+    if system.metaword_registry.has_key(metaword_name) {
+        system.metaword_registry[metaword_name]
+    } else {
+        error("Metaword not found: " + metaword_name)
+    }
+}

@@ -1,37 +1,46 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.senary_math;
+consciousness_level TRANSCENDENT;
 
-import "seigr_math.proto";
 
-enum SenaryMathOperation {
-    SENARY_UNKNOWN = 0;
-    SENARY_ADD = 1;
-    SENARY_MULTIPLY = 2;
-    SENARY_TRANSFORM = 3;
-    SENARY_OPTIMIZE = 4;
-    SENARY_ANALYZE = 5;
+
+use_protocol seigr_math.proto;
+
+metaword SenaryMathOperation = senary_enum {
+    SENARY_UNKNOWN = senary(0);
+    SENARY_ADD = senary(1);
+    SENARY_MULTIPLY = senary(2);
+    SENARY_TRANSFORM = senary(3);
+    SENARY_OPTIMIZE = senary(4);
+    SENARY_ANALYZE = senary(5);
 }
 
-message SenaryMathRequest {
-    SenaryMathOperation operation = 1;
-    repeated SenaryNumber operands = 2;
-    SenaryMatrix matrix_operand = 3;
-    SenaryArray array_operand = 4;
+metaword SenaryMathRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryMathOperation operation;
+    repeated private seigbit_SenaryNumber operands;
+    private seigbit_SenaryMatrix matrix_operand;
+    private seigbit_SenaryArray array_operand;
 }
 
-message SenaryMathResponse {
-    bool success = 1;
-    SenaryNumber scalar_result = 2;
-    SenaryMatrix matrix_result = 3;
-    SenaryArray array_result = 4;
-    string error_message = 5;
+metaword SenaryMathResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_SenaryNumber scalar_result;
+    private seigbit_SenaryMatrix matrix_result;
+    private seigbit_SenaryArray array_result;
+    private seigbit_string error_message;
 }
 
-service SenaryMathService {
-    rpc Calculate(SenaryMathRequest) returns (SenaryMathResponse);
-    rpc Transform(SenaryMathRequest) returns (SenaryMathResponse);
-    rpc Optimize(SenaryMathRequest) returns (SenaryMathResponse);
-    rpc Analyze(SenaryMathRequest) returns (SenaryMathResponse);
-    rpc ProcessArray(SenaryMathRequest) returns (SenaryMathResponse);
+metaword SenaryMathService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Calculate(request: seigbit_SenaryMathRequest) -> seigbit_SenaryMathResponse;
+    async method Transform(request: seigbit_SenaryMathRequest) -> seigbit_SenaryMathResponse;
+    async method Optimize(request: seigbit_SenaryMathRequest) -> seigbit_SenaryMathResponse;
+    async method Analyze(request: seigbit_SenaryMathRequest) -> seigbit_SenaryMathResponse;
+    async method ProcessArray(request: seigbit_SenaryMathRequest) -> seigbit_SenaryMathResponse;
 }

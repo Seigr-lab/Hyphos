@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.redo;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Redo operation types (senary-mapped 0-5)
-enum RedoOperation {
-    REDO_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword RedoOperation = senary_enum {
+    REDO_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Redo processing states (senary-mapped 0-5)
-enum RedoProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword RedoProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Redo data types (senary-mapped 0-5)
-enum RedoDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword RedoDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core redo messages
-message RedoObject {
-    string object_id = 1;
-    RedoDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    RedoProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword RedoObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_RedoDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_RedoProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message RedoRequest {
-    RedoOperation operation = 1;
-    RedoObject target_object = 2;
-    SenaryArray parameters = 3;
-    RedoProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword RedoRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_RedoOperation operation;
+    private seigbit_RedoObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_RedoProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message RedoResponse {
-    bool success = 1;
-    RedoObject result_object = 2;
-    SenaryArray result_data = 3;
-    RedoProcessingState new_state = 4;
-    string error_message = 5;
+metaword RedoResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_RedoObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_RedoProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Redo service definition
-service RedoService {
-    rpc Create(RedoRequest) returns (RedoResponse);
-    rpc Process(RedoRequest) returns (RedoResponse);
-    rpc Validate(RedoRequest) returns (RedoResponse);
-    rpc Optimize(RedoRequest) returns (RedoResponse);
-    rpc Integrate(RedoRequest) returns (RedoResponse);
+metaword RedoService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_RedoRequest) -> seigbit_RedoResponse;
+    async method Process(request: seigbit_RedoRequest) -> seigbit_RedoResponse;
+    async method Validate(request: seigbit_RedoRequest) -> seigbit_RedoResponse;
+    async method Optimize(request: seigbit_RedoRequest) -> seigbit_RedoResponse;
+    async method Integrate(request: seigbit_RedoRequest) -> seigbit_RedoResponse;
 }

@@ -1,0 +1,75 @@
+// Hyphos Core - Logger Metaword
+// Native logging operations as core language feature
+
+metaword logger {
+    // Alert severity levels
+    const INFO = 1
+    const WARNING = 2  
+    const ERROR = 3
+    const CRITICAL = 4
+    const FATAL = 5
+    
+    fun info(message, category = "HyphosCore") -> $Boolean {
+        return logger.log_event(logger.INFO, category, message, false)
+    }
+    
+    fun warning(message, category = "HyphosCore") -> $Boolean {
+        return logger.log_event(logger.WARNING, category, message, false)
+    }
+    
+    fun error(message, category = "HyphosCore") -> $Boolean {
+        return logger.log_event(logger.ERROR, category, message, false)
+    }
+    
+    fun critical(message, category = "HyphosCore") -> $Boolean {
+        return logger.log_event(logger.CRITICAL, category, message, true)
+    }
+    
+    fun fatal(message, category = "HyphosCore") -> $Boolean {
+        return logger.log_event(logger.FATAL, category, message, true)
+    }
+    
+    fun log_event(severity, category, message, sensitive = false, metadata = {}) -> $Boolean {
+        // Core logging functionality
+        let correlation_id = system.generate_uuid()
+        let timestamp = sidereal_time.current_time()
+        
+        // Create log entry structure
+        let log_entry = {
+            log_id: correlation_id,
+            severity: severity,
+            category: category,
+            message: message,
+            timestamp: timestamp,
+            sensitive: sensitive,
+            metadata: metadata,
+            runtime: "hyphos"
+        }
+        
+        // Write to system log
+        let success = system.write_log_entry(log_entry)
+        
+        // Also output to console based on severity
+        if severity >= logger.ERROR {
+            console.error("[" + category + "] " + message)
+        } else if severity == logger.WARNING {
+            console.warn("[" + category + "] " + message)
+        } else {
+            console.log("[" + category + "] " + message)
+        }
+        
+        return success
+    }
+    
+    fun debug(message, category = "HyphosCore") -> $Boolean {
+        return logger.log_event(0, category, message, false, { debug: true })
+    }
+    
+    fun trace(message, category = "HyphosCore") -> $Boolean {
+        return logger.log_event(0, category, message, false, { trace: true })
+    }
+    
+    fun audit(message, category = "HyphosCore", sensitive = true) -> $Boolean {
+        return logger.log_event(logger.INFO, category, message, sensitive, { audit: true })
+    }
+}

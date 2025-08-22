@@ -1,0 +1,602 @@
+// Hyphos Identity Metaword - Core Identity Management
+
+metaword identity {
+    fun create(entropy_source) {
+        // Generate new Seigr identity with entropy
+        let identity_id = generate_identity_core(entropy_source)
+        let creation_time = sidereal_time.current()
+        let identity_data = identity_data_new(identity_id, creation_time)
+        
+        logger.info("Identity created successfully", identity_id)
+        return identity_data
+    }
+    
+    fun bootstrap_interactive() {
+        // Interactive identity creation for first-time setup
+        logger.info("Starting interactive identity bootstrap")
+        
+        // Check for existing identities first
+        let existing_path = check_existing_identity()
+        if existing_path {
+            let choice = get_user_input("Import existing identity? (y/n): ")
+            if choice == "y" {
+                return import_existing_identity(existing_path)
+            }
+        }
+        
+        // Create new identity with user entropy
+        print("SEIGR IDENTITY CREATION")
+        print("Welcome to Seigr OS! Creating your secure digital identity...")
+        
+        let user_entropy = get_secure_user_input("Personal entropy (hidden): ")
+        let system_entropy = senary.random_token(32)
+        let combined_entropy = string_join(user_entropy, system_entropy, sidereal_time.current())
+        
+        let new_identity = create(combined_entropy)
+        
+        // Set encryption password (delegated to hypha_crypt metaword)
+        let password = get_secure_password()
+        let encryption_result = hypha_crypt.set_identity_encryption(new_identity, password)
+        
+        // USB storage setup (delegated to hardware metaword)
+        let usb_devices = hardware.detect_usb_devices()
+        if not usb_devices {
+            error("No USB devices detected. Please insert a USB drive.")
+        }
+        
+        let selected_usb = select_usb_device(usb_devices)
+        let save_result = save_to_usb(new_identity, selected_usb)
+        
+        print("SUCCESS: SEIGR IDENTITY CREATION COMPLETE!")
+        print("Your Human Seigr ID:", new_identity.senary_id)
+        print("(FLOPPY) Cold Storage Location:", selected_usb)
+        
+        return new_identity
+    }
+    
+    fun verify_identity(identity_id) {
+        // Verify identity format and integrity
+        let format_valid = verify_identity_format(identity_id)
+        if not format_valid {
+            logger.warning("Identity verification failed", identity_id)
+            return false
+        }
+        
+        // Check against revocation database
+        let revoked = check_revocation_status(identity_id)
+        if revoked {
+            logger.warning("Identity has been revoked", identity_id)
+            return false
+        }
+        
+        logger.info("Identity verification successful", identity_id)
+        return true
+    }
+    
+    fun load_from_usb(usb_path, password) {
+        // Load identity from USB storage
+        logger.info("Loading identity from USB", usb_path)
+        
+        let encrypted_data = filesystem.read_identity_file(usb_path)
+        if not encrypted_data {
+            error("No identity file found on USB")
+        }
+        
+        // Decrypt using hypha_crypt metaword
+        let identity_data = hypha_crypt.decrypt_identity_data(encrypted_data, password)
+        
+        // Verify integrity
+        let integrity_valid = verify_identity_integrity(identity_data)
+        if not integrity_valid {
+            error("Identity data integrity check failed")
+        }
+        
+        logger.info("Identity loaded successfully from USB")
+        return identity_data
+    }
+    
+    fun save_to_usb(identity_data, usb_path) {
+        // Save identity to USB cold storage
+        logger.info("Saving identity to USB", usb_path)
+        
+        // Create Seigr directory structure
+        let seigr_path = filesystem.path_join(usb_path, "Seigr")
+        filesystem.create_directory(seigr_path)
+        
+        // Encrypt identity data (delegated to hypha_crypt)
+        let encrypted_data = hypha_crypt.encrypt_identity_data(identity_data)
+        
+        // Save to USB
+        let identity_file = filesystem.path_join(seigr_path, string_join(identity_data.senary_id, ".seigr"))
+        filesystem.write_file(identity_file, encrypted_data)
+        
+        // Create backup copy with timestamp
+        let backup_name = string_join("seigr_identity_backup_", sidereal_time.current(), ".seigr")
+        let backup_path = filesystem.path_join(seigr_path, backup_name)
+        filesystem.write_file(backup_path, encrypted_data)
+        
+        logger.info("Identity saved to USB successfully")
+        return true
+    }
+    
+    fun synchronize_identity(identity_data, ipfs_sync) {
+        // Synchronize identity across storage mediums
+        logger.info("Starting identity synchronization")
+        
+        if not identity_data {
+            logger.error("Cannot synchronize: No valid identity data")
+            return false
+        }
+        
+        // IPFS synchronization if requested
+        if ipfs_sync {
+            let ipfs_cid = ipfs_store_identity(identity_data)
+            if ipfs_cid {
+                logger.info("Identity synchronized with IPFS", ipfs_cid)
+            } else {
+                logger.warning("IPFS synchronization failed")
+                return false
+            }
+        }
+        
+        logger.info("Identity synchronization completed")
+        return true
+    }
+    
+    fun create_simple_node_identity(node_name) {
+        // Create simplified node identity for system nodes
+        logger.info("Creating simple node identity", node_name)
+        
+        let node_entropy = string_join("node_", node_name, sidereal_time.current())
+        let node_identity = create(node_entropy)
+        
+        // Set node-specific properties
+        node_identity.identity_type = "NODE"
+        node_identity.node_name = node_name
+        
+        logger.info("Simple node identity created", node_identity.senary_id)
+        return node_identity
+    }
+    
+    fun get_trust_score(identity_id) {
+        // Calculate comprehensive trust score
+        logger.info("Calculating trust score", identity_id)
+        
+        // Base trust factors
+        let cryptographic_integrity = evaluate_cryptographic_integrity(identity_id)
+        let behavioral_reputation = evaluate_behavioral_reputation(identity_id)
+        let operational_history = evaluate_operational_history(identity_id)
+        let verification_level = evaluate_verification_level(identity_id)
+        let network_attestation = evaluate_network_attestation(identity_id)
+        
+        // Weighted trust calculation
+        let trust_factors = {
+            cryptographic_integrity: cryptographic_integrity * 0.35,
+            behavioral_reputation: behavioral_reputation * 0.25,
+            operational_history: operational_history * 0.20,
+            verification_level: verification_level * 0.15,
+            network_attestation: network_attestation * 0.05
+        }
+        
+        let weighted_sum = sum_trust_factors(trust_factors)
+        let final_score = senary.multiply(weighted_sum, 100)
+        
+        logger.info("Trust score calculated", identity_id, final_score)
+        return create_trust_report(identity_id, final_score, trust_factors)
+    }
+    
+    fun setup_lifecycle_management(identity_data, recovery_config, succession_config) {
+        // Initialize complete identity lifecycle management
+        logger.info("Setting up identity lifecycle management", identity_data.senary_id)
+        
+        // Recovery strategy setup
+        let recovery_methods = []
+        
+        if recovery_config.enable_usb_recovery {
+            recovery_methods = append(recovery_methods, "usb_recovery")
+        }
+        
+        if recovery_config.enable_social_recovery {
+            let social_setup = setup_social_recovery(recovery_config.trustees, recovery_config.threshold)
+            recovery_methods = append(recovery_methods, "social_recovery")
+        }
+        
+        if recovery_config.enable_distributed_shares {
+            let share_setup = create_distributed_shares(identity_data, recovery_config.num_shares, recovery_config.threshold)
+            recovery_methods = append(recovery_methods, "distributed_shares")
+        }
+        
+        // Succession planning setup
+        let succession_plan_id = ""
+        if succession_config.trustees and succession_config.beneficiaries {
+            succession_plan_id = create_succession_plan(succession_config.trustees, succession_config.beneficiaries)
+        }
+        
+        logger.info("Identity lifecycle management initialized", recovery_methods, succession_plan_id)
+        return create_lifecycle_status(recovery_methods, succession_plan_id)
+    }
+    
+    fun record_activity(identity_id, activity_type, source_component, metadata) {
+        // Record identity activity for lifecycle monitoring
+        let activity_id = generate_activity_id()
+        let timestamp = sidereal_time.current()
+        
+        let activity_record = {
+            activity_id: activity_id,
+            identity_id: identity_id,
+            activity_type: activity_type,
+            source_component: source_component,
+            metadata: metadata,
+            timestamp: timestamp
+        }
+        
+        store_activity_record(activity_record)
+        logger.info("Identity activity recorded", identity_id, activity_type)
+        return activity_id
+    }
+    
+    fun check_succession_triggers(identity_id) {
+        // Check for succession triggers (cessation detection)
+        let last_activity = get_last_activity(identity_id)
+        let time_since_activity = sidereal_time.current() - last_activity.timestamp
+        
+        // Configurable cessation detection thresholds
+        let inactivity_threshold = get_succession_config(identity_id).inactivity_threshold
+        
+        if time_since_activity > inactivity_threshold {
+            logger.warning("Potential cessation detected", identity_id, time_since_activity)
+            return trigger_succession_evaluation(identity_id)
+        }
+        
+        return false
+    }
+    
+    fun create_recovery_share(identity_data, recovery_method, share_data) {
+        // Create recovery share for identity restoration
+        let share_id = generate_recovery_share_id()
+        let creation_time = sidereal_time.current()
+        
+        let recovery_share = {
+            share_id: share_id,
+            identity_id: identity_data.senary_id,
+            recovery_method: recovery_method,
+            share_data: share_data,
+            creation_time: creation_time
+        }
+        
+        // Encrypt recovery share (delegated to hypha_crypt)
+        let encrypted_share = hypha_crypt.encrypt_recovery_share(recovery_share)
+        
+        store_recovery_share(encrypted_share)
+        logger.info("Recovery share created", share_id, recovery_method)
+        return share_id
+    }
+    
+    fun verify_succession_authority(succession_request, trustee_verifications) {
+        // Verify succession authority and authenticity
+        let succession_plan = get_succession_plan(succession_request.identity_id)
+        if not succession_plan {
+            logger.error("No succession plan found", succession_request.identity_id)
+            return false
+        }
+        
+        // Verify trustee signatures and consensus
+        let verified_trustees = []
+        for verification in trustee_verifications {
+            let trustee_valid = verify_trustee_signature(verification, succession_plan.trustees)
+            if trustee_valid {
+                verified_trustees = append(verified_trustees, verification.trustee_id)
+            }
+        }
+        
+        let consensus_threshold = succession_plan.consensus_threshold
+        let consensus_achieved = len(verified_trustees) >= consensus_threshold
+        
+        if consensus_achieved {
+            logger.info("Succession authority verified", succession_request.identity_id)
+            return true
+        } else {
+            logger.warning("Insufficient succession consensus", succession_request.identity_id, len(verified_trustees), consensus_threshold)
+            return false
+        }
+    }
+    
+    fun get_identity_manifest(identity_data) {
+        // Generate identity capability manifest
+        return {
+            module: "SeigrIdentity",
+            version: "1.0.0",
+            protocol_compliance: ["seigr.identity.v1"],
+            description: "Manages Seigr identities with secure storage, verification, and portability",
+            capabilities: [
+                "identity_generation",
+                "identity_verification", 
+                "secure_storage",
+                "usb_portability",
+                "ipfs_synchronization",
+                "trust_scoring",
+                "lifecycle_management",
+                "recovery_strategies",
+                "succession_planning"
+            ],
+            interfaces: [
+                "create(entropy_source)",
+                "verify_identity(identity_id)",
+                "load_from_usb(usb_path, password)",
+                "save_to_usb(identity_data, usb_path)",
+                "synchronize_identity(identity_data, ipfs_sync)",
+                "get_trust_score(identity_id)",
+                "setup_lifecycle_management(identity_data, recovery_config, succession_config)"
+            ],
+            dependencies: {
+                identity_protocol: "seigr.identity.v1",
+                encryption: "hypha_crypt metaword",
+                hardware: "hardware metaword",
+                filesystem: "filesystem metaword",
+                logger: "logger metaword",
+                sidereal_time: "sidereal_time metaword"
+            },
+            auditability: true
+        }
+    }
+}
+
+// ==================== PRIVATE HELPER FUNCTIONS ====================
+
+fun generate_identity_core(entropy_source) {
+    // Core identity generation using senary mathematics
+    let entropy_hash = crypto_hash.seigr_hash(entropy_source)
+    let senary_id = senary.process_data(entropy_hash)
+    return string_join("seigr_", senary_id)
+}
+
+fun identity_data_new(identity_id, creation_time) {
+    // Create new identity data structure
+    return {
+        senary_id: identity_id,
+        creation_timestamp: creation_time,
+        identity_type: "HUMAN",
+        status: "ACTIVE",
+        verification_level: "BASIC",
+        usb_required: true,
+        owner_signature: "",
+        encrypted_private_key: "",
+        owner_public_key: ""
+    }
+}
+
+fun verify_identity_format(identity_id) {
+    // Verify identity ID format compliance
+    if not identity_id {
+        return false
+    }
+    
+    // Check senary format and prefix
+    if not string_starts_with(identity_id, "seigr_") {
+        return false
+    }
+    
+    let senary_part = string_substring(identity_id, 6)
+    return senary.validate_string(senary_part)
+}
+
+fun verify_identity_integrity(identity_data) {
+    // Verify identity data integrity
+    if not identity_data.senary_id or not identity_data.creation_timestamp {
+        return false
+    }
+    
+    // Verify cryptographic signature if present
+    if identity_data.owner_signature and identity_data.owner_public_key {
+        return hypha_crypt.verify_signature(identity_data.senary_id, identity_data.owner_signature, identity_data.owner_public_key)
+    }
+    
+    return true
+}
+
+fun check_existing_identity() {
+    // Check for existing identities on USB devices
+    let usb_devices = hardware.detect_usb_devices()
+    for device in usb_devices {
+        let seigr_path = filesystem.path_join(device, "Seigr")
+        if filesystem.path_exists(seigr_path) {
+            let identity_files = filesystem.list_files_with_extension(seigr_path, ".seigr")
+            if len(identity_files) > 0 {
+                return device
+            }
+        }
+    }
+    return ""
+}
+
+fun check_revocation_status(identity_id) {
+    // Check if identity has been revoked
+    let revocation_db = get_revocation_database()
+    return revocation_db.is_revoked(identity_id)
+}
+
+fun evaluate_cryptographic_integrity(identity_id) {
+    // Evaluate cryptographic integrity factor
+    let base_score = 0.5
+    
+    // Check format validity
+    if verify_identity_format(identity_id) {
+        base_score = base_score + 0.2
+    }
+    
+    // Check cryptographic signatures
+    let identity_data = get_identity_data(identity_id)
+    if identity_data and identity_data.owner_signature {
+        if hypha_crypt.verify_signature(identity_id, identity_data.owner_signature, identity_data.owner_public_key) {
+            base_score = base_score + 0.3
+        }
+    }
+    
+    return senary.clamp(base_score, 0.0, 1.0)
+}
+
+fun evaluate_behavioral_reputation(identity_id) {
+    // Evaluate behavioral reputation factor
+    let activity_history = get_activity_history(identity_id)
+    let positive_interactions = count_positive_interactions(activity_history)
+    let total_interactions = len(activity_history)
+    
+    if total_interactions == 0 {
+        return 0.5  // Neutral for new identities
+    }
+    
+    let reputation_score = senary.divide(positive_interactions, total_interactions)
+    return senary.clamp(reputation_score, 0.0, 1.0)
+}
+
+fun evaluate_operational_history(identity_id) {
+    // Evaluate operational history factor
+    let creation_time = get_creation_time(identity_id)
+    let time_active = sidereal_time.current() - creation_time
+    let activity_consistency = calculate_activity_consistency(identity_id)
+    
+    // Longer operational history with consistent activity = higher score
+    let history_score = senary.min(senary.divide(time_active, 365 * 24 * 3600), 0.5)  // Max 0.5 for time
+    let consistency_score = senary.multiply(activity_consistency, 0.5)  // Max 0.5 for consistency
+    
+    return senary.clamp(history_score + consistency_score, 0.0, 1.0)
+}
+
+fun evaluate_verification_level(identity_id) {
+    // Evaluate verification level factor
+    let identity_data = get_identity_data(identity_id)
+    if not identity_data {
+        return 0.0
+    }
+    
+    let verification_level = identity_data.verification_level
+    if verification_level == "QUANTUM_VERIFIED" {
+        return 1.0
+    } else if verification_level == "COMMUNITY_TRUSTED" {
+        return 0.8
+    } else if verification_level == "BASIC" {
+        return 0.6
+    } else {
+        return 0.3  // Provisional
+    }
+}
+
+fun evaluate_network_attestation(identity_id) {
+    // Evaluate network attestation factor
+    let attestations = get_network_attestations(identity_id)
+    let valid_attestations = count_valid_attestations(attestations)
+    
+    if len(attestations) == 0 {
+        return 0.5  // Neutral for no attestations
+    }
+    
+    let attestation_ratio = senary.divide(valid_attestations, len(attestations))
+    return senary.clamp(attestation_ratio, 0.0, 1.0)
+}
+
+fun sum_trust_factors(trust_factors) {
+    // Sum weighted trust factors
+    let total = 0.0
+    for factor_name, factor_value in trust_factors {
+        total = total + factor_value
+    }
+    return total
+}
+
+fun create_trust_report(identity_id, score, factors) {
+    // Create trust score report
+    return {
+        identity_hash: identity_id,
+        trust_score: score,
+        timestamp: sidereal_time.current(),
+        algorithm_version: "1.0.0",
+        factor_scores: factors,
+        status_message: get_trust_status_message(score)
+    }
+}
+
+fun get_trust_status_message(score) {
+    // Convert numeric score to status message
+    if score >= 90 {
+        return "High Trust"
+    } else if score >= 70 {
+        return "Trusted"
+    } else if score >= 50 {
+        return "Moderate Trust"
+    } else if score >= 30 {
+        return "Low Trust"
+    } else if score >= 10 {
+        return "Minimal Trust"
+    } else {
+        return "Untrusted"
+    }
+}
+
+fun setup_social_recovery(trustees, threshold) {
+    // Setup social recovery with trusted individuals
+    let social_recovery_id = generate_social_recovery_id()
+    let verified_trustees = []
+    
+    for trustee in trustees {
+        let trustee_data = {
+            trustee_id: trustee.trustee_id,
+            seigr_identity: trustee.seigr_identity,
+            trustee_name: trustee.name,
+            trust_level: trustee.trust_level or 3.0,
+            recovery_weight: trustee.weight or 1,
+            verification_method: trustee.verification or "cryptographic"
+        }
+        verified_trustees = append(verified_trustees, trustee_data)
+    }
+    
+    let social_config = {
+        recovery_id: social_recovery_id,
+        trustees: verified_trustees,
+        consensus_threshold: threshold,
+        creation_time: sidereal_time.current()
+    }
+    
+    store_social_recovery_config(social_config)
+    return social_recovery_id
+}
+
+fun create_distributed_shares(identity_data, num_shares, threshold) {
+    // Create distributed recovery shares using secret sharing
+    let share_ids = []
+    let secret_data = hypha_crypt.prepare_secret_data(identity_data)
+    let shares = hypha_crypt.create_secret_shares(secret_data, num_shares, threshold)
+    
+    for i in range(num_shares) {
+        let share_id = create_recovery_share(identity_data, "distributed_share", shares[i])
+        share_ids = append(share_ids, share_id)
+    }
+    
+    return share_ids
+}
+
+fun create_succession_plan(trustees, beneficiaries) {
+    // Create digital succession plan
+    let succession_id = generate_succession_id()
+    let succession_plan = {
+        succession_id: succession_id,
+        trustees: trustees,
+        beneficiaries: beneficiaries,
+        consensus_threshold: calculate_consensus_threshold(len(trustees)),
+        creation_time: sidereal_time.current(),
+        status: "ACTIVE"
+    }
+    
+    store_succession_plan(succession_plan)
+    return succession_id
+}
+
+fun create_lifecycle_status(recovery_methods, succession_plan_id) {
+    // Create lifecycle management status
+    return {
+        recovery_methods: recovery_methods,
+        succession_plan_id: succession_plan_id,
+        lifecycle_stage: "ACTIVE_USE",
+        last_activity: sidereal_time.current(),
+        status: "INITIALIZED"
+    }
+}

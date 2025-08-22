@@ -1,0 +1,427 @@
+// Hyphos Core - Filesystem Metawords
+// Pure Hyphos implementation of file system operations as native metawords
+// Based on src/filesystem/ Python implementation with Seigr-native operations
+// These become core language features - no imports needed
+
+// =============================================================================
+// FILE METAWORD - Core file operations
+// =============================================================================
+
+metaword file {
+    // Core file existence and reading
+    fun exists(file_path) -> $Boolean {
+        let path_str = string.from(file_path)
+        return system.file_exists(path_str)
+    }
+    
+    fun read(file_path, encoding = "binary") -> $Data {
+        let path_str = string.from(file_path)
+        let file_data = system.read_file(path_str, encoding)
+        
+        if file_data == null {
+            return encoding == "binary" ? bytes.empty() : ""
+        }
+        
+        return file_data
+    }
+    
+    fun write(file_path, data, encoding = "binary") -> $Boolean {
+        let path_str = string.from(file_path)
+        let success = system.write_file(path_str, data, encoding)
+        
+        if success {
+            logger.info("File written: " + path_str)
+        }
+        
+        return success
+    }
+    
+    fun append(file_path, data, encoding = "binary") -> $Boolean {
+        let path_str = string.from(file_path)
+        let success = system.append_file(path_str, data, encoding)
+        
+        if success {
+            logger.info("File appended: " + path_str)
+        }
+        
+        return success
+    }
+    
+    fun copy(source_path, dest_path) -> $Boolean {
+        let source_str = string.from(source_path)
+        let dest_str = string.from(dest_path)
+        
+        // Read source file
+        let data = file.read(source_str, "binary")
+        if data == bytes.empty() {
+            return false
+        }
+        
+        // Write to destination
+        let success = file.write(dest_str, data, "binary")
+        
+        if success {
+            logger.info("File copied: " + source_str + " -> " + dest_str)
+        }
+        
+        return success
+    }
+    
+    fun delete(file_path) -> $Boolean {
+        let path_str = string.from(file_path)
+        let success = system.delete_file(path_str)
+        
+        if success {
+            logger.info("File deleted: " + path_str)
+        }
+        
+        return success
+    }
+    
+    fun size(file_path) -> $Integer {
+        let path_str = string.from(file_path)
+        return system.get_file_size(path_str)
+    }
+    
+    fun checksum(file_path) -> $String {
+        let path_str = string.from(file_path)
+        let data = file.read(path_str, "binary")
+        return hash.seigr_hash(data)
+    }
+    
+    fun metadata(file_path) -> $Object {
+        let path_str = string.from(file_path)
+        
+        return {
+            path: path_str,
+            exists: file.exists(path_str),
+            size: file.size(path_str),
+            checksum: file.checksum(path_str),
+            timestamp: sidereal_time.current_time()
+        }
+    }
+}
+
+// =============================================================================
+// DIRECTORY METAWORD - Core directory operations  
+// =============================================================================
+
+metaword directory {
+    fun create(dir_path, permissions = "standard") -> $Boolean {
+        let path_str = string.from(dir_path)
+        let success = system.create_directory(path_str, permissions)
+        
+        if success {
+            logger.info("Directory created: " + path_str)
+        }
+        
+        return success
+    }
+    
+    fun exists(dir_path) -> $Boolean {
+        let path_str = string.from(dir_path)
+        return system.directory_exists(path_str)
+    }
+    
+    fun list(dir_path, entry_type = "all") -> $Array {
+        let path_str = string.from(dir_path)
+        
+        if !directory.exists(path_str) {
+            return array.empty()
+        }
+        
+        let entries = system.list_directory(path_str)
+        
+        if entry_type == "all" {
+            return entries
+        } else if entry_type == "files" {
+            return array.filter(entries, fun(entry) {
+                return file.exists(path.join(path_str, entry))
+            })
+        } else if entry_type == "directories" {
+            return array.filter(entries, fun(entry) {
+                return directory.exists(path.join(path_str, entry))
+            })
+        }
+        
+        return entries
+    }
+    
+    fun remove(dir_path, recursive = false) -> $Boolean {
+        let path_str = string.from(dir_path)
+        
+        if recursive {
+            // Remove all contents first
+            let entries = directory.list(path_str)
+            for entry in entries {
+                let entry_path = path.join(path_str, entry)
+                if directory.exists(entry_path) {
+                    directory.remove(entry_path, true)
+                } else {
+                    file.delete(entry_path)
+                }
+            }
+        }
+        
+        let success = system.remove_directory(path_str)
+        
+        if success {
+            logger.info("Directory removed: " + path_str)
+        }
+        
+        return success
+    }
+    
+    fun info(dir_path) -> $Object {
+        let path_str = string.from(dir_path)
+        
+        if !directory.exists(path_str) {
+            return { error: "Directory does not exist" }
+        }
+        
+        let entries = directory.list(path_str)
+        let files = directory.list(path_str, "files")
+        let directories = directory.list(path_str, "directories")
+        
+        return {
+            path: path_str,
+            exists: true,
+            total_entries: array.length(entries),
+            file_count: array.length(files),
+            directory_count: array.length(directories),
+            entries: entries,
+            timestamp: sidereal_time.current_time()
+        }
+    }
+}
+
+// =============================================================================
+// PATH METAWORD - Core path operations
+// =============================================================================
+
+metaword path {
+    fun join(*path_parts) -> $String {
+        let separator = system.path_separator()
+        let parts = array.filter(path_parts, fun(part) {
+            return string.length(part) > 0
+        })
+        
+        return string.join(parts, separator)
+    }
+    
+    fun dirname(file_path) -> $String {
+        let path_str = string.from(file_path)
+        return system.path_dirname(path_str)
+    }
+    
+    fun basename(file_path) -> $String {
+        let path_str = string.from(file_path)
+        return system.path_basename(path_str)
+    }
+    
+    fun extension(file_path) -> $String {
+        let path_str = string.from(file_path)
+        let parts = string.split(path_str, ".")
+        
+        if array.length(parts) > 1 {
+            return array.last(parts)
+        }
+        
+        return ""
+    }
+    
+    fun normalize(file_path) -> $String {
+        let path_str = string.from(file_path)
+        return system.normalize_path(path_str)
+    }
+    
+    fun absolute(file_path) -> $String {
+        let path_str = string.from(file_path)
+        return system.absolute_path(path_str)
+    }
+    
+    fun relative(from_path, to_path) -> $String {
+        let from_str = string.from(from_path)
+        let to_str = string.from(to_path)
+        return system.relative_path(from_str, to_str)
+    }
+    
+    fun validate(file_path) -> $Boolean {
+        let path_str = string.from(file_path)
+        
+        // Check for invalid characters
+        let invalid_chars = ["<", ">", ":", "\"", "|", "?", "*"]
+        for char in invalid_chars {
+            if string.contains(path_str, char) {
+                return false
+            }
+        }
+        
+        // Check length
+        if string.length(path_str) > 260 {
+            return false
+        }
+        
+        return true
+    }
+}
+
+// =============================================================================
+// CAPSULE METAWORD - Core capsule operations (Seigr-specific)
+// =============================================================================
+
+metaword capsule {
+    fun read(capsule_path, segment_id = null) -> $Data {
+        let path_str = string.from(capsule_path)
+        
+        if !file.exists(path_str) {
+            return bytes.empty()
+        }
+        
+        let capsule_data = file.read(path_str, "binary")
+        
+        if segment_id == null {
+            return capsule_data
+        }
+        
+        // Extract specific segment
+        return system.extract_capsule_segment(capsule_data, segment_id)
+    }
+    
+    fun write(capsule_path, data, metadata = {}) -> $Boolean {
+        let path_str = string.from(capsule_path)
+        
+        // Create capsule structure
+        let capsule_structure = {
+            header: {
+                version: "1.0",
+                created: sidereal_time.current_time(),
+                checksum: hash.seigr_hash(data),
+                metadata: metadata
+            },
+            data: data
+        }
+        
+        // Serialize capsule
+        let serialized = system.serialize_capsule(capsule_structure)
+        
+        return file.write(path_str, serialized, "binary")
+    }
+    
+    fun validate(capsule_path) -> $Boolean {
+        let path_str = string.from(capsule_path)
+        
+        if !file.exists(path_str) {
+            return false
+        }
+        
+        let capsule_data = capsule.read(path_str)
+        let parsed = system.parse_capsule(capsule_data)
+        
+        if parsed == null {
+            return false
+        }
+        
+        // Validate checksum
+        let expected_checksum = parsed.header.checksum
+        let actual_checksum = hash.seigr_hash(parsed.data)
+        
+        return expected_checksum == actual_checksum
+    }
+    
+    fun metadata(capsule_path) -> $Object {
+        let path_str = string.from(capsule_path)
+        
+        if !file.exists(path_str) {
+            return { error: "Capsule does not exist" }
+        }
+        
+        let capsule_data = capsule.read(path_str)
+        let parsed = system.parse_capsule(capsule_data)
+        
+        if parsed == null {
+            return { error: "Invalid capsule format" }
+        }
+        
+        return parsed.header
+    }
+    
+    fun segments(capsule_path) -> $Array {
+        let path_str = string.from(capsule_path)
+        
+        if !file.exists(path_str) {
+            return array.empty()
+        }
+        
+        let capsule_data = capsule.read(path_str)
+        return system.list_capsule_segments(capsule_data)
+    }
+}
+
+// =============================================================================
+// FILESYSTEM METAWORD - High-level filesystem coordination
+// =============================================================================
+
+metaword filesystem {
+    fun mount(mount_point, filesystem_type = "seigr") -> $Boolean {
+        let mount_str = string.from(mount_point)
+        let success = system.mount_filesystem(mount_str, filesystem_type)
+        
+        if success {
+            logger.info("Filesystem mounted: " + mount_str)
+        }
+        
+        return success
+    }
+    
+    fun unmount(mount_point) -> $Boolean {
+        let mount_str = string.from(mount_point)
+        let success = system.unmount_filesystem(mount_str)
+        
+        if success {
+            logger.info("Filesystem unmounted: " + mount_str)
+        }
+        
+        return success
+    }
+    
+    fun stats(mount_point = "/") -> $Object {
+        let mount_str = string.from(mount_point)
+        
+        return {
+            mount_point: mount_str,
+            total_space: system.get_total_space(mount_str),
+            free_space: system.get_free_space(mount_str),
+            used_space: system.get_used_space(mount_str),
+            filesystem_type: system.get_filesystem_type(mount_str),
+            timestamp: sidereal_time.current_time()
+        }
+    }
+    
+    fun health() -> $Object {
+        return {
+            status: "healthy",
+            mounted_filesystems: system.list_mounted_filesystems(),
+            total_operations: system.get_operation_count(),
+            error_count: system.get_error_count(),
+            timestamp: sidereal_time.current_time()
+        }
+    }
+}
+
+// =============================================================================
+// Initialize filesystem core
+// =============================================================================
+
+fun filesystem_core.initialize() {
+    logger.info("Hyphos filesystem core metawords initialized")
+    
+    // Register metawords with runtime
+    runtime.register_metaword("file", file)
+    runtime.register_metaword("directory", directory) 
+    runtime.register_metaword("path", path)
+    runtime.register_metaword("capsule", capsule)
+    runtime.register_metaword("filesystem", filesystem)
+    
+    logger.info("Filesystem metawords registered successfully")
+}

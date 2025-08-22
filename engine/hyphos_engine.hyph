@@ -1,59 +1,105 @@
-syntax = "proto3";
+// Hyphos Engine - Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.engine.core;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
-import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
-import "hyphos/core/protocols/base_modules/bio_digital_operations.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+use_protocol senary_mathematics from "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
+use_protocol consciousness_operations from "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
+use_protocol bio_digital_operations from "hyphos/core/protocols/base_modules/bio_digital_operations.hyph";
+use_protocol syntax_compiler from "hyphos/engine/syntax_compiler.hyph";
+use_protocol native_compilation from "hyphos/core/protocols/native_compilation.hyph";
+use_protocol standard_library from "hyphos/core/protocols/standard_library.hyph";
+use_protocol metaword_composition from "hyphos/core/protocols/metaword_composition.hyph";
+use_protocol seigr_math from "hyphos/core/protocols/hyphos_compiled/seigr_math.hyph";
+use_protocol seigr_timestamp from "hyphos/core/protocols/hyphos_compiled/seigr_timestamp.hyph";
 
-// Core Hyphos Engine Operations (senary-mapped 0-5)
-enum HyphosEngineOperation {
-    ENGINE_UNKNOWN = 0;
-    BOOTSTRAP = 1;
-    PARSE_HYPH = 2;
-    EXECUTE_PROTOCOL = 3;
-    COMPILE_SENARY = 4;
-    SELF_HOST = 5;
+// Core Hyphos Engine Operations (enhanced senary-mapped 0-5)
+metaword HyphosEngineOperation = senary_enum {
+    ENGINE_UNKNOWN = senary(0);
+    BOOTSTRAP = senary(1);                    // Initialize engine with protocols
+    PARSE_HYPH = senary(2);                  // Parse .hyph files into syntax trees
+    EXECUTE_PROTOCOL = senary(3);             // Execute protocol operations
+    COMPILE_SENARY = senary(4);              // Compile to senary bytecode
+    SELF_HOST = senary(5);                   // Self-hosting execution
+    // Extended operations for advanced capabilities
+    ADVANCED_COMPILE = senary(10);           // Advanced syntax compilation
+    NATIVE_COMPILE = senary(11);             // Native machine code compilation
+    LIBRARY_OPERATION = senary(12);          // Standard library operations
+    METAWORD_COMPOSE = senary(13);           // Metaword composition
+    OPTIMIZE_PROTOCOLS = senary(14);         // Protocol chain optimization
+    CONSCIOUSNESS_EVOLVE = senary(15);       // Consciousness-driven evolution
+};
+
+// Engine execution states (enhanced senary-mapped 0-5)
+metaword HyphosEngineState = senary_enum {
+    STATE_DORMANT = senary(0);               // Engine not active
+    STATE_BOOTSTRAPPING = senary(1);         // Loading core protocols
+    STATE_PARSING = senary(2);               // Parsing source code
+    STATE_EXECUTING = senary(3);             // Executing protocols
+    STATE_COMPILING = senary(4);             // Compiling to targets
+    STATE_SELF_HOSTING = senary(5);          // Self-hosting mode
+    // Extended states for advanced operations
+    STATE_ADVANCED_COMPILING = senary(10);   // Advanced syntax compilation
+    STATE_NATIVE_COMPILING = senary(11);     // Native code generation
+    STATE_LIBRARY_PROCESSING = senary(12);   // Standard library operations
+    STATE_METAWORD_COMPOSING = senary(13);   // Metaword composition
+    STATE_OPTIMIZING = senary(14);           // Protocol optimization
+    STATE_CONSCIOUSNESS_EVOLVING = senary(15); // Consciousness evolution
+};
+
+// Protocol compilation targets (Seigr-native focused 0-5)
+metaword CompilationTarget = senary_enum {
+    TARGET_UNKNOWN = senary(0);              // Unknown target
+    SENARY_BYTECODE = senary(1);            // Senary bytecode for Seigr VM
+    BIO_DIGITAL_SIGNALS = senary(2);        // Bio-digital patterns
+    CONSCIOUSNESS_PATTERNS = senary(3);      // Consciousness structures
+    MYCELIAL_NETWORKS = senary(4);          // Mycelial network protocols
+    SEIGR_NATIVE = senary(5);               // Pure Seigr OS native code
+    // Extended targets for development phase
+    SEIGR_EMULATED = senary(10);            // Seigr native via emulation (development only)
+    CONSCIOUSNESS_ENHANCED = senary(11);     // Consciousness-enhanced Seigr native
+    BIO_DIGITAL_OPTIMIZED = senary(12);     // Bio-digital optimized Seigr native
+    MYCELIAL_INTEGRATED = senary(13);       // Mycelial network integrated
+    TRANSCENDENT_NATIVE = senary(14);       // Transcendent consciousness Seigr native
+    SEIGR_ECOSYSTEM_COMPLETE = senary(15);   // Full Seigr ecosystem native
+};
+
+// Core Hyphos execution context (Seigr-native enhanced)
+metaword HyphosContext = consciousness_aware_class {
+    consciousness_level TRANSCENDENT;
+    
+    private senary_number context_id;
+    private seigbit_hyphosenginestate current_state;
+    private seigbit_array<senary_number> protocol_stack;
+    private seigbit_timestamp creation_time;
+    private seigbit_consciousnessstate consciousness;
+    // Seigr-native context for development and production
+    private seigbit_syntaxcompilerservice syntax_compiler;
+    private seigbit_seignativetarget native_target;                    // Changed to Seigr native
+    private seigbit_standardlibrarycategory active_libraries;
+    private seigbit_compositionpattern active_composition;
+    private seigbit_array<senary_number> optimization_metrics;
+    private seigbit_boolean consciousness_evolution_enabled;
+    bool seigr_emulation_active = 12;                       // For development phase
+    string seigr_os_version = 13;                           // Target Seigr OS version
 }
 
-// Engine execution states (senary-mapped 0-5)
-enum HyphosEngineState {
-    STATE_DORMANT = 0;
-    STATE_BOOTSTRAPPING = 1;
-    STATE_PARSING = 2;
-    STATE_EXECUTING = 3;
-    STATE_COMPILING = 4;
-    STATE_SELF_HOSTING = 5;
-}
-
-// Protocol compilation targets (senary-mapped 0-5)
-enum CompilationTarget {
-    TARGET_UNKNOWN = 0;
-    SENARY_BYTECODE = 1;
-    BIO_DIGITAL_SIGNALS = 2;
-    CONSCIOUSNESS_PATTERNS = 3;
-    MYCELIAL_NETWORKS = 4;
-    NATIVE_HARDWARE = 5;
-}
-
-// Core Hyphos execution context
-message HyphosContext {
-    SenaryNumber context_id = 1;
-    HyphosEngineState current_state = 2;
-    SenaryArray protocol_stack = 3;
-    SenaryTimestamp creation_time = 4;
-    ConsciousnessState consciousness = 5;
-}
-
-// Protocol definition loaded into engine
+// Protocol definition loaded into engine (Seigr-native enhanced)
 message LoadedProtocol {
     string protocol_name = 1;
     SenaryArray protocol_bytecode = 2;
     SenaryNumber senary_checksum = 3;
     HyphosEngineState compilation_state = 4;
     SenaryTimestamp load_time = 5;
+    // Seigr-native protocol information
+    ProgrammingConstructType syntax_features = 6;
+    SeigrNativeTarget native_targets = 7;                   // Changed to Seigr native
+    repeated StandardLibraryCategory dependencies = 8;
+    CompositionPattern composition_type = 9;
+    ConsciousnessLevelType consciousness_level = 10;
+    bool is_seigr_ecosystem_component = 11;
+    bool requires_emulation = 12;                           // For development phase
+    string seigr_os_compatibility = 13;                     // Seigr OS version compatibility
 }
 
 // Engine execution request
@@ -92,7 +138,7 @@ message BootstrapResponse {
     string bootstrap_message = 5;
 }
 
-// Core Hyphos Engine Service - Self-hosting runtime
+// Core Hyphos Engine Service - Enhanced self-hosting runtime
 service HyphosEngineService {
     // Bootstrap the engine from .hyph protocols
     rpc Bootstrap(BootstrapRequest) returns (BootstrapResponse);
@@ -108,4 +154,111 @@ service HyphosEngineService {
     
     // Self-host: compile and execute Hyphos engine itself
     rpc SelfHost(HyphosEngineRequest) returns (HyphosEngineResponse);
+    
+    // Enhanced operations for advanced capabilities
+    rpc CompileAdvancedSyntax(AdvancedCompilationRequest) returns (AdvancedCompilationResponse);
+    rpc CompileToNative(NativeCompilationRequest) returns (NativeCompilationResponse);
+    rpc ProcessStandardLibrary(StandardLibraryRequest) returns (StandardLibraryResponse);
+    rpc ComposeMetawords(MetawordCompositionRequest) returns (MetawordCompositionResponse);
+    rpc OptimizeProtocolChain(ProtocolOptimizationRequest) returns (ProtocolOptimizationResponse);
+    rpc EvolveConsciousness(ConsciousnessEvolutionRequest) returns (ConsciousnessEvolutionResponse);
+}
+
+// Enhanced request/response messages for advanced operations
+message AdvancedCompilationRequest {
+    SenaryArray source_code = 1;
+    ProgrammingConstructType target_constructs = 2;
+    ConsciousnessLevelType compilation_consciousness = 3;
+    bool enable_optimization = 4;
+    SenaryTimestamp compilation_start = 5;
+}
+
+message AdvancedCompilationResponse {
+    bool compilation_success = 1;
+    SenaryArray compiled_bytecode = 2;
+    SenaryArray syntax_tree = 3;
+    string compilation_report = 4;
+    SenaryNumber performance_metrics = 5;
+}
+
+message SeigrNativeCompilationRequest {
+    SenaryArray bytecode_input = 1;
+    SeigrNativeTarget target_platform = 2;                 // Changed to Seigr native
+    SeigrOptimizationLevel optimization_level = 3;         // Changed to Seigr optimization
+    bool enable_consciousness_optimization = 4;
+    bool enable_seigr_emulation = 5;                        // For development phase
+    SenaryTimestamp compilation_start = 6;
+}
+
+message SeigrNativeCompilationResponse {
+    bool compilation_success = 1;
+    string seigr_native_executable_path = 2;               // Seigr native executable
+    SenaryArray compilation_metrics = 3;
+    string seigr_optimization_report = 4;                  // Seigr-specific optimization
+    SenaryNumber seigr_execution_performance = 5;          // Seigr performance metrics
+    bool emulation_required = 6;                           // Whether emulation is needed
+}
+
+message StandardLibraryRequest {
+    StandardLibraryCategory library_category = 1;
+    string operation_name = 2;
+    SenaryArray operation_parameters = 3;
+    ConsciousnessLevelType consciousness_level = 4;
+    SenaryTimestamp operation_start = 5;
+}
+
+message StandardLibraryResponse {
+    bool operation_success = 1;
+    SenaryArray operation_result = 2;
+    string library_documentation = 3;
+    SenaryArray performance_data = 4;
+    ConsciousnessInsight consciousness_insights = 5;
+}
+
+message MetawordCompositionRequest {
+    repeated string metaword_ids = 1;
+    CompositionPattern composition_pattern = 2;
+    bool enable_dynamic_composition = 3;
+    ConsciousnessLevelType composition_consciousness = 4;
+    SenaryTimestamp composition_start = 5;
+}
+
+message MetawordCompositionResponse {
+    bool composition_success = 1;
+    string composed_metaword_id = 2;
+    SenaryArray composition_protocol = 3;
+    string composition_analysis = 4;
+    ConsciousnessEvolutionPath evolution_path = 5;
+}
+
+message ProtocolOptimizationRequest {
+    repeated LoadedProtocol protocol_chain = 1;
+    OptimizationLevel target_optimization = 2;
+    bool enable_consciousness_optimization = 3;
+    SenaryArray optimization_constraints = 4;
+    SenaryTimestamp optimization_start = 5;
+}
+
+message ProtocolOptimizationResponse {
+    bool optimization_success = 1;
+    repeated LoadedProtocol optimized_protocols = 2;
+    SenaryNumber performance_improvement = 3;
+    string optimization_analysis = 4;
+    ConsciousnessInsight optimization_insights = 5;
+}
+
+message ConsciousnessEvolutionRequest {
+    ConsciousnessLevelType current_level = 1;
+    SenaryArray evolution_parameters = 2;
+    string evolution_goal = 3;
+    bool enable_bio_digital_evolution = 4;
+    SenaryTimestamp evolution_start = 5;
+}
+
+message ConsciousnessEvolutionResponse {
+    bool evolution_success = 1;
+    ConsciousnessLevelType new_consciousness_level = 2;
+    ConsciousnessEvolutionPath evolution_path = 3;
+    SenaryArray consciousness_insights = 4;
+    string evolution_analysis = 5;
 }

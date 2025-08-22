@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.insert;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Insert operation types (senary-mapped 0-5)
-enum InsertOperation {
-    INSERT_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword InsertOperation = senary_enum {
+    INSERT_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Insert processing states (senary-mapped 0-5)
-enum InsertProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword InsertProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Insert data types (senary-mapped 0-5)
-enum InsertDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword InsertDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core insert messages
-message InsertObject {
-    string object_id = 1;
-    InsertDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    InsertProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword InsertObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_InsertDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_InsertProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message InsertRequest {
-    InsertOperation operation = 1;
-    InsertObject target_object = 2;
-    SenaryArray parameters = 3;
-    InsertProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword InsertRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_InsertOperation operation;
+    private seigbit_InsertObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_InsertProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message InsertResponse {
-    bool success = 1;
-    InsertObject result_object = 2;
-    SenaryArray result_data = 3;
-    InsertProcessingState new_state = 4;
-    string error_message = 5;
+metaword InsertResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_InsertObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_InsertProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Insert service definition
-service InsertService {
-    rpc Create(InsertRequest) returns (InsertResponse);
-    rpc Process(InsertRequest) returns (InsertResponse);
-    rpc Validate(InsertRequest) returns (InsertResponse);
-    rpc Optimize(InsertRequest) returns (InsertResponse);
-    rpc Integrate(InsertRequest) returns (InsertResponse);
+metaword InsertService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_InsertRequest) -> seigbit_InsertResponse;
+    async method Process(request: seigbit_InsertRequest) -> seigbit_InsertResponse;
+    async method Validate(request: seigbit_InsertRequest) -> seigbit_InsertResponse;
+    async method Optimize(request: seigbit_InsertRequest) -> seigbit_InsertResponse;
+    async method Integrate(request: seigbit_InsertRequest) -> seigbit_InsertResponse;
 }

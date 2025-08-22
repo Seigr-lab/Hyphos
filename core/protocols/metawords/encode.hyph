@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.encode;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Encode operation types (senary-mapped 0-5)
-enum EncodeOperation {
-    ENCODE_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword EncodeOperation = senary_enum {
+    ENCODE_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Encode processing states (senary-mapped 0-5)
-enum EncodeProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword EncodeProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Encode data types (senary-mapped 0-5)
-enum EncodeDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword EncodeDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core encode messages
-message EncodeObject {
-    string object_id = 1;
-    EncodeDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    EncodeProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword EncodeObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_EncodeDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_EncodeProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message EncodeRequest {
-    EncodeOperation operation = 1;
-    EncodeObject target_object = 2;
-    SenaryArray parameters = 3;
-    EncodeProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword EncodeRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_EncodeOperation operation;
+    private seigbit_EncodeObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_EncodeProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message EncodeResponse {
-    bool success = 1;
-    EncodeObject result_object = 2;
-    SenaryArray result_data = 3;
-    EncodeProcessingState new_state = 4;
-    string error_message = 5;
+metaword EncodeResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_EncodeObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_EncodeProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Encode service definition
-service EncodeService {
-    rpc Create(EncodeRequest) returns (EncodeResponse);
-    rpc Process(EncodeRequest) returns (EncodeResponse);
-    rpc Validate(EncodeRequest) returns (EncodeResponse);
-    rpc Optimize(EncodeRequest) returns (EncodeResponse);
-    rpc Integrate(EncodeRequest) returns (EncodeResponse);
+metaword EncodeService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_EncodeRequest) -> seigbit_EncodeResponse;
+    async method Process(request: seigbit_EncodeRequest) -> seigbit_EncodeResponse;
+    async method Validate(request: seigbit_EncodeRequest) -> seigbit_EncodeResponse;
+    async method Optimize(request: seigbit_EncodeRequest) -> seigbit_EncodeResponse;
+    async method Integrate(request: seigbit_EncodeRequest) -> seigbit_EncodeResponse;
 }

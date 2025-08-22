@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.organism_spawn;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Organism_spawn operation types (senary-mapped 0-5)
-enum Organism_spawnOperation {
-    ORGANISM_SPAWN_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword Organism_spawnOperation = senary_enum {
+    ORGANISM_SPAWN_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Organism_spawn processing states (senary-mapped 0-5)
-enum Organism_spawnProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword Organism_spawnProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Organism_spawn data types (senary-mapped 0-5)
-enum Organism_spawnDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword Organism_spawnDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core organism_spawn messages
-message Organism_spawnObject {
-    string object_id = 1;
-    Organism_spawnDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    Organism_spawnProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword Organism_spawnObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_Organism_spawnDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_Organism_spawnProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message Organism_spawnRequest {
-    Organism_spawnOperation operation = 1;
-    Organism_spawnObject target_object = 2;
-    SenaryArray parameters = 3;
-    Organism_spawnProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword Organism_spawnRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_Organism_spawnOperation operation;
+    private seigbit_Organism_spawnObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_Organism_spawnProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message Organism_spawnResponse {
-    bool success = 1;
-    Organism_spawnObject result_object = 2;
-    SenaryArray result_data = 3;
-    Organism_spawnProcessingState new_state = 4;
-    string error_message = 5;
+metaword Organism_spawnResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_Organism_spawnObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_Organism_spawnProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Organism_spawn service definition
-service Organism_spawnService {
-    rpc Create(Organism_spawnRequest) returns (Organism_spawnResponse);
-    rpc Process(Organism_spawnRequest) returns (Organism_spawnResponse);
-    rpc Validate(Organism_spawnRequest) returns (Organism_spawnResponse);
-    rpc Optimize(Organism_spawnRequest) returns (Organism_spawnResponse);
-    rpc Integrate(Organism_spawnRequest) returns (Organism_spawnResponse);
+metaword Organism_spawnService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_Organism_spawnRequest) -> seigbit_Organism_spawnResponse;
+    async method Process(request: seigbit_Organism_spawnRequest) -> seigbit_Organism_spawnResponse;
+    async method Validate(request: seigbit_Organism_spawnRequest) -> seigbit_Organism_spawnResponse;
+    async method Optimize(request: seigbit_Organism_spawnRequest) -> seigbit_Organism_spawnResponse;
+    async method Integrate(request: seigbit_Organism_spawnRequest) -> seigbit_Organism_spawnResponse;
 }

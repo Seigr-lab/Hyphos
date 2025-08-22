@@ -1,0 +1,303 @@
+// Hyphos Core - Error Metaword
+// Core error management and exception handling for Hyphos language
+
+metaword error {
+    fun throw(message, error_data = null, error_type = "RuntimeError") -> $Object {
+        // Throw an error with message and optional data
+        
+        let alert_severity = match error_type {
+            case "RuntimeError" -> logger.ERROR
+            case "CriticalError" -> logger.CRITICAL  
+            case "FatalError" -> logger.FATAL
+            case "Warning" -> logger.WARNING
+            case _ -> logger.ERROR
+        }
+        
+        let error_object = {
+            type: error_type,
+            message: message,
+            data: error_data,
+            timestamp: sidereal_time.current_time(),
+            scope_level: scope.current_level(),
+            stack_trace: error.get_stack_trace(),
+            alert_severity: alert_severity,
+            correlation_id: system.generate_uuid()
+        }
+        
+        // Log using native logger
+        logger.log_event(
+            alert_severity,
+            "HyphosRuntime", 
+            "Hyphos Error: " + message,
+            false,
+            {
+                error_type: error_type,
+                scope_level: scope.current_level(),
+                correlation_id: error_object.correlation_id
+            }
+        )
+        
+        system.current_error = error_object
+        system.error_thrown = true
+        
+        return error_object
+    }
+
+    fun try(try_block, catch_block = null, finally_block = null) -> $Any {
+        // Try to execute code block with error handling
+    let result = null
+    let error_occurred = false
+    
+    // Clear any previous error state  
+    system.current_error = null
+    system.error_thrown = false
+    
+    scope.enter_new("try_block")
+    
+    // Log try block execution start
+    logger.log_audit_event(
+        severity: AlertSeverity.ALERT_SEVERITY_INFO,
+        category: "HyphosRuntime",
+        message: "Try block execution started",
+        sensitive: false,
+        scope_level: scope.current_level()
+    )
+    
+    // Execute try block
+    result = execute_block(try_block)
+    
+    // Check if error was thrown during execution
+    if system.error_thrown {
+        error_occurred = true
+        
+        // Log error caught
+        logger.log_audit_event(
+            severity: AlertSeverity.ALERT_SEVERITY_WARNING,
+            category: "HyphosRuntime", 
+            message: "Error caught in try block: " + system.current_error.message,
+            sensitive: false,
+            error_type: system.current_error.type,
+            scope_level: scope.current_level()
+        )
+        
+        if catch_block != null {
+            scope.enter_new("catch_block")
+            
+            // Make error available in catch block
+            variables.declare("error", "object", system.current_error)
+            
+            result = execute_block(catch_block)
+            
+            scope.exit()
+        }
+        
+        // Clear error state after handling
+        system.current_error = null
+        system.error_thrown = false
+    }
+    
+    scope.exit()
+    
+    // Execute finally block if present
+    if finally_block != null {
+        scope.enter_new("finally_block")
+        execute_block(finally_block)
+        scope.exit()
+    }
+    
+    result
+}
+
+error.catch = {
+    // Catch specific error types
+    error_types = args.0  // Array of error types to catch
+    catch_block = args.1
+    
+    if not system.error_thrown {
+        error("No error to catch")
+    }
+    
+    current_error = system.current_error
+    
+    // Check if current error type matches any specified types
+    type_matches = false
+    
+    type_index = 0
+    while type_index < error_types.length and not type_matches {
+        if current_error.type == error_types[type_index] {
+            type_matches = true
+        }
+        type_index = type_index + 1
+    }
+    
+    if type_matches {
+        scope.enter_new("specific_catch")
+        variables.declare("error", "object", current_error)
+        result = execute_block(catch_block)
+        scope.exit()
+        
+        system.current_error = null
+        system.error_thrown = false
+        
+        result
+    } else {
+        // Re-throw if type doesn't match
+        error.rethrow()
+    }
+}
+
+error.rethrow = {
+    // Re-throw current error
+    if not system.error_thrown {
+        error("No error to rethrow")
+    }
+    
+    // Error state remains unchanged
+    system.current_error
+}
+
+error.get_stack_trace = {
+    // Get current execution stack trace
+    stack_trace = []
+    
+    scope_index = system.scope_stack.length - 1
+    while scope_index >= 0 {
+        scope_entry = system.scope_stack[scope_index]
+        
+        stack_trace.append({
+            scope_name: scope_entry.name,
+            scope_level: scope_index,
+            creation_time: scope_entry.creation_time
+        })
+        
+        scope_index = scope_index - 1
+    }
+    
+    stack_trace
+}
+
+error.log = {
+    // Log error to system error log
+    error_object = args.0
+    log_level = if args.length > 1 then args.1 else "ERROR"
+    
+    log_entry = {
+        level: log_level,
+        timestamp: sidereal.current_time(),
+        error_type: error_object.type,
+        message: error_object.message,
+        scope_level: error_object.scope_level,
+        stack_trace: error_object.stack_trace
+    }
+    
+    system.error_log.append(log_entry)
+    log_entry
+}
+
+error.get_last = {
+    // Get last error that occurred
+    system.current_error
+}
+
+error.clear = {
+    // Clear current error state
+    system.current_error = null
+    system.error_thrown = false
+    true
+}
+
+error.assert = {
+    // Assert condition is true, throw error if false
+    condition = args.0
+    message = if args.length > 1 then args.1 else "Assertion failed"
+    
+    if not condition {
+        error.throw(message, null, "AssertionError")
+    }
+    
+    true
+}
+
+error.validate_args = {
+    // Validate function arguments
+    args_array = args.0
+    expected_count = args.1
+    arg_types = if args.length > 2 then args.2 else null
+    
+    // Check argument count
+    if args_array.length != expected_count {
+        error.throw("Invalid argument count: expected " + expected_count + ", got " + args_array.length, null, "ArgumentError")
+    }
+    
+    // Check argument types if specified
+    if arg_types != null {
+        arg_index = 0
+        while arg_index < args_array.length {
+            expected_type = arg_types[arg_index]
+            actual_type = type.of(args_array[arg_index])
+            
+            if not type.compatible(expected_type, actual_type) {
+                error.throw("Invalid argument type at position " + arg_index + ": expected " + expected_type + ", got " + actual_type, null, "TypeError")
+            }
+            
+            arg_index = arg_index + 1
+        }
+    }
+    
+    true
+}
+
+error.create_custom = {
+    // Create custom error type
+    error_type_name = args.0
+    default_message = if args.length > 1 then args.1 else "Custom error occurred"
+    
+    custom_error_type = {
+        name: error_type_name,
+        default_message: default_message,
+        creation_time: sidereal.current_time(),
+        instance_count: 0
+    }
+    
+    system.custom_error_types[error_type_name] = custom_error_type
+    custom_error_type
+}
+
+error.throw_custom = {
+    // Throw custom error type
+    error_type_name = args.0
+    message = if args.length > 1 then args.1 else null
+    error_data = if args.length > 2 then args.2 else null
+    
+    custom_error_type = system.custom_error_types[error_type_name]
+    if custom_error_type == null {
+        error.throw("Unknown custom error type: " + error_type_name, null, "UnknownErrorType")
+    }
+    
+    final_message = if message != null then message else custom_error_type.default_message
+    custom_error_type.instance_count = custom_error_type.instance_count + 1
+    
+    error.throw(final_message, error_data, error_type_name)
+}
+
+error.get_log = {
+    // Get error log entries
+    max_entries = if args.length > 0 then args.0 else system.error_log.length
+    
+    start_index = if system.error_log.length > max_entries then system.error_log.length - max_entries else 0
+    
+    log_subset = []
+    index = start_index
+    while index < system.error_log.length {
+        log_subset.append(system.error_log[index])
+        index = index + 1
+    }
+    
+    log_subset
+}
+
+error.clear_log = {
+    // Clear error log
+    system.error_log = []
+    true
+}

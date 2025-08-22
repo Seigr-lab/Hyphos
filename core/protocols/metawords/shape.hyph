@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.shape;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Shape operation types (senary-mapped 0-5)
-enum ShapeOperation {
-    SHAPE_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword ShapeOperation = senary_enum {
+    SHAPE_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Shape processing states (senary-mapped 0-5)
-enum ShapeProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword ShapeProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Shape data types (senary-mapped 0-5)
-enum ShapeDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword ShapeDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core shape messages
-message ShapeObject {
-    string object_id = 1;
-    ShapeDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    ShapeProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword ShapeObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_ShapeDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_ShapeProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message ShapeRequest {
-    ShapeOperation operation = 1;
-    ShapeObject target_object = 2;
-    SenaryArray parameters = 3;
-    ShapeProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword ShapeRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_ShapeOperation operation;
+    private seigbit_ShapeObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_ShapeProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message ShapeResponse {
-    bool success = 1;
-    ShapeObject result_object = 2;
-    SenaryArray result_data = 3;
-    ShapeProcessingState new_state = 4;
-    string error_message = 5;
+metaword ShapeResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_ShapeObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_ShapeProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Shape service definition
-service ShapeService {
-    rpc Create(ShapeRequest) returns (ShapeResponse);
-    rpc Process(ShapeRequest) returns (ShapeResponse);
-    rpc Validate(ShapeRequest) returns (ShapeResponse);
-    rpc Optimize(ShapeRequest) returns (ShapeResponse);
-    rpc Integrate(ShapeRequest) returns (ShapeResponse);
+metaword ShapeService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_ShapeRequest) -> seigbit_ShapeResponse;
+    async method Process(request: seigbit_ShapeRequest) -> seigbit_ShapeResponse;
+    async method Validate(request: seigbit_ShapeRequest) -> seigbit_ShapeResponse;
+    async method Optimize(request: seigbit_ShapeRequest) -> seigbit_ShapeResponse;
+    async method Integrate(request: seigbit_ShapeRequest) -> seigbit_ShapeResponse;
 }

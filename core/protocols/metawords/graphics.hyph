@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.graphics;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Graphics operation types (senary-mapped 0-5)
-enum GraphicsOperation {
-    GRAPHICS_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword GraphicsOperation = senary_enum {
+    GRAPHICS_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Graphics processing states (senary-mapped 0-5)
-enum GraphicsProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword GraphicsProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Graphics data types (senary-mapped 0-5)
-enum GraphicsDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword GraphicsDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core graphics messages
-message GraphicsObject {
-    string object_id = 1;
-    GraphicsDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    GraphicsProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword GraphicsObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_GraphicsDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_GraphicsProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message GraphicsRequest {
-    GraphicsOperation operation = 1;
-    GraphicsObject target_object = 2;
-    SenaryArray parameters = 3;
-    GraphicsProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword GraphicsRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_GraphicsOperation operation;
+    private seigbit_GraphicsObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_GraphicsProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message GraphicsResponse {
-    bool success = 1;
-    GraphicsObject result_object = 2;
-    SenaryArray result_data = 3;
-    GraphicsProcessingState new_state = 4;
-    string error_message = 5;
+metaword GraphicsResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_GraphicsObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_GraphicsProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Graphics service definition
-service GraphicsService {
-    rpc Create(GraphicsRequest) returns (GraphicsResponse);
-    rpc Process(GraphicsRequest) returns (GraphicsResponse);
-    rpc Validate(GraphicsRequest) returns (GraphicsResponse);
-    rpc Optimize(GraphicsRequest) returns (GraphicsResponse);
-    rpc Integrate(GraphicsRequest) returns (GraphicsResponse);
+metaword GraphicsService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_GraphicsRequest) -> seigbit_GraphicsResponse;
+    async method Process(request: seigbit_GraphicsRequest) -> seigbit_GraphicsResponse;
+    async method Validate(request: seigbit_GraphicsRequest) -> seigbit_GraphicsResponse;
+    async method Optimize(request: seigbit_GraphicsRequest) -> seigbit_GraphicsResponse;
+    async method Integrate(request: seigbit_GraphicsRequest) -> seigbit_GraphicsResponse;
 }

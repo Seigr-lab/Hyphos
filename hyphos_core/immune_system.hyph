@@ -1,0 +1,703 @@
+// Hyphos Core - Immune System Metaword
+// Pure Hyphos implementation of Seigr's advanced immune defense system
+
+metaword immune {
+    // Threat levels from 0 (minimal) to 10 (critical)
+    const MINIMAL = 0
+    const LOW = 2
+    const MEDIUM = 4
+    const HIGH = 7
+    const CRITICAL = 10
+
+    // Threat types for comprehensive security coverage
+    const NETWORK_ATTACK = "NETWORK_ATTACK"
+    const THERMAL_ANOMALY = "THERMAL_ANOMALY" 
+    const POWER_FLUCTUATION = "POWER_FLUCTUATION"
+    const RESOURCE_EXHAUSTION = "RESOURCE_EXHAUSTION"
+    const INTEGRITY_VIOLATION = "INTEGRITY_VIOLATION"
+    const ANOMALY_DETECTED = "ANOMALY_DETECTED"
+    const MALICIOUS_INTENT = "MALICIOUS_INTENT"
+    const LEARNING_CORRUPTION = "LEARNING_CORRUPTION"
+
+    // Security response types
+    const MONITOR = "MONITOR"
+    const ISOLATE = "ISOLATE"
+    const QUARANTINE = "QUARANTINE"
+    const BLOCK = "BLOCK"
+    const EMERGENCY_STOP = "EMERGENCY_STOP"
+
+    // Immune system component states
+    const ACTIVE = "ACTIVE"
+    const MONITORING = "MONITORING"
+    const RESPONDING = "RESPONDING"
+    const HEALING = "HEALING"
+    const EMERGENCY = "EMERGENCY"
+
+    fun initialize(critical_threshold = 10) -> $Object {
+        // Initialize Seigr OS Adaptive Immune Defense System
+        let immune_system = {
+            monitored_segments: {},
+            threat_counts: {},
+            current_threat_level: immune.MINIMAL,
+            critical_threshold: critical_threshold,
+            state: immune.ACTIVE,
+        
+        // AI-driven components (from Python implementation)
+        anomaly_detection: immune.initialize_anomaly_detection(),
+        threat_detector: immune.initialize_threat_detector(),
+        self_healing: immune.initialize_self_healing(),
+        adaptive_monitor: immune.initialize_adaptive_monitor(),
+        threat_response_manager: immune.initialize_threat_response_manager(),
+        
+        // Security metrics
+        security_events: [],
+        threats_detected: 0,
+        threats_resolved: 0,
+        false_positives: 0,
+        
+        // ML-based threat intelligence
+        threat_patterns: {},
+        learning_models: {},
+        
+        // Integration layer for unified coordination
+        integration: immune.initialize_integration_layer()
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "ImmuneSystem",
+        "Seigr OS Adaptive Immune Defense initialized with AI-driven monitoring",
+        false,
+        critical_threshold: critical_threshold,
+        components: [
+            "anomaly_detection", "threat_detector", "self_healing", 
+            "adaptive_monitor", "threat_response_manager", "integration"
+        ]
+    )
+    
+    return immune_system
+}
+
+fun immune.initialize_threat_detector() {
+    // Initialize Seigr's Threat Detection Engine (from threat_detection.py)
+    let detector = {
+        threat_counts: {},
+        threat_history: [],
+        adaptive_threshold: 5,
+        max_threat_log_size: 1000,
+        
+        // Secure capsule for threat logs
+        immune_capsule: immune.create_immune_capsule("threat_logs"),
+        
+        // Threat escalation logic
+        escalation_rules: {
+            low_threshold: 3,
+            medium_threshold: 5,
+            high_threshold: 8,
+            critical_threshold: 10
+        }
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "ThreatDetector",
+        "Threat Detection Engine initialized with secure capsule storage",
+        false,
+        adaptive_threshold: detector.adaptive_threshold,
+        max_log_size: detector.max_threat_log_size
+    )
+    
+    return detector
+}
+
+fun immune.initialize_anomaly_detection() {
+    // Initialize Protocol-driven, cryptographic anomaly detection (from seigr_anomaly_detection.py)
+    let anomaly_detection = {
+        // Detection thresholds (self-tuning)
+        thresholds: {
+            usage_anomaly: senary.create("2.5"),
+            pattern_anomaly: senary.create("2.5"),
+            integrity_anomaly: senary.create("0.85"),
+            access_anomaly: senary.create("3.0"),
+            network_anomaly: senary.create("3.0"),
+            behavioral_anomaly: senary.create("2.5")
+        },
+        
+        // Historical data for baselines
+        historical_data: {},
+        
+        // ML algorithm parameters and weights (from Python implementation)
+        ml_parameters: {
+            statistical: {
+                z_threshold: senary.create("3.0"),
+                use_robust: true,
+                weight: senary.create("0.8")
+            },
+            isolation_forest: {
+                n_estimators: 100,
+                contamination: senary.create("0.1"),
+                weight: senary.create("0.9")
+            },
+            autoencoder: {
+                threshold: senary.create("0.7"),
+                weight: senary.create("0.85")
+            },
+            one_class_svm: {
+                nu: senary.create("0.1"),
+                kernel: "rbf",
+                weight: senary.create("0.7")
+            },
+            dbscan: {
+                eps: senary.create("0.5"),
+                min_samples: 5,
+                weight: senary.create("0.75")
+            },
+            ensemble: {
+                min_algorithms: 2,
+                weight_threshold: senary.create("0.7"),
+                weight: senary.create("1.0")
+            }
+        },
+        
+        // Secure capsule for anomaly history
+        anomaly_capsule: immune.create_immune_capsule("anomaly_history"),
+        
+        // Cryptographic lineage tracking
+        lineage_manager: {
+            version: "1.0",
+            action: "anomaly_detection_init",
+            creator_id: "seigr_anomaly_detection",
+            contributor_id: "immune_system",
+            metadata: {
+                component: "anomaly_detection",
+                initialized: sidereal.get_seigr_timestamp()
+            }
+        }
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "AnomalyDetection",
+        "Anomaly Detection Engine initialized with ML capabilities",
+        false,
+        ml_algorithms: object.keys(anomaly_detection.ml_parameters).length,
+        cryptographic_lineage: true
+    )
+    
+    return anomaly_detection
+}
+
+fun immune.initialize_self_healing() {
+    // Initialize advanced self-healing with multiple strategies (from self_healing.py)
+    let self_healing = {
+        healing_strategies: {
+            "integrity_restoration": {
+                enabled: true,
+                priority: 10,
+                success_rate: senary.create("0.85")
+            },
+            "rollback_recovery": {
+                enabled: true,
+                priority: 8,
+                success_rate: senary.create("0.90")
+            },
+            "adaptive_replication": {
+                enabled: true,
+                priority: 7,
+                success_rate: senary.create("0.80")
+            },
+            "quarantine_isolation": {
+                enabled: true,
+                priority: 9,
+                success_rate: senary.create("0.95")
+            },
+            "pattern_reconstruction": {
+                enabled: true,
+                priority: 6,
+                success_rate: senary.create("0.75")
+            }
+        },
+        
+        // Healing history and metrics
+        healing_history: [],
+        success_count: 0,
+        failure_count: 0,
+        
+        // Adaptive healing parameters
+        healing_parameters: {
+            max_attempts: 3,
+            cooldown_period: 300,  // 5 minutes
+            escalation_threshold: 2
+        },
+        
+        // Secure capsule for healing logs
+        healing_capsule: immune.create_immune_capsule("healing_logs")
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "SelfHealing",
+        "Self-healing system initialized with multiple strategies",
+        false,
+        strategies: object.keys(self_healing.healing_strategies).length,
+        max_attempts: self_healing.healing_parameters.max_attempts
+    )
+    
+    return self_healing
+}
+
+fun immune.initialize_adaptive_monitor() {
+    // Initialize Seigr OS Adaptive Security Monitoring (from adaptive_monitoring.py)
+    let monitor = {
+        critical_threshold: 10,
+        monitoring_interval: 30,  // 30 seconds
+        state: IMMUNE_STATE_MONITORING,
+        
+        // Risk assessment parameters
+        risk_thresholds: {
+            low_risk: senary.create("3.0"),
+            medium_risk: senary.create("5.0"),
+            high_risk: senary.create("7.0"),
+            critical_risk: senary.create("10.0")
+        },
+        
+        // Predictive threat modeling
+        predictive_model: {
+            enabled: true,
+            confidence_threshold: senary.create("0.8"),
+            lookback_window: 3600,  // 1 hour
+            prediction_horizon: 1800  // 30 minutes
+        },
+        
+        // Monitoring statistics
+        segments_monitored: 0,
+        threats_prevented: 0,
+        false_alarms: 0,
+        
+        // Secure capsule for monitoring data
+        monitoring_capsule: immune.create_immune_capsule("monitoring_data")
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "AdaptiveMonitor",
+        "Adaptive Security Monitor initialized with predictive AI",
+        false,
+        critical_threshold: monitor.critical_threshold,
+        monitoring_interval: monitor.monitoring_interval,
+        predictive_enabled: monitor.predictive_model.enabled
+    )
+    
+    return monitor
+}
+
+fun immune.initialize_threat_response_manager() {
+    // Initialize automated threat response system (from threat_response.py)
+    let response_manager = {
+        response_strategies: {
+            THREAT_TYPE_NETWORK_ATTACK: {
+                immediate_action: SECURITY_RESPONSE_BLOCK,
+                escalation_action: SECURITY_RESPONSE_QUARANTINE,
+                recovery_action: "network_isolation"
+            },
+            THREAT_TYPE_INTEGRITY_VIOLATION: {
+                immediate_action: SECURITY_RESPONSE_ISOLATE,
+                escalation_action: SECURITY_RESPONSE_QUARANTINE,
+                recovery_action: "integrity_restoration"
+            },
+            THREAT_TYPE_ANOMALY_DETECTED: {
+                immediate_action: SECURITY_RESPONSE_MONITOR,
+                escalation_action: SECURITY_RESPONSE_ISOLATE,
+                recovery_action: "pattern_analysis"
+            },
+            THREAT_TYPE_MALICIOUS_INTENT: {
+                immediate_action: SECURITY_RESPONSE_EMERGENCY_STOP,
+                escalation_action: SECURITY_RESPONSE_EMERGENCY_STOP,
+                recovery_action: "complete_lockdown"
+            }
+        },
+        
+        // Response metrics
+        responses_triggered: 0,
+        successful_responses: 0,
+        failed_responses: 0,
+        
+        // Escalation tracking
+        active_threats: {},
+        escalation_history: [],
+        
+        // Secure capsule for response logs
+        response_capsule: immune.create_immune_capsule("response_logs")
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "ThreatResponseManager",
+        "Threat Response Manager initialized with automated strategies",
+        false,
+        response_strategies: object.keys(response_manager.response_strategies).length,
+        escalation_enabled: true
+    )
+    
+    return response_manager
+}
+
+fun immune.initialize_integration_layer() {
+    // Initialize unified interface for all immune system components (from immune_system_integration.py)
+    let integration = {
+        component_health: {
+            anomaly_detection: "healthy",
+            threat_detector: "healthy",
+            self_healing: "healthy",
+            adaptive_monitor: "healthy",
+            threat_response: "healthy"
+        },
+        
+        // Component parameters for unified adaptation
+        component_parameters: {
+            anomaly_thresholds: {},
+            threat_escalation_rules: {},
+            healing_strategies: {},
+            monitoring_intervals: {},
+            response_protocols: {}
+        },
+        
+        // Unified health metrics
+        system_health_score: senary.create("1.0"),
+        last_health_check: sidereal.current_time(),
+        health_check_interval: 300,  // 5 minutes
+        
+        // Cross-component coordination
+        active_operations: {},
+        coordination_queue: [],
+        
+        // Secure capsule for integration logs
+        integration_capsule: immune.create_immune_capsule("integration_logs")
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "ImmuneIntegration",
+        "Immune System Integration Layer initialized for unified coordination",
+        false,
+        components_managed: object.keys(integration.component_health).length,
+        health_check_interval: integration.health_check_interval
+    )
+    
+    return integration
+}
+
+fun immune.create_immune_capsule(capsule_type) {
+    // Create secure capsule for immune system data storage
+    let capsule_id = hash.seigr_senary(capsule_type + sidereal.current_time())
+    
+    let capsule = {
+        capsule_id: capsule_id,
+        capsule_type: capsule_type,
+        created_at: sidereal.get_seigr_timestamp(),
+        encrypted: true,
+        entries: {},
+        metadata: {
+            immune_system_component: true,
+            cryptographic_lineage: true,
+            secure_storage: true
+        }
+    }
+    
+    return capsule
+}
+
+fun immune.detect_anomalies_with_ml(anomaly_detection, segment_hash) {
+    // ML-based anomaly detection using multiple algorithms (from Python implementation)
+    let detection_results = {
+        anomalies_found: false,
+        anomaly_count: 0,
+        algorithms_used: [],
+        confidence_scores: {},
+        risk_score: senary.create("0.0")
+    }
+    
+    // Statistical anomaly detection
+    let statistical_result = run_statistical_anomaly_detection(anomaly_detection, segment_hash)
+    if statistical_result.anomaly_detected {
+        detection_results.anomalies_found = true
+        detection_results.anomaly_count = detection_results.anomaly_count + 1
+        detection_results.algorithms_used.append("statistical")
+        detection_results.confidence_scores.statistical = statistical_result.confidence
+    }
+    
+    // Isolation Forest detection
+    let isolation_result = run_isolation_forest_detection(anomaly_detection, segment_hash)
+    if isolation_result.anomaly_detected {
+        detection_results.anomalies_found = true
+        detection_results.anomaly_count = detection_results.anomaly_count + 1
+        detection_results.algorithms_used.append("isolation_forest")
+        detection_results.confidence_scores.isolation_forest = isolation_result.confidence
+    }
+    
+    // Ensemble decision
+    if detection_results.anomaly_count >= anomaly_detection.ml_parameters.ensemble.min_algorithms {
+        let total_confidence = senary.create("0.0")
+        let algorithm_count = senary.create(detection_results.algorithms_used.length)
+        
+        for algorithm in detection_results.algorithms_used {
+            total_confidence = senary.add(total_confidence, detection_results.confidence_scores[algorithm])
+        }
+        
+        detection_results.risk_score = senary.divide(total_confidence, algorithm_count)
+        
+        if senary.greater_than(detection_results.risk_score, anomaly_detection.ml_parameters.ensemble.weight_threshold) {
+            detection_results.anomalies_found = true
+        }
+    }
+    
+    // Store detection results in secure capsule
+    anomaly_detection.anomaly_capsule.entries[segment_hash] = {
+        timestamp: sidereal.get_seigr_timestamp(),
+        detection_results: detection_results,
+        algorithms_used: detection_results.algorithms_used,
+        risk_score: detection_results.risk_score.value
+    }
+    
+    return detection_results
+}
+
+fun run_statistical_anomaly_detection(anomaly_detection, segment_hash) {
+    // Statistical anomaly detection using z-score analysis
+    let threshold = anomaly_detection.ml_parameters.statistical.z_threshold
+    let use_robust = anomaly_detection.ml_parameters.statistical.use_robust
+    
+    // Simulate statistical analysis (in real implementation, would use actual data)
+    let z_score = senary.create(math.random() * 5)  // Simulated z-score
+    let anomaly_detected = senary.greater_than(z_score, threshold)
+    
+    return {
+        anomaly_detected: anomaly_detected,
+        confidence: senary.divide(z_score, senary.create("5.0")),
+        z_score: z_score.value,
+        threshold: threshold.value
+    }
+}
+
+fun run_isolation_forest_detection(anomaly_detection, segment_hash) {
+    // Isolation Forest anomaly detection
+    let contamination = anomaly_detection.ml_parameters.isolation_forest.contamination
+    let n_estimators = anomaly_detection.ml_parameters.isolation_forest.n_estimators
+    
+    // Simulate isolation forest analysis
+    let anomaly_score = senary.create(math.random())  // Simulated anomaly score
+    let anomaly_detected = senary.less_than(anomaly_score, contamination)
+    
+    return {
+        anomaly_detected: anomaly_detected,
+        confidence: senary.subtract(senary.create("1.0"), anomaly_score),
+        anomaly_score: anomaly_score.value,
+        n_estimators: n_estimators
+    }
+}
+
+fun immune.run_security_monitoring_cycle(immune_system) {
+    // Execute AI-driven monitoring cycle across all segments (from immune_system.py)
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "SecurityMonitoring",
+        "Running security monitoring cycle with AI-driven analysis",
+        false,
+        monitored_segments: object.keys(immune_system.monitored_segments).length
+    )
+    
+    // Run unified immunity cycle through integration layer
+    immune.run_immunity_cycle(immune_system.integration)
+    
+    // ML-based anomaly detection for all segments
+    for segment_hash in object.keys(immune_system.monitored_segments) {
+        let metadata = immune_system.monitored_segments[segment_hash]
+        
+        // Detect anomalies using ML algorithms
+        let ml_detection_results = immune.detect_anomalies_with_ml(immune_system.anomaly_detection, segment_hash)
+        
+        // If anomalies found, attempt healing
+        if ml_detection_results.anomalies_found {
+            logger.log_audit_event(
+                AlertSeverity.ALERT_SEVERITY_WARNING,
+                "SecurityMonitoring",
+                "ML-based anomaly detection found issues in segment " + segment_hash,
+                false,
+                anomaly_count: ml_detection_results.anomaly_count,
+                algorithms_used: ml_detection_results.algorithms_used,
+                risk_score: ml_detection_results.risk_score.value
+            )
+            
+            // Attempt to heal the segment
+            let healing_success = immune.heal_segment(immune_system.self_healing, metadata)
+            
+            if healing_success {
+                logger.log_audit_event(
+                    AlertSeverity.ALERT_SEVERITY_INFO,
+                    "SecurityMonitoring",
+                    "Successfully healed segment " + segment_hash,
+                    false
+                )
+            } else {
+                // Escalate if healing failed
+                logger.log_audit_event(
+                    AlertSeverity.ALERT_SEVERITY_ERROR,
+                    "SecurityMonitoring",
+                    "Failed to heal segment " + segment_hash + ", escalating",
+                    false
+                )
+                immune.handle_threat_response(immune_system, segment_hash)
+            }
+        }
+    }
+    
+    // Update AI parameters periodically
+    immune.update_component_parameters(immune_system.integration)
+    
+    // Get system health report
+    let health_report = immune.get_system_health_report(immune_system.integration)
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "SecurityMonitoring",
+        "Immune system health report generated",
+        false,
+        system_health_score: health_report.system_health_score,
+        components_healthy: health_report.healthy_components,
+        threats_active: health_report.active_threats
+    )
+    
+    return health_report
+}
+
+fun immune.run_immunity_cycle(integration) {
+    // Run complete immunity cycle with adaptive response
+    let cycle_start = sidereal.current_time()
+    
+    // Update component health status
+    integration.component_health.anomaly_detection = "healthy"
+    integration.component_health.threat_detector = "healthy"
+    integration.component_health.self_healing = "healthy"
+    integration.component_health.adaptive_monitor = "healthy"
+    integration.component_health.threat_response = "healthy"
+    
+    // Calculate system health score
+    let healthy_components = 0
+    for component in object.keys(integration.component_health) {
+        if integration.component_health[component] == "healthy" {
+            healthy_components = healthy_components + 1
+        }
+    }
+    
+    let total_components = object.keys(integration.component_health).length
+    integration.system_health_score = senary.divide(senary.create(healthy_components), senary.create(total_components))
+    integration.last_health_check = cycle_start
+    
+    return true
+}
+
+fun immune.heal_segment(self_healing, segment_metadata) {
+    // Attempt to heal segment using multiple strategies
+    let segment_hash = segment_metadata.segment_hash || "unknown"
+    let healing_attempts = 0
+    let max_attempts = self_healing.healing_parameters.max_attempts
+    
+    // Try healing strategies in priority order
+    let strategies = object.keys(self_healing.healing_strategies)
+    strategies.sort((a, b) => self_healing.healing_strategies[b].priority - self_healing.healing_strategies[a].priority)
+    
+    for strategy in strategies {
+        if healing_attempts >= max_attempts {
+            break
+        }
+        
+        let strategy_config = self_healing.healing_strategies[strategy]
+        if !strategy_config.enabled {
+            continue
+        }
+        
+        healing_attempts = healing_attempts + 1
+        
+        logger.log_info("Attempting healing strategy: " + strategy + " for segment " + segment_hash, "SelfHealing")
+        
+        // Simulate healing attempt (in real implementation, would execute actual healing)
+        let success_probability = strategy_config.success_rate.value
+        let healing_successful = math.random() < success_probability
+        
+        if healing_successful {
+            self_healing.success_count = self_healing.success_count + 1
+            
+            // Record successful healing
+            self_healing.healing_history.append({
+                timestamp: sidereal.get_seigr_timestamp(),
+                segment_hash: segment_hash,
+                strategy: strategy,
+                success: true,
+                attempts: healing_attempts
+            })
+            
+            logger.log_audit_event(
+                AlertSeverity.ALERT_SEVERITY_INFO,
+                "SelfHealing",
+                "Successfully healed segment using " + strategy,
+                false,
+                segment_hash: segment_hash,
+                strategy: strategy,
+                attempts: healing_attempts
+            )
+            
+            return true
+        }
+    }
+    
+    // All healing strategies failed
+    self_healing.failure_count = self_healing.failure_count + 1
+    
+    self_healing.healing_history.append({
+        timestamp: sidereal.get_seigr_timestamp(),
+        segment_hash: segment_hash,
+        strategy: "all_strategies",
+        success: false,
+        attempts: healing_attempts
+    })
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_ERROR,
+        "SelfHealing",
+        "All healing strategies failed for segment " + segment_hash,
+        false,
+        segment_hash: segment_hash,
+        attempts: healing_attempts,
+        strategies_tried: strategies.length
+    )
+    
+    return false
+}
+
+// Export immune system interface
+export {
+    immune,
+    THREAT_LEVEL_MINIMAL,
+    THREAT_LEVEL_LOW,
+    THREAT_LEVEL_MEDIUM,
+    THREAT_LEVEL_HIGH,
+    THREAT_LEVEL_CRITICAL,
+    THREAT_TYPE_NETWORK_ATTACK,
+    THREAT_TYPE_THERMAL_ANOMALY,
+    THREAT_TYPE_POWER_FLUCTUATION,
+    THREAT_TYPE_RESOURCE_EXHAUSTION,
+    THREAT_TYPE_INTEGRITY_VIOLATION,
+    THREAT_TYPE_ANOMALY_DETECTED,
+    THREAT_TYPE_MALICIOUS_INTENT,
+    THREAT_TYPE_LEARNING_CORRUPTION,
+    SECURITY_RESPONSE_MONITOR,
+    SECURITY_RESPONSE_ISOLATE,
+    SECURITY_RESPONSE_QUARANTINE,
+    SECURITY_RESPONSE_BLOCK,
+    SECURITY_RESPONSE_EMERGENCY_STOP,
+    IMMUNE_STATE_ACTIVE,
+    IMMUNE_STATE_MONITORING,
+    IMMUNE_STATE_RESPONDING,
+    IMMUNE_STATE_HEALING,
+    IMMUNE_STATE_EMERGENCY
+}

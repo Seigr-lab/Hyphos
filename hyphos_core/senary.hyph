@@ -1,0 +1,163 @@
+// Hyphos Core - Senary Mathematics Metaword
+// Pure base-6 mathematical operations as core language feature
+
+metaword senary {
+    fun create(input_value) -> $SenaryNumber {
+        // Create a senary number from input
+        if type.of(input_value) == "string" {
+            return validate_senary_digits(input_value)
+        } else if type.of(input_value) == "integer" {
+            return decimal_to_senary(input_value)
+        }
+        
+        return pure_senary_representation(input_value)
+    }
+    
+    fun add(a, b) -> $SenaryNumber {
+        // Pure senary addition - digit by digit with carry
+        let carry = 0
+        let result_digits = []
+        
+        // Digit-by-digit senary addition
+        let max_length = math.max(a.length, b.length)
+        let i = 0
+        
+        while i < max_length or carry > 0 {
+            let digit_a = if i < a.length then a.digits[i] else 0
+            let digit_b = if i < b.length then b.digits[i] else 0
+            
+            let sum = digit_a + digit_b + carry
+            result_digits[i] = sum % 6
+            carry = sum / 6
+            i = i + 1
+        }
+        
+        return senary.from_digits(result_digits)
+    }
+    
+    fun multiply(a, b) -> $SenaryNumber {
+        // Senary multiplication using pure base-6 arithmetic
+        let result = senary.create("0")
+        
+        let i = 0
+        while i < b.length {
+            if b.digits[i] > 0 {
+                let partial = senary.multiply_by_digit(a, b.digits[i])
+                let shifted = senary.left_shift(partial, i)
+                result = senary.add(result, shifted)
+            }
+            i = i + 1
+        }
+        
+        return result
+    }
+    
+    fun subtract(a, b) -> $SenaryNumber {
+        // Pure senary subtraction with borrow
+        let borrow = 0
+        let result_digits = []
+        let max_length = math.max(a.length, b.length)
+        
+        let i = 0
+        while i < max_length {
+            let digit_a = if i < a.length then a.digits[i] else 0
+            let digit_b = if i < b.length then b.digits[i] else 0
+            
+            let diff = digit_a - digit_b - borrow
+            if diff < 0 {
+                diff = diff + 6
+                borrow = 1
+            } else {
+                borrow = 0
+            }
+            
+            result_digits[i] = diff
+            i = i + 1
+        }
+        
+        return senary.from_digits(result_digits)
+    }
+    
+    fun divide(a, b) -> $SenaryNumber {
+        // Senary division using repeated subtraction
+        if senary.is_zero(b) {
+            error("Division by zero in senary arithmetic")
+        }
+        
+        let quotient = senary.create("0")
+        let remainder = senary.copy(a)
+        
+        while senary.greater_or_equal(remainder, b) {
+            remainder = senary.subtract(remainder, b)
+            quotient = senary.add(quotient, senary.create("1"))
+        }
+        
+        return quotient
+    }
+    
+    fun from_int(decimal_value) -> $SenaryNumber {
+        return decimal_to_senary(decimal_value)
+    }
+    
+    fun to_decimal(senary_number) -> $Integer {
+        return senary_to_decimal(senary_number)
+    }
+    
+    fun validate_digits(input) -> $Boolean {
+        let valid_digits = "012345."
+        
+        for char in input {
+            if !string.contains(valid_digits, char) {
+                return false
+            }
+        }
+        return true
+    }
+    
+    fun is_zero(senary_number) -> $Boolean {
+        for digit in senary_number.digits {
+            if digit != 0 {
+                return false
+            }
+        }
+        return true
+    }
+}
+
+fun decimal_to_senary(decimal) -> $SenaryNumber {
+    if decimal == 0 {
+        return senary.create("0")
+    }
+    
+    let result = ""
+    let negative = decimal < 0
+    decimal = math.abs(decimal)
+    
+    while decimal > 0 {
+        result = string.from(decimal % 6) + result
+        decimal = decimal / 6
+    }
+    
+    if negative {
+        result = "-" + result
+    }
+    
+    return senary.create(result)
+}
+
+fun senary_to_decimal(senary_number) -> $Integer {
+    let digits = senary_number.digits
+    let negative = false
+    
+    if string.starts_with(digits, "-") {
+        negative = true
+        digits = string.substring(digits, 1)
+    }
+    
+    let result = 0
+    for digit in digits {
+        result = result * 6 + int.from(digit)
+    }
+    
+    return negative ? -result : result
+}

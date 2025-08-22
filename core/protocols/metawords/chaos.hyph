@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.chaos;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Chaos operation types (senary-mapped 0-5)
-enum ChaosOperation {
-    CHAOS_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword ChaosOperation = senary_enum {
+    CHAOS_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Chaos processing states (senary-mapped 0-5)
-enum ChaosProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword ChaosProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Chaos data types (senary-mapped 0-5)
-enum ChaosDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword ChaosDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core chaos messages
-message ChaosObject {
-    string object_id = 1;
-    ChaosDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    ChaosProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword ChaosObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_ChaosDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_ChaosProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message ChaosRequest {
-    ChaosOperation operation = 1;
-    ChaosObject target_object = 2;
-    SenaryArray parameters = 3;
-    ChaosProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword ChaosRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_ChaosOperation operation;
+    private seigbit_ChaosObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_ChaosProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message ChaosResponse {
-    bool success = 1;
-    ChaosObject result_object = 2;
-    SenaryArray result_data = 3;
-    ChaosProcessingState new_state = 4;
-    string error_message = 5;
+metaword ChaosResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_ChaosObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_ChaosProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Chaos service definition
-service ChaosService {
-    rpc Create(ChaosRequest) returns (ChaosResponse);
-    rpc Process(ChaosRequest) returns (ChaosResponse);
-    rpc Validate(ChaosRequest) returns (ChaosResponse);
-    rpc Optimize(ChaosRequest) returns (ChaosResponse);
-    rpc Integrate(ChaosRequest) returns (ChaosResponse);
+metaword ChaosService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_ChaosRequest) -> seigbit_ChaosResponse;
+    async method Process(request: seigbit_ChaosRequest) -> seigbit_ChaosResponse;
+    async method Validate(request: seigbit_ChaosRequest) -> seigbit_ChaosResponse;
+    async method Optimize(request: seigbit_ChaosRequest) -> seigbit_ChaosResponse;
+    async method Integrate(request: seigbit_ChaosRequest) -> seigbit_ChaosResponse;
 }

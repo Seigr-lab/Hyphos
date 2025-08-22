@@ -1,0 +1,228 @@
+// Hyphos Core - Scope Metaword
+// Core scope handling for variable and function isolation
+
+metaword scope {
+    fun current_level() -> $Integer {
+        // Get current scope nesting level
+        return system.scope_stack.length
+    }
+
+    fun enter_new(scope_name) -> $Object {
+        // Enter a new scope level
+        
+        let new_scope = {
+            name: scope_name,
+            variables: {},
+            functions: {},
+            parent_scope: if system.scope_stack.length > 0 { system.scope_stack.top() } else { null },
+            creation_time: sidereal_time.current_time(),
+            access_count: 0
+        }
+        
+        system.scope_stack.push(new_scope)
+        return new_scope
+    }
+
+    fun exit() -> $Object {
+        // Exit current scope level
+        if system.scope_stack.length <= 1 {
+            error("Cannot exit global scope")
+        }
+        
+        let exited_scope = system.scope_stack.pop()
+        return exited_scope
+    }
+
+    fun register_variable(variable_entry) -> $Boolean {
+        // Register variable in current scope
+        
+        if system.scope_stack.length == 0 {
+            error("No active scope for variable registration")
+        }
+        
+        let current_scope = system.scope_stack.top()
+        
+        // Check if variable already exists in current scope
+        if current_scope.variables.has_key(variable_entry.name) {
+            error("Variable already exists in current scope: " + variable_entry.name)
+        }
+    
+    current_scope.variables[variable_entry.name] = variable_entry
+    variable_entry
+}
+
+scope.find_variable = {
+    // Find variable in scope chain (current -> parent -> global)
+    name = args.0
+    
+    scope_index = system.scope_stack.length - 1
+    
+    while scope_index >= 0 {
+        current_scope = system.scope_stack[scope_index]
+        current_scope.access_count = current_scope.access_count + 1
+        
+        if current_scope.variables.has_key(name) {
+            return current_scope.variables[name]
+        }
+        
+        scope_index = scope_index - 1
+    }
+    
+    null  // Variable not found
+}
+
+scope.unregister_variable = {
+    // Remove variable from current scope
+    name = args.0
+    
+    if system.scope_stack.length == 0 {
+        error("No active scope")
+    }
+    
+    current_scope = system.scope_stack.top()
+    
+    if not current_scope.variables.has_key(name) {
+        error("Variable not found in current scope: " + name)
+    }
+    
+    deleted_var = current_scope.variables[name]
+    current_scope.variables.remove(name)
+    deleted_var
+}
+
+scope.register_function = {
+    // Register function in current scope
+    function_entry = args.0
+    
+    if system.scope_stack.length == 0 {
+        error("No active scope for function registration")
+    }
+    
+    current_scope = system.scope_stack.top()
+    
+    // Check if function already exists in current scope
+    if current_scope.functions.has_key(function_entry.name) {
+        error("Function already exists in current scope: " + function_entry.name)
+    }
+    
+    current_scope.functions[function_entry.name] = function_entry
+    function_entry
+}
+
+scope.find_function = {
+    // Find function in scope chain
+    name = args.0
+    
+    scope_index = system.scope_stack.length - 1
+    
+    while scope_index >= 0 {
+        current_scope = system.scope_stack[scope_index]
+        current_scope.access_count = current_scope.access_count + 1
+        
+        if current_scope.functions.has_key(name) {
+            return current_scope.functions[name]
+        }
+        
+        scope_index = scope_index - 1
+    }
+    
+    null  // Function not found
+}
+
+scope.list_variables = {
+    // List all variables in current scope
+    if system.scope_stack.length == 0 {
+        error("No active scope")
+    }
+    
+    current_scope = system.scope_stack.top()
+    variable_names = []
+    
+    for var_name in current_scope.variables.keys() {
+        variable_names.append(var_name)
+    }
+    
+    variable_names
+}
+
+scope.list_functions = {
+    // List all functions in current scope
+    if system.scope_stack.length == 0 {
+        error("No active scope")
+    }
+    
+    current_scope = system.scope_stack.top()
+    function_names = []
+    
+    for func_name in current_scope.functions.keys() {
+        function_names.append(func_name)
+    }
+    
+    function_names
+}
+
+scope.get_info = {
+    // Get information about current scope
+    if system.scope_stack.length == 0 {
+        error("No active scope")
+    }
+    
+    current_scope = system.scope_stack.top()
+    
+    {
+        name: current_scope.name,
+        level: system.scope_stack.length - 1,
+        variable_count: current_scope.variables.size(),
+        function_count: current_scope.functions.size(),
+        creation_time: current_scope.creation_time,
+        access_count: current_scope.access_count,
+        has_parent: current_scope.parent_scope != null
+    }
+}
+
+scope.initialize_global = {
+    // Initialize global scope (called at system startup)
+    global_scope = {
+        name: "global",
+        variables: {},
+        functions: {},
+        parent_scope: null,
+        creation_time: sidereal.current_time(),
+        access_count: 0
+    }
+    
+    system.scope_stack = [global_scope]
+    global_scope
+}
+
+scope.clear_all = {
+    // Clear all scopes except global (emergency cleanup)
+    if system.scope_stack.length > 1 {
+        global_scope = system.scope_stack[0]
+        system.scope_stack = [global_scope]
+    }
+    
+    system.scope_stack.length
+}
+
+scope.dump_stack = {
+    // Debug: dump entire scope stack
+    stack_info = []
+    
+    scope_index = 0
+    while scope_index < system.scope_stack.length {
+        scope_entry = system.scope_stack[scope_index]
+        
+        stack_info.append({
+            level: scope_index,
+            name: scope_entry.name,
+            variables: scope_entry.variables.keys(),
+            functions: scope_entry.functions.keys(),
+            creation_time: scope_entry.creation_time
+        })
+        
+        scope_index = scope_index + 1
+    }
+    
+    stack_info
+}

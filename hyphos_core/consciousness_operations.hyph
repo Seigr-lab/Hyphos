@@ -1,0 +1,240 @@
+// Hyphos Core - Consciousness Operations Metaword  
+// Simplified interface for consciousness operations - delegates to main consciousness metaword
+
+consciousness_operations {
+    
+    // Basic level processing - delegates to consciousness.basic_processing
+    basic_level(input_data, processing_context = null) -> {
+        return consciousness.basic_processing(input_data)
+    }
+    
+    // Intermediate level processing - delegates to consciousness.intermediate_processing  
+    intermediate_level(input_data, processing_context = null, pattern_memory = null) -> {
+        return consciousness.intermediate_processing(input_data)
+    }
+    
+    // Advanced level processing - delegates to consciousness.advanced_processing
+    advanced_level(input_data, processing_context = null, knowledge_base = null, meta_context = null) -> {
+        return consciousness.advanced_processing(input_data)
+    }
+    
+    // Transcendent level processing - delegates to consciousness.transcendent_processing
+    transcendent_level(input_data, processing_context = null, system_state = null, holistic_context = null) -> {
+        return consciousness.transcendent_processing(input_data)
+    }
+    
+    // Universal level processing - delegates to consciousness.universal_processing
+    universal_level(input_data, processing_context = null, network_state = null, universal_context = null) -> {
+        return consciousness.universal_processing(input_data)
+    }
+    
+    // Consciousness level management - delegates to consciousness metaword
+    set_level(level) -> {
+        return consciousness.set_level(level)
+    }
+    
+    get_level() -> {
+        return consciousness.get_level()
+    }
+    
+    // Energy adaptation - delegates to consciousness metaword
+    adapt_to_energy(energy_level) -> {
+        return consciousness.adapt_to_energy_level(energy_level)
+    }
+    
+    // Process with automatic level selection based on input complexity
+    process_with_auto_level(input_data) -> {
+        energy_level = hardware.get_energy_level()
+        input_complexity = consciousness_operations.assess_input_complexity(input_data)
+        
+        if (senary.less_than(energy_level, "0.3") || senary.less_than(input_complexity, "0.3")) {
+            return consciousness_operations.basic_level(input_data)
+        } else if (senary.less_than(input_complexity, "0.6")) {
+            return consciousness_operations.intermediate_level(input_data)
+        } else if (senary.less_than(input_complexity, "0.8")) {
+            return consciousness_operations.advanced_level(input_data)
+        } else {
+            return consciousness_operations.transcendent_level(input_data)
+        }
+    }
+    
+    // Utility functions
+    assess_input_complexity(input_data) -> {
+        complexity_factors = []
+        
+        if (input_data.options && input_data.options.length > 3) {
+            complexity_factors.append("0.3")
+        }
+        
+        if (input_data.relationships && input_data.relationships.length > 5) {
+            complexity_factors.append("0.4")
+        }
+        
+        if (input_data.temporal_context || input_data.events) {
+            complexity_factors.append("0.3")
+        }
+        
+        if (input_data.network_context || input_data.distributed_data) {
+            complexity_factors.append("0.5")
+        }
+        
+        if (complexity_factors.length == 0) {
+            return "0.2"
+        }
+        
+        return senary.average(complexity_factors)
+    }
+    
+    // Legacy compatibility functions - all delegate to consciousness metaword
+    default_context() -> {
+        return {
+            processing_mode: "standard",
+            energy_awareness: true,
+            timestamp: sidereal_time.now()
+        }
+    }
+    
+    set_awareness_scope(scope) -> {
+        return consciousness.set_level(
+            if (scope == "immediate") { consciousness.BASIC }
+            else if (scope == "contextual") { consciousness.INTERMEDIATE }
+            else if (scope == "meta_cognitive") { consciousness.ADVANCED }
+            else if (scope == "system_wide") { consciousness.TRANSCENDENT }
+            else if (scope == "network_universal") { consciousness.UNIVERSAL }
+            else { consciousness.INTERMEDIATE }
+        )
+    }
+    
+    direct_processing(input_data) -> {
+        return consciousness.basic_processing(input_data)
+    }
+    
+}
+    pattern_memory = args.1
+    
+    recognized = []
+    
+    # Check against known patterns
+    for pattern in pattern_memory.patterns {
+        similarity = consciousness.calculate_pattern_similarity(input_data, pattern)
+        
+        if senary.greater_than(similarity, senary.create("0.7")) {
+            recognized.append({
+                pattern: pattern,
+                similarity: similarity,
+                confidence: consciousness.calculate_pattern_confidence(similarity)
+            })
+        }
+    }
+    
+    recognized
+}
+
+consciousness.apply_basic_reasoning = {
+    // Apply basic reasoning based on recognized patterns
+    input_data = args.0
+    recognized_patterns = args.1
+    
+    if recognized_patterns.length == 0 {
+        # No patterns - return modified input
+        consciousness.direct_processing(input_data)
+    } else {
+        # Use strongest pattern for reasoning
+        strongest_pattern = recognized_patterns[0]
+        reasoning_rule = strongest_pattern.pattern.reasoning_rule
+        
+        consciousness.apply_reasoning_rule(input_data, reasoning_rule)
+    }
+}
+
+consciousness.perceptual_processing = {
+    // First layer: perceptual processing
+    input_data = args.0
+    
+    # Extract features and basic structure
+    features = consciousness.extract_features(input_data)
+    structure = consciousness.analyze_structure(input_data)
+    
+    {
+        original_data: input_data,
+        extracted_features: features,
+        structural_analysis: structure,
+        perceptual_quality: consciousness.assess_perceptual_quality(features, structure)
+    }
+}
+
+consciousness.conceptual_processing = {
+    // Second layer: conceptual processing
+    perceptual_result = args.0
+    knowledge_base = args.1
+    
+    # Map to concepts
+    concepts = consciousness.map_to_concepts(perceptual_result.extracted_features, knowledge_base)
+    
+    # Build conceptual relationships
+    relationships = consciousness.build_concept_relationships(concepts, knowledge_base)
+    
+    # Generate conceptual understanding
+    understanding = consciousness.generate_conceptual_understanding(concepts, relationships)
+    
+    {
+        perceptual_input: perceptual_result,
+        mapped_concepts: concepts,
+        concept_relationships: relationships,
+        conceptual_understanding: understanding
+    }
+}
+
+consciousness.meta_cognitive_processing = {
+    // Third layer: meta-cognitive processing
+    conceptual_result = args.0
+    meta_context = args.1
+    
+    # Analyze own thinking process
+    thinking_analysis = consciousness.analyze_thinking_process(conceptual_result)
+    
+    # Generate meta-level insights
+    meta_insights = consciousness.generate_meta_insights(thinking_analysis, meta_context)
+    
+    # Apply meta-cognitive control
+    control_result = consciousness.apply_meta_cognitive_control(meta_insights, conceptual_result)
+    
+    {
+        conceptual_input: conceptual_result,
+        thinking_analysis: thinking_analysis,
+        meta_insights: meta_insights,
+        meta_cognitive_result: control_result
+    }
+}
+
+consciousness.default_context = {
+    // Provide default consciousness context
+    {
+        timestamp: system.current_time(),
+        processing_depth: "standard",
+        energy_available: senary.create("0.8"),
+        attention_focus: "balanced",
+        background_processes: []
+    }
+}
+
+consciousness.default_pattern_memory = {
+    // Provide default pattern memory
+    {
+        patterns: [],
+        pattern_usage_count: {},
+        pattern_success_rate: {},
+        last_update: system.current_time()
+    }
+}
+
+consciousness.default_knowledge_base = {
+    // Provide default knowledge base
+    {
+        concepts: {},
+        relationships: {},
+        rules: {},
+        confidence_levels: {},
+        last_learning: system.current_time()
+    }
+}

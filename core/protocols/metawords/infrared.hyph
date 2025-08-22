@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.infrared;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Infrared operation types (senary-mapped 0-5)
-enum InfraredOperation {
-    INFRARED_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword InfraredOperation = senary_enum {
+    INFRARED_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Infrared processing states (senary-mapped 0-5)
-enum InfraredProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword InfraredProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Infrared data types (senary-mapped 0-5)
-enum InfraredDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword InfraredDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core infrared messages
-message InfraredObject {
-    string object_id = 1;
-    InfraredDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    InfraredProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword InfraredObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_InfraredDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_InfraredProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message InfraredRequest {
-    InfraredOperation operation = 1;
-    InfraredObject target_object = 2;
-    SenaryArray parameters = 3;
-    InfraredProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword InfraredRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_InfraredOperation operation;
+    private seigbit_InfraredObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_InfraredProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message InfraredResponse {
-    bool success = 1;
-    InfraredObject result_object = 2;
-    SenaryArray result_data = 3;
-    InfraredProcessingState new_state = 4;
-    string error_message = 5;
+metaword InfraredResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_InfraredObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_InfraredProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Infrared service definition
-service InfraredService {
-    rpc Create(InfraredRequest) returns (InfraredResponse);
-    rpc Process(InfraredRequest) returns (InfraredResponse);
-    rpc Validate(InfraredRequest) returns (InfraredResponse);
-    rpc Optimize(InfraredRequest) returns (InfraredResponse);
-    rpc Integrate(InfraredRequest) returns (InfraredResponse);
+metaword InfraredService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_InfraredRequest) -> seigbit_InfraredResponse;
+    async method Process(request: seigbit_InfraredRequest) -> seigbit_InfraredResponse;
+    async method Validate(request: seigbit_InfraredRequest) -> seigbit_InfraredResponse;
+    async method Optimize(request: seigbit_InfraredRequest) -> seigbit_InfraredResponse;
+    async method Integrate(request: seigbit_InfraredRequest) -> seigbit_InfraredResponse;
 }

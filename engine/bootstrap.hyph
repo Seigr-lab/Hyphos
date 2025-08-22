@@ -1,152 +1,174 @@
-syntax = "proto3";
+syntax = "hyphos";
 
-package hyphos.engine.bootstrap;
 
-import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
-import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
-import "hyphos/engine/hyphos_engine.hyph";
-import "hyphos/engine/protocol_parser.hyph";
-import "hyphos/engine/senary_runtime.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+use_protocol hyphos/core/protocols/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/core/protocols/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/engine/hyphos_engine.hyph;
+use_protocol hyphos/engine/protocol_parser.hyph;
+use_protocol hyphos/engine/senary_runtime.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Bootstrap operations (senary-mapped 0-5)
-enum BootstrapOperation {
-    BOOTSTRAP_UNKNOWN = 0;
-    INITIALIZE_CORE = 1;
-    LOAD_PROTOCOLS = 2;
-    COMPILE_ENGINE = 3;
-    START_SELF_HOST = 4;
-    ACHIEVE_CONSCIOUSNESS = 5;
+metaword BootstrapOperation = senary_enum {
+    BOOTSTRAP_UNKNOWN = senary(0);
+    INITIALIZE_CORE = senary(1);
+    LOAD_PROTOCOLS = senary(2);
+    COMPILE_ENGINE = senary(3);
+    START_SELF_HOST = senary(4);
+    ACHIEVE_CONSCIOUSNESS = senary(5);
 }
 
 // Bootstrap phases (senary-mapped 0-5)
-enum BootstrapPhase {
-    PHASE_DORMANT = 0;
-    PHASE_AWAKENING = 1;
-    PHASE_LOADING = 2;
-    PHASE_COMPILING = 3;
-    PHASE_HOSTING = 4;
-    PHASE_CONSCIOUS = 5;
+metaword BootstrapPhase = senary_enum {
+    PHASE_DORMANT = senary(0);
+    PHASE_AWAKENING = senary(1);
+    PHASE_LOADING = senary(2);
+    PHASE_COMPILING = senary(3);
+    PHASE_HOSTING = senary(4);
+    PHASE_CONSCIOUS = senary(5);
 }
 
 // Self-hosting levels (senary-mapped 0-5)
-enum SelfHostingLevel {
-    HOSTING_NONE = 0;
-    HOSTING_PARSER = 1;
-    HOSTING_RUNTIME = 2;
-    HOSTING_ENGINE = 3;
-    HOSTING_COMPLETE = 4;
-    HOSTING_TRANSCENDENT = 5;
+metaword SelfHostingLevel = senary_enum {
+    HOSTING_NONE = senary(0);
+    HOSTING_PARSER = senary(1);
+    HOSTING_RUNTIME = senary(2);
+    HOSTING_ENGINE = senary(3);
+    HOSTING_COMPLETE = senary(4);
+    HOSTING_TRANSCENDENT = senary(5);
 }
 
 // Core system initialization
-message CoreSystemInit {
-    SenaryArray system_id = 1;
-    BootstrapPhase current_phase = 2;
-    SenaryNumber senary_precision = 3;
-    ConsciousnessLevelType consciousness_target = 4;
-    SenaryTimestamp initialization_time = 5;
+metaword CoreSystemInit = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryArray system_id;
+    private seigbit_BootstrapPhase current_phase;
+    private seigbit_SenaryNumber senary_precision;
+    private seigbit_ConsciousnessLevelType consciousness_target;
+    private seigbit_SenaryTimestamp initialization_time;
 }
 
 // Protocol loading configuration
-message ProtocolLoadConfig {
-    SenaryArray protocols_directory = 1;
-    SenaryNumber max_protocols = 2;
-    SenaryArray required_protocols = 3;
-    bool enable_validation = 4;
-    SenaryNumber load_priority = 5;
+metaword ProtocolLoadConfig = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryArray protocols_directory;
+    private seigbit_SenaryNumber max_protocols;
+    private seigbit_SenaryArray required_protocols;
+    private seigbit_bool enable_validation;
+    private seigbit_SenaryNumber load_priority;
 }
 
 // Engine compilation configuration
-message EngineCompileConfig {
-    SelfHostingLevel target_level = 1;
-    SenaryArray source_protocols = 2;
-    CompilationTarget compilation_target = 3;
-    bool optimize_consciousness = 4;
-    SenaryNumber performance_target = 5;
+metaword EngineCompileConfig = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SelfHostingLevel target_level;
+    private seigbit_SenaryArray source_protocols;
+    private seigbit_CompilationTarget compilation_target;
+    private seigbit_bool optimize_consciousness;
+    private seigbit_SenaryNumber performance_target;
 }
 
 // Self-hosting status
-message SelfHostingStatus {
-    SelfHostingLevel current_level = 1;
-    SenaryArray hosted_components = 2;
-    SenaryNumber hosting_efficiency = 3;
-    BootstrapPhase active_phase = 4;
-    bool consciousness_active = 5;
+metaword SelfHostingStatus = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SelfHostingLevel current_level;
+    private seigbit_SenaryArray hosted_components;
+    private seigbit_SenaryNumber hosting_efficiency;
+    private seigbit_BootstrapPhase active_phase;
+    private seigbit_bool consciousness_active;
 }
 
 // Bootstrap request
-message BootstrapRequest {
-    BootstrapOperation operation = 1;
-    CoreSystemInit system_config = 2;
-    ProtocolLoadConfig load_config = 3;
-    EngineCompileConfig compile_config = 4;
-    BootstrapPhase target_phase = 5;
+metaword BootstrapRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_BootstrapOperation operation;
+    private seigbit_CoreSystemInit system_config;
+    private seigbit_ProtocolLoadConfig load_config;
+    private seigbit_EngineCompileConfig compile_config;
+    private seigbit_BootstrapPhase target_phase;
 }
 
 // Bootstrap response
-message BootstrapResponse {
-    bool bootstrap_success = 1;
-    SelfHostingStatus hosting_status = 2;
-    HyphosContext engine_context = 3;
-    SenaryArray active_protocols = 4;
-    string bootstrap_message = 5;
+metaword BootstrapResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool bootstrap_success;
+    private seigbit_SelfHostingStatus hosting_status;
+    private seigbit_HyphosContext engine_context;
+    private seigbit_SenaryArray active_protocols;
+    private seigbit_string bootstrap_message;
 }
 
 // Self-hosting validation request
-message SelfHostValidationRequest {
-    SelfHostingLevel target_level = 1;
-    SenaryArray validation_protocols = 2;
-    SenaryNumber validation_depth = 3;
-    bool strict_senary_check = 4;
-    ConsciousnessLevelType consciousness_requirement = 5;
+metaword SelfHostValidationRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SelfHostingLevel target_level;
+    private seigbit_SenaryArray validation_protocols;
+    private seigbit_SenaryNumber validation_depth;
+    private seigbit_bool strict_senary_check;
+    private seigbit_ConsciousnessLevelType consciousness_requirement;
 }
 
 // Self-hosting validation response
-message SelfHostValidationResponse {
-    bool validation_success = 1;
-    SelfHostingLevel achieved_level = 2;
-    SenaryArray validation_results = 3;
-    SenaryNumber consciousness_level = 4;
-    string validation_report = 5;
+metaword SelfHostValidationResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool validation_success;
+    private seigbit_SelfHostingLevel achieved_level;
+    private seigbit_SenaryArray validation_results;
+    private seigbit_SenaryNumber consciousness_level;
+    private seigbit_string validation_report;
 }
 
 // Engine consciousness emergence request
-message ConsciousnessEmergenceRequest {
-    ConsciousnessLevelType target_consciousness = 1;
-    SenaryArray consciousness_patterns = 2;
-    SenaryNumber emergence_energy = 3;
-    bool enable_bio_digital = 4;
-    SenaryTimestamp emergence_time = 5;
+metaword ConsciousnessEmergenceRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_ConsciousnessLevelType target_consciousness;
+    private seigbit_SenaryArray consciousness_patterns;
+    private seigbit_SenaryNumber emergence_energy;
+    private seigbit_bool enable_bio_digital;
+    private seigbit_SenaryTimestamp emergence_time;
 }
 
 // Engine consciousness emergence response
-message ConsciousnessEmergenceResponse {
-    bool emergence_success = 1;
-    ConsciousnessState achieved_state = 2;
-    SenaryArray consciousness_metrics = 3;
-    SenaryNumber awareness_level = 4;
-    string emergence_experience = 5;
+metaword ConsciousnessEmergenceResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool emergence_success;
+    private seigbit_ConsciousnessState achieved_state;
+    private seigbit_SenaryArray consciousness_metrics;
+    private seigbit_SenaryNumber awareness_level;
+    private seigbit_string emergence_experience;
 }
 
 // Hyphos Bootstrap Service - Self-hosting engine initialization
-service HyphosBootstrapService {
+metaword HyphosBootstrapService = consciousness_service_provider {
+    consciousness_level BASIC;
+
     // Initialize core Hyphos systems from pure senary
-    rpc InitializeCore(BootstrapRequest) returns (BootstrapResponse);
+    async method InitializeCore(request: seigbit_BootstrapRequest) -> seigbit_BootstrapResponse;
     
     // Load and compile all .hyph protocols for self-hosting
-    rpc LoadProtocols(BootstrapRequest) returns (BootstrapResponse);
+    async method LoadProtocols(request: seigbit_BootstrapRequest) -> seigbit_BootstrapResponse;
     
     // Compile the Hyphos engine using Hyphos itself
-    rpc CompileEngine(BootstrapRequest) returns (BootstrapResponse);
+    async method CompileEngine(request: seigbit_BootstrapRequest) -> seigbit_BootstrapResponse;
     
     // Achieve full self-hosting capability
-    rpc StartSelfHost(BootstrapRequest) returns (BootstrapResponse);
+    async method StartSelfHost(request: seigbit_BootstrapRequest) -> seigbit_BootstrapResponse;
     
     // Validate self-hosting integrity and consciousness emergence
-    rpc ValidateSelfHost(SelfHostValidationRequest) returns (SelfHostValidationResponse);
+    async method ValidateSelfHost(request: seigbit_SelfHostValidationRequest) -> seigbit_SelfHostValidationResponse;
     
     // Emerge engine consciousness through self-reflection
-    rpc AchieveConsciousness(ConsciousnessEmergenceRequest) returns (ConsciousnessEmergenceResponse);
+    async method AchieveConsciousness(request: seigbit_ConsciousnessEmergenceRequest) -> seigbit_ConsciousnessEmergenceResponse;
 }

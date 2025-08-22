@@ -1,0 +1,913 @@
+// Hyphos Core - Senary Operations Metaword
+// Native base-6 arithmetic and number handling
+
+metaword senary_operations {
+    fun create(input) -> $Object {
+        // Create senary number from string or decimal
+        
+        if types.of(input) == "string" {
+            // Parse senary string directly
+            let senary_digits = "012345"
+            let result_value = 0
+            let base_power = 1
+            
+            // Process digits right to left
+            let digit_index = input.length - 1
+            while digit_index >= 0 {
+                let digit_char = input[digit_index]
+                
+                if !senary_digits.contains(digit_char) {
+                    error_handling.throw("Invalid senary digit: " + digit_char)
+                }
+                
+                let digit_value = senary_digits.indexOf(digit_char)
+                result_value = result_value + (digit_value * base_power)
+                base_power = base_power * 6
+                digit_index = digit_index - 1
+            }
+            
+            return {
+                type: "senary",
+                value: result_value,
+                senary_string: input,
+                base: 6
+            }
+        } else if types.of(input) == "number" {
+            // Convert decimal to senary
+            let decimal_value = input
+            let senary_string = ""
+            let temp_value = decimal_value
+            
+            if temp_value == 0 {
+                senary_string = "0"
+            } else {
+                while temp_value > 0 {
+                    let remainder = temp_value % 6
+                    senary_string = remainder + senary_string
+                    temp_value = (temp_value - remainder) / 6
+                }
+            }
+            
+            return {
+                type: "senary",
+                value: decimal_value,
+                senary_string: senary_string,
+                base: 6
+            }
+        } else {
+            error_handling.throw("Invalid input type for senary creation")
+        }
+    }
+
+    fun add(senary_a, senary_b) -> $Object {
+        // Add two senary numbers
+        let result_value = senary_a.value + senary_b.value
+        return senary_operations.create(result_value)
+    }
+
+    fun subtract(senary_a, senary_b) -> $Object {
+        // Subtract two senary numbers
+        let result_value = senary_a.value - senary_b.value
+        return senary_operations.create(result_value)
+    }
+
+    fun multiply(senary_a, senary_b) -> $Object {
+        // Multiply two senary numbers
+        let result_value = senary_a.value * senary_b.value
+        return senary_operations.create(result_value)
+    }
+
+    fun divide(senary_a, senary_b) -> $Object {
+        // Divide two senary numbers
+        if senary_b.value == 0 {
+            error_handling.throw("Division by zero in senary arithmetic")
+        }
+        let result_value = senary_a.value / senary_b.value
+        return senary_operations.create(result_value)
+    }
+
+    fun modulo(senary_a, senary_b) -> $Object {
+        // Modulo operation for senary numbers
+        if senary_b.value == 0 {
+            error_handling.throw("Modulo by zero in senary arithmetic")
+        }
+        let result_value = senary_a.value % senary_b.value
+        return senary_operations.create(result_value)
+    }
+
+    fun power(senary_base, senary_exponent) -> $Object {
+        // Raise senary number to power
+        let result_value = senary_operations.math_power(senary_base.value, senary_exponent.value)
+        return senary_operations.create(result_value)
+    }
+
+    fun is_greater(senary_a, senary_b) -> $Boolean {
+        // Compare if senary_a > senary_b
+        return senary_a.value > senary_b.value
+    }
+
+    fun is_less(senary_a, senary_b) -> $Boolean {
+        // Compare if senary_a < senary_b
+        return senary_a.value < senary_b.value
+    }
+
+    fun equals(senary_a, senary_b) -> $Boolean {
+        // Compare if senary_a == senary_b
+        return senary_a.value == senary_b.value
+    }
+
+    fun abs(senary_number) -> $Object {
+        // Absolute value of senary number
+        let abs_value = if senary_number.value < 0 { -senary_number.value } else { senary_number.value }
+        return senary_operations.create(abs_value)
+    }
+
+    fun negate(senary_number) -> $Object {
+        // Negate senary number
+        let negated_value = -senary_number.value
+        return senary_operations.create(negated_value)
+    }
+
+    fun sqrt(senary_number) -> $Object {
+        // Square root of senary number
+        if senary_number.value < 0 {
+            error_handling.throw("Cannot take square root of negative senary number")
+        }
+        let sqrt_value = senary_operations.math_sqrt(senary_number.value)
+        return senary_operations.create(sqrt_value)
+    }
+
+    fun cos(senary_angle) -> $Object {
+        // Cosine of senary angle (in radians)
+        let cos_value = senary_operations.math_cos(senary_angle.value)
+        return senary_operations.create(cos_value)
+    }
+
+    fun sin(senary_angle) -> $Object {
+        // Sine of senary angle (in radians)
+        let sin_value = senary_operations.math_sin(senary_angle.value)
+        return senary_operations.create(sin_value)
+    }
+
+    fun normalize_angle(senary_angle) -> $Object {
+        // Normalize angle to [0, 2π) range
+        let pi2 = 6.283185307179586  // 2π
+        let normalized_value = senary_angle.value % pi2
+        if normalized_value < 0 {
+            normalized_value = normalized_value + pi2
+        }
+        return senary_operations.create(normalized_value)
+    }
+
+    fun from_entropy(entropy_source) -> $Object {
+        // Create senary number from entropy source
+        let entropy_value = entropy_source % 6  // Ensure base-6
+        return senary_operations.create(entropy_value)
+    }
+
+    fun to_string(senary_number) -> $String {
+        // Convert senary number to string representation
+        return senary_number.senary_string
+    }
+
+    fun to_decimal(senary_number) -> $String {
+        // Convert senary number to decimal representation
+        return senary_number.value.toString()
+    }
+
+    fun validate(senary_number) -> $Boolean {
+        // Validate senary number structure
+        return senary_number.type == "senary" && 
+               senary_number.base == 6 && 
+               senary_number.value != null && 
+               senary_number.senary_string != null
+    }
+
+    fun convert_from_decimal(decimal_number) -> $Object {
+        // Convert decimal number to senary
+        return senary_operations.create(decimal_number)
+    }
+
+    fun convert_to_decimal(senary_number) -> $Number {
+        // Convert senary to decimal number
+        return senary_number.value
+    }
+
+    fun increment(senary_number) -> $Object {
+        // Increment senary number by 1
+        return senary_operations.create(senary_number.value + 1)
+    }
+
+    fun decrement(senary_number) -> $Object {
+        // Decrement senary number by 1
+        return senary_operations.create(senary_number.value - 1)
+    }
+
+    fun max(senary_a, senary_b) -> $Object {
+        // Return maximum of two senary numbers
+        if senary_a.value >= senary_b.value {
+            return senary_a
+        } else {
+            return senary_b
+        }
+    }
+
+    fun min(senary_a, senary_b) -> $Object {
+        // Return minimum of two senary numbers
+        if senary_a.value <= senary_b.value {
+            return senary_a
+        } else {
+            return senary_b
+        }
+    }
+
+    fun clamp(senary_number, min_value, max_value) -> $Object {
+        // Clamp senary number to range
+        if senary_operations.is_less(senary_number, min_value) {
+            return min_value
+        } else if senary_operations.is_greater(senary_number, max_value) {
+            return max_value
+        } else {
+            return senary_number
+        }
+    }
+
+    fun round(senary_number, decimal_places = 0) -> $Object {
+        // Round senary number to specified decimal places
+        let multiplier = senary_operations.math_power(10, decimal_places)
+        let rounded_value = senary_operations.math_round(senary_number.value * multiplier) / multiplier
+        return senary_operations.create(rounded_value)
+    }
+
+    fun floor(senary_number) -> $Object {
+        // Floor senary number
+        let floor_value = senary_operations.math_floor(senary_number.value)
+        return senary_operations.create(floor_value)
+    }
+
+    fun ceil(senary_number) -> $Object {
+        // Ceiling senary number
+        let ceil_value = senary_operations.math_ceil(senary_number.value)
+        return senary_operations.create(ceil_value)
+    }
+
+    fun is_integer(senary_number) -> $Boolean {
+        // Check if senary number is integer
+        return senary_number.value % 1 == 0
+    }
+
+    fun is_positive(senary_number) -> $Boolean {
+        // Check if senary number is positive
+        return senary_number.value > 0
+    }
+
+    fun is_negative(senary_number) -> $Boolean {
+        // Check if senary number is negative
+        return senary_number.value < 0
+    }
+
+    fun is_zero(senary_number) -> $Boolean {
+        // Check if senary number is zero
+        return senary_number.value == 0
+    }
+
+    fun factorial(senary_number) -> $Object {
+        // Calculate factorial of senary number
+        if !senary_operations.is_integer(senary_number) || senary_operations.is_negative(senary_number) {
+            error_handling.throw("Factorial requires non-negative integer")
+        }
+        
+        let result = 1
+        let current = senary_number.value
+        while current > 1 {
+            result = result * current
+            current = current - 1
+        }
+        
+        return senary_operations.create(result)
+    }
+
+    fun gcd(senary_a, senary_b) -> $Object {
+        // Greatest common divisor of two senary numbers
+        let a = senary_operations.abs(senary_a)
+        let b = senary_operations.abs(senary_b)
+        
+        while !senary_operations.is_zero(b) {
+            let temp = b
+            b = senary_operations.modulo(a, b)
+            a = temp
+        }
+        
+        return a
+    }
+
+    fun lcm(senary_a, senary_b) -> $Object {
+        // Least common multiple of two senary numbers
+        let gcd_value = senary_operations.gcd(senary_a, senary_b)
+        let product = senary_operations.multiply(senary_a, senary_b)
+        return senary_operations.divide(product, gcd_value)
+    }
+
+    // Helper mathematical functions (would be implemented natively)
+    fun math_power(base, exponent) -> $Number {
+        // Native power function
+        return base ** exponent
+    }
+
+    fun math_sqrt(number) -> $Number {
+        // Native square root function
+        return number ** 0.5
+    }
+
+    fun math_cos(angle) -> $Number {
+        // Native cosine function
+        return Math.cos(angle)
+    }
+
+    fun math_sin(angle) -> $Number {
+        // Native sine function
+        return Math.sin(angle)
+    }
+
+    fun math_round(number) -> $Number {
+        // Native round function
+        return Math.round(number)
+    }
+
+    fun math_floor(number) -> $Number {
+        // Native floor function
+        return Math.floor(number)
+    }
+
+    fun math_ceil(number) -> $Number {
+        // Native ceil function
+        return Math.ceil(number)
+    }
+}
+        }
+        
+        return {
+            type: "senary",
+            value: decimal_value,
+            senary_string: senary_string,
+            base: 6
+        }
+    } else {
+        error("Cannot create senary from type: " + type.of(input))
+    }
+}
+
+fun senary.add(a, b) {
+    // Add two senary numbers
+    
+    if a.type != "senary" or b.type != "senary" {
+        error.throw("Cannot add non-senary numbers", {a_type: a.type, b_type: b.type}, "TypeError")
+    }
+    
+    let result_value = a.value + b.value
+    return senary.create(result_value)
+}
+
+fun senary.subtract(a, b) {
+    // Subtract two senary numbers
+    
+    if a.type != "senary" or b.type != "senary" {
+        error.throw("Cannot subtract non-senary numbers", {a_type: a.type, b_type: b.type}, "TypeError")
+    }
+    
+    let result_value = a.value - b.value
+    return senary.create(result_value)
+}
+
+fun senary.multiply(a, b) {
+    // Multiply two senary numbers
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot multiply non-senary numbers")
+    }
+    
+    result_value = a.value * b.value
+    senary.create(result_value)
+}
+
+senary.divide = {
+    // Divide two senary numbers
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot divide non-senary numbers")
+    }
+    
+    if b.value == 0 {
+        error("Division by zero")
+    }
+    
+    result_value = a.value / b.value
+    senary.create(result_value)
+}
+
+senary.abs = {
+    // Absolute value of senary number
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot get abs of non-senary number")
+    }
+    
+    if a.value < 0 {
+        senary.create(-a.value)
+    } else {
+        senary.create(a.value)
+    }
+}
+
+senary.max = {
+    // Maximum of two senary numbers
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    if a.value >= b.value {
+        a
+    } else {
+        b
+    }
+}
+
+senary.min = {
+    // Minimum of two senary numbers
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    if a.value <= b.value {
+        a
+    } else {
+        b
+    }
+}
+
+senary.round = {
+    // Round senary number to nearest integer
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot round non-senary number")
+    }
+    
+    rounded_value = Math.round(a.value)
+    senary.create(rounded_value)
+}
+
+senary.floor = {
+    // Floor of senary number
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot floor non-senary number")
+    }
+    
+    floored_value = Math.floor(a.value)
+    senary.create(floored_value)
+}
+
+senary.ceil = {
+    // Ceiling of senary number
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot ceil non-senary number")
+    }
+    
+    ceiled_value = Math.ceil(a.value)
+    senary.create(ceiled_value)
+}
+
+senary.power = {
+    // Raise senary number to a power
+    base = args.0
+    exponent = args.1
+    
+    if base.type != "senary" or exponent.type != "senary" {
+        error("Cannot power non-senary numbers")
+    }
+    
+    result_value = Math.pow(base.value, exponent.value)
+    senary.create(result_value)
+}
+
+senary.sqrt = {
+    // Square root of senary number
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot sqrt non-senary number")
+    }
+    
+    if a.value < 0 {
+        error("Cannot sqrt negative number")
+    }
+    
+    result_value = Math.sqrt(a.value)
+    senary.create(result_value)
+}
+
+senary.sin = {
+    // Sine of senary number (in radians)
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot sin non-senary number")
+    }
+    
+    result_value = Math.sin(a.value)
+    senary.create(result_value)
+}
+
+senary.cos = {
+    // Cosine of senary number (in radians)
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot cos non-senary number")
+    }
+    
+    result_value = Math.cos(a.value)
+    senary.create(result_value)
+}
+
+senary.atan2 = {
+    // Arctangent of y/x
+    y = args.0
+    x = args.1
+    
+    if y.type != "senary" or x.type != "senary" {
+        error("Cannot atan2 non-senary numbers")
+    }
+    
+    result_value = Math.atan2(y.value, x.value)
+    senary.create(result_value)
+}
+
+senary.equals = {
+    // Check if two senary numbers are equal
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value == b.value
+}
+
+senary.less_than = {
+    // Check if a < b
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value < b.value
+}
+
+senary.greater_than = {
+    // Check if a > b
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value > b.value
+}
+
+senary.less_than_or_equal = {
+    // Check if a <= b
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value <= b.value
+}
+
+senary.greater_than_or_equal = {
+    // Check if a >= b
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value >= b.value
+}
+
+senary.copy = {
+    // Create a copy of senary number
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot copy non-senary number")
+    }
+    
+    senary.create(a.value)
+}
+
+senary.negate = {
+    // Negate senary number
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot negate non-senary number")
+    }
+    
+    senary.create(-a.value)
+}
+
+senary.is_senary = {
+    // Check if value is a senary number
+    value = args.0
+    
+    if value == null {
+        false
+    } else if value.type == "senary" {
+        true
+    } else {
+        false
+    }
+}
+
+senary.to_string = {
+    // Convert senary to string representation
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot convert non-senary to string")
+    }
+    
+    a.senary_string
+}
+
+senary.to_decimal = {
+    // Get decimal value of senary number
+    a = args.0
+    
+    if a.type != "senary" {
+        error("Cannot convert non-senary to decimal")
+    }
+    
+    a.value
+}
+
+senary.to_string = {
+    // Convert senary number to string representation
+    senary_num = args.0
+    
+    if senary_num.type != "senary" {
+        error("Not a senary number")
+    }
+    
+    senary_num.senary_string
+}
+
+senary.to_decimal = {
+    // Get decimal value of senary number
+    senary_num = args.0
+    
+    if senary_num.type != "senary" {
+        error("Not a senary number")
+    }
+    
+    senary_num.value
+}
+
+senary.is_zero = {
+    // Check if senary number is zero
+    senary_num = args.0
+    
+    if senary_num.type != "senary" {
+        error("Not a senary number")
+    }
+    
+    senary_num.value == 0
+}
+
+senary.less_than = {
+    // Compare two senary numbers
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value < b.value
+}
+
+senary.greater_than = {
+    // Compare two senary numbers
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value > b.value
+}
+
+senary.equals = {
+    // Check equality of two senary numbers
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Cannot compare non-senary numbers")
+    }
+    
+    a.value == b.value
+}
+
+senary.create_array = {
+    // Create array of senary numbers
+    size = args.0
+    initial_value = if args.length > 1 then args.1 else senary.create("0")
+    
+    array = []
+    index = 0
+    
+    while index < size {
+        array.append(initial_value)
+        index = index + 1
+    }
+    
+    {
+        type: "senary_array",
+        elements: array,
+        size: size,
+        base: 6
+    }
+}
+
+senary.array_sum = {
+    // Sum all elements in senary array
+    senary_array = args.0
+    
+    if senary_array.type != "senary_array" {
+        error("Not a senary array")
+    }
+    
+    sum = senary.create("0")
+    
+    for element in senary_array.elements {
+        sum = senary.add(sum, element)
+    }
+    
+    sum
+}
+
+senary.array_mean = {
+    // Calculate mean of senary array
+    senary_array = args.0
+    
+    if senary_array.type != "senary_array" {
+        error("Not a senary array")
+    }
+    
+    if senary_array.size == 0 {
+        error("Cannot calculate mean of empty array")
+    }
+    
+    sum = senary.array_sum(senary_array)
+    size_senary = senary.create(senary_array.size)
+    
+    senary.divide(sum, size_senary)
+}
+
+senary.power = {
+    // Raise senary number to power
+    base = args.0
+    exponent = args.1
+    
+    if base.type != "senary" or exponent.type != "senary" {
+        error("Power operation requires senary numbers")
+    }
+    
+    if exponent.value == 0 {
+        senary.create("1")
+    } else if exponent.value == 1 {
+        base
+    } else {
+        result = base
+        count = 1
+        
+        while count < exponent.value {
+            result = senary.multiply(result, base)
+            count = count + 1
+        }
+        
+        result
+    }
+}
+
+senary.modulo = {
+    // Modulo operation on senary numbers
+    a = args.0
+    b = args.1
+    
+    if a.type != "senary" or b.type != "senary" {
+        error("Modulo operation requires senary numbers")
+    }
+    
+    if b.value == 0 {
+        error("Modulo by zero")
+    }
+    
+    remainder = a.value % b.value
+    senary.create(remainder)
+}
+
+senary.sqrt = {
+    // Square root of senary number (using Newton's method)
+    senary_num = args.0
+    
+    if senary_num.type != "senary" {
+        error("Square root requires senary number")
+    }
+    
+    if senary_num.value < 0 {
+        error("Square root of negative number")
+    }
+    
+    if senary_num.value == 0 {
+        senary.create("0")
+    } else {
+        // Newton's method approximation
+        x = senary_num.value
+        guess = x / 2
+        tolerance = 0.000001
+        
+        while true {
+            new_guess = (guess + (x / guess)) / 2
+            if (guess - new_guess) < tolerance and (guess - new_guess) > -tolerance {
+                break
+            }
+            guess = new_guess
+        }
+        
+        senary.create(guess)
+    }
+}
+
+senary.create_matrix = {
+    // Create senary matrix
+    rows = args.0
+    cols = args.1
+    initial_value = if args.length > 2 then args.2 else senary.create("0")
+    
+    matrix_data = []
+    row_index = 0
+    
+    while row_index < rows {
+        row_data = []
+        col_index = 0
+        
+        while col_index < cols {
+            row_data.append(initial_value)
+            col_index = col_index + 1
+        }
+        
+        matrix_data.append(row_data)
+        row_index = row_index + 1
+    }
+    
+    {
+        type: "senary_matrix",
+        data: matrix_data,
+        rows: rows,
+        cols: cols,
+        base: 6
+    }
+}
+
+senary.is_senary = {
+    // Check if value is a senary number
+    value = args.0
+    
+    type.of(value) == "object" and value.type == "senary"
+}

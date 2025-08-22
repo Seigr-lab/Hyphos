@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.echo;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Echo operation types (senary-mapped 0-5)
-enum EchoOperation {
-    ECHO_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword EchoOperation = senary_enum {
+    ECHO_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Echo processing states (senary-mapped 0-5)
-enum EchoProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword EchoProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Echo data types (senary-mapped 0-5)
-enum EchoDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword EchoDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core echo messages
-message EchoObject {
-    string object_id = 1;
-    EchoDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    EchoProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword EchoObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_EchoDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_EchoProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message EchoRequest {
-    EchoOperation operation = 1;
-    EchoObject target_object = 2;
-    SenaryArray parameters = 3;
-    EchoProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword EchoRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_EchoOperation operation;
+    private seigbit_EchoObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_EchoProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message EchoResponse {
-    bool success = 1;
-    EchoObject result_object = 2;
-    SenaryArray result_data = 3;
-    EchoProcessingState new_state = 4;
-    string error_message = 5;
+metaword EchoResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_EchoObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_EchoProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Echo service definition
-service EchoService {
-    rpc Create(EchoRequest) returns (EchoResponse);
-    rpc Process(EchoRequest) returns (EchoResponse);
-    rpc Validate(EchoRequest) returns (EchoResponse);
-    rpc Optimize(EchoRequest) returns (EchoResponse);
-    rpc Integrate(EchoRequest) returns (EchoResponse);
+metaword EchoService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_EchoRequest) -> seigbit_EchoResponse;
+    async method Process(request: seigbit_EchoRequest) -> seigbit_EchoResponse;
+    async method Validate(request: seigbit_EchoRequest) -> seigbit_EchoResponse;
+    async method Optimize(request: seigbit_EchoRequest) -> seigbit_EchoResponse;
+    async method Integrate(request: seigbit_EchoRequest) -> seigbit_EchoResponse;
 }

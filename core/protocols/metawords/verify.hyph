@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.verify;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Verify operation types (senary-mapped 0-5)
-enum VerifyOperation {
-    VERIFY_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword VerifyOperation = senary_enum {
+    VERIFY_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Verify processing states (senary-mapped 0-5)
-enum VerifyProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword VerifyProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Verify data types (senary-mapped 0-5)
-enum VerifyDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword VerifyDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core verify messages
-message VerifyObject {
-    string object_id = 1;
-    VerifyDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    VerifyProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword VerifyObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_VerifyDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_VerifyProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message VerifyRequest {
-    VerifyOperation operation = 1;
-    VerifyObject target_object = 2;
-    SenaryArray parameters = 3;
-    VerifyProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword VerifyRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_VerifyOperation operation;
+    private seigbit_VerifyObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_VerifyProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message VerifyResponse {
-    bool success = 1;
-    VerifyObject result_object = 2;
-    SenaryArray result_data = 3;
-    VerifyProcessingState new_state = 4;
-    string error_message = 5;
+metaword VerifyResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_VerifyObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_VerifyProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Verify service definition
-service VerifyService {
-    rpc Create(VerifyRequest) returns (VerifyResponse);
-    rpc Process(VerifyRequest) returns (VerifyResponse);
-    rpc Validate(VerifyRequest) returns (VerifyResponse);
-    rpc Optimize(VerifyRequest) returns (VerifyResponse);
-    rpc Integrate(VerifyRequest) returns (VerifyResponse);
+metaword VerifyService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_VerifyRequest) -> seigbit_VerifyResponse;
+    async method Process(request: seigbit_VerifyRequest) -> seigbit_VerifyResponse;
+    async method Validate(request: seigbit_VerifyRequest) -> seigbit_VerifyResponse;
+    async method Optimize(request: seigbit_VerifyRequest) -> seigbit_VerifyResponse;
+    async method Integrate(request: seigbit_VerifyRequest) -> seigbit_VerifyResponse;
 }

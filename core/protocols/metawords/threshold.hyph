@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.threshold;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Threshold operation types (senary-mapped 0-5)
-enum ThresholdOperation {
-    THRESHOLD_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword ThresholdOperation = senary_enum {
+    THRESHOLD_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Threshold processing states (senary-mapped 0-5)
-enum ThresholdProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword ThresholdProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Threshold data types (senary-mapped 0-5)
-enum ThresholdDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword ThresholdDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core threshold messages
-message ThresholdObject {
-    string object_id = 1;
-    ThresholdDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    ThresholdProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword ThresholdObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_ThresholdDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_ThresholdProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message ThresholdRequest {
-    ThresholdOperation operation = 1;
-    ThresholdObject target_object = 2;
-    SenaryArray parameters = 3;
-    ThresholdProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword ThresholdRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_ThresholdOperation operation;
+    private seigbit_ThresholdObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_ThresholdProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message ThresholdResponse {
-    bool success = 1;
-    ThresholdObject result_object = 2;
-    SenaryArray result_data = 3;
-    ThresholdProcessingState new_state = 4;
-    string error_message = 5;
+metaword ThresholdResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_ThresholdObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_ThresholdProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Threshold service definition
-service ThresholdService {
-    rpc Create(ThresholdRequest) returns (ThresholdResponse);
-    rpc Process(ThresholdRequest) returns (ThresholdResponse);
-    rpc Validate(ThresholdRequest) returns (ThresholdResponse);
-    rpc Optimize(ThresholdRequest) returns (ThresholdResponse);
-    rpc Integrate(ThresholdRequest) returns (ThresholdResponse);
+metaword ThresholdService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_ThresholdRequest) -> seigbit_ThresholdResponse;
+    async method Process(request: seigbit_ThresholdRequest) -> seigbit_ThresholdResponse;
+    async method Validate(request: seigbit_ThresholdRequest) -> seigbit_ThresholdResponse;
+    async method Optimize(request: seigbit_ThresholdRequest) -> seigbit_ThresholdResponse;
+    async method Integrate(request: seigbit_ThresholdRequest) -> seigbit_ThresholdResponse;
 }

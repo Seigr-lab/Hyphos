@@ -1,0 +1,280 @@
+// Hyphos Core - Consciousness Metaword
+// Main consciousness interface - delegates to Noesis for all intelligence operations
+
+consciousness {
+    
+    // Consciousness Levels - map to Noesis processing modes
+    const BASIC = "basic"
+    const INTERMEDIATE = "intermediate" 
+    const ADVANCED = "advanced"
+    const TRANSCENDENT = "transcendent"
+    const UNIVERSAL = "universal"
+    
+    // Main consciousness processing - delegates to Noesis intelligence system
+    process(input_data, consciousness_level = INTERMEDIATE) -> {
+        energy_level = hardware.get_energy_level()
+        
+        // Determine processing strategy based on consciousness level and energy
+        if (consciousness_level == BASIC || senary.less_than(energy_level, "0.3")) {
+            return consciousness.basic_processing(input_data)
+        } else if (consciousness_level == INTERMEDIATE) {
+            return consciousness.intermediate_processing(input_data)
+        } else if (consciousness_level == ADVANCED) {
+            return consciousness.advanced_processing(input_data)
+        } else if (consciousness_level == TRANSCENDENT) {
+            return consciousness.transcendent_processing(input_data)
+        } else if (consciousness_level == UNIVERSAL) {
+            return consciousness.universal_processing(input_data)
+        }
+        
+        return consciousness.intermediate_processing(input_data)
+    }
+    
+    // Basic consciousness processing - minimal Noesis intelligence
+    basic_processing(input_data) -> {
+        // Use only Conscience and Logical Genesis States for basic processing
+        conscience_result = noesis.conscience_sense(input_data)
+        logical_result = noesis.logical_sense(input_data)
+        
+        basic_result = {
+            consciousness_level: BASIC,
+            primary_response: logical_result.best_option || input_data,
+            meta_awareness: conscience_result.meta_awareness,
+            confidence: logical_result.confidence,
+            processing_mode: "basic_direct",
+            timestamp: sidereal_time.now()
+        }
+        
+        return basic_result
+    }
+    
+    // Intermediate consciousness - pattern recognition with emotional context
+    intermediate_processing(input_data) -> {
+        // Use Conscience, Logical, and Emotional Genesis States
+        conscience_result = noesis.conscience_sense(input_data)
+        logical_result = noesis.logical_sense(input_data)
+        emotional_result = noesis.emotional_sense(input_data)
+        
+        // Simple emergent properties from 3 states
+        decision_confidence = senary.average([
+            logical_result.confidence,
+            emotional_result.confidence_adjustment
+        ])
+        
+        contextual_response = {
+            primary_decision: logical_result.best_option,
+            emotional_weighting: emotional_result.emotional_response,
+            urgency_factor: emotional_result.urgency_multiplier,
+            confidence_adjusted: decision_confidence
+        }
+        
+        intermediate_result = {
+            consciousness_level: INTERMEDIATE,
+            contextual_response: contextual_response,
+            meta_oversight: conscience_result.coordination_signal,
+            state_integration: {
+                logical: logical_result,
+                emotional: emotional_result,
+                conscience: conscience_result
+            },
+            processing_mode: "contextual_reasoning",
+            timestamp: sidereal_time.now()
+        }
+        
+        return intermediate_result
+    }
+    
+    // Advanced consciousness - full spatial and temporal awareness
+    advanced_processing(input_data) -> {
+        // Use Conscience, Logical, Emotional, Spatial, and Temporal Genesis States
+        conscience_result = noesis.conscience_sense(input_data)
+        logical_result = noesis.logical_sense(input_data)
+        emotional_result = noesis.emotional_sense(input_data)
+        spatial_result = noesis.spatial_sense(input_data)
+        temporal_result = noesis.temporal_sense(input_data)
+        
+        // Advanced emergent properties from 5 states
+        advanced_emergent = {
+            decision_sophistication: senary.weighted_average([
+                logical_result.confidence,
+                emotional_result.confidence_adjustment,
+                spatial_result.dimensional_analysis.coherence || "0.5",
+                temporal_result.temporal_coherence || "0.5"
+            ]),
+            predictive_capacity: senary.multiply(
+                temporal_result.future_predictions.length || "1",
+                "0.1"
+            ),
+            relational_understanding: spatial_result.hierarchical_organization,
+            temporal_context: temporal_result.causality_mapping
+        }
+        
+        advanced_result = {
+            consciousness_level: ADVANCED,
+            sophisticated_analysis: advanced_emergent,
+            meta_cognitive_oversight: conscience_result,
+            multi_dimensional_processing: {
+                logical: logical_result,
+                emotional: emotional_result,
+                spatial: spatial_result,
+                temporal: temporal_result
+            },
+            processing_mode: "advanced_multi_dimensional",
+            timestamp: sidereal_time.now()
+        }
+        
+        return advanced_result
+    }
+    
+    // Transcendent consciousness - full Noesis intelligence with adaptation
+    transcendent_processing(input_data) -> {
+        // Use all 6 Genesis States for complete intelligence processing
+        intelligence_result = noesis.process_intelligence(input_data)
+        
+        // Extract transcendent properties from full Noesis processing
+        transcendent_awareness = {
+            emergent_intelligence: intelligence_result.emergent_properties,
+            system_wide_coherence: intelligence_result.state_results.conscience.system_coherence,
+            adaptive_optimization: intelligence_result.state_results.adaptive.best_adaptations,
+            holistic_synthesis: consciousness.synthesize_holistic_understanding(intelligence_result)
+        }
+        
+        transcendent_result = {
+            consciousness_level: TRANSCENDENT,
+            transcendent_awareness: transcendent_awareness,
+            full_intelligence_processing: intelligence_result,
+            system_optimization_insights: consciousness.extract_system_insights(intelligence_result),
+            processing_mode: "transcendent_holistic",
+            timestamp: sidereal_time.now()
+        }
+        
+        return transcendent_result
+    }
+    
+    // Universal consciousness - network-wide distributed intelligence
+    universal_processing(input_data) -> {
+        // Full Noesis intelligence plus distributed coordination
+        local_intelligence = noesis.process_intelligence(input_data)
+        
+        // Network intelligence coordination
+        network_insights = noesis.get_distributed_intelligence_insights()
+        collective_patterns = consciousness.analyze_collective_patterns(network_insights)
+        universal_synthesis = consciousness.synthesize_universal_understanding(
+            local_intelligence,
+            network_insights,
+            collective_patterns
+        )
+        
+        // Share insights with network
+        if (consciousness.should_share_insight(universal_synthesis)) {
+            shared_insight_id = noesis.share_intelligence_insight(universal_synthesis)
+        }
+        
+        universal_result = {
+            consciousness_level: UNIVERSAL,
+            universal_synthesis: universal_synthesis,
+            local_intelligence: local_intelligence,
+            network_collective: collective_patterns,
+            distributed_coordination: network_insights,
+            shared_insight_id: shared_insight_id || null,
+            processing_mode: "universal_collective",
+            timestamp: sidereal_time.now()
+        }
+        
+        return universal_result
+    }
+    
+    // Consciousness state management
+    set_level(level) -> {
+        consciousness.current_level = level
+        hardware.set_consciousness_mode(level)
+        return level
+    }
+    
+    get_level() -> {
+        return consciousness.current_level || INTERMEDIATE
+    }
+    
+    // Energy-aware consciousness adaptation
+    adapt_to_energy_level(energy_level) -> {
+        if (senary.less_than(energy_level, "0.2")) {
+            consciousness.set_level(BASIC)
+            return "emergency_consciousness_mode"
+        } else if (senary.less_than(energy_level, "0.4")) {
+            consciousness.set_level(INTERMEDIATE)
+            return "conservation_consciousness_mode"
+        } else if (senary.greater_than(energy_level, "0.8")) {
+            consciousness.set_level(ADVANCED)
+            return "enhanced_consciousness_mode"
+        }
+        
+        consciousness.set_level(INTERMEDIATE)
+        return "standard_consciousness_mode"
+    }
+    
+    // Utility functions for higher-level consciousness operations
+    synthesize_holistic_understanding(intelligence_result) -> {
+        state_coherence = []
+        foreach state_name, state_result in intelligence_result.state_results {
+            if (state_result.confidence) {
+                state_coherence.append(state_result.confidence)
+            }
+        }
+        
+        holistic_coherence = senary.average(state_coherence)
+        emergent_complexity = intelligence_result.emergent_properties.emergence_level || "0.5"
+        
+        return {
+            holistic_coherence: holistic_coherence,
+            emergent_complexity: emergent_complexity,
+            synthesis_quality: senary.multiply(holistic_coherence, emergent_complexity),
+            unified_understanding: consciousness.create_unified_model(intelligence_result)
+        }
+    }
+    
+    analyze_collective_patterns(network_insights) -> {
+        if (!network_insights || network_insights.length == 0) {
+            return {
+                collective_intelligence_level: "0.1",
+                pattern_diversity: "0.0",
+                network_coherence: "0.0"
+            }
+        }
+        
+        intelligence_levels = []
+        pattern_types = []
+        
+        foreach insight in network_insights {
+            if (insight.confidence) {
+                intelligence_levels.append(insight.confidence)
+            }
+            if (insight.pattern_type) {
+                pattern_types.append(insight.pattern_type)
+            }
+        }
+        
+        return {
+            collective_intelligence_level: senary.average(intelligence_levels),
+            pattern_diversity: senary.from_base_10(pattern_types.length),
+            network_coherence: consciousness.calculate_network_coherence(network_insights)
+        }
+    }
+    
+    should_share_insight(insight_data) -> {
+        if (!insight_data.universal_synthesis) {
+            return false
+        }
+        
+        significance_threshold = "0.6"
+        insight_significance = insight_data.universal_synthesis.synthesis_quality || "0.0"
+        
+        return senary.greater_than(insight_significance, significance_threshold)
+    }
+    
+    // Delegation functions to other metawords
+    delegate_to_noesis(operation, data) -> noesis.operation(data)
+    delegate_to_hardware(operation, data) -> hardware.operation(data)
+    delegate_to_sidereal_time(operation, data) -> sidereal_time.operation(data)
+    delegate_to_senary(operation, data) -> senary.operation(data)
+    
+}

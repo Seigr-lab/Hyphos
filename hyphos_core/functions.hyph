@@ -1,0 +1,192 @@
+// Hyphos Core - Functions Metaword
+// Core function definition and execution for Hyphos language
+
+metaword functions {
+    fun define(name, parameters, body, return_type = "any") -> $Object {
+        // Define a new function
+        
+        let function_entry = {
+            name: name,
+            parameters: parameters,
+            body: body,
+            return_type: return_type,
+            scope_level: scope.current_level(),
+            creation_time: sidereal_time.current_time(),
+            call_count: 0
+        }
+        
+        scope.register_function(function_entry)
+        return function_entry
+    }
+
+    fun call(name, call_args = []) -> $Any {
+        // Call a function with arguments
+        
+        let func = scope.find_function(name)
+        if func == null {
+            error.throw("Function not found: " + name)
+        }
+        
+        // Validate argument count
+        if array.length(call_args) != array.length(func.parameters) {
+            error.throw("Argument count mismatch: expected " + string.from(array.length(func.parameters)) + ", got " + string.from(array.length(call_args)))
+        }
+        
+        // Create new function scope
+        scope.enter_new("function_" + name)
+        
+        // Bind parameters to arguments
+        let param_index = 0
+        while param_index < array.length(func.parameters) {
+            let param = func.parameters[param_index]
+            let arg_value = call_args[param_index]
+            
+            // Type check if parameter has type constraint
+            if param.type != "any" and !type.compatible(param.type, type.of(arg_value)) {
+                error.throw("Type mismatch for parameter " + param.name + ": expected " + param.type + ", got " + type.of(arg_value))
+            }
+        
+        variables.declare(param.name, param.type, arg_value)
+        param_index = param_index + 1
+    }
+    
+    // Execute function body
+    system.return_signal = null  // Clear any previous return signal
+    result = execute_block(func.body)
+    
+    // Check for return signal
+    if system.return_signal != null {
+        result = system.return_signal.value
+        system.return_signal = null
+    }
+    
+    // Type check return value
+    if func.return_type != "any" and not type.compatible(func.return_type, type.of(result)) {
+        error("Return type mismatch: expected " + func.return_type + ", got " + type.of(result))
+    }
+    
+    scope.exit()
+    
+    // Update call count
+    func.call_count = func.call_count + 1
+    
+    result
+}
+
+functions.lambda = {
+    // Create anonymous function
+    parameters = args.0
+    body = args.1
+    return_type = if args.length > 2 then args.2 else "any"
+    
+    lambda_id = "lambda_" + sidereal.current_time() + "_" + system.random_id()
+    
+    lambda_function = {
+        name: lambda_id,
+        parameters: parameters,
+        body: body,
+        return_type: return_type,
+        scope_level: scope.current_level(),
+        creation_time: sidereal.current_time(),
+        call_count: 0,
+        is_lambda: true
+    }
+    
+    lambda_function
+}
+
+functions.invoke_lambda = {
+    // Invoke a lambda function
+    lambda_func = args.0
+    call_args = if args.length > 1 then args.1 else []
+    
+    if not lambda_func.is_lambda {
+        error("Not a lambda function")
+    }
+    
+    // Similar to regular function call but for lambda
+    if call_args.length != lambda_func.parameters.length {
+        error("Lambda argument count mismatch: expected " + lambda_func.parameters.length + ", got " + call_args.length)
+    }
+    
+    scope.enter_new("lambda_" + lambda_func.name)
+    
+    param_index = 0
+    while param_index < lambda_func.parameters.length {
+        param = lambda_func.parameters[param_index]
+        arg_value = call_args[param_index]
+        
+        if param.type != "any" and not type.compatible(param.type, type.of(arg_value)) {
+            error("Lambda type mismatch for parameter " + param.name + ": expected " + param.type + ", got " + type.of(arg_value))
+        }
+        
+        variables.declare(param.name, param.type, arg_value)
+        param_index = param_index + 1
+    }
+    
+    system.return_signal = null
+    result = execute_block(lambda_func.body)
+    
+    if system.return_signal != null {
+        result = system.return_signal.value
+        system.return_signal = null
+    }
+    
+    if lambda_func.return_type != "any" and not type.compatible(lambda_func.return_type, type.of(result)) {
+        error("Lambda return type mismatch: expected " + lambda_func.return_type + ", got " + type.of(result))
+    }
+    
+    scope.exit()
+    lambda_func.call_count = lambda_func.call_count + 1
+    
+    result
+}
+
+functions.exists = {
+    // Check if function exists
+    name = args.0
+    func = scope.find_function(name)
+    func != null
+}
+
+functions.list_all = {
+    // List all functions in current scope
+    scope.list_functions()
+}
+
+functions.get_info = {
+    // Get function information
+    name = args.0
+    
+    func = scope.find_function(name)
+    if func == null {
+        error("Function not found: " + name)
+    }
+    
+    {
+        name: func.name,
+        parameter_count: func.parameters.length,
+        parameters: func.parameters,
+        return_type: func.return_type,
+        call_count: func.call_count,
+        creation_time: func.creation_time
+    }
+}
+
+functions.recursive_call = {
+    // Handle recursive function calls with stack overflow protection
+    name = args.0
+    call_args = if args.length > 1 then args.1 else []
+    max_depth = if args.length > 2 then args.2 else 1000
+    
+    current_depth = system.call_stack_depth
+    if current_depth >= max_depth {
+        error("Maximum recursion depth exceeded: " + max_depth)
+    }
+    
+    system.call_stack_depth = current_depth + 1
+    result = functions.call(name, call_args)
+    system.call_stack_depth = current_depth
+    
+    result
+}

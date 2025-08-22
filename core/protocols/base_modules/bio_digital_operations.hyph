@@ -1,53 +1,64 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.bio_digital;
+consciousness_level TRANSCENDENT;
 
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
 
-enum BioDigigalOperation {
-    BIO_DIGITAL_UNKNOWN = 0;
-    MYCELIAL_CONNECT = 1;
-    BIOLOGICAL_MONITOR = 2;
-    CHEMICAL_PROCESS = 3;
-    ECOSYSTEM_INTERFACE = 4;
-    ORGANIC_ADAPT = 5;
+
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
+
+metaword BioDigigalOperation = senary_enum {
+    BIO_DIGITAL_UNKNOWN = senary(0);
+    MYCELIAL_CONNECT = senary(1);
+    BIOLOGICAL_MONITOR = senary(2);
+    CHEMICAL_PROCESS = senary(3);
+    ECOSYSTEM_INTERFACE = senary(4);
+    ORGANIC_ADAPT = senary(5);
 }
 
-enum EcosystemType {
-    ECOSYSTEM_UNKNOWN = 0;
-    FOREST = 1;
-    APIARY = 2;
-    SOIL = 3;
-    AQUATIC = 4;
-    ATMOSPHERIC = 5;
+metaword EcosystemType = senary_enum {
+    ECOSYSTEM_UNKNOWN = senary(0);
+    FOREST = senary(1);
+    APIARY = senary(2);
+    SOIL = senary(3);
+    AQUATIC = senary(4);
+    ATMOSPHERIC = senary(5);
 }
 
-message BiologicalSignal {
-    EcosystemType source = 1;
-    SenaryNumber frequency = 2;
-    SenaryNumber amplitude = 3;
-    SenaryArray signal_data = 4;
-    SenaryTimestamp timestamp = 5;
+metaword BiologicalSignal = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_EcosystemType source;
+    private seigbit_SenaryNumber frequency;
+    private seigbit_SenaryNumber amplitude;
+    private seigbit_SenaryArray signal_data;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message BioDigitalRequest {
-    BioDigigalOperation operation = 1;
-    EcosystemType target_ecosystem = 2;
-    SenaryArray parameters = 3;
+metaword BioDigitalRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_BioDigigalOperation operation;
+    private seigbit_EcosystemType target_ecosystem;
+    private seigbit_SenaryArray parameters;
 }
 
-message BioDigitalResponse {
-    bool success = 1;
-    BiologicalSignal result_signal = 2;
-    SenaryArray result_data = 3;
-    string error_message = 4;
+metaword BioDigitalResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_BiologicalSignal result_signal;
+    private seigbit_SenaryArray result_data;
+    private seigbit_string error_message;
 }
 
-service BioDigitalService {
-    rpc MycelialConnect(BioDigitalRequest) returns (BioDigitalResponse);
-    rpc BiologicalMonitor(BioDigitalRequest) returns (BioDigitalResponse);
-    rpc ChemicalProcess(BioDigitalRequest) returns (BioDigitalResponse);
-    rpc EcosystemInterface(BioDigitalRequest) returns (BioDigitalResponse);
-    rpc OrganicAdapt(BioDigitalRequest) returns (BioDigitalResponse);
+metaword BioDigitalService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method MycelialConnect(request: seigbit_BioDigitalRequest) -> seigbit_BioDigitalResponse;
+    async method BiologicalMonitor(request: seigbit_BioDigitalRequest) -> seigbit_BioDigitalResponse;
+    async method ChemicalProcess(request: seigbit_BioDigitalRequest) -> seigbit_BioDigitalResponse;
+    async method EcosystemInterface(request: seigbit_BioDigitalRequest) -> seigbit_BioDigitalResponse;
+    async method OrganicAdapt(request: seigbit_BioDigitalRequest) -> seigbit_BioDigitalResponse;
 }

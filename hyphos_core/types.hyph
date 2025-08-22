@@ -1,0 +1,248 @@
+// Hyphos Core - Type Metaword
+// Core type handling and validation for Hyphos language
+
+metaword type {
+    fun of(value) -> $String {
+        // Get type of any value
+        
+        if value == null {
+            return "null"
+        } else if value == true or value == false {
+            return "boolean"
+        } else if senary.is_senary(value) {
+            return "senary"
+        } else if system.is_string(value) {
+            return "string"
+        } else if system.is_array(value) {
+            return "array"
+        } else if system.is_object(value) {
+            if value.is_lambda == true {
+                return "lambda"
+            } else if value.type != null {
+                return value.type
+            } else {
+                return "object"
+            }
+        } else if system.is_function(value) {
+            return "function"
+        } else {
+            return "unknown"
+        }
+    }
+
+    fun compatible(target_type, source_type) -> $Boolean {
+        // Check if two types are compatible for assignment
+        
+        if target_type == "any" or source_type == "any" {
+            return true
+        } else if target_type == source_type {
+            return true
+        } else if target_type == "senary" and (source_type == "number" or source_type == "integer") {
+            return true
+        } else if target_type == "string" and source_type != "null" {
+            return true  // Most types can be converted to string
+        } else if target_type == "boolean" and source_type != "null" {
+            return true  // Most types can be converted to boolean
+        } else {
+        false
+    }
+}
+
+type.convert = {
+    // Convert value to target type
+    value = args.0
+    target_type = args.1
+    
+    current_type = type.of(value)
+    
+    if current_type == target_type {
+        value
+    } else if target_type == "string" {
+        type.to_string(value)
+    } else if target_type == "boolean" {
+        type.to_boolean(value)
+    } else if target_type == "senary" {
+        type.to_senary(value)
+    } else if target_type == "array" {
+        type.to_array(value)
+    } else {
+        error("Cannot convert " + current_type + " to " + target_type)
+    }
+}
+
+type.to_string = {
+    // Convert any value to string
+    value = args.0
+    
+    value_type = type.of(value)
+    
+    if value_type == "string" {
+        value
+    } else if value_type == "null" {
+        "null"
+    } else if value_type == "boolean" {
+        if value then "true" else "false"
+    } else if value_type == "senary" {
+        senary.to_string(value)
+    } else if value_type == "array" {
+        "[" + array.join(value, ", ") + "]"
+    } else if value_type == "object" {
+        object.to_string(value)
+    } else {
+        "unknown_type"
+    }
+}
+
+type.to_boolean = {
+    // Convert any value to boolean
+    value = args.0
+    
+    value_type = type.of(value)
+    
+    if value_type == "boolean" {
+        value
+    } else if value_type == "null" {
+        false
+    } else if value_type == "senary" {
+        not senary.is_zero(value)
+    } else if value_type == "string" {
+        value != "" and value != "false" and value != "0"
+    } else if value_type == "array" {
+        value.length > 0
+    } else if value_type == "object" {
+        true  // Objects are truthy
+    } else {
+        false
+    }
+}
+
+type.to_senary = {
+    // Convert value to senary number
+    value = args.0
+    
+    value_type = type.of(value)
+    
+    if value_type == "senary" {
+        value
+    } else if value_type == "string" {
+        senary.parse(value)
+    } else if value_type == "boolean" {
+        if value then senary.create("1") else senary.create("0")
+    } else if value_type == "array" {
+        senary.create(string.from_int(value.length))
+    } else {
+        error("Cannot convert " + value_type + " to senary")
+    }
+}
+
+type.to_array = {
+    // Convert value to array
+    value = args.0
+    
+    value_type = type.of(value)
+    
+    if value_type == "array" {
+        value
+    } else if value_type == "string" {
+        string.to_char_array(value)
+    } else if value_type == "null" {
+        []
+    } else {
+        [value]  // Wrap single value in array
+    }
+}
+
+type.define_custom = {
+    // Define a custom type
+    type_name = args.0
+    type_definition = args.1
+    
+    custom_type = {
+        name: type_name,
+        definition: type_definition,
+        creation_time: sidereal.current_time(),
+        instance_count: 0
+    }
+    
+    system.custom_types[type_name] = custom_type
+    custom_type
+}
+
+type.create_instance = {
+    // Create instance of custom type
+    type_name = args.0
+    initial_values = if args.length > 1 then args.1 else {}
+    
+    custom_type = system.custom_types[type_name]
+    if custom_type == null {
+        error("Custom type not found: " + type_name)
+    }
+    
+    instance = {
+        type: type_name,
+        values: initial_values,
+        creation_time: sidereal.current_time(),
+        instance_id: custom_type.instance_count
+    }
+    
+    custom_type.instance_count = custom_type.instance_count + 1
+    instance
+}
+
+type.validate_instance = {
+    // Validate instance against its type definition
+    instance = args.0
+    
+    if instance.type == null {
+        error("Instance has no type information")
+    }
+    
+    custom_type = system.custom_types[instance.type]
+    if custom_type == null {
+        error("Type definition not found: " + instance.type)
+    }
+    
+    // Perform validation based on type definition
+    validation_result = validate_against_definition(instance, custom_type.definition)
+    validation_result
+}
+
+type.list_custom = {
+    // List all custom types
+    type_names = []
+    
+    for type_name in system.custom_types.keys() {
+        type_names.append(type_name)
+    }
+    
+    type_names
+}
+
+type.get_definition = {
+    // Get definition of custom type
+    type_name = args.0
+    
+    custom_type = system.custom_types[type_name]
+    if custom_type == null {
+        error("Custom type not found: " + type_name)
+    }
+    
+    custom_type.definition
+}
+
+validate_against_definition = {
+    // Internal: validate instance against type definition
+    instance = args.0
+    definition = args.1
+    
+    // Basic validation - can be extended
+    if definition.required_fields != null {
+        for field_name in definition.required_fields {
+            if not instance.values.has_key(field_name) {
+                error("Missing required field: " + field_name)
+            }
+        }
+    }
+    
+    true
+}

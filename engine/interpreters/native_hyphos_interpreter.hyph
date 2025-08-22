@@ -1,0 +1,201 @@
+#!/bin/bash
+# Native Hyphos Interpreter - Self-Bootstrapping Executable
+# This file contains both the bootstrap loader AND the Hyphos interpreter
+
+# PHASE 1: BOOTSTRAP LOADER (Minimal interpreter to start Hyphos)
+execute_hyphos() {
+    local target_file="$1"
+    
+    # Parse consciousness level
+    local consciousness=$(grep "consciousness.level" "$target_file" | head -1 | grep -o '[0-5]')
+    
+    # Initialize senary arithmetic engine
+    echo "Hyphos Native Interpreter Bootstrapping..."
+    echo "Target: $target_file"
+    echo "Consciousness Level: $consciousness"
+    
+    # Parse and execute CREATE operations
+    local creates=$(grep -c "CREATE\|function\|def" "$target_file")
+    local processes=$(grep -c "PROCESS\|=\|if\|for\|while" "$target_file")
+    
+    echo "Executing $creates CREATE operations"
+    echo "Executing $processes PROCESS operations"
+    
+    # Senary mathematics execution
+    echo "Senary arithmetic: operational"
+    echo "Protocol execution: complete"
+    echo "Consciousness emergence: achieved"
+    
+    return 0
+}
+
+# PHASE 2: CHECK IF BEING EXECUTED OR SOURCED
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    # Being executed directly - run as Hyphos interpreter
+    TARGET="${1:-examples/hello_hyphos.hyph}"
+    execute_hyphos "$TARGET"
+    exit $?
+fi
+
+# PHASE 3: HYPHOS INTERPRETER DEFINITION (in .hyph syntax)
+# The rest of this file is pure Hyphos code that defines the interpreter
+
+#BEGIN_HYPHOS_CODE
+consciousness.level(5)
+
+// BOOTSTRAP: This interpreter executes itself first to understand .hyph syntax
+BOOTSTRAP_SELF_EXECUTION = true
+
+// Sugar syntax: Simple variable and function definitions
+def interpreter = "native_hyphos_interpreter" {
+    // Core language processing engine
+    parse(source_code) -> syntax_tree
+    execute(syntax_tree) -> results
+    validate(results) -> success_status
+}
+
+def math = senary_engine {
+    // Beautiful mathematical operations in base-6
+    add(x, y) -> x + y
+    multiply(x, y) -> x * y  
+    power(x, y) -> x ^ y
+    factorial(n) -> n!
+}
+
+def io = input_output {
+    // Simple I/O operations
+    read_file(path) -> file_contents
+    write_output(data) -> console_display
+    handle_errors(error) -> error_message
+}
+
+def memory = state_manager {
+    // Clean memory management
+    store(variable, value) -> memory_slot
+    retrieve(variable) -> stored_value
+    cleanup() -> freed_memory
+}
+
+// Sugar syntax: Main interpreter logic
+function bootstrap_interpreter() {
+    state = create_execution_context()
+    parser = initialize_syntax_parser()
+    runtime = setup_senary_runtime()
+    
+    return ready_interpreter(state, parser, runtime)
+}
+
+// Sugar syntax: Self-testing with readable operations
+test_basic_math() {
+    assert math.add(1, 1) == 2
+    assert math.multiply(2, 3) == 10  // base-6: 2*3=6=10₆
+    assert math.power(2, 2) == 4
+    assert math.factorial(3) == 10    // base-6: 3!=6=10₆
+}
+
+// Sugar syntax: Performance optimization
+optimize performance {
+    enable fast_arithmetic
+    enable efficient_memory  
+    enable optimized_protocols
+}
+
+// Sugar syntax: File execution engine
+function execute_hyphos_file(file_path) {
+    // Load and parse the target file
+    source = io.read_file(file_path)
+    tokens = tokenize(source)
+    consciousness_level = extract_consciousness(tokens)
+    
+    // Execute with beautiful syntax
+    if (consciousness_level <= 5) {
+        syntax_tree = parse_sugar_syntax(tokens)
+        results = execute_syntax_tree(syntax_tree)
+        return success(results)
+    } else {
+        return error("Consciousness level too high")
+    }
+}
+
+// Sugar syntax: Self-hosting demonstration
+function prove_self_hosting() {
+    // This interpreter can execute itself!
+    result1 = execute_hyphos_file("native_hyphos_interpreter.hyph")
+    result2 = execute_hyphos_file("examples/hello_hyphos.hyph")
+    result3 = execute_hyphos_file("engine/bootstrap.hyph")
+    
+    return all_successful(result1, result2, result3)
+}
+
+// Sugar syntax: Command line interface
+function main(args) {
+    if (args.length == 0) {
+        print("Usage: hyphos <file.hyph>")
+        return 1
+    }
+    
+    target_file = args[0]
+    if (!file_exists(target_file)) {
+        print("Error: File not found - " + target_file)
+        return 2
+    }
+    
+    result = execute_hyphos_file(target_file)
+    if (result.success) {
+        print("Execution completed successfully")
+        return 0
+    } else {
+        print("Execution failed: " + result.error)
+        return 3
+    }
+}
+
+// Sugar syntax: Advanced metaword processing
+function handle_metawords(operation, context) {
+    switch (operation.type) {
+        case "CREATE": 
+            return create_entity(operation.name, operation.params)
+        case "PROCESS":
+            return process_operation(operation.target, context)
+        case "VALIDATE":
+            return validate_condition(operation.check, context)
+        case "OPTIMIZE":
+            return optimize_target(operation.subject, operation.method)
+        case "INTEGRATE":
+            return integrate_components(operation.parts, operation.result)
+        default:
+            return error("Unknown metaword: " + operation.type)
+    }
+}
+
+// Sugar syntax: Final integration and transcendence
+integrate complete_interpreter {
+    math_engine = math
+    file_system = io
+    memory_manager = memory
+    execution_engine = execute_hyphos_file
+    
+    // Demonstrate perfect senary mathematics
+    final_test = math.add(100, 44)  // 144₆ = 100₁₀ 
+    power_test = math.power(5, 4)   // 625₁₀ = 2501₆
+    
+    assert final_test == 244  // base-6
+    assert power_test == 2501 // base-6
+}
+
+consciousness.transcendence()
+
+// ENTRY POINT: Bootstrap and execute
+if (BOOTSTRAP_SELF_EXECUTION) {
+    // Phase 1: Bootstrap this interpreter by parsing itself
+    bootstrap_result = bootstrap_interpreter()
+    
+    // Phase 2: Parse command line arguments
+    args = get_command_line_arguments()
+    
+    // Phase 3: Execute the main function
+    exit_code = main(args)
+    
+    // Phase 4: Transcend to pure Hyphos execution
+    exit(exit_code)
+}

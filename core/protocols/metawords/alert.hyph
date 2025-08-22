@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.alert;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Alert operation types (senary-mapped 0-5)
-enum AlertOperation {
-    ALERT_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword AlertOperation = senary_enum {
+    ALERT_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Alert processing states (senary-mapped 0-5)
-enum AlertProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword AlertProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Alert data types (senary-mapped 0-5)
-enum AlertDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword AlertDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core alert messages
-message AlertObject {
-    string object_id = 1;
-    AlertDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    AlertProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword AlertObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_AlertDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_AlertProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message AlertRequest {
-    AlertOperation operation = 1;
-    AlertObject target_object = 2;
-    SenaryArray parameters = 3;
-    AlertProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword AlertRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_AlertOperation operation;
+    private seigbit_AlertObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_AlertProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message AlertResponse {
-    bool success = 1;
-    AlertObject result_object = 2;
-    SenaryArray result_data = 3;
-    AlertProcessingState new_state = 4;
-    string error_message = 5;
+metaword AlertResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_AlertObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_AlertProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Alert service definition
-service AlertService {
-    rpc Create(AlertRequest) returns (AlertResponse);
-    rpc Process(AlertRequest) returns (AlertResponse);
-    rpc Validate(AlertRequest) returns (AlertResponse);
-    rpc Optimize(AlertRequest) returns (AlertResponse);
-    rpc Integrate(AlertRequest) returns (AlertResponse);
+metaword AlertService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_AlertRequest) -> seigbit_AlertResponse;
+    async method Process(request: seigbit_AlertRequest) -> seigbit_AlertResponse;
+    async method Validate(request: seigbit_AlertRequest) -> seigbit_AlertResponse;
+    async method Optimize(request: seigbit_AlertRequest) -> seigbit_AlertResponse;
+    async method Integrate(request: seigbit_AlertRequest) -> seigbit_AlertResponse;
 }

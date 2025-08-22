@@ -1,51 +1,62 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.energy;
+consciousness_level TRANSCENDENT;
 
-import "seigr_math.proto";
 
-enum EnergyOperation {
-    ENERGY_UNKNOWN = 0;
-    SET_POWER_STATE = 1;
-    MONITOR_LEVELS = 2;
-    OPTIMIZE_CONSUMPTION = 3;
-    HARVEST_ENERGY = 4;
-    DISTRIBUTE_LOAD = 5;
+
+use_protocol seigr_math.proto;
+
+metaword EnergyOperation = senary_enum {
+    ENERGY_UNKNOWN = senary(0);
+    SET_POWER_STATE = senary(1);
+    MONITOR_LEVELS = senary(2);
+    OPTIMIZE_CONSUMPTION = senary(3);
+    HARVEST_ENERGY = senary(4);
+    DISTRIBUTE_LOAD = senary(5);
 }
 
-enum PowerStateType {
-    POWER_OPTIMAL = 0;
-    POWER_NORMAL = 1;
-    POWER_EFFICIENT = 2;
-    POWER_LOW = 3;
-    POWER_EMERGENCY = 4;
-    POWER_HIBERNATION = 5;
+metaword PowerStateType = senary_enum {
+    POWER_OPTIMAL = senary(0);
+    POWER_NORMAL = senary(1);
+    POWER_EFFICIENT = senary(2);
+    POWER_LOW = senary(3);
+    POWER_EMERGENCY = senary(4);
+    POWER_HIBERNATION = senary(5);
 }
 
-message EnergyState {
-    PowerStateType power_state = 1;
-    SenaryNumber current_level = 2;
-    SenaryNumber consumption_rate = 3;
-    SenaryNumber efficiency = 4;
+metaword EnergyState = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_PowerStateType power_state;
+    private seigbit_SenaryNumber current_level;
+    private seigbit_SenaryNumber consumption_rate;
+    private seigbit_SenaryNumber efficiency;
 }
 
-message EnergyRequest {
-    EnergyOperation operation = 1;
-    PowerStateType desired_state = 2;
-    SenaryArray parameters = 3;
+metaword EnergyRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_EnergyOperation operation;
+    private seigbit_PowerStateType desired_state;
+    private seigbit_SenaryArray parameters;
 }
 
-message EnergyResponse {
-    bool success = 1;
-    EnergyState current_state = 2;
-    SenaryNumber result_value = 3;
-    string error_message = 4;
+metaword EnergyResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_EnergyState current_state;
+    private seigbit_SenaryNumber result_value;
+    private seigbit_string error_message;
 }
 
-service EnergyService {
-    rpc SetPowerState(EnergyRequest) returns (EnergyResponse);
-    rpc MonitorLevels(EnergyRequest) returns (EnergyResponse);
-    rpc OptimizeConsumption(EnergyRequest) returns (EnergyResponse);
-    rpc HarvestEnergy(EnergyRequest) returns (EnergyResponse);
-    rpc DistributeLoad(EnergyRequest) returns (EnergyResponse);
+metaword EnergyService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method SetPowerState(request: seigbit_EnergyRequest) -> seigbit_EnergyResponse;
+    async method MonitorLevels(request: seigbit_EnergyRequest) -> seigbit_EnergyResponse;
+    async method OptimizeConsumption(request: seigbit_EnergyRequest) -> seigbit_EnergyResponse;
+    async method HarvestEnergy(request: seigbit_EnergyRequest) -> seigbit_EnergyResponse;
+    async method DistributeLoad(request: seigbit_EnergyRequest) -> seigbit_EnergyResponse;
 }

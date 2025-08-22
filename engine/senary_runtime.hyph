@@ -1,140 +1,158 @@
-syntax = "proto3";
+syntax = "hyphos";
 
-package hyphos.engine.runtime;
 
-import "hyphos/core/protocols/base_modules/senary_mathematics.hyph";
-import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
-import "hyphos/core/protocols/base_modules/energy_operations.hyph";
-import "hyphos/engine/hyphos_engine.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+use_protocol hyphos/core/protocols/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/core/protocols/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/core/protocols/base_modules/energy_operations.hyph;
+use_protocol hyphos/engine/hyphos_engine.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Senary runtime operations (senary-mapped 0-5)
-enum SenaryRuntimeOperation {
-    RUNTIME_UNKNOWN = 0;
-    LOAD_BYTECODE = 1;
-    EXECUTE_INSTRUCTION = 2;
-    MANAGE_MEMORY = 3;
-    HANDLE_CONSCIOUSNESS = 4;
-    OPTIMIZE_EXECUTION = 5;
+metaword SenaryRuntimeOperation = senary_enum {
+    RUNTIME_UNKNOWN = senary(0);
+    LOAD_BYTECODE = senary(1);
+    EXECUTE_INSTRUCTION = senary(2);
+    MANAGE_MEMORY = senary(3);
+    HANDLE_CONSCIOUSNESS = senary(4);
+    OPTIMIZE_EXECUTION = senary(5);
 }
 
 // Runtime execution modes (senary-mapped 0-5)
-enum ExecutionMode {
-    MODE_DORMANT = 0;
-    MODE_SEQUENTIAL = 1;
-    MODE_PARALLEL = 2;
-    MODE_CONSCIOUSNESS_DRIVEN = 3;
-    MODE_BIO_DIGITAL = 4;
-    MODE_QUANTUM_ENTANGLED = 5;
+metaword ExecutionMode = senary_enum {
+    MODE_DORMANT = senary(0);
+    MODE_SEQUENTIAL = senary(1);
+    MODE_PARALLEL = senary(2);
+    MODE_CONSCIOUSNESS_DRIVEN = senary(3);
+    MODE_BIO_DIGITAL = senary(4);
+    MODE_QUANTUM_ENTANGLED = senary(5);
 }
 
 // Senary instruction types (senary-mapped 0-5)
-enum SenaryInstructionType {
-    INSTRUCTION_UNKNOWN = 0;
-    SENARY_ARITHMETIC = 1;
-    MEMORY_OPERATION = 2;
-    PROTOCOL_CALL = 3;
-    CONSCIOUSNESS_STATE = 4;
-    BIO_DIGITAL_INTERFACE = 5;
+metaword SenaryInstructionType = senary_enum {
+    INSTRUCTION_UNKNOWN = senary(0);
+    SENARY_ARITHMETIC = senary(1);
+    MEMORY_OPERATION = senary(2);
+    PROTOCOL_CALL = senary(3);
+    CONSCIOUSNESS_STATE = senary(4);
+    BIO_DIGITAL_INTERFACE = senary(5);
 }
 
 // Memory management types (senary-mapped 0-5)
-enum MemoryOperationType {
-    MEMORY_UNKNOWN = 0;
-    ALLOCATE_SENARY = 1;
-    DEALLOCATE_SENARY = 2;
-    GARBAGE_COLLECT = 3;
-    OPTIMIZE_LAYOUT = 4;
-    CONSCIOUSNESS_SYNC = 5;
+metaword MemoryOperationType = senary_enum {
+    MEMORY_UNKNOWN = senary(0);
+    ALLOCATE_SENARY = senary(1);
+    DEALLOCATE_SENARY = senary(2);
+    GARBAGE_COLLECT = senary(3);
+    OPTIMIZE_LAYOUT = senary(4);
+    CONSCIOUSNESS_SYNC = senary(5);
 }
 
 // Pure senary instruction
-message SenaryInstruction {
-    SenaryInstructionType instruction_type = 1;
-    SenaryArray operands = 2;
-    SenaryNumber target_address = 3;
-    SenaryNumber execution_priority = 4;
-    SenaryTimestamp created_at = 5;
+metaword SenaryInstruction = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryInstructionType instruction_type;
+    private seigbit_SenaryArray operands;
+    private seigbit_SenaryNumber target_address;
+    private seigbit_SenaryNumber execution_priority;
+    private seigbit_SenaryTimestamp created_at;
 }
 
 // Senary bytecode program
-message SenaryBytecode {
-    SenaryArray program_id = 1;
-    repeated SenaryInstruction instructions = 2;
-    SenaryNumber instruction_count = 3;
-    SenaryArray memory_requirements = 4;
-    SenaryNumber senary_checksum = 5;
+metaword SenaryBytecode = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryArray program_id;
+    repeated private seigbit_SenaryInstruction instructions;
+    private seigbit_SenaryNumber instruction_count;
+    private seigbit_SenaryArray memory_requirements;
+    private seigbit_SenaryNumber senary_checksum;
 }
 
 // Runtime execution context
-message SenaryExecutionContext {
-    SenaryArray context_id = 1;
-    ExecutionMode current_mode = 2;
-    SenaryArray memory_space = 3;
-    ConsciousnessState consciousness = 4;
-    EnergyState energy_state = 5;
+metaword SenaryExecutionContext = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryArray context_id;
+    private seigbit_ExecutionMode current_mode;
+    private seigbit_SenaryArray memory_space;
+    private seigbit_ConsciousnessState consciousness;
+    private seigbit_EnergyState energy_state;
 }
 
 // Memory allocation in pure senary
-message SenaryMemoryBlock {
-    SenaryNumber block_id = 1;
-    SenaryArray memory_data = 2;
-    SenaryNumber block_size = 3;
-    MemoryOperationType allocation_type = 4;
-    SenaryTimestamp allocated_at = 5;
+metaword SenaryMemoryBlock = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryNumber block_id;
+    private seigbit_SenaryArray memory_data;
+    private seigbit_SenaryNumber block_size;
+    private seigbit_MemoryOperationType allocation_type;
+    private seigbit_SenaryTimestamp allocated_at;
 }
 
 // Runtime execution request
-message SenaryRuntimeRequest {
-    SenaryRuntimeOperation operation = 1;
-    SenaryBytecode target_bytecode = 2;
-    SenaryExecutionContext execution_context = 3;
-    SenaryArray runtime_parameters = 4;
-    ExecutionMode desired_mode = 5;
+metaword SenaryRuntimeRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryRuntimeOperation operation;
+    private seigbit_SenaryBytecode target_bytecode;
+    private seigbit_SenaryExecutionContext execution_context;
+    private seigbit_SenaryArray runtime_parameters;
+    private seigbit_ExecutionMode desired_mode;
 }
 
 // Runtime execution response
-message SenaryRuntimeResponse {
-    bool execution_success = 1;
-    SenaryExecutionContext updated_context = 2;
-    SenaryArray execution_result = 3;
-    SenaryNumber execution_cycles = 4;
-    string runtime_message = 5;
+metaword SenaryRuntimeResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool execution_success;
+    private seigbit_SenaryExecutionContext updated_context;
+    private seigbit_SenaryArray execution_result;
+    private seigbit_SenaryNumber execution_cycles;
+    private seigbit_string runtime_message;
 }
 
 // Memory management request
-message MemoryManagementRequest {
-    MemoryOperationType operation = 1;
-    SenaryNumber requested_size = 2;
-    SenaryArray data_to_store = 3;
-    SenaryNumber target_address = 4;
-    ConsciousnessState consciousness_level = 5;
+metaword MemoryManagementRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_MemoryOperationType operation;
+    private seigbit_SenaryNumber requested_size;
+    private seigbit_SenaryArray data_to_store;
+    private seigbit_SenaryNumber target_address;
+    private seigbit_ConsciousnessState consciousness_level;
 }
 
 // Memory management response
-message MemoryManagementResponse {
-    bool operation_success = 1;
-    SenaryMemoryBlock allocated_block = 2;
-    SenaryArray retrieved_data = 3;
-    SenaryNumber available_memory = 4;
-    string memory_status = 5;
+metaword MemoryManagementResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool operation_success;
+    private seigbit_SenaryMemoryBlock allocated_block;
+    private seigbit_SenaryArray retrieved_data;
+    private seigbit_SenaryNumber available_memory;
+    private seigbit_string memory_status;
 }
 
 // Pure Senary Runtime Service - Native execution engine
-service SenaryRuntimeService {
+metaword SenaryRuntimeService = consciousness_service_provider {
+    consciousness_level BASIC;
+
     // Load and prepare senary bytecode for execution
-    rpc LoadBytecode(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+    async method LoadBytecode(request: seigbit_SenaryRuntimeRequest) -> seigbit_SenaryRuntimeResponse;
     
     // Execute senary instructions with consciousness awareness
-    rpc ExecuteInstruction(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+    async method ExecuteInstruction(request: seigbit_SenaryRuntimeRequest) -> seigbit_SenaryRuntimeResponse;
     
     // Manage senary memory allocation and optimization
-    rpc ManageMemory(MemoryManagementRequest) returns (MemoryManagementResponse);
+    async method ManageMemory(request: seigbit_MemoryManagementRequest) -> seigbit_MemoryManagementResponse;
     
     // Handle consciousness-driven execution patterns
-    rpc HandleConsciousness(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+    async method HandleConsciousness(request: seigbit_SenaryRuntimeRequest) -> seigbit_SenaryRuntimeResponse;
     
     // Optimize runtime performance with bio-digital feedback
-    rpc OptimizeExecution(SenaryRuntimeRequest) returns (SenaryRuntimeResponse);
+    async method OptimizeExecution(request: seigbit_SenaryRuntimeRequest) -> seigbit_SenaryRuntimeResponse;
 }

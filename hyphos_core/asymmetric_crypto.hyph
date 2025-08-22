@@ -1,0 +1,333 @@
+// Hyphos Core - Asymmetric Crypto Metaword
+// Pure Hyphos implementation of quantum-resistant asymmetric crypto
+
+metaword asymmetric_crypto {
+    // Quantum-resistant key sizes (in senary)
+    const PRIVATE_KEY_SIZE = 32  // 32 bytes senary private key
+    const PUBLIC_KEY_SIZE = 64   // 64 bytes senary public key
+    const SIGNATURE_SIZE = 48    // 48 bytes senary signature
+
+    // Elliptic curve parameters for senary-based cryptography
+    const CURVE_PRIME = "1111111111111111111111111111111111111111111111111111111111111111"  // Large senary prime
+    const CURVE_A = 0
+    const CURVE_B = 5  // Senary curve parameter
+
+    fun generate_keypair(entropy_source = null) -> $Object {
+        // Generate quantum-resistant keypair using senary mathematics
+        
+        let seed = if entropy_source != null {
+            entropy_source
+        } else {
+            entropy.generate_senary(asymmetric_crypto.PRIVATE_KEY_SIZE)
+        }
+        
+        // Generate private key from entropy
+        let private_key = hash.seigr_hash(seed + string.from(sidereal_time.current_time()))
+    
+    // Derive public key using senary elliptic curve multiplication
+    let public_key = senary_point_multiply(private_key, curve_generator_point())
+    
+    let keypair = {
+        private_key: private_key,
+        public_key: serialize_point(public_key),
+        algorithm: "SEIGR_EC_SENARY",
+        created_at: sidereal.current_time(),
+        key_id: hash.seigr_senary(public_key.x + public_key.y)
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "AsymmetricCrypto", 
+        "New keypair generated: " + keypair.key_id,
+        true,  // sensitive
+        algorithm: "SEIGR_EC_SENARY",
+        key_size: PRIVATE_KEY_SIZE
+    )
+    
+    return keypair
+}
+
+fun curve_generator_point() {
+    // Generator point for senary elliptic curve
+    return {
+        x: senary.create("5432154321"),  // Senary x coordinate
+        y: senary.create("1234512345")   // Senary y coordinate
+    }
+}
+
+fun senary_point_multiply(scalar, point) {
+    // Elliptic curve point multiplication using senary arithmetic
+    // This implements the double-and-add algorithm in senary
+    
+    let scalar_senary = senary.create(scalar)
+    let result = point_at_infinity()
+    let addend = point
+    
+    // Process each senary digit (0-5)
+    while !scalar_senary.is_zero() {
+        let digit = senary.mod(scalar_senary, senary.create(6))
+        
+        // Add point for each unit in the digit
+        for i in range(0, digit.value) {
+            result = point_add(result, addend)
+        }
+        
+        // Double the addend for next senary position
+        for i in range(0, 6) {
+            addend = point_double(addend)
+        }
+        
+        scalar_senary = senary.divide(scalar_senary, senary.create(6))
+    }
+    
+    return result
+}
+
+fun point_add(p1, p2) {
+    // Add two points on the senary elliptic curve
+    if is_point_at_infinity(p1) { return p2 }
+    if is_point_at_infinity(p2) { return p1 }
+    
+    if senary.equals(p1.x, p2.x) {
+        if senary.equals(p1.y, p2.y) {
+            return point_double(p1)
+        } else {
+            return point_at_infinity()
+        }
+    }
+    
+    // Calculate slope
+    let dx = senary.subtract(p2.x, p1.x)
+    let dy = senary.subtract(p2.y, p1.y)
+    let slope = senary.divide(dy, dx)
+    
+    // Calculate new point
+    let x3 = senary.subtract(senary.subtract(senary.multiply(slope, slope), p1.x), p2.x)
+    let y3 = senary.subtract(senary.multiply(slope, senary.subtract(p1.x, x3)), p1.y)
+    
+    return {x: x3, y: y3}
+}
+
+fun point_double(point) {
+    // Double a point on the senary elliptic curve
+    if is_point_at_infinity(point) { return point }
+    
+    // Calculate slope: (3x² + a) / (2y)
+    let x_squared = senary.multiply(point.x, point.x)
+    let three_x_squared = senary.multiply(senary.create(3), x_squared)
+    let numerator = senary.add(three_x_squared, senary.create(CURVE_A))
+    let denominator = senary.multiply(senary.create(2), point.y)
+    let slope = senary.divide(numerator, denominator)
+    
+    // Calculate new point
+    let x3 = senary.subtract(senary.multiply(slope, slope), senary.multiply(senary.create(2), point.x))
+    let y3 = senary.subtract(senary.multiply(slope, senary.subtract(point.x, x3)), point.y)
+    
+    return {x: x3, y: y3}
+}
+
+fun point_at_infinity() {
+    return {x: null, y: null, infinity: true}
+}
+
+fun is_point_at_infinity(point) {
+    return point.infinity == true
+}
+
+fun serialize_point(point) {
+    // Serialize elliptic curve point to string
+    if is_point_at_infinity(point) {
+        return "INFINITY"
+    }
+    return point.x.value + ":" + point.y.value
+}
+
+fun deserialize_point(point_string) {
+    // Deserialize elliptic curve point from string
+    if point_string == "INFINITY" {
+        return point_at_infinity()
+    }
+    
+    let coords = string.split(point_string, ":")
+    return {
+        x: senary.create(coords[0]),
+        y: senary.create(coords[1])
+    }
+}
+
+fun asymmetric.sign(message, private_key) {
+    // Sign message using senary ECDSA
+    let message_hash = hash.seigr_senary(message)
+    let timestamp = sidereal.current_time()
+    
+    // Generate deterministic nonce using RFC 6979 approach
+    let nonce_input = private_key + message_hash + timestamp
+    let nonce = hash.seigr_senary(nonce_input)
+    
+    // Calculate signature point
+    let signature_point = senary_point_multiply(nonce, curve_generator_point())
+    let r = signature_point.x
+    
+    // Calculate s value
+    let message_senary = senary.create(message_hash)
+    let private_senary = senary.create(private_key)
+    let nonce_senary = senary.create(nonce)
+    
+    let s_numerator = senary.add(message_senary, senary.multiply(r, private_senary))
+    let s = senary.divide(s_numerator, nonce_senary)
+    
+    let signature = {
+        r: r.value,
+        s: s.value,
+        message_hash: message_hash,
+        timestamp: timestamp,
+        algorithm: "SEIGR_ECDSA_SENARY"
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "AsymmetricCrypto",
+        "Message signed with SEIGR_ECDSA_SENARY",
+        false,
+        message_length: message.length,
+        timestamp: timestamp
+    )
+    
+    return signature
+}
+
+fun asymmetric.verify(message, signature, public_key) {
+    // Verify signature using senary ECDSA
+    let message_hash = hash.seigr_senary(message)
+    
+    // Check message hash matches
+    if message_hash != signature.message_hash {
+        logger.log_warning("Signature verification failed: message hash mismatch", "AsymmetricCrypto")
+        return false
+    }
+    
+    // Parse signature values
+    let r = senary.create(signature.r)
+    let s = senary.create(signature.s)
+    
+    // Parse public key point
+    let public_point = deserialize_point(public_key)
+    
+    // Calculate verification points
+    let message_senary = senary.create(message_hash)
+    let s_inverse = senary.mod_inverse(s)
+    
+    let u1 = senary.multiply(message_senary, s_inverse)
+    let u2 = senary.multiply(r, s_inverse)
+    
+    let point1 = senary_point_multiply(u1.value, curve_generator_point())
+    let point2 = senary_point_multiply(u2.value, public_point)
+    let verification_point = point_add(point1, point2)
+    
+    let is_valid = senary.equals(verification_point.x, r)
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "AsymmetricCrypto",
+        "Signature verification " + (if is_valid { "successful" } else { "failed" }),
+        false,
+        valid: is_valid,
+        algorithm: signature.algorithm
+    )
+    
+    return is_valid
+}
+
+fun asymmetric.encrypt(message, public_key) {
+    // Encrypt message using ECIES (Elliptic Curve Integrated Encryption Scheme)
+    
+    // Generate ephemeral keypair
+    let ephemeral_keypair = asymmetric.generate_keypair()
+    
+    // Calculate shared secret
+    let public_point = deserialize_point(public_key)
+    let shared_point = senary_point_multiply(ephemeral_keypair.private_key, public_point)
+    let shared_secret = hash.seigr_senary(shared_point.x.value + shared_point.y.value)
+    
+    // Derive encryption key
+    let encryption_key = hash.seigr_senary(shared_secret + "encryption")
+    let mac_key = hash.seigr_senary(shared_secret + "mac")
+    
+    // Encrypt message using derived key
+    let encrypted_data = symmetric_encrypt(message, encryption_key)
+    
+    // Calculate MAC
+    let mac_input = ephemeral_keypair.public_key + encrypted_data
+    let message_mac = hash.seigr_senary(mac_key + mac_input)
+    
+    let encrypted_message = {
+        ephemeral_public_key: ephemeral_keypair.public_key,
+        encrypted_data: encrypted_data,
+        mac: message_mac,
+        algorithm: "SEIGR_ECIES_SENARY"
+    }
+    
+    logger.log_info("Message encrypted with SEIGR_ECIES_SENARY", "AsymmetricCrypto")
+    
+    return encrypted_message
+}
+
+fun asymmetric.decrypt(encrypted_message, private_key) {
+    // Decrypt message using ECIES
+    
+    // Calculate shared secret
+    let ephemeral_public_point = deserialize_point(encrypted_message.ephemeral_public_key)
+    let shared_point = senary_point_multiply(private_key, ephemeral_public_point)
+    let shared_secret = hash.seigr_senary(shared_point.x.value + shared_point.y.value)
+    
+    // Derive keys
+    let encryption_key = hash.seigr_senary(shared_secret + "encryption")
+    let mac_key = hash.seigr_senary(shared_secret + "mac")
+    
+    // Verify MAC
+    let mac_input = encrypted_message.ephemeral_public_key + encrypted_message.encrypted_data
+    let expected_mac = hash.seigr_senary(mac_key + mac_input)
+    
+    if expected_mac != encrypted_message.mac {
+        error.throw("MAC verification failed", {
+            expected: expected_mac,
+            received: encrypted_message.mac
+        }, "IntegrityError")
+    }
+    
+    // Decrypt message
+    let decrypted_data = symmetric_decrypt(encrypted_message.encrypted_data, encryption_key)
+    
+    logger.log_info("Message decrypted with SEIGR_ECIES_SENARY", "AsymmetricCrypto")
+    
+    return decrypted_data
+}
+
+fun symmetric_encrypt(data, key) {
+    // Simple symmetric encryption for ECIES
+    let key_bytes = string.to_bytes(key)
+    let data_bytes = string.to_bytes(data)
+    let encrypted = []
+    
+    for i in range(0, data_bytes.length) {
+        let data_byte = data_bytes[i]
+        let key_byte = key_bytes[i % key_bytes.length]
+        let encrypted_byte = senary.xor(senary.create(data_byte), senary.create(key_byte))
+        encrypted.append(encrypted_byte.value)
+    }
+    
+    return string.from_bytes(encrypted)
+}
+
+fun symmetric_decrypt(encrypted_data, key) {
+    // Simple symmetric decryption for ECIES
+    return symmetric_encrypt(encrypted_data, key)  // XOR is symmetric
+}
+
+// Export asymmetric crypto interface
+export {
+    asymmetric,
+    PRIVATE_KEY_SIZE,
+    PUBLIC_KEY_SIZE,
+    SIGNATURE_SIZE
+}

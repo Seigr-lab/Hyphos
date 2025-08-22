@@ -1,0 +1,295 @@
+// Hyphos Core - Graphics Metaword
+// Pure Hyphos implementation of graphics algorithms
+
+metaword graphics {
+    fun draw_line(start_point, end_point) -> $Array {
+        // Draw line using Bresenham algorithm in pure Hyphos
+        
+        // Calculate deltas
+        let dx = senary.subtract(end_point.x, start_point.x)
+        let dy = senary.subtract(end_point.y, start_point.y)
+        
+        // Get absolute values
+        let abs_dx = senary.abs(dx)
+        let abs_dy = senary.abs(dy)
+        
+        // Create pixel array
+        let pixels = []
+        
+        // Determine step directions
+        let x_step = if senary.is_greater(dx, senary.create("0")) {
+            senary.create("1")
+        } else {
+            senary.create("-1")
+        }
+        
+        let y_step = if senary.is_greater(dy, senary.create("0")) {
+            senary.create("1")
+        } else {
+            senary.create("-1")
+        }
+        
+        // Current position
+        let current_x = graphics.copy_senary(start_point.x)
+        let current_y = graphics.copy_senary(start_point.y)
+        
+        // Main algorithm
+        if senary.is_greater(abs_dx, abs_dy) {
+            // X-major line
+            let error_term = senary.subtract(abs_dx, senary.multiply(abs_dy, senary.create("2")))
+            
+            let step_count = senary.create("0")
+            while senary.is_less_equal(step_count, abs_dx) {
+                // Add current pixel
+                let pixel = {
+                    x: graphics.copy_senary(current_x),
+                    y: graphics.copy_senary(current_y),
+                    char: "*"
+                }
+                pixels.append(pixel)
+                
+                // Update error and position
+                if senary.is_greater_equal(error_term, senary.create("0")) {
+                    current_y = senary.add(current_y, y_step)
+                    error_term = senary.subtract(error_term, senary.multiply(abs_dx, senary.create("2")))
+                }
+                
+                current_x = senary.add(current_x, x_step)
+                error_term = senary.add(error_term, senary.multiply(abs_dy, senary.create("2")))
+                step_count = senary.add(step_count, senary.create("1"))
+            }
+        } else {
+            // Y-major line
+            let error_term = senary.subtract(abs_dy, senary.multiply(abs_dx, senary.create("2")))
+            
+            let step_count = senary.create("0")
+            while senary.is_less_equal(step_count, abs_dy) {
+                // Add current pixel
+                let pixel = {
+                    x: graphics.copy_senary(current_x),
+                    y: graphics.copy_senary(current_y),
+                    char: "*"
+                }
+                pixels.append(pixel)
+                
+                // Update error and position
+                if senary.is_greater_equal(error_term, senary.create("0")) {
+                    current_x = senary.add(current_x, x_step)
+                    error_term = senary.subtract(error_term, senary.multiply(abs_dy, senary.create("2")))
+                }
+                
+                current_y = senary.add(current_y, y_step)
+                error_term = senary.add(error_term, senary.multiply(abs_dx, senary.create("2")))
+                step_count = senary.add(step_count, senary.create("1"))
+            }
+        }
+        
+        // Return line data
+        return {
+            type: "line",
+            start: start_point,
+            end: end_point,
+            pixels: pixels,
+            algorithm: "bresenham_senary"
+        }
+    }
+
+    fun create_canvas(width, height) -> $Object {
+        // Create ASCII canvas
+        return {
+            type: "canvas",
+            width: width,
+            height: height,
+            pixels: [],
+            background_char: " "
+        }
+    }
+
+    fun render_canvas(canvas, line_data) -> $Object {
+        // Render canvas with line pixels
+        let rendered_lines = []
+        
+        // For each row
+        let y_pos = senary.create("0")
+        while senary.is_less(y_pos, canvas.height) {
+            let line_string = ""
+            
+            // For each column
+            let x_pos = senary.create("0")
+            while senary.is_less(x_pos, canvas.width) {
+                // Check if there's a pixel at this position
+                let pixel_found = false
+                
+                for pixel in line_data.pixels {
+                    if senary.equals(pixel.x, x_pos) && senary.equals(pixel.y, y_pos) {
+                        line_string = line_string + pixel.char
+                        pixel_found = true
+                        break
+                    }
+                }
+                
+                if !pixel_found {
+                    line_string = line_string + canvas.background_char
+                }
+                
+                x_pos = senary.add(x_pos, senary.create("1"))
+            }
+            
+            rendered_lines.append(line_string)
+            y_pos = senary.add(y_pos, senary.create("1"))
+        }
+        
+        return {
+            type: "rendered_canvas",
+            lines: rendered_lines,
+            original_canvas: canvas,
+            line_data: line_data
+        }
+    }
+
+    fun draw_circle(center_point, radius) -> $Object {
+        // Draw circle using midpoint algorithm
+        let pixels = []
+        let x = senary.create("0")
+        let y = radius
+        let decision = senary.subtract(senary.create("1"), radius)
+        
+        while senary.is_less_equal(x, y) {
+            // Add 8 symmetric points
+            graphics.add_circle_pixels(pixels, center_point, x, y)
+            
+            if senary.is_less(decision, senary.create("0")) {
+                decision = senary.add(decision, senary.multiply(senary.create("2"), x))
+                decision = senary.add(decision, senary.create("3"))
+            } else {
+                decision = senary.add(decision, senary.multiply(senary.create("2"), senary.subtract(x, y)))
+                decision = senary.add(decision, senary.create("5"))
+                y = senary.subtract(y, senary.create("1"))
+            }
+            x = senary.add(x, senary.create("1"))
+        }
+        
+        return {
+            type: "circle",
+            center: center_point,
+            radius: radius,
+            pixels: pixels,
+            algorithm: "midpoint_senary"
+        }
+    }
+
+    fun draw_rectangle(top_left, bottom_right) -> $Object {
+        // Draw rectangle outline
+        let pixels = []
+        
+        // Top edge
+        let top_line = graphics.draw_line(top_left, {x: bottom_right.x, y: top_left.y})
+        pixels.extend(top_line.pixels)
+        
+        // Bottom edge
+        let bottom_line = graphics.draw_line({x: top_left.x, y: bottom_right.y}, bottom_right)
+        pixels.extend(bottom_line.pixels)
+        
+        // Left edge
+        let left_line = graphics.draw_line(top_left, {x: top_left.x, y: bottom_right.y})
+        pixels.extend(left_line.pixels)
+        
+        // Right edge
+        let right_line = graphics.draw_line({x: bottom_right.x, y: top_left.y}, bottom_right)
+        pixels.extend(right_line.pixels)
+        
+        return {
+            type: "rectangle",
+            top_left: top_left,
+            bottom_right: bottom_right,
+            pixels: pixels,
+            algorithm: "line_composition"
+        }
+    }
+
+    fun fill_rectangle(top_left, bottom_right, fill_char = "#") -> $Object {
+        // Draw filled rectangle
+        let pixels = []
+        
+        let y = top_left.y
+        while senary.is_less_equal(y, bottom_right.y) {
+            let x = top_left.x
+            while senary.is_less_equal(x, bottom_right.x) {
+                pixels.append({
+                    x: graphics.copy_senary(x),
+                    y: graphics.copy_senary(y),
+                    char: fill_char
+                })
+                x = senary.add(x, senary.create("1"))
+            }
+            y = senary.add(y, senary.create("1"))
+        }
+        
+        return {
+            type: "filled_rectangle",
+            top_left: top_left,
+            bottom_right: bottom_right,
+            pixels: pixels,
+            fill_char: fill_char
+        }
+    }
+
+    fun copy_senary(senary_number) -> $Object {
+        // Create copy of senary number
+        return senary.create(senary.to_decimal(senary_number))
+    }
+
+    fun add_circle_pixels(pixels, center, x, y) -> $Void {
+        // Add 8 symmetric circle pixels
+        let points = [
+            {x: senary.add(center.x, x), y: senary.add(center.y, y)},
+            {x: senary.subtract(center.x, x), y: senary.add(center.y, y)},
+            {x: senary.add(center.x, x), y: senary.subtract(center.y, y)},
+            {x: senary.subtract(center.x, x), y: senary.subtract(center.y, y)},
+            {x: senary.add(center.x, y), y: senary.add(center.y, x)},
+            {x: senary.subtract(center.x, y), y: senary.add(center.y, x)},
+            {x: senary.add(center.x, y), y: senary.subtract(center.y, x)},
+            {x: senary.subtract(center.x, y), y: senary.subtract(center.y, x)}
+        ]
+        
+        for point in points {
+            pixels.append({
+                x: point.x,
+                y: point.y,
+                char: "*"
+            })
+        }
+    }
+
+    fun is_greater_equal(a, b) -> $Boolean {
+        // Helper for senary comparison
+        return senary.is_greater(a, b) || senary.equals(a, b)
+    }
+
+    fun is_less_equal(a, b) -> $Boolean {
+        // Helper for senary comparison
+        return senary.is_less(a, b) || senary.equals(a, b)
+    }
+
+    fun print_canvas(rendered_canvas) -> $Void {
+        // Print rendered canvas to output
+        for line in rendered_canvas.lines {
+            logger.info(line)
+        }
+    }
+
+    fun combine_graphics(graphics_list) -> $Object {
+        // Combine multiple graphics objects
+        let combined_pixels = []
+        
+        for graphic in graphics_list {
+            combined_pixels.extend(graphic.pixels)
+        }
+        
+        return {
+            type: "combined_graphics",
+            graphics: graphics_list,
+            pixels: combined_pixels
+        }
+    }
+}

@@ -1,0 +1,131 @@
+// Hyphos Core - Hash Metaword
+// Pure Hyphos implementation of cryptographic hash functions
+
+metaword hash {
+    // Senary hash constants
+    const SENARY_HASH_LENGTH = 13
+    const SENARY_MOD_VALUE = "1000000000000000000000000000000000000000000000000000000000000000000"  // 6^64 in base 6
+    
+    fun seigr_hash(data, salt = null) -> $String {
+        // Core Seigr senary hash function - pure Hyphos implementation
+        
+        // Convert input to bytes if needed
+        let bytes_data = if type.of(data) == "string" { 
+            string.to_bytes(data) 
+        } else { 
+            data 
+        }
+        
+        // Add salt if provided
+        if salt != null {
+            let salt_bytes = string.to_bytes(salt)
+            bytes_data = bytes.concatenate(bytes_data, salt_bytes)
+        }
+        
+        // Initialize hash accumulator
+        let hash_accumulator = senary.create(0)
+        let mod_value = senary.create(hash.SENARY_MOD_VALUE)
+        
+        // Process each byte with senary mathematics
+        for i in range(0, bytes_data.length) {
+            let byte_value = bytes_data[i]
+            let byte_senary = senary.create(byte_value)
+            let position_weight = senary.create((i % 6) + 1)
+            let weighted_value = senary.multiply(byte_senary, position_weight)
+            
+            // Accumulate with pure senary arithmetic  
+            let multiplier = senary.create(6)
+            hash_accumulator = senary.multiply(hash_accumulator, multiplier)
+            hash_accumulator = senary.add(hash_accumulator, weighted_value)
+            hash_accumulator = senary.mod(hash_accumulator, mod_value)
+        }
+        
+        // Convert to standard 13-character senary format
+        let senary_value = hash_accumulator.toString()
+        if senary_value.length < hash.SENARY_HASH_LENGTH {
+            senary_value = string.pad_left(senary_value, hash.SENARY_HASH_LENGTH, "0")
+        } else if senary_value.length > hash.SENARY_HASH_LENGTH {
+            senary_value = string.substring(senary_value, 0, hash.SENARY_HASH_LENGTH)
+        }
+        
+        return senary_value
+    }
+    
+    fun verify_integrity(data, expected_hash, salt = null) -> $Boolean {
+        // Verify data integrity using senary hash
+        let computed_hash = hash.seigr_hash(data, salt)
+        let is_valid = computed_hash == expected_hash
+        
+        if is_valid {
+            logger.info("Hash verification successful")
+        } else {
+            logger.warning("Hash verification failed")
+        }
+        
+        return is_valid
+    }
+    
+    fun merkle_tree(data_list) -> $String {
+        // Build Merkle tree for data verification
+        if array.length(data_list) == 0 {
+            error("Cannot build Merkle tree from empty data")
+        }
+        
+        if array.length(data_list) == 1 {
+            return hash.seigr_hash(data_list[0])
+        }
+        
+        let tree_level = []
+        
+        // Hash all data items
+        for data in data_list {
+            array.append(tree_level, hash.seigr_hash(data))
+        }
+        
+        // Build tree bottom-up
+        while array.length(tree_level) > 1 {
+            let next_level = []
+            
+            for i in range(0, array.length(tree_level), 2) {
+                let left_hash = tree_level[i]
+                let right_hash = if (i + 1) < array.length(tree_level) { 
+                    tree_level[i + 1] 
+                } else { 
+                    left_hash  // Duplicate if odd number
+                }
+                
+                let combined = left_hash + right_hash
+                let parent_hash = hash.seigr_hash(combined)
+                array.append(next_level, parent_hash)
+            }
+            
+            tree_level = next_level
+        }
+        
+        return tree_level[0]  // Root hash
+    }
+    
+    fun chain_validation(hash_chain) -> $Boolean {
+        // Validate a chain of hashes for temporal integrity
+        if array.length(hash_chain) < 2 {
+            return true  // Single or empty chain is valid
+        }
+        
+        for i in range(1, array.length(hash_chain)) {
+            let previous_hash = hash_chain[i - 1]
+            let current_hash = hash_chain[i]
+            
+            // Verify current hash includes previous hash
+            let expected_input = previous_hash + current_hash.data
+            let expected_hash = hash.seigr_hash(expected_input)
+            
+            if expected_hash != current_hash.hash {
+                logger.error("Hash chain validation failed at index " + string.from(i))
+                return false
+            }
+        }
+        
+        logger.info("Hash chain validation successful for " + string.from(array.length(hash_chain)) + " entries")
+        return true
+    }
+}

@@ -1,0 +1,107 @@
+// Hyphos Core - Variables Metaword
+// Core variable operations for Hyphos language
+
+metaword variables {
+    fun declare(name, var_type, value = null) -> $Object {
+        // Declare a new variable with type and value
+        let actual_value = if value != null { value } else { type.default_value() }
+        
+        let variable_entry = {
+            name: name,
+            type: var_type,
+            value: actual_value,
+            mutable: true,
+            scope_level: scope.current_level(),
+            creation_time: sidereal_time.current_time()
+        }
+        
+        scope.register_variable(variable_entry)
+        return variable_entry
+    }
+
+    fun assign(name, new_value) -> $Object {
+        // Assign value to existing variable
+        
+        let variable = scope.find_variable(name)
+        if variable == null {
+            error("Variable not found: " + name)
+        }
+        
+        if !variable.mutable {
+            error("Cannot assign to immutable variable: " + name)
+        }
+        
+        if !type.compatible(variable.type, type.of(new_value)) {
+            error("Type mismatch: cannot assign " + type.of(new_value) + " to " + variable.type)
+        }
+        
+        variable.value = new_value
+        return variable
+    }
+
+    fun get(name) -> $Any {
+        // Get variable value
+        
+        let variable = scope.find_variable(name)
+        if variable == null {
+        error("Variable not found: " + name)
+    }
+    
+    variable.value
+}
+
+variables.const = {
+    // Declare immutable constant
+    name = args.0
+    type = args.1
+    value = args.2
+    
+    constant_entry = {
+        name: name,
+        type: type,
+        value: value,
+        mutable: false,
+        scope_level: scope.current_level(),
+        creation_time: sidereal.current_time()
+    }
+    
+    scope.register_variable(constant_entry)
+    constant_entry
+}
+
+variables.delete = {
+    // Remove variable from scope
+    name = args.0
+    
+    variable = scope.find_variable(name)
+    if variable == null {
+        error("Variable not found: " + name)
+    }
+    
+    scope.unregister_variable(name)
+    true
+}
+
+variables.exists = {
+    // Check if variable exists in current scope chain
+    name = args.0
+    variable = scope.find_variable(name)
+    variable != null
+}
+
+variables.type_of = {
+    // Get type of variable
+    name = args.0
+    
+    variable = scope.find_variable(name)
+    if variable == null {
+        error("Variable not found: " + name)
+    }
+    
+    variable.type
+}
+
+variables.list_all = {
+    // List all variables in current scope
+    scope.list_variables()
+}

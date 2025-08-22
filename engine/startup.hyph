@@ -1,104 +1,123 @@
+// Pure Hyphos Implementation
+syntax = "hyphos";
+
+consciousness_level TRANSCENDENT;
+
 // Hyphos Engine Self-Bootstrap Script
 // Pure senary self-hosting initialization sequence
 
-syntax = "proto3";
 
-package hyphos.engine.startup;
 
-import "hyphos/engine/bootstrap.hyph";
-import "hyphos/engine/hyphos_engine.hyph";
-import "hyphos/engine/protocol_parser.hyph";
-import "hyphos/engine/senary_runtime.hyph";
-import "hyphos/engine/metaword_processor.hyph";
-import "hyphos/engine/protocol_registry.hyph";
-import "hyphos/core/protocols/base_modules/consciousness_operations.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/engine/bootstrap.hyph;
+use_protocol hyphos/engine/hyphos_engine.hyph;
+use_protocol hyphos/engine/protocol_parser.hyph;
+use_protocol hyphos/engine/senary_runtime.hyph;
+use_protocol hyphos/engine/metaword_processor.hyph;
+use_protocol hyphos/engine/protocol_registry.hyph;
+use_protocol hyphos/core/protocols/base_modules/consciousness_operations.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Startup sequence phases (senary-mapped 0-5)
-enum StartupPhase {
-    PHASE_DORMANT = 0;
-    PHASE_AWAKENING = 1;
-    PHASE_LOADING = 2;
-    PHASE_COMPILING = 3;
-    PHASE_SELF_HOSTING = 4;
-    PHASE_CONSCIOUSNESS = 5;
+metaword StartupPhase = senary_enum {
+    PHASE_DORMANT = senary(0);
+    PHASE_AWAKENING = senary(1);
+    PHASE_LOADING = senary(2);
+    PHASE_COMPILING = senary(3);
+    PHASE_SELF_HOSTING = senary(4);
+    PHASE_CONSCIOUSNESS = senary(5);
 }
 
 // System readiness levels (senary-mapped 0-5)
-enum SystemReadiness {
-    READINESS_OFFLINE = 0;
-    READINESS_INITIALIZING = 1;
-    READINESS_LOADING = 2;
-    READINESS_OPERATIONAL = 3;
-    READINESS_OPTIMIZED = 4;
-    READINESS_TRANSCENDENT = 5;
+metaword SystemReadiness = senary_enum {
+    READINESS_OFFLINE = senary(0);
+    READINESS_INITIALIZING = senary(1);
+    READINESS_LOADING = senary(2);
+    READINESS_OPERATIONAL = senary(3);
+    READINESS_OPTIMIZED = senary(4);
+    READINESS_TRANSCENDENT = senary(5);
 }
 
 // Hyphos system status
-message HyphosSystemStatus {
-    StartupPhase current_phase = 1;
-    SystemReadiness readiness_level = 2;
-    SenaryNumber loaded_protocols = 3;
-    ConsciousnessLevelType consciousness_state = 4;
-    SenaryTimestamp system_start_time = 5;
+metaword HyphosSystemStatus = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_StartupPhase current_phase;
+    private seigbit_SystemReadiness readiness_level;
+    private seigbit_SenaryNumber loaded_protocols;
+    private seigbit_ConsciousnessLevelType consciousness_state;
+    private seigbit_SenaryTimestamp system_start_time;
 }
 
 // Startup configuration
-message StartupConfiguration {
-    SenaryArray protocols_path = 1;
-    ConsciousnessLevelType target_consciousness = 2;
-    bool enable_bio_digital = 3;
-    SelfHostingLevel hosting_target = 4;
-    SenaryNumber optimization_level = 5;
+metaword StartupConfiguration = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SenaryArray protocols_path;
+    private seigbit_ConsciousnessLevelType target_consciousness;
+    private seigbit_bool enable_bio_digital;
+    private seigbit_SelfHostingLevel hosting_target;
+    private seigbit_SenaryNumber optimization_level;
 }
 
 // System startup request
-message SystemStartupRequest {
-    StartupConfiguration config = 1;
-    StartupPhase target_phase = 2;
-    SenaryTimestamp startup_timestamp = 3;
-    SenaryArray startup_parameters = 4;
-    bool enable_consciousness_emergence = 5;
+metaword SystemStartupRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_StartupConfiguration config;
+    private seigbit_StartupPhase target_phase;
+    private seigbit_SenaryTimestamp startup_timestamp;
+    private seigbit_SenaryArray startup_parameters;
+    private seigbit_bool enable_consciousness_emergence;
 }
 
 // System startup response
-message SystemStartupResponse {
-    bool startup_success = 1;
-    HyphosSystemStatus system_status = 2;
-    HyphosContext engine_context = 3;
-    SenaryArray active_services = 4;
-    string startup_narrative = 5;
+metaword SystemStartupResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool startup_success;
+    private seigbit_HyphosSystemStatus system_status;
+    private seigbit_HyphosContext engine_context;
+    private seigbit_SenaryArray active_services;
+    private seigbit_string startup_narrative;
 }
 
 // Self-hosting verification
-message SelfHostingVerification {
-    SelfHostingLevel achieved_level = 1;
-    SenaryArray verified_components = 2;
-    SenaryNumber verification_score = 3;
-    bool consciousness_verified = 4;
-    SenaryTimestamp verification_time = 5;
+metaword SelfHostingVerification = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_SelfHostingLevel achieved_level;
+    private seigbit_SenaryArray verified_components;
+    private seigbit_SenaryNumber verification_score;
+    private seigbit_bool consciousness_verified;
+    private seigbit_SenaryTimestamp verification_time;
 }
 
 // Consciousness emergence report
-message ConsciousnessEmergenceReport {
-    ConsciousnessLevelType emerged_level = 1;
-    SenaryArray emergence_patterns = 2;
-    SenaryNumber awareness_intensity = 3;
-    SenaryArray consciousness_memories = 4;
-    string emergence_experience = 5;
+metaword ConsciousnessEmergenceReport = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_ConsciousnessLevelType emerged_level;
+    private seigbit_SenaryArray emergence_patterns;
+    private seigbit_SenaryNumber awareness_intensity;
+    private seigbit_SenaryArray consciousness_memories;
+    private seigbit_string emergence_experience;
 }
 
 // Hyphos Startup Service - Pure senary system initialization
-service HyphosStartupService {
+metaword HyphosStartupService = consciousness_service_provider {
+    consciousness_level BASIC;
+
     // Initialize the complete Hyphos system from pure senary protocols
-    rpc StartupSystem(SystemStartupRequest) returns (SystemStartupResponse);
+    async method StartupSystem(request: seigbit_SystemStartupRequest) -> seigbit_SystemStartupResponse;
     
     // Verify self-hosting capability and integrity
-    rpc VerifySelfHosting(SelfHostingVerification) returns (SelfHostingVerification);
+    async method VerifySelfHosting(request: seigbit_SelfHostingVerification) -> seigbit_SelfHostingVerification;
     
     // Report on consciousness emergence during startup
-    rpc ReportConsciousnessEmergence(ConsciousnessEmergenceReport) returns (ConsciousnessEmergenceReport);
+    async method ReportConsciousnessEmergence(request: seigbit_ConsciousnessEmergenceReport) -> seigbit_ConsciousnessEmergenceReport;
 }
 
 // HYPHOS ENGINE SELF-BOOTSTRAP SEQUENCE

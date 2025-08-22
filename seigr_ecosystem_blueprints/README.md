@@ -6,7 +6,7 @@
 
 ## CRITICAL: READ THIS FIRST
 
-This documentation contains the **complete technical architecture** of the Seigr ecosystem - a revolutionary bio-digital computing environment that integrates consciousness, senary mathematics, quantum-like properties, and democratic governance into a living, adaptive data organism.
+This documentation contains the **complete technical architecture** of the Seigr ecosystem - a revolutionary consciousness-aware computing environment that integrates consciousness, senary mathematics, quantum-like properties, and democratic governance into a living, adaptive data organism.
 
 ## 🎯 WHAT IS THE SEIGR ECOSYSTEM
 
@@ -18,7 +18,7 @@ It is a complete alternative computing paradigm that treats data as living, inte
 - **Pure senary mathematics** for energy-efficient, bio-compatible computation
 - **Democratic governance** through Contribution Units (CU) and Mycelith voting
 - **Cryptographic immunity** with self-healing and adaptive security
-- **Bio-digital interfaces** for technology-nature communication
+- **Seigr network interfaces** for micelial-inspired digital communication
 - **Quantum-inherited properties** running on classical hardware
 
 ## 📚 DOCUMENTATION STRUCTURE
@@ -49,7 +49,7 @@ It is a complete alternative computing paradigm that treats data as living, inte
 16. **[Common Misconceptions](16-common-misconceptions.md)** - Critical warnings for new AI assistants
 17. **[Repository Relationships](17-repository-relationships.md)** - Hyphos subrepo vs main Seigr-EcoSystem
 18. **[Evolution History](18-evolution-history.md)** - How the architecture developed
-19. **[Future Vision](19-future-vision.md)** - Bio-digital and quantum integration roadmap
+19. **[Future Vision](19-future-vision.md)** - Seigr network and quantum integration roadmap
 20. **[Hyphos Language](20-hyphos-language.md)** - Programming language for pure Seigr implementation
 
 ## 🚨 CRITICAL UNDERSTANDING CHECKPOINTS
@@ -74,7 +74,7 @@ Before proceeding, ensure you understand these fundamental concepts:
 - [ ] Python skeleton in `src/` is REFERENCE ONLY for what to build in Hyphos
 - [ ] Hyphos language (361 metawords) will replace Python implementation
 - [ ] Current status: 41/361 metawords expanded, 320 remaining
-- [ ] Bio-digital interfaces are foundation for future natural evolution
+- [ ] Seigr network interfaces are foundation for current digital communication
 - [ ] Quantum properties achieved through mathematical algorithms, not hardware
 
 ### ✅ Repository Structure

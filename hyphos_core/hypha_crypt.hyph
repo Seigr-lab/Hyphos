@@ -1,0 +1,241 @@
+// Hyphos Core - HyphaCrypt Metaword
+// Pure Hyphos implementation of adaptive, biomimetic encryption
+
+metaword hypha_crypt {
+    fun initialize(energy_level = energy.BALANCED, threat_level = immune.MINIMAL) -> $Object {
+        // Initialize HyphaCrypt with energy budget and threat awareness
+        
+        let crypt_context = {
+            energy_level: energy_level,
+            threat_level: threat_level,
+            key_rotation_interval: hypha_crypt.calculate_key_rotation_interval(energy_level, threat_level),
+            encryption_strength: hypha_crypt.calculate_crypto_rounds(energy_level, threat_level),
+            created_at: sidereal_time.current_time(),
+            active_keys: {}
+        }
+        
+        logger.info("HyphaCrypt initialized - Energy: " + energy_level + ", Threat: " + string.from(threat_level))
+        
+        return crypt_context
+    }
+
+    fun generate_key(context, purpose = "encryption") -> $String {
+        // Generate adaptive encryption key
+        let entropy_source = entropy.generate_senary(32)  // 32 bytes of senary entropy
+    let timestamp = sidereal.current_time()
+    let key_material = purpose + ":" + timestamp + ":" + entropy_source
+    
+    // Apply multiple rounds of senary hashing for key derivation
+    let derived_key = key_material
+    for round in range(0, context.encryption_strength) {
+        derived_key = hash.seigr_senary(derived_key, "round_" + round)
+    }
+    
+    let key_id = hash.seigr_senary(derived_key + timestamp)
+    
+    let key_entry = {
+        key_id: key_id,
+        key_value: derived_key,
+        purpose: purpose,
+        created_at: timestamp,
+        threat_level: context.threat_level,
+        rotation_due: timestamp + context.key_rotation_interval
+    }
+    
+    context.active_keys[key_id] = key_entry
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "HyphaCrypto",
+        "New encryption key generated: " + key_id,
+        true,  // sensitive
+        purpose: purpose,
+        threat_level: context.threat_level
+    )
+    
+    return key_entry
+}
+
+fun hypha_crypt.encrypt(context, data, key_id = null) {
+    // Encrypt data using adaptive HyphaCrypt
+    let encryption_key = if key_id != null {
+        context.active_keys[key_id]
+    } else {
+        hypha_crypt.generate_key(context, "encryption")
+    }
+    
+    if encryption_key == null {
+        error.throw("Encryption key not found: " + key_id, {key_id: key_id}, "CryptographicError")
+    }
+    
+    // Convert data to bytes
+    let data_bytes = if type.of(data) == "string" {
+        string.to_bytes(data)
+    } else {
+        data
+    }
+    
+    // Adaptive senary encryption
+    let encrypted_data = data_bytes
+    let key_bytes = string.to_bytes(encryption_key.key_value)
+    
+    // Multiple encryption rounds based on threat level
+    for round in range(0, context.encryption_strength) {
+        encrypted_data = senary_encrypt_round(encrypted_data, key_bytes, round)
+    }
+    
+    // Create encrypted container
+    let encrypted_container = {
+        data: encrypted_data,
+        key_id: encryption_key.key_id,
+        algorithm: "HYPHA_CRYPT_SENARY",
+        rounds: context.encryption_strength,
+        timestamp: sidereal.current_time(),
+        integrity_hash: hash.seigr_senary(encrypted_data)
+    }
+    
+    logger.log_info("Data encrypted with " + context.encryption_strength + " rounds", "HyphaCrypto")
+    
+    return encrypted_container
+}
+
+fun senary_encrypt_round(data, key, round) {
+    // Single round of senary encryption
+    let round_key = hash.seigr_senary(key + "round_" + round)
+    let round_key_bytes = string.to_bytes(round_key)
+    let encrypted = []
+    
+    for i in range(0, data.length) {
+        let data_byte = data[i]
+        let key_byte = round_key_bytes[i % round_key_bytes.length]
+        
+        // Senary XOR operation
+        let data_senary = senary.create(data_byte)
+        let key_senary = senary.create(key_byte)
+        let encrypted_senary = senary.xor(data_senary, key_senary)
+        
+        encrypted.append(encrypted_senary.value)
+    }
+    
+    return encrypted
+}
+
+fun hypha_crypt.decrypt(context, encrypted_container) {
+    // Decrypt data using HyphaCrypt
+    let key_id = encrypted_container.key_id
+    let encryption_key = context.active_keys[key_id]
+    
+    if encryption_key == null {
+        error.throw("Decryption key not found: " + key_id, {key_id: key_id}, "CryptographicError")
+    }
+    
+    // Verify integrity
+    let computed_hash = hash.seigr_senary(encrypted_container.data)
+    if computed_hash != encrypted_container.integrity_hash {
+        error.throw("Data integrity verification failed", {
+            computed: computed_hash,
+            expected: encrypted_container.integrity_hash
+        }, "IntegrityError")
+    }
+    
+    // Decrypt with reverse rounds
+    let decrypted_data = encrypted_container.data
+    let key_bytes = string.to_bytes(encryption_key.key_value)
+    
+    // Reverse the encryption rounds
+    for round in range(encrypted_container.rounds - 1, -1, -1) {
+        decrypted_data = senary_decrypt_round(decrypted_data, key_bytes, round)
+    }
+    
+    logger.log_info("Data decrypted successfully", "HyphaCrypto")
+    
+    return decrypted_data
+}
+
+fun senary_decrypt_round(data, key, round) {
+    // Single round of senary decryption (reverse of encryption)
+    let round_key = hash.seigr_senary(key + "round_" + round)
+    let round_key_bytes = string.to_bytes(round_key)
+    let decrypted = []
+    
+    for i in range(0, data.length) {
+        let encrypted_byte = data[i]
+        let key_byte = round_key_bytes[i % round_key_bytes.length]
+        
+        // Reverse senary XOR operation
+        let encrypted_senary = senary.create(encrypted_byte)
+        let key_senary = senary.create(key_byte)
+        let decrypted_senary = senary.xor(encrypted_senary, key_senary)
+        
+        decrypted.append(decrypted_senary.value)
+    }
+    
+    return decrypted
+}
+
+fun hypha_crypt.rotate_keys(context) {
+    // Rotate keys based on threat adaptation
+    let current_time = sidereal.current_time()
+    let rotated_keys = []
+    
+    for key_id in context.active_keys.keys() {
+        let key_entry = context.active_keys[key_id]
+        
+        if current_time >= key_entry.rotation_due {
+            // Generate new key with same purpose
+            let new_key = hypha_crypt.generate_key(context, key_entry.purpose)
+            
+            // Mark old key for secure deletion
+            context.active_keys[key_id].status = "deprecated"
+            rotated_keys.append({
+                old_key: key_id,
+                new_key: new_key.key_id
+            })
+        }
+    }
+    
+    if rotated_keys.length > 0 {
+        logger.log_audit_event(
+            AlertSeverity.ALERT_SEVERITY_INFO,
+            "HyphaCrypto",
+            "Rotated " + rotated_keys.length + " encryption keys",
+            true,
+            rotation_count: rotated_keys.length
+        )
+    }
+    
+    return rotated_keys
+}
+
+fun hypha_crypt.adapt_threat_level(context, new_threat_level) {
+    // Adapt encryption to new threat level
+    if new_threat_level == context.threat_level {
+        return context  // No change needed
+    }
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_WARNING,
+        "HyphaCrypto",
+        "Threat level changed from " + context.threat_level + " to " + new_threat_level,
+        false,
+        old_threat: context.threat_level,
+        new_threat: new_threat_level
+    )
+    
+    // Update context
+    context.threat_level = new_threat_level
+    context.encryption_strength = energy.calculate_crypto_rounds(context.energy_level, new_threat_level)
+    context.key_rotation_interval = energy.calculate_key_rotation_interval(context.energy_level, new_threat_level)
+    
+    // Force key rotation if threat increased
+    if new_threat_level > context.threat_level {
+        hypha_crypt.rotate_keys(context)
+    }
+    
+    return context
+}
+
+// Export HyphaCrypt interface
+export {
+    hypha_crypt
+}

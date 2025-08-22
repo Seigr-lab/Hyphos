@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.mycelith;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Mycelith operation types (senary-mapped 0-5)
-enum MycelithOperation {
-    MYCELITH_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword MycelithOperation = senary_enum {
+    MYCELITH_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Mycelith processing states (senary-mapped 0-5)
-enum MycelithProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword MycelithProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Mycelith data types (senary-mapped 0-5)
-enum MycelithDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword MycelithDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core mycelith messages
-message MycelithObject {
-    string object_id = 1;
-    MycelithDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    MycelithProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword MycelithObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_MycelithDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_MycelithProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message MycelithRequest {
-    MycelithOperation operation = 1;
-    MycelithObject target_object = 2;
-    SenaryArray parameters = 3;
-    MycelithProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword MycelithRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_MycelithOperation operation;
+    private seigbit_MycelithObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_MycelithProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message MycelithResponse {
-    bool success = 1;
-    MycelithObject result_object = 2;
-    SenaryArray result_data = 3;
-    MycelithProcessingState new_state = 4;
-    string error_message = 5;
+metaword MycelithResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_MycelithObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_MycelithProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Mycelith service definition
-service MycelithService {
-    rpc Create(MycelithRequest) returns (MycelithResponse);
-    rpc Process(MycelithRequest) returns (MycelithResponse);
-    rpc Validate(MycelithRequest) returns (MycelithResponse);
-    rpc Optimize(MycelithRequest) returns (MycelithResponse);
-    rpc Integrate(MycelithRequest) returns (MycelithResponse);
+metaword MycelithService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_MycelithRequest) -> seigbit_MycelithResponse;
+    async method Process(request: seigbit_MycelithRequest) -> seigbit_MycelithResponse;
+    async method Validate(request: seigbit_MycelithRequest) -> seigbit_MycelithResponse;
+    async method Optimize(request: seigbit_MycelithRequest) -> seigbit_MycelithResponse;
+    async method Integrate(request: seigbit_MycelithRequest) -> seigbit_MycelithResponse;
 }

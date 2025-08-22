@@ -1,0 +1,503 @@
+// Hyphos Core - Bio Control Flow Metaword
+// Complete Bio-Inspired Control Flow Implementation
+
+metaword bio_control_flow {
+    fun branch_if(condition, true_block, false_block = null) -> $Object {
+        // Bio-inspired conditional branching
+        
+        // Evaluate condition
+        let condition_result = bio_control_flow.evaluate_condition(condition)
+        
+        // Apply biological growth probability
+        let growth_probability = bio_control_flow.calculate_growth_probability(condition_result)
+        let should_execute = growth_probability > 0.5
+        
+        if should_execute {
+            return bio_control_flow.execute_block(true_block)
+        } else if false_block != null {
+            return bio_control_flow.execute_block(false_block)
+        } else {
+            return null
+        }
+    }
+
+    fun evolve_when(condition, loop_body, max_generations = 100) -> $Object {
+        // Evolutionary loop with adaptation
+        
+        let generation = 0
+        let fitness_history = []
+        let current_fitness = 0
+        
+        while generation < max_generations {
+            // Evaluate evolutionary condition
+            let evolution_condition = bio_control_flow.evaluate_condition(condition)
+            
+            if !evolution_condition {
+                break
+            }
+            
+            // Execute loop body
+            let generation_result = bio_control_flow.execute_block(loop_body)
+            
+            // Calculate fitness
+            let new_fitness = bio_control_flow.calculate_fitness(generation_result)
+            fitness_history.append(new_fitness)
+            
+            // Check for convergence
+            if generation > 0 {
+                let fitness_improvement = new_fitness - current_fitness
+                if senary.abs(senary.create(fitness_improvement)).value < 0.01 {
+                    break // Converged
+                }
+            }
+            
+            current_fitness = new_fitness
+            generation = generation + 1
+        }
+        
+        return {
+            generations: generation,
+            final_fitness: current_fitness,
+            fitness_history: fitness_history
+        }
+    }
+
+    fun mycelial_for(item_var, collection, loop_body) -> $Object {
+        // Network-based iteration
+        let network_health = 1.0
+        let iteration_results = []
+        
+        for index in range(0, collection.length) {
+            // Check network health
+            if network_health < 0.3 {
+                break
+            }
+            
+            let item = collection[index]
+        
+        // Set loop variable
+        variables.set(item_var, item)
+        variables.set("_index", index)
+        
+        // Execute loop body
+        result = execute_block(loop_body)
+        iteration_results.append(result)
+        
+        // Update network health
+        if result != null {
+            network_health = network_health + 0.01
+        } else {
+            network_health = network_health - 0.05
+        }
+        
+        // Clamp network health
+        if network_health > 1.0 {
+            network_health = 1.0
+        } else if network_health < 0.0 {
+            network_health = 0.0
+        }
+    }
+    
+    // Clean up variables
+    variables.remove(item_var)
+    variables.remove("_index")
+    
+    {
+        results: iteration_results,
+        final_network_health: network_health,
+        total_iterations: iteration_results.length
+    }
+}
+
+function evaluate_condition(condition) {
+    // Evaluate any condition to boolean
+    if type.of(condition) == "boolean" {
+        condition
+    } else if type.of(condition) == "function" {
+        condition()
+    } else if senary.is_senary(condition) {
+        condition.value > 0
+    } else if condition == null {
+        false
+    } else if type.of(condition) == "string" {
+        condition.length > 0
+    } else if type.of(condition) == "array" {
+        condition.length > 0
+    } else {
+        true
+    }
+}
+
+function calculate_growth_probability(condition_result) {
+    // Convert boolean to biological probability
+    if condition_result {
+        0.8 + (Math.random() * 0.2) // 0.8-1.0 for true
+    } else {
+        Math.random() * 0.3 // 0.0-0.3 for false
+    }
+}
+
+function calculate_fitness(result) {
+    // Calculate fitness of execution result
+    if result == null {
+        0.1
+    } else if type.of(result) == "array" {
+        0.5 + (result.length * 0.1)
+    } else if senary.is_senary(result) {
+        0.5 + (result.value * 0.01)
+    } else if type.of(result) == "object" {
+        0.7
+    } else {
+        0.5
+    }
+}
+
+function execute_block(block) {
+    // Execute a block of code
+    if type.of(block) == "function" {
+        block()
+    } else if type.of(block) == "string" {
+        // Parse and execute code string
+        execute_code_string(block)
+    } else {
+        block
+    }
+}
+
+function execute_code_string(code) {
+    // Simple code execution for strings
+    // This would need to integrate with the main interpreter
+    // For now, return the code as result
+    code
+}
+
+evolve_when.execute = {
+    // Evolutionary loop that adapts based on environmental pressure
+    adaptation_condition = args.0
+    evolution_body = args.1
+    max_generations = if args.length > 2 then args.2 else 1000
+    adaptation_threshold = if args.length > 3 then args.3 else senary.create("0.01")
+    
+    generation_count = 0
+    evolution_results = []
+    current_adaptation_level = senary.create("0")
+    previous_fitness = senary.create("0")
+    
+    scope.enter_new("evolutionary_process")
+    
+    // Initialize evolutionary context
+    evolution_context = {
+        generation: generation_count,
+        fitness_history: [],
+        adaptation_rate: senary.create("0.1"),
+        selection_pressure: senary.create("0.5"),
+        mutation_rate: senary.create("0.05")
+    }
+    
+    while generation_count < max_generations {
+        scope.enter_new("generation_" + generation_count)
+        
+        // Evaluate environmental pressure
+        environmental_pressure = bio_control.evaluate_adaptation_condition(adaptation_condition, evolution_context)
+        
+        // Check if evolution should continue
+        if not environmental_pressure.continue_evolution {
+            scope.exit()
+            break
+        }
+        
+        // Set generational context
+        variables.declare("generation", "senary", senary.create(generation_count))
+        variables.declare("adaptation_level", "senary", current_adaptation_level)
+        variables.declare("environmental_pressure", "object", environmental_pressure)
+        
+        // Execute evolution body
+        generation_result = execute_block(evolution_body)
+        evolution_results.append(generation_result)
+        
+        // Calculate fitness improvement
+        current_fitness = bio_control.calculate_fitness(generation_result, evolution_context)
+        fitness_improvement = senary.subtract(current_fitness, previous_fitness)
+        
+        // Update adaptation level
+        current_adaptation_level = senary.add(current_adaptation_level, fitness_improvement)
+        
+        // Check for convergence
+        if senary.less_than(fitness_improvement, adaptation_threshold) {
+            bio_control.log_evolution_convergence(generation_count, current_adaptation_level)
+            scope.exit()
+            break
+        }
+        
+        // Update evolutionary context
+        evolution_context.generation = generation_count
+        evolution_context.fitness_history.append(current_fitness)
+        
+        // Adaptive mutation and selection pressure
+        if fitness_improvement.value < 0 {
+            evolution_context.mutation_rate = senary.multiply(evolution_context.mutation_rate, senary.create("1.1"))
+        } else {
+            evolution_context.mutation_rate = senary.multiply(evolution_context.mutation_rate, senary.create("0.95"))
+        }
+        
+        previous_fitness = current_fitness
+        generation_count = generation_count + 1
+        
+        scope.exit()
+        
+        // Check for system signals
+        if system.break_signal != null or system.continue_signal != null {
+            break
+        }
+    }
+    
+    scope.exit()
+    
+    // Return evolution summary
+    {
+        total_generations: generation_count,
+        final_adaptation_level: current_adaptation_level,
+        evolution_results: evolution_results,
+        convergence_achieved: senary.greater_than(current_adaptation_level, adaptation_threshold),
+        final_fitness: previous_fitness
+    }
+}
+
+mycelial_for.execute = {
+    // Network-based iteration following mycelial growth patterns
+    network_nodes = args.0
+    growth_body = args.1
+    connection_strength = if args.length > 2 then args.2 else senary.create("0.7")
+    nutrient_sharing = if args.length > 3 then args.3 else true
+    
+    iteration_results = []
+    network_state = {
+        active_connections: {},
+        nutrient_distribution: {},
+        growth_patterns: {},
+        network_health: senary.create("1.0")
+    }
+    
+    scope.enter_new("mycelial_network")
+    
+    // Initialize network connections
+    node_connections = bio_control.establish_mycelial_connections(network_nodes, connection_strength)
+    
+    for node_index in range(0, network_nodes.length) {
+        node = network_nodes[node_index]
+        
+        scope.enter_new("mycelial_node_" + node_index)
+        
+        // Set up node context
+        variables.declare("current_node", "any", node)
+        variables.declare("node_index", "senary", senary.create(node_index))
+        variables.declare("network_connections", "object", node_connections[node_index])
+        variables.declare("network_state", "object", network_state)
+        
+        // Check network health before processing
+        if senary.less_than(network_state.network_health, senary.create("0.3")) {
+            bio_control.log_network_degradation(node_index, network_state)
+            scope.exit()
+            continue
+        }
+        
+        // Execute growth body for this node
+        node_result = execute_block(growth_body)
+        iteration_results.append(node_result)
+        
+        // Update network state based on node result
+        network_state = bio_control.update_network_state(network_state, node_result, node_index)
+        
+        // Share nutrients if enabled
+        if nutrient_sharing {
+            bio_control.distribute_nutrients(network_state, node_connections, node_index)
+        }
+        
+        # Propagate information through network
+        bio_control.propagate_mycelial_signals(network_state, node_connections, node_index, node_result)
+        
+        scope.exit()
+        
+        # Check for network-wide signals
+        if system.break_signal != null {
+            bio_control.handle_network_break_signal(network_state)
+            break
+        }
+        
+        if system.continue_signal != null {
+            bio_control.handle_network_continue_signal(network_state)
+            system.continue_signal = null
+            continue
+        }
+    }
+    
+    scope.exit()
+    
+    # Return network iteration summary
+    {
+        processed_nodes: iteration_results.length,
+        final_network_state: network_state,
+        iteration_results: iteration_results,
+        network_health: network_state.network_health,
+        total_connections: node_connections.length
+    }
+}
+
+bio_control.evaluate_condition_strength = {
+    // Evaluate biological strength of a condition
+    condition = args.0
+    
+    if type.of(condition) == "boolean" {
+        if condition then senary.create("1") else senary.create("0")
+    } else if type.of(condition) == "function" {
+        condition_result = condition()
+        bio_control.evaluate_condition_strength(condition_result)
+    } else if senary.is_senary(condition) {
+        # Normalize senary value to 0-1 range
+        if senary.greater_than(condition, senary.create("1")) {
+            senary.create("1")
+        } else if senary.less_than(condition, senary.create("0")) {
+            senary.create("0")
+        } else {
+            condition
+        }
+    } else {
+        # Convert other types to strength
+        type.to_boolean(condition) ? senary.create("0.7") : senary.create("0.3")
+    }
+}
+
+bio_control.calculate_growth_probability = {
+    // Calculate probability of growth based on biological factors
+    condition_strength = args.0
+    energy_context = args.1
+    
+    base_probability = condition_strength
+    energy_factor = senary.divide(energy_context.available_energy, energy_context.maximum_energy)
+    environmental_factor = energy_context.environmental_favorability or senary.create("0.5")
+    
+    # Combine factors using biological weighting
+    weighted_probability = senary.multiply(base_probability, senary.create("0.4"))
+    weighted_probability = senary.add(weighted_probability, senary.multiply(energy_factor, senary.create("0.4")))
+    weighted_probability = senary.add(weighted_probability, senary.multiply(environmental_factor, senary.create("0.2")))
+    
+    # Ensure probability is in valid range
+    if senary.greater_than(weighted_probability, senary.create("1")) {
+        senary.create("1")
+    } else if senary.less_than(weighted_probability, senary.create("0")) {
+        senary.create("0")
+    } else {
+        weighted_probability
+    }
+}
+
+bio_control.evaluate_adaptation_condition = {
+    // Evaluate conditions for evolutionary adaptation
+    adaptation_condition = args.0
+    evolution_context = args.1
+    
+    # Execute condition in current evolutionary context
+    condition_result = evaluate_expression(adaptation_condition)
+    
+    # Analyze environmental pressure
+    selection_pressure = evolution_context.selection_pressure
+    mutation_rate = evolution_context.mutation_rate
+    generation = evolution_context.generation
+    
+    # Determine if evolution should continue
+    continue_evolution = condition_result and senary.greater_than(selection_pressure, senary.create("0.1"))
+    
+    {
+        continue_evolution: continue_evolution,
+        selection_pressure: selection_pressure,
+        mutation_rate: mutation_rate,
+        environmental_stress: bio_control.calculate_environmental_stress(evolution_context),
+        adaptation_potential: bio_control.calculate_adaptation_potential(evolution_context)
+    }
+}
+
+bio_control.calculate_fitness = {
+    // Calculate fitness of evolutionary result
+    generation_result = args.0
+    evolution_context = args.1
+    
+    # Basic fitness based on result success
+    base_fitness = if generation_result != null then senary.create("0.5") else senary.create("0.1")
+    
+    # Analyze result for improvements
+    if type.of(generation_result) == "object" and generation_result.improvement_score != null {
+        improvement_fitness = generation_result.improvement_score
+        base_fitness = senary.add(base_fitness, improvement_fitness)
+    }
+    
+    # Consider generational trends
+    if evolution_context.fitness_history.length > 0 {
+        recent_trend = bio_control.analyze_fitness_trend(evolution_context.fitness_history)
+        base_fitness = senary.add(base_fitness, recent_trend)
+    }
+    
+    base_fitness
+}
+
+bio_control.establish_mycelial_connections = {
+    // Establish network connections between nodes
+    network_nodes = args.0
+    connection_strength = args.1
+    
+    connections = []
+    
+    for node_index in range(0, network_nodes.length) {
+        node_connections = []
+        
+        # Connect to adjacent nodes
+        if node_index > 0 {
+            node_connections.append({
+                target_node: node_index - 1,
+                strength: connection_strength,
+                connection_type: "upstream"
+            })
+        }
+        
+        if node_index < (network_nodes.length - 1) {
+            node_connections.append({
+                target_node: node_index + 1,
+                strength: connection_strength,
+                connection_type: "downstream"
+            })
+        }
+        
+        # Add some cross-connections for network resilience
+        if node_index > 1 {
+            cross_strength = senary.multiply(connection_strength, senary.create("0.3"))
+            node_connections.append({
+                target_node: node_index - 2,
+                strength: cross_strength,
+                connection_type: "cross_upstream"
+            })
+        }
+        
+        connections.append(node_connections)
+    }
+    
+    connections
+}
+
+bio_control.set_growth_context = {
+    // Set biological growth context for execution
+    growth_context = args.0
+    
+    system.current_growth_context = growth_context
+    system.log("Growth context set: " + growth_context.branch_type, "INFO")
+    
+    growth_context
+}
+
+system.default_energy_context = {
+    // Provide default energy context
+    {
+        available_energy: senary.create("0.8"),
+        maximum_energy: senary.create("1.0"),
+        environmental_favorability: senary.create("0.6"),
+        energy_consumption_rate: senary.create("0.1")
+    }
+}

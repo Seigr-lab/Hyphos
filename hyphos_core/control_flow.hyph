@@ -1,0 +1,202 @@
+// Hyphos Core - Control Flow Metaword
+// Core control flow constructs for Hyphos language
+
+metaword control {
+    fun if(condition, then_block, else_block = null) -> $Any {
+        // Conditional execution
+        
+        if condition {
+            scope.enter_new("if_block")
+            let result = control.execute_block(then_block)
+            scope.exit()
+            return result
+        } else if else_block != null {
+            scope.enter_new("else_block")
+            let result = control.execute_block(else_block)
+            scope.exit()
+            return result
+        } else {
+            return null
+        }
+    }
+
+    fun while(condition_expr, loop_body) -> $Array {
+        // While loop
+        
+        let loop_results = []
+        let loop_count = 0
+        let max_iterations = 10000  // Safety limit
+        
+        scope.enter_new("while_loop")
+        
+        while control.evaluate_expression(condition_expr) and loop_count < max_iterations {
+            scope.enter_new("while_iteration_" + string.from(loop_count))
+            let result = control.execute_block(loop_body)
+            array.append(loop_results, result)
+            scope.exit()
+            loop_count = loop_count + 1
+        }
+        
+        scope.exit()
+        
+        if loop_count >= max_iterations {
+            error.throw("While loop exceeded maximum iterations: " + string.from(max_iterations))
+        }
+        
+        return loop_results
+    }
+
+control.for = {
+    // For loop with iterator
+    iterator_name = args.0
+    iterable = args.1
+    loop_body = args.2
+    
+    loop_results = []
+    
+    scope.enter_new("for_loop")
+    
+    iterator_values = get_iterator_values(iterable)
+    index = 0
+    
+    while index < iterator_values.length {
+        scope.enter_new("for_iteration_" + index)
+        
+        // Declare iterator variable in loop scope
+        variables.declare(iterator_name, type.of(iterator_values[index]), iterator_values[index])
+        
+        result = execute_block(loop_body)
+        loop_results.append(result)
+        
+        scope.exit()
+        index = index + 1
+    }
+    
+    scope.exit()
+    loop_results
+}
+
+control.switch = {
+    // Switch statement
+    value = args.0
+    cases = args.1  // Array of {condition, action} pairs
+    default_case = if args.length > 2 then args.2 else null
+    
+    scope.enter_new("switch_block")
+    
+    result = null
+    matched = false
+    
+    case_index = 0
+    while case_index < cases.length and not matched {
+        current_case = cases[case_index]
+        
+        if value == current_case.condition {
+            scope.enter_new("case_" + case_index)
+            result = execute_block(current_case.action)
+            scope.exit()
+            matched = true
+        }
+        
+        case_index = case_index + 1
+    }
+    
+    if not matched and default_case != null {
+        scope.enter_new("default_case")
+        result = execute_block(default_case)
+        scope.exit()
+    }
+    
+    scope.exit()
+    result
+}
+
+control.break = {
+    // Break from loop
+    loop_level = if args.length > 0 then args.0 else 1
+    system.break_signal = {
+        type: "break",
+        level: loop_level,
+        timestamp: sidereal.current_time()
+    }
+    null
+}
+
+control.continue = {
+    // Continue to next iteration
+    loop_level = if args.length > 0 then args.0 else 1
+    system.continue_signal = {
+        type: "continue", 
+        level: loop_level,
+        timestamp: sidereal.current_time()
+    }
+    null
+}
+
+control.return = {
+    // Return from function
+    value = if args.length > 0 then args.0 else null
+    system.return_signal = {
+        type: "return",
+        value: value,
+        timestamp: sidereal.current_time()
+    }
+    value
+}
+
+execute_block = {
+    // Execute a block of statements
+    block = args.0
+    
+    if type.of(block) == "function" {
+        block()
+    } else if type.of(block) == "array" {
+        last_result = null
+        statement_index = 0
+        
+        while statement_index < block.length {
+            statement = block[statement_index]
+            last_result = execute_statement(statement)
+            
+            // Check for control flow signals
+            if system.break_signal != null or system.continue_signal != null or system.return_signal != null {
+                break
+            }
+            
+            statement_index = statement_index + 1
+        }
+        
+        last_result
+    } else {
+        execute_statement(block)
+    }
+}
+
+evaluate_expression = {
+    // Evaluate a conditional expression
+    expr = args.0
+    
+    if type.of(expr) == "function" {
+        expr()
+    } else if type.of(expr) == "boolean" {
+        expr
+    } else {
+        // Convert to boolean
+        expr != null and expr != false and expr != 0
+    }
+}
+
+get_iterator_values = {
+    // Get values to iterate over
+    iterable = args.0
+    
+    if type.of(iterable) == "array" {
+        iterable
+    } else if type.of(iterable) == "range" {
+        range.to_array(iterable)
+    } else if type.of(iterable) == "string" {
+        string.to_char_array(iterable)
+    } else {
+        error("Cannot iterate over type: " + type.of(iterable))
+    }
+}

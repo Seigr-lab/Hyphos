@@ -1,0 +1,969 @@
+// Hyphos Core - Hardware Metaword
+// Pure Hyphos implementation of agnostic hardware discovery and management
+// Universal hardware abstraction as core language feature
+
+metaword hardware {
+    // Hardware types for universal classification
+    const CPU = "cpu"
+    const MEMORY = "memory"
+    const STORAGE = "storage"
+    const GRAPHICS = "graphics"
+    const NETWORK = "network"
+    const AUDIO = "audio"
+    const SENSOR = "sensor"
+    const GPIO = "gpio"
+    const USB = "usb"
+    const POWER = "power"
+    const THERMAL = "thermal"
+    const SECURITY = "security"
+    const EXPANSION = "expansion"
+    const CUSTOM = "custom"
+    const UNKNOWN = "unknown"
+
+    // Architecture types (agnostically detected)
+    const X86_64 = "x86_64"
+    const ARM64 = "arm64"
+    const ARM32 = "arm32"
+    const RISCV = "riscv"
+    const MIPS = "mips"
+    const ARCH_UNKNOWN = "unknown"
+
+    // Hardware capability levels
+    const MINIMAL = "minimal"
+    const BASIC = "basic"
+    const ENHANCED = "enhanced"
+    const ADVANCED = "advanced"
+    const MAXIMUM = "maximum"
+
+    // Component states
+    const STATE_UNKNOWN = "unknown"
+    const STATE_ACTIVE = "active"
+    const STATE_IDLE = "idle"
+    const STATE_SLEEP = "sleep"
+    const STATE_ERROR = "error"
+    const STATE_DISABLED = "disabled"
+
+fun hardware.create_universal_hal() {
+    // Create Universal Hardware Abstraction Layer
+    // Completely agnostic - discovers hardware dynamically using native Hyphos operations
+    let hal = {
+    
+    fun create_universal_hal() -> $Object {
+        // Creates completely hardware-agnostic Hardware Abstraction Layer
+        // Uses native Hyphos operations for universal discovery
+        
+        let hal = {
+            hal_id: hash.seigr_hash("hal_" + sidereal_time.current_time()),
+            version: "1.0.0",
+            status: "initialized",
+            discovery_method: "agnostic_scan",
+            supported_platforms: ["universal"],
+            devices: {},
+            discovered_components: {},
+            architecture: hardware.ARCH_UNKNOWN,
+            capabilities: {},
+            manifest_registry: {},
+            discovery_active: false,
+            discovery_callbacks: [],
+            node_id: hash.seigr_hash("hal_" + sidereal_time.current_time())
+        }
+        
+        logger.info("Hardware Abstraction Layer initialized - completely agnostic")
+        
+        return hal
+    }
+
+    fun detect_system_architecture(hal) -> $String {
+        // Agnostically detect system architecture using native Hyphos file operations
+        
+        // Use native Hyphos file operations to detect architecture
+        if file.exists("/proc/cpuinfo") {
+            let cpuinfo = file.read("/proc/cpuinfo")
+            if string.contains(cpuinfo, "x86_64") || string.contains(cpuinfo, "AMD64") {
+                hal.architecture = hardware.X86_64
+                return hal.architecture
+            }
+            if string.contains(cpuinfo, "aarch64") || string.contains(cpuinfo, "arm64") {
+                hal.architecture = hardware.ARM64
+                return hal.architecture
+            }
+            if string.contains(cpuinfo, "armv7") || string.contains(cpuinfo, "armv6") {
+                hal.architecture = hardware.ARM32
+                return hal.architecture
+            }
+            if string.contains(cpuinfo, "riscv") {
+                hal.architecture = hardware.RISCV
+                return hal.architecture
+            }
+            if string.contains(cpuinfo, "mips") {
+                hal.architecture = hardware.MIPS
+                return hal.architecture
+            }
+        }
+        
+        // Check for Windows indicators using native Hyphos
+        if file.exists("C:\\Windows\\System32") {
+            // Try to determine architecture from system directory structure
+            if file.exists("C:\\Program Files (x86)") {
+                hal.architecture = hardware.X86_64
+                return hal.architecture
+            } else {
+                hal.architecture = hardware.X86_64  // Assume x64 for modern Windows
+                return hal.architecture
+            }
+        }
+            }
+        }
+        
+        // Check for macOS indicators using native Hyphos
+        if file.exists("/usr/bin/uname") {
+            // For macOS, default to x86_64 for now
+            hal.architecture = ARCH_TYPE_X86_64
+            return hal.architecture
+        }
+        
+        hal.architecture = ARCH_TYPE_UNKNOWN
+        
+    } catch error {
+        logger.log_warning("Failed to detect architecture: " + error, "HardwareDetection")
+        hal.architecture = ARCH_TYPE_UNKNOWN
+    }
+    
+    logger.log_info("Detected architecture: " + hal.architecture, "HardwareDetection")
+    return hal.architecture
+}
+
+fun hardware.discover_hardware_components(hal) {
+    // Universal hardware component discovery
+    // Based on src/noesis/hardware_aware_noesis.py SeigrOSHardwareDiscovery
+    
+    logger.log_info("Starting agnostic hardware discovery", "HardwareDiscovery")
+    
+    // Discover each component type agnostically
+    discover_processors(hal)
+    discover_memory_components(hal)
+    discover_storage_devices(hal)
+    discover_graphics_components(hal)
+    discover_network_adapters(hal)
+    discover_audio_devices(hal)
+    discover_sensor_components(hal)
+    discover_gpio_components(hal)
+    discover_usb_devices(hal)
+    discover_power_components(hal)
+    discover_thermal_components(hal)
+    discover_security_devices(hal)
+    discover_expansion_devices(hal)
+    discover_custom_extensions(hal)
+    
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "HardwareDiscovery",
+        "Hardware discovery completed - " + hal.discovered_components.length + " components found",
+        false,
+        component_count: hal.discovered_components.length,
+        architecture: hal.architecture
+    )
+    
+    return hal.discovered_components
+}
+
+fun discover_processors(hal) {
+    // Discover CPU/processor information agnostically using native Hyphos
+    try {
+        // Linux-style discovery using native Hyphos file operations
+        if file.exists("/proc/cpuinfo") {
+            let cpuinfo = file.read("/proc/cpuinfo")
+            let processor_name = extract_cpu_name_from_cpuinfo(cpuinfo)
+            let cpu_count = count_cpu_cores_from_cpuinfo(cpuinfo)
+            
+            let component_id = "cpu_main_" + hal.node_id
+            let component = create_hardware_component(
+                component_id,
+                HARDWARE_TYPE_CPU,
+                "Main Processor",
+                processor_name,
+                {
+                    processor_name: processor_name,
+                    core_count: cpu_count,
+                    architecture: hal.architecture,
+                    discovery_method: "proc_cpuinfo"
+                },
+                ["processing", "frequency_scaling", "thermal_management", "power_management"],
+                {
+                    base_power: senary.create("15.0"),
+                    max_power: senary.create("65.0"),
+                    efficiency_rating: senary.create("0.8")
+                }
+            )
+            
+            hal.discovered_components[component_id] = component
+            log_component_discovery(component)
+        }
+        
+        // Windows-style discovery (if available)
+        if file.exists("C:\\Windows") {
+            // Create generic processor entry for Windows
+            let component_id = "cpu_main_" + hal.node_id
+            if !(component_id in hal.discovered_components) {
+                let component = create_hardware_component(
+                    component_id,
+                    HARDWARE_TYPE_CPU,
+                    "Main Processor",
+                    "Generic Processor",
+                    {
+                        discovery_method: "windows_generic"
+                    },
+                    ["processing"],
+                    {
+                        base_power: senary.create("20.0"),
+                        max_power: senary.create("75.0"),
+                        efficiency_rating: senary.create("0.75")
+                    }
+                )
+                
+                hal.discovered_components[component_id] = component
+                log_component_discovery(component)
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Processor discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_memory_components(hal) {
+    // Discover memory components agnostically using native Hyphos
+    try {
+        // Linux memory discovery using native Hyphos
+        if file.exists("/proc/meminfo") {
+            let meminfo = file.read("/proc/meminfo")
+            let total_memory = extract_memory_total_from_meminfo(meminfo)
+            
+            let component_id = "memory_main_" + hal.node_id
+            let component = create_hardware_component(
+                component_id,
+                HARDWARE_TYPE_MEMORY,
+                "System Memory",
+                "DDR RAM",
+                {
+                    total_bytes: total_memory,
+                    total_gb: senary.divide(senary.create(total_memory), senary.create("1073741824")),
+                    memory_type: "DDR",
+                    discovery_method: "proc_meminfo"
+                },
+                ["data_storage", "fast_access", "volatile_storage"],
+                {
+                    base_power: senary.create("5.0"),
+                    max_power: senary.create("15.0"),
+                    efficiency_rating: senary.create("0.95")
+                }
+            )
+            
+            hal.discovered_components[component_id] = component
+            log_component_discovery(component)
+        }
+        
+        // Add other platform-agnostic memory discovery methods here
+        
+    } catch error {
+        logger.log_warning("Memory discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_storage_devices(hal) {
+    // Discover storage devices agnostically
+    try {
+        // Linux storage discovery via /proc/partitions
+        if filesystem.path_exists("/proc/partitions") {
+            let partitions = filesystem.read_file("/proc/partitions")
+            let storage_devices = parse_storage_from_partitions(partitions)
+            
+            for device in storage_devices {
+                let component_id = "storage_" + device.name + "_" + hal.node_id
+                let storage_type = detect_storage_type(device.name)
+                
+                let component = create_hardware_component(
+                    component_id,
+                    HARDWARE_TYPE_STORAGE,
+                    "Storage Device",
+                    device.name,
+                    {
+                        device_name: device.name,
+                        size_bytes: device.size,
+                        storage_type: storage_type,
+                        discovery_method: "proc_partitions"
+                    },
+                    ["data_persistence", "read_operations", "write_operations"],
+                    {
+                        base_power: storage_type == "SSD" ? senary.create("2.0") : senary.create("5.0"),
+                        max_power: storage_type == "SSD" ? senary.create("5.0") : senary.create("15.0"),
+                        efficiency_rating: storage_type == "SSD" ? senary.create("0.95") : senary.create("0.7")
+                    }
+                )
+                
+                hal.discovered_components[component_id] = component
+                log_component_discovery(component)
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Storage discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_graphics_components(hal) {
+    // Discover graphics components agnostically
+    try {
+        // Linux graphics discovery via lspci or /proc
+        if filesystem.path_exists("/proc/bus/pci") {
+            // Try to find graphics controllers
+            let graphics_devices = discover_pci_graphics_devices()
+            
+            for device in graphics_devices {
+                let component_id = "graphics_" + device.id + "_" + hal.node_id
+                let component = create_hardware_component(
+                    component_id,
+                    HARDWARE_TYPE_GRAPHICS,
+                    "Graphics Controller",
+                    device.name,
+                    {
+                        device_id: device.id,
+                        vendor: device.vendor,
+                        model: device.model,
+                        discovery_method: "pci_discovery"
+                    },
+                    ["graphics_rendering", "display_output", "compute_acceleration"],
+                    {
+                        base_power: senary.create("10.0"),
+                        max_power: senary.create("250.0"),
+                        efficiency_rating: senary.create("0.85")
+                    }
+                )
+                
+                hal.discovered_components[component_id] = component
+                log_component_discovery(component)
+            }
+        }
+        
+        // Fallback: Create minimal graphics capability
+        if hal.discovered_components.filter(c => c.component_type == HARDWARE_TYPE_GRAPHICS).length == 0 {
+            let component_id = "graphics_generic_" + hal.node_id
+            let component = create_hardware_component(
+                component_id,
+                HARDWARE_TYPE_GRAPHICS,
+                "Generic Graphics",
+                "Integrated Graphics",
+                {
+                    discovery_method: "fallback_generic"
+                },
+                ["text_rendering", "basic_graphics"],
+                {
+                    base_power: senary.create("5.0"),
+                    max_power: senary.create("15.0"),
+                    efficiency_rating: senary.create("0.8")
+                }
+            )
+            
+            hal.discovered_components[component_id] = component
+            log_component_discovery(component)
+        }
+        
+    } catch error {
+        logger.log_warning("Graphics discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_network_adapters(hal) {
+    // Discover network adapters agnostically
+    try {
+        // Linux network discovery via /sys/class/net
+        if filesystem.path_exists("/sys/class/net") {
+            let net_interfaces = filesystem.list_dir("/sys/class/net")
+            
+            for interface in net_interfaces {
+                if interface != "." && interface != ".." && interface != "lo" {
+                    let component_id = "network_" + interface + "_" + hal.node_id
+                    let component = create_hardware_component(
+                        component_id,
+                        HARDWARE_TYPE_NETWORK,
+                        "Network Adapter",
+                        interface,
+                        {
+                            interface_name: interface,
+                            discovery_method: "sysfs_net"
+                        },
+                        ["network_communication", "data_transmission"],
+                        {
+                            base_power: senary.create("1.0"),
+                            max_power: senary.create("8.0"),
+                            efficiency_rating: senary.create("0.9")
+                        }
+                    )
+                    
+                    hal.discovered_components[component_id] = component
+                    log_component_discovery(component)
+                }
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Network discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_audio_devices(hal) {
+    // Discover audio devices agnostically
+    try {
+        // Linux audio discovery via /proc/asound
+        if filesystem.path_exists("/proc/asound/cards") {
+            let cards = filesystem.read_file("/proc/asound/cards")
+            let audio_devices = parse_audio_cards(cards)
+            
+            for device in audio_devices {
+                let component_id = "audio_" + device.id + "_" + hal.node_id
+                let component = create_hardware_component(
+                    component_id,
+                    HARDWARE_TYPE_AUDIO,
+                    "Audio Device",
+                    device.name,
+                    {
+                        device_id: device.id,
+                        card_name: device.name,
+                        discovery_method: "proc_asound"
+                    },
+                    ["audio_playback", "audio_recording", "sound_processing"],
+                    {
+                        base_power: senary.create("0.5"),
+                        max_power: senary.create("3.0"),
+                        efficiency_rating: senary.create("0.9")
+                    }
+                )
+                
+                hal.discovered_components[component_id] = component
+                log_component_discovery(component)
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Audio discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_sensor_components(hal) {
+    // Discover sensor components agnostically
+    try {
+        // Linux sensor discovery via /sys/class/hwmon
+        if filesystem.path_exists("/sys/class/hwmon") {
+            let hwmon_devices = filesystem.list_dir("/sys/class/hwmon")
+            
+            for device in hwmon_devices {
+                if device != "." && device != ".." {
+                    let device_path = "/sys/class/hwmon/" + device
+                    let sensors = discover_sensors_in_hwmon_device(device_path)
+                    
+                    for sensor in sensors {
+                        let component_id = "sensor_" + sensor.type + "_" + device + "_" + hal.node_id
+                        let component = create_hardware_component(
+                            component_id,
+                            HARDWARE_TYPE_SENSOR,
+                            sensor.type + " Sensor",
+                            sensor.name,
+                            {
+                                sensor_type: sensor.type,
+                                device_path: device_path,
+                                discovery_method: "sysfs_hwmon"
+                            },
+                            ["environmental_sensing", "monitoring"],
+                            {
+                                base_power: senary.create("0.1"),
+                                max_power: senary.create("0.5"),
+                                efficiency_rating: senary.create("0.99")
+                            }
+                        )
+                        
+                        hal.discovered_components[component_id] = component
+                        log_component_discovery(component)
+                    }
+                }
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Sensor discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_gpio_components(hal) {
+    // Discover GPIO components agnostically
+    // Based on src/hardware/gpio/gpio_platform.py
+    try {
+        // Check for Raspberry Pi specific GPIO
+        if filesystem.path_exists("/proc/device-tree/model") {
+            let model = filesystem.read_file("/proc/device-tree/model")
+            if model.contains("Raspberry Pi") {
+                let component_id = "gpio_rpi_" + hal.node_id
+                let component = create_hardware_component(
+                    component_id,
+                    HARDWARE_TYPE_GPIO,
+                    "Raspberry Pi GPIO",
+                    "BCM GPIO Controller",
+                    {
+                        platform_type: "raspberry_pi",
+                        available_pins: range(2, 28),
+                        discovery_method: "device_tree"
+                    },
+                    ["digital_io", "pwm", "spi", "i2c"],
+                    {
+                        base_power: senary.create("0.1"),
+                        max_power: senary.create("1.0"),
+                        efficiency_rating: senary.create("0.95")
+                    }
+                )
+                
+                hal.discovered_components[component_id] = component
+                log_component_discovery(component)
+                return
+            }
+        }
+        
+        // Generic Linux GPIO discovery
+        if filesystem.path_exists("/sys/class/gpio") {
+            let gpio_entries = filesystem.list_dir("/sys/class/gpio")
+            let available_pins = []
+            
+            for entry in gpio_entries {
+                if entry.starts_with("gpio") && entry.length > 4 {
+                    try {
+                        let pin_num = int(entry.substring(4))
+                        let pin_path = "/sys/class/gpio/" + entry
+                        if filesystem.path_exists(pin_path + "/direction") {
+                            available_pins.append(pin_num)
+                        }
+                    } catch {
+                        // Skip invalid pin numbers
+                    }
+                }
+            }
+            
+            if available_pins.length > 0 {
+                let component_id = "gpio_generic_" + hal.node_id
+                let component = create_hardware_component(
+                    component_id,
+                    HARDWARE_TYPE_GPIO,
+                    "Generic GPIO",
+                    "Linux GPIO Controller",
+                    {
+                        platform_type: "generic_linux",
+                        available_pins: available_pins,
+                        discovery_method: "sysfs_gpio"
+                    },
+                    ["digital_io"],
+                    {
+                        base_power: senary.create("0.1"),
+                        max_power: senary.create("0.5"),
+                        efficiency_rating: senary.create("0.95")
+                    }
+                )
+                
+                hal.discovered_components[component_id] = component
+                log_component_discovery(component)
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("GPIO discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_usb_devices(hal) {
+    // Discover USB devices agnostically
+    try {
+        // Linux USB discovery via /sys/bus/usb/devices
+        if filesystem.path_exists("/sys/bus/usb/devices") {
+            let usb_devices = filesystem.list_dir("/sys/bus/usb/devices")
+            
+            for device in usb_devices {
+                if device != "." && device != ".." && device.contains("-") {
+                    let device_path = "/sys/bus/usb/devices/" + device
+                    let device_info = read_usb_device_info(device_path)
+                    
+                    if device_info {
+                        let component_id = "usb_" + device + "_" + hal.node_id
+                        let component = create_hardware_component(
+                            component_id,
+                            HARDWARE_TYPE_USB,
+                            "USB Device",
+                            device_info.product || "Unknown USB Device",
+                            {
+                                device_id: device,
+                                vendor_id: device_info.vendor_id,
+                                product_id: device_info.product_id,
+                                vendor: device_info.vendor,
+                                product: device_info.product,
+                                discovery_method: "sysfs_usb"
+                            },
+                            ["usb_communication", "data_transfer"],
+                            {
+                                base_power: senary.create("0.5"),
+                                max_power: senary.create("2.5"),
+                                efficiency_rating: senary.create("0.9")
+                            }
+                        )
+                        
+                        hal.discovered_components[component_id] = component
+                        log_component_discovery(component)
+                    }
+                }
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("USB discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_power_components(hal) {
+    // Discover power management components agnostically
+    try {
+        // Linux power supply discovery via /sys/class/power_supply
+        if filesystem.path_exists("/sys/class/power_supply") {
+            let power_supplies = filesystem.list_dir("/sys/class/power_supply")
+            
+            for supply in power_supplies {
+                if supply != "." && supply != ".." {
+                    let supply_path = "/sys/class/power_supply/" + supply
+                    let supply_info = read_power_supply_info(supply_path)
+                    
+                    if supply_info {
+                        let component_id = "power_" + supply + "_" + hal.node_id
+                        let component = create_hardware_component(
+                            component_id,
+                            HARDWARE_TYPE_POWER,
+                            supply_info.type + " Power Supply",
+                            supply,
+                            {
+                                supply_name: supply,
+                                supply_type: supply_info.type,
+                                online: supply_info.online,
+                                discovery_method: "sysfs_power"
+                            },
+                            ["power_supply", "energy_management"],
+                            {
+                                base_power: senary.create("0.0"),
+                                max_power: senary.create("0.0"),
+                                efficiency_rating: senary.create("1.0")
+                            }
+                        )
+                        
+                        hal.discovered_components[component_id] = component
+                        log_component_discovery(component)
+                    }
+                }
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Power discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_thermal_components(hal) {
+    // Discover thermal management components agnostically
+    try {
+        // Linux thermal discovery via /sys/class/thermal
+        if filesystem.path_exists("/sys/class/thermal") {
+            let thermal_zones = filesystem.list_dir("/sys/class/thermal")
+            
+            for zone in thermal_zones {
+                if zone != "." && zone != ".." && zone.starts_with("thermal_zone") {
+                    let zone_path = "/sys/class/thermal/" + zone
+                    let zone_info = read_thermal_zone_info(zone_path)
+                    
+                    if zone_info {
+                        let component_id = "thermal_" + zone + "_" + hal.node_id
+                        let component = create_hardware_component(
+                            component_id,
+                            HARDWARE_TYPE_THERMAL,
+                            "Thermal Zone",
+                            zone_info.type || zone,
+                            {
+                                zone_name: zone,
+                                zone_type: zone_info.type,
+                                temperature: zone_info.temperature,
+                                discovery_method: "sysfs_thermal"
+                            },
+                            ["thermal_management", "temperature_monitoring"],
+                            {
+                                base_power: senary.create("0.0"),
+                                max_power: senary.create("0.0"),
+                                efficiency_rating: senary.create("1.0")
+                            }
+                        )
+                        
+                        hal.discovered_components[component_id] = component
+                        log_component_discovery(component)
+                    }
+                }
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Thermal discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_security_devices(hal) {
+    // Discover security hardware agnostically
+    // Based on src/hardware/security/security_discovery.py
+    try {
+        // Linux TPM discovery
+        if filesystem.path_exists("/dev/tpm0") || filesystem.path_exists("/dev/tpmrm0") {
+            let component_id = "security_tpm_" + hal.node_id
+            let component = create_hardware_component(
+                component_id,
+                HARDWARE_TYPE_SECURITY,
+                "Trusted Platform Module",
+                "TPM Device",
+                {
+                    device_type: "tpm",
+                    tpm_version: detect_tpm_version(),
+                    discovery_method: "dev_tpm"
+                },
+                ["cryptographic_operations", "secure_storage", "attestation"],
+                {
+                    base_power: senary.create("0.1"),
+                    max_power: senary.create("1.0"),
+                    efficiency_rating: senary.create("0.95")
+                }
+            )
+            
+            hal.discovered_components[component_id] = component
+            log_component_discovery(component)
+        }
+        
+        // Hardware RNG discovery
+        if filesystem.path_exists("/dev/hwrng") {
+            let component_id = "security_hwrng_" + hal.node_id
+            let component = create_hardware_component(
+                component_id,
+                HARDWARE_TYPE_SECURITY,
+                "Hardware Random Number Generator",
+                "HWRNG Device",
+                {
+                    device_type: "hwrng",
+                    discovery_method: "dev_hwrng"
+                },
+                ["random_number_generation", "entropy_source"],
+                {
+                    base_power: senary.create("0.1"),
+                    max_power: senary.create("0.5"),
+                    efficiency_rating: senary.create("0.99")
+                }
+            )
+            
+            hal.discovered_components[component_id] = component
+            log_component_discovery(component)
+        }
+        
+    } catch error {
+        logger.log_warning("Security device discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_expansion_devices(hal) {
+    // Discover expansion devices agnostically
+    try {
+        // PCI device discovery via /proc/bus/pci
+        if filesystem.path_exists("/proc/bus/pci") {
+            let pci_devices = discover_pci_expansion_devices()
+            
+            for device in pci_devices {
+                let component_id = "expansion_pci_" + device.id + "_" + hal.node_id
+                let component = create_hardware_component(
+                    component_id,
+                    HARDWARE_TYPE_EXPANSION,
+                    "PCI Expansion Device",
+                    device.name,
+                    {
+                        device_id: device.id,
+                        vendor: device.vendor,
+                        device_class: device.class,
+                        discovery_method: "pci_scan"
+                    },
+                    ["expansion_capability", "bus_communication"],
+                    {
+                        base_power: senary.create("1.0"),
+                        max_power: senary.create("10.0"),
+                        efficiency_rating: senary.create("0.85")
+                    }
+                )
+                
+                hal.discovered_components[component_id] = component
+                log_component_discovery(component)
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Expansion device discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+fun discover_custom_extensions(hal) {
+    // Discover custom Seigr OS extensions agnostically
+    try {
+        // Check for Seigr extension registry
+        if filesystem.path_exists("/opt/seigr/extensions") {
+            let extensions = filesystem.list_dir("/opt/seigr/extensions")
+            
+            for extension in extensions {
+                if extension != "." && extension != ".." {
+                    let extension_path = "/opt/seigr/extensions/" + extension
+                    let extension_info = read_seigr_extension_info(extension_path)
+                    
+                    if extension_info {
+                        let component_id = "extension_" + extension + "_" + hal.node_id
+                        let component = create_hardware_component(
+                            component_id,
+                            HARDWARE_TYPE_CUSTOM,
+                            "Seigr Extension",
+                            extension_info.name || extension,
+                            {
+                                extension_name: extension,
+                                extension_type: extension_info.type,
+                                version: extension_info.version,
+                                discovery_method: "seigr_registry"
+                            },
+                            extension_info.capabilities || ["custom_functionality"],
+                            {
+                                base_power: senary.create("0.5"),
+                                max_power: senary.create("2.0"),
+                                efficiency_rating: senary.create("0.95")
+                            }
+                        )
+                        
+                        hal.discovered_components[component_id] = component
+                        log_component_discovery(component)
+                    }
+                }
+            }
+        }
+        
+    } catch error {
+        logger.log_warning("Custom extension discovery failed: " + error, "HardwareDiscovery")
+    }
+}
+
+// Helper functions for component creation and management
+
+fun create_hardware_component(component_id, component_type, name, model, specifications, capabilities, energy_profile) {
+    // Create a standardized hardware component
+    return {
+        component_id: component_id,
+        component_type: component_type,
+        name: name,
+        model: model,
+        specifications: specifications,
+        capabilities: capabilities,
+        energy_profile: energy_profile,
+        driver_info: {
+            driver: "native",
+            status: "active"
+        },
+        current_state: {
+            state: COMPONENT_STATE_ACTIVE,
+            utilization: senary.create("0"),
+            temperature: senary.create("25")
+        },
+        discovery_timestamp: sidereal.current_time()
+    }
+}
+
+fun log_component_discovery(component) {
+    // Log the discovery of a hardware component
+    logger.log_audit_event(
+        AlertSeverity.ALERT_SEVERITY_INFO,
+        "ComponentDiscovery",
+        "Hardware component discovered: " + component.name + " (" + component.component_type + ")",
+        false,
+        component_id: component.component_id,
+        component_type: component.component_type,
+        model: component.model,
+        capabilities: component.capabilities.length
+    )
+}
+
+// Utility functions for parsing system information
+
+fun extract_cpu_name_from_cpuinfo(cpuinfo) {
+    // Extract CPU name from /proc/cpuinfo content
+    let lines = cpuinfo.split("\n")
+    for line in lines {
+        if line.starts_with("model name") && line.contains(":") {
+            return line.split(":")[1].trim()
+        }
+    }
+    return "Unknown Processor"
+}
+
+fun count_cpu_cores_from_cpuinfo(cpuinfo) {
+    // Count CPU cores from /proc/cpuinfo content
+    let lines = cpuinfo.split("\n")
+    let processor_count = 0
+    for line in lines {
+        if line.starts_with("processor") {
+            processor_count = processor_count + 1
+        }
+    }
+    return processor_count > 0 ? processor_count : 1
+}
+
+fun extract_memory_total_from_meminfo(meminfo) {
+    // Extract total memory from /proc/meminfo content
+    let lines = meminfo.split("\n")
+    for line in lines {
+        if line.starts_with("MemTotal:") {
+            let parts = line.split()
+            if parts.length >= 2 {
+                return int(parts[1]) * 1024  // Convert KB to bytes
+            }
+        }
+    }
+    return 0
+}
+
+// Export hardware abstraction interface
+export {
+    hardware,
+    HARDWARE_TYPE_CPU,
+    HARDWARE_TYPE_MEMORY,
+    HARDWARE_TYPE_STORAGE,
+    HARDWARE_TYPE_GRAPHICS,
+    HARDWARE_TYPE_NETWORK,
+    HARDWARE_TYPE_AUDIO,
+    HARDWARE_TYPE_SENSOR,
+    HARDWARE_TYPE_GPIO,
+    HARDWARE_TYPE_USB,
+    HARDWARE_TYPE_POWER,
+    HARDWARE_TYPE_THERMAL,
+    HARDWARE_TYPE_SECURITY,
+    HARDWARE_TYPE_EXPANSION,
+    HARDWARE_TYPE_CUSTOM,
+    HARDWARE_TYPE_UNKNOWN,
+    ARCH_TYPE_X86_64,
+    ARCH_TYPE_ARM64,
+    ARCH_TYPE_ARM32,
+    ARCH_TYPE_RISCV,
+    ARCH_TYPE_MIPS,
+    ARCH_TYPE_UNKNOWN,
+    CAPABILITY_LEVEL_MINIMAL,
+    CAPABILITY_LEVEL_BASIC,
+    CAPABILITY_LEVEL_ENHANCED,
+    CAPABILITY_LEVEL_ADVANCED,
+    CAPABILITY_LEVEL_MAXIMUM,
+    COMPONENT_STATE_UNKNOWN,
+    COMPONENT_STATE_ACTIVE,
+    COMPONENT_STATE_IDLE,
+    COMPONENT_STATE_SLEEP,
+    COMPONENT_STATE_ERROR,
+    COMPONENT_STATE_DISABLED
+}

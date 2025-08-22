@@ -1,0 +1,271 @@
+// Hyphos Core - Sidereal Time Metaword
+// Pure Hyphos implementation of cosmic time precision
+
+metaword sidereal_time {
+    // Sidereal time constants (in senary)
+    const SIDEREAL_DAY_SECONDS = 86164  // Sidereal day in seconds
+    const SOLAR_TO_SIDEREAL_RATIO = "1.002737909"  // Conversion ratio
+    const J2000_EPOCH = 946728000  // J2000.0 epoch (Jan 1, 2000 12:00 UTC)
+
+    // Observatory coordinates (example: Greenwich)
+    const GREENWICH_LONGITUDE = 0.0
+    const GREENWICH_LATITUDE = 51.4769
+
+    fun current_time() -> $SenaryNumber {
+        // Get current sidereal time with cosmic precision
+        let utc_timestamp = system.current_timestamp()
+        let sidereal_timestamp = sidereal_time.convert_to_sidereal(utc_timestamp)
+        
+        return sidereal_timestamp
+    }
+
+    fun convert_to_sidereal(utc_timestamp) -> $SenaryNumber {
+        // Convert UTC timestamp to sidereal time
+        let seconds_since_j2000 = utc_timestamp - sidereal_time.J2000_EPOCH
+        let sidereal_seconds = senary.multiply(
+            senary.create(seconds_since_j2000),
+            senary.create(sidereal_time.SOLAR_TO_SIDEREAL_RATIO)
+        )
+        
+        return sidereal_seconds
+    }
+
+    fun get_microsecond_variations() -> $String {
+        // Get microsecond-level variations for entropy
+        let base_time = system.current_timestamp()
+        let variations = []
+        
+        // Collect multiple rapid samples
+        for i in range(0, 10) {
+            let sample_time = system.current_timestamp()
+            let variation = sample_time - base_time
+            array.append(variations, string.from(variation))
+            
+            // Tiny delay to create variation
+            system.micro_delay(1)
+        }
+        
+        return string.join(variations, ":")
+    }
+}
+
+fun sidereal.get_stellar_coordinates() {
+    // Get current stellar coordinate data for entropy
+    let sidereal_time = sidereal.current_time()
+    
+    // Calculate positions of reference stars (simplified)
+    let vega_ra = calculate_right_ascension("Vega", sidereal_time)
+    let sirius_ra = calculate_right_ascension("Sirius", sidereal_time)
+    let polaris_ra = calculate_right_ascension("Polaris", sidereal_time)
+    
+    let coordinates = {
+        vega: vega_ra,
+        sirius: sirius_ra,
+        polaris: polaris_ra,
+        observation_time: sidereal_time
+    }
+    
+    return coordinates.vega + ":" + coordinates.sirius + ":" + coordinates.polaris
+}
+
+fun calculate_right_ascension(star_name, sidereal_time) {
+    // Calculate right ascension for star at given sidereal time
+    // Using simplified stellar catalog data
+    
+    let star_catalog = {
+        "Vega": {ra: "18h36m56s", dec: "+38°47'01''"},
+        "Sirius": {ra: "06h45m09s", dec: "-16°42'58''"},
+        "Polaris": {ra: "02h31m49s", dec: "+89°15'51''"}
+    }
+    
+    let star_data = star_catalog[star_name]
+    if star_data == null {
+        return "00h00m00s"
+    }
+    
+    // Convert RA to decimal hours and adjust for sidereal time
+    let ra_hours = parse_ra_to_hours(star_data.ra)
+    let adjusted_ra = senary.mod(
+        senary.add(senary.create(ra_hours), senary.create(sidereal_time / 3600)),
+        senary.create(24)
+    )
+    
+    return format_ra_from_hours(adjusted_ra.value)
+}
+
+fun parse_ra_to_hours(ra_string) {
+    // Parse RA string "18h36m56s" to decimal hours
+    let parts = string.split(ra_string, ["h", "m", "s"])
+    let hours = parseInt(parts[0])
+    let minutes = parseInt(parts[1]) 
+    let seconds = parseInt(parts[2])
+    
+    return hours + (minutes / 60) + (seconds / 3600)
+}
+
+fun format_ra_from_hours(decimal_hours) {
+    // Format decimal hours back to RA string
+    let hours = math.floor(decimal_hours)
+    let remaining = (decimal_hours - hours) * 60
+    let minutes = math.floor(remaining)
+    let seconds = math.floor((remaining - minutes) * 60)
+    
+    return hours + "h" + minutes + "m" + seconds + "s"
+}
+
+fun sidereal.calculate_gst(julian_date) {
+    // Calculate Greenwich Sidereal Time for given Julian Date
+    let t = (julian_date - 2451545.0) / 36525.0  // Centuries since J2000.0
+    
+    // Calculate GST at 0h UT (in hours)
+    let gst0 = 6.697374558 + 2400.051336 * t + 0.000025862 * t * t
+    
+    // Normalize to 0-24 hours
+    let gst0_normalized = senary.mod(senary.create(gst0), senary.create(24))
+    
+    return gst0_normalized.value
+}
+
+fun sidereal.calculate_lst(gst, longitude) {
+    // Calculate Local Sidereal Time from GST and longitude
+    let longitude_hours = longitude / 15.0  // Convert degrees to hours
+    let lst = senary.add(senary.create(gst), senary.create(longitude_hours))
+    let lst_normalized = senary.mod(lst, senary.create(24))
+    
+    return lst_normalized.value
+}
+
+fun sidereal.julian_date(timestamp) {
+    // Convert Unix timestamp to Julian Date
+    let unix_epoch_jd = 2440587.5  // Julian Date of Unix epoch
+    let days_since_epoch = timestamp / 86400.0
+    
+    return unix_epoch_jd + days_since_epoch
+}
+
+fun sidereal.precision_timing() {
+    // Get high-precision timing data
+    let start_time = system.high_precision_time()
+    let measurements = []
+    
+    // Take multiple precision measurements
+    for i in range(0, 100) {
+        let measurement = {
+            timestamp: system.high_precision_time(),
+            sidereal: sidereal.current_time(),
+            sequence: i
+        }
+        measurements.append(measurement)
+    }
+    
+    let end_time = system.high_precision_time()
+    let total_duration = end_time - start_time
+    
+    return {
+        measurements: measurements,
+        total_duration: total_duration,
+        average_interval: total_duration / measurements.length
+    }
+}
+
+fun sidereal.coordinate_transform(ra, dec, lst) {
+    // Transform celestial coordinates to local horizontal coordinates
+    let ra_senary = senary.create(ra)
+    let dec_senary = senary.create(dec)
+    let lst_senary = senary.create(lst)
+    
+    // Calculate hour angle
+    let hour_angle = senary.subtract(lst_senary, ra_senary)
+    
+    // Convert to azimuth and elevation (simplified)
+    let latitude_rad = GREENWICH_LATITUDE * math.PI / 180
+    let dec_rad = dec * math.PI / 180
+    let ha_rad = hour_angle.value * 15 * math.PI / 180
+    
+    let elevation = math.asin(
+        math.sin(dec_rad) * math.sin(latitude_rad) + 
+        math.cos(dec_rad) * math.cos(latitude_rad) * math.cos(ha_rad)
+    )
+    
+    let azimuth = math.atan2(
+        -math.sin(ha_rad),
+        math.tan(dec_rad) * math.cos(latitude_rad) - math.sin(latitude_rad) * math.cos(ha_rad)
+    )
+    
+    return {
+        azimuth: azimuth * 180 / math.PI,
+        elevation: elevation * 180 / math.PI,
+        hour_angle: hour_angle.value
+    }
+}
+
+fun sidereal.nutation_correction(julian_date) {
+    // Calculate nutation correction for precise sidereal time
+    let t = (julian_date - 2451545.0) / 36525.0
+    
+    // Simplified nutation calculation
+    let omega = 125.04 - 1934.136 * t  // Longitude of ascending node
+    let l = 280.47 + 36000.77 * t      // Mean longitude of Sun
+    let l_prime = 218.32 + 481267.88 * t  // Mean longitude of Moon
+    
+    // Nutation in longitude (simplified)
+    let delta_psi = -17.20 * math.sin(omega * math.PI / 180) - 
+                    1.32 * math.sin(2 * l * math.PI / 180) -
+                    0.23 * math.sin(2 * l_prime * math.PI / 180)
+    
+    // Convert to seconds of time
+    let nutation_seconds = delta_psi / 15.0
+    
+    return nutation_seconds
+}
+
+fun sidereal.aberration_correction() {
+    // Calculate aberration correction for stellar positions
+    // Simplified annual aberration constant
+    let aberration_constant = 20.49552  // arcseconds
+    
+    // For entropy purposes, add small time-dependent variation
+    let time_factor = sidereal.current_time() % 31557600  // Seconds in a year
+    let aberration_variation = aberration_constant * math.sin(time_factor * 2 * math.PI / 31557600)
+    
+    return aberration_variation
+}
+
+fun sidereal.atmospheric_refraction(elevation) {
+    // Calculate atmospheric refraction correction
+    if elevation < 0 {
+        return 0  // Below horizon
+    }
+    
+    // Simplified refraction formula (in arcminutes)
+    let refraction = 1.02 / math.tan((elevation + 10.3 / (elevation + 5.11)) * math.PI / 180)
+    
+    return refraction / 60.0  // Convert to degrees
+}
+
+fun sidereal.timing_entropy() {
+    // Generate entropy from precise sidereal timing
+    let precision_data = sidereal.precision_timing()
+    let timing_variations = []
+    
+    for i in range(0, precision_data.measurements.length - 1) {
+        let current = precision_data.measurements[i]
+        let next = precision_data.measurements[i + 1]
+        let interval = next.timestamp - current.timestamp
+        let sidereal_drift = next.sidereal - current.sidereal
+        
+        timing_variations.append(interval.toString() + ":" + sidereal_drift.toString())
+    }
+    
+    return timing_variations.join("|")
+}
+
+// Export sidereal time interface
+export {
+    sidereal,
+    SIDEREAL_DAY_SECONDS,
+    SOLAR_TO_SIDEREAL_RATIO,
+    J2000_EPOCH,
+    GREENWICH_LONGITUDE,
+    GREENWICH_LATITUDE
+}

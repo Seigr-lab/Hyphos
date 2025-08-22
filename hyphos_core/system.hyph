@@ -1,0 +1,396 @@
+// Hyphos Core - System Metaword
+// Core system operations and runtime management for Hyphos language
+
+metaword system {
+    fun initialize() -> $String {
+        // Initialize the Hyphos runtime system
+        
+        // Initialize core data structures
+        system.scope_stack = []
+        system.error_log = []
+        system.custom_types = {}
+        system.custom_error_types = {}
+        system.call_stack_depth = 0
+        system.random_seed = sidereal_time.current_time()
+        
+        // Clear any existing error state
+        system.current_error = null
+        system.error_thrown = false
+        system.break_signal = null
+        system.continue_signal = null
+        system.return_signal = null
+        
+        // Initialize global scope
+        scope.initialize_global()
+        
+        // Register core metawords
+        system.register_core_metawords()
+        
+        // Set system state
+        system.initialized = true
+        system.startup_time = sidereal_time.current_time()
+        
+        return "Hyphos system initialized successfully"
+    }
+
+    fun register_core_metawords() -> $Boolean {
+        // Register all core language metawords in global scope
+        
+        // Variable operations
+        scope.register_function({
+            name: "declare",
+            parameters: [{name: "name", type: "string"}, {name: "type", type: "string"}, {name: "value", type: "any"}],
+            body: { variables.declare(args.0, args.1, args.2) },
+            return_type: "object"
+        })
+        
+        scope.register_function({
+            name: "assign", 
+        parameters: [{name: "name", type: "string"}, {name: "value", type: "any"}],
+        body: { variables.assign(args.0, args.1) },
+        return_type: "object"
+    })
+    
+    scope.register_function({
+        name: "get",
+        parameters: [{name: "name", type: "string"}],
+        body: { variables.get(args.0) },
+        return_type: "any"
+    })
+    
+    // Control flow
+    scope.register_function({
+        name: "if",
+        parameters: [{name: "condition", type: "any"}, {name: "then_block", type: "any"}, {name: "else_block", type: "any"}],
+        body: { control.if(args.0, args.1, args.2) },
+        return_type: "any"
+    })
+    
+    scope.register_function({
+        name: "while",
+        parameters: [{name: "condition", type: "any"}, {name: "body", type: "any"}],
+        body: { control.while(args.0, args.1) },
+        return_type: "array"
+    })
+    
+    scope.register_function({
+        name: "for",
+        parameters: [{name: "iterator", type: "string"}, {name: "iterable", type: "any"}, {name: "body", type: "any"}],
+        body: { control.for(args.0, args.1, args.2) },
+        return_type: "array"
+    })
+    
+    // Function operations
+    scope.register_function({
+        name: "define_function",
+        parameters: [{name: "name", type: "string"}, {name: "params", type: "array"}, {name: "body", type: "any"}],
+        body: { functions.define(args.0, args.1, args.2) },
+        return_type: "object"
+    })
+    
+    scope.register_function({
+        name: "call_function",
+        parameters: [{name: "name", type: "string"}, {name: "args", type: "array"}],
+        body: { functions.call(args.0, args.1) },
+        return_type: "any"
+    })
+    
+    // Error handling
+    scope.register_function({
+        name: "try",
+        parameters: [{name: "try_block", type: "any"}, {name: "catch_block", type: "any"}, {name: "finally_block", type: "any"}],
+        body: { error.try(args.0, args.1, args.2) },
+        return_type: "any"
+    })
+    
+    scope.register_function({
+        name: "throw",
+        parameters: [{name: "message", type: "string"}, {name: "data", type: "any"}, {name: "type", type: "string"}],
+        body: { error.throw(args.0, args.1, args.2) },
+        return_type: "object"
+    })
+    
+    true
+}
+
+system.shutdown = {
+    // Gracefully shutdown the Hyphos system
+    
+    // Log shutdown
+    shutdown_time = sidereal.current_time()
+    uptime = senary.subtract(shutdown_time, system.startup_time)
+    
+    system.log("Hyphos system shutting down. Uptime: " + senary.to_string(uptime))
+    
+    // Clear all scopes except global
+    scope.clear_all()
+    
+    // Clear system state
+    system.current_error = null
+    system.error_thrown = false
+    system.call_stack_depth = 0
+    
+    // Mark as not initialized
+    system.initialized = false
+    
+    "Hyphos system shutdown complete"
+}
+
+system.status = {
+    // Get current system status
+    current_time = sidereal.current_time()
+    uptime = if system.startup_time != null then senary.subtract(current_time, system.startup_time) else senary.create("0")
+    
+    {
+        initialized: system.initialized,
+        startup_time: system.startup_time,
+        current_time: current_time,
+        uptime: uptime,
+        scope_levels: scope.current_level(),
+        error_count: system.error_log.length,
+        custom_types: system.custom_types.size(),
+        call_stack_depth: system.call_stack_depth
+    }
+}
+
+system.reset = {
+    // Reset system to clean state
+    system.shutdown()
+    system.initialize()
+    "Hyphos system reset complete"
+}
+
+system.log = {
+    // System logging function
+    message = args.0
+    level = if args.length > 1 then args.1 else "INFO"
+    
+    log_entry = {
+        timestamp: sidereal.current_time(),
+        level: level,
+        message: message,
+        scope_level: scope.current_level()
+    }
+    
+    if system.system_log == null {
+        system.system_log = []
+    }
+    
+    system.system_log.append(log_entry)
+    log_entry
+}
+
+system.random_id = {
+    // Generate random ID for internal use
+    base_time = sidereal.current_time()
+    random_component = senary.create(string.from_int(system.random_seed))
+    system.random_seed = senary.add(system.random_seed, senary.create("1"))
+    
+    id_base = senary.add(base_time, random_component)
+    senary.to_string(id_base)
+}
+
+system.memory_info = {
+    // Get memory usage information
+    {
+        scope_stack_size: system.scope_stack.length,
+        error_log_size: system.error_log.length,
+        system_log_size: if system.system_log != null then system.system_log.length else 0,
+        custom_types_count: system.custom_types.size(),
+        custom_errors_count: system.custom_error_types.size()
+    }
+}
+
+system.performance_metrics = {
+    // Get performance metrics
+    current_time = sidereal.current_time()
+    
+    {
+        uptime: if system.startup_time != null then senary.subtract(current_time, system.startup_time) else senary.create("0"),
+        scope_changes: system.scope_changes_count or 0,
+        function_calls: system.function_calls_count or 0,
+        error_count: system.error_log.length,
+        memory_usage: system.memory_info()
+    }
+}
+
+system.validate_integrity = {
+    // Validate system integrity
+    validation_results = []
+    
+    // Check scope stack integrity
+    if system.scope_stack.length < 1 {
+        validation_results.append("ERROR: No global scope found")
+    }
+    
+    // Check for circular references in scope stack
+    scope_index = 0
+    while scope_index < system.scope_stack.length {
+        current_scope = system.scope_stack[scope_index]
+        if current_scope == null {
+            validation_results.append("ERROR: Null scope at index " + scope_index)
+        }
+        scope_index = scope_index + 1
+    }
+    
+    // Check error state consistency
+    if system.error_thrown and system.current_error == null {
+        validation_results.append("WARNING: Error thrown flag set but no current error")
+    }
+    
+    if validation_results.length == 0 {
+        validation_results.append("OK: System integrity validated")
+    }
+    
+    validation_results
+}
+
+// Helper functions for type checking (used by core modules)
+system.is_string = {
+    value = args.0
+    // Basic string type detection - implementation specific
+    type.of(value) == "string"
+}
+
+system.is_array = {
+    value = args.0
+    // Basic array type detection - implementation specific  
+    type.of(value) == "array"
+}
+
+system.is_object = {
+    value = args.0
+    // Basic object type detection - implementation specific
+    type.of(value) == "object"
+}
+
+system.is_function = {
+    value = args.0
+    // Basic function type detection - implementation specific
+    type.of(value) == "function"
+}
+
+// Additional system utilities for Hyphos runtime
+system.current_time = {
+    // Get current system time
+    Date.now() // milliseconds since epoch
+}
+
+system.random = {
+    // Generate random number between 0 and 1
+    Math.random()
+}
+
+system.has_built_in = {
+    // Check if built-in object exists
+    object_name = args.0
+    
+    built_in_objects = ["senary", "noesis", "consciousness", "seigbit", "system", "file", "regex", "string", "hardware", "network", "identity", "dot_seigr", "sidereal_time", "hypha_crypt"]
+    built_in_objects.contains(object_name)
+}
+
+system.has_built_in_function = {
+    // Check if built-in function exists
+    function_name = args.0
+    
+    built_in_functions = ["error", "typeof", "console.log", "Date.now", "Math.random"]
+    built_in_functions.contains(function_name)
+}
+
+// File operations
+file.exists = {
+    // Check if file exists
+    path = args.0
+    // Implementation would depend on runtime environment
+    // For now, return true to allow testing
+    true
+}
+
+file.read = {
+    // Read file content
+    path = args.0
+    // Implementation would depend on runtime environment
+    // For now, return empty string
+    ""
+}
+
+// Regex operations
+regex.match = {
+    // Match regex pattern against string
+    text = args.0
+    pattern = args.1
+    
+    # Create regex from pattern string
+    regex_obj = new RegExp(pattern)
+    match_result = text.match(regex_obj)
+    
+    if match_result == null {
+        null
+    } else {
+        {
+            groups: match_result.slice(1), // Capture groups
+            full_match: match_result[0],
+            index: match_result.index
+        }
+    }
+}
+
+// String extensions
+string.prototype.contains = {
+    // Check if string contains substring
+    substring = args.0
+    this.indexOf(substring) >= 0
+}
+
+string.prototype.starts_with = {
+    // Check if string starts with prefix
+    prefix = args.0
+    this.indexOf(prefix) == 0
+}
+
+string.prototype.ends_with = {
+    // Check if string ends with suffix
+    suffix = args.0
+    this.lastIndexOf(suffix) == (this.length - suffix.length)
+}
+
+string.prototype.is_numeric = {
+    // Check if string represents a number
+    not isNaN(parseFloat(this)) and isFinite(this)
+}
+
+string.prototype.to_integer = {
+    // Convert string to integer
+    parseInt(this, 10)
+}
+
+// Array extensions
+array.prototype.contains = {
+    // Check if array contains element
+    element = args.0
+    this.indexOf(element) >= 0
+}
+
+array.prototype.enumerate = {
+    // Return array of [index, value] pairs
+    result = []
+    for i in range(0, this.length) {
+        result.append([i, this[i]])
+    }
+    result
+}
+
+// Range function
+function range(start, end) {
+    result = []
+    if start <= end {
+        for i = start; i < end; i = i + 1 {
+            result.append(i)
+        }
+    } else {
+        for i = start; i > end; i = i - 1 {
+            result.append(i)
+        }
+    }
+    result
+}

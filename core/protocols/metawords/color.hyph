@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.color;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Color operation types (senary-mapped 0-5)
-enum ColorOperation {
-    COLOR_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword ColorOperation = senary_enum {
+    COLOR_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Color processing states (senary-mapped 0-5)
-enum ColorProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword ColorProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Color data types (senary-mapped 0-5)
-enum ColorDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword ColorDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core color messages
-message ColorObject {
-    string object_id = 1;
-    ColorDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    ColorProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword ColorObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_ColorDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_ColorProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message ColorRequest {
-    ColorOperation operation = 1;
-    ColorObject target_object = 2;
-    SenaryArray parameters = 3;
-    ColorProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword ColorRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_ColorOperation operation;
+    private seigbit_ColorObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_ColorProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message ColorResponse {
-    bool success = 1;
-    ColorObject result_object = 2;
-    SenaryArray result_data = 3;
-    ColorProcessingState new_state = 4;
-    string error_message = 5;
+metaword ColorResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_ColorObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_ColorProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Color service definition
-service ColorService {
-    rpc Create(ColorRequest) returns (ColorResponse);
-    rpc Process(ColorRequest) returns (ColorResponse);
-    rpc Validate(ColorRequest) returns (ColorResponse);
-    rpc Optimize(ColorRequest) returns (ColorResponse);
-    rpc Integrate(ColorRequest) returns (ColorResponse);
+metaword ColorService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_ColorRequest) -> seigbit_ColorResponse;
+    async method Process(request: seigbit_ColorRequest) -> seigbit_ColorResponse;
+    async method Validate(request: seigbit_ColorRequest) -> seigbit_ColorResponse;
+    async method Optimize(request: seigbit_ColorRequest) -> seigbit_ColorResponse;
+    async method Integrate(request: seigbit_ColorRequest) -> seigbit_ColorResponse;
 }

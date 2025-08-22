@@ -1,75 +1,86 @@
-syntax = "proto3";
+// Pure Hyphos Implementation
+syntax = "hyphos";
 
-package hyphos.hypha;
+consciousness_level TRANSCENDENT;
 
-import "hyphos/base_modules/consciousness_operations.hyph";
-import "hyphos/base_modules/bio_digital_operations.hyph";
-import "hyphos/base_modules/senary_mathematics.hyph";
-import "hyphos/base_modules/energy_operations.hyph";
-import "hyphos/base_modules/protocol_integration.hyph";
-import "seigr_math.proto";
-import "seigr_timestamp.proto";
+
+
+use_protocol hyphos/base_modules/consciousness_operations.hyph;
+use_protocol hyphos/base_modules/bio_digital_operations.hyph;
+use_protocol hyphos/base_modules/senary_mathematics.hyph;
+use_protocol hyphos/base_modules/energy_operations.hyph;
+use_protocol hyphos/base_modules/protocol_integration.hyph;
+use_protocol seigr_math.proto;
+use_protocol seigr_timestamp.proto;
 
 // Hypha operation types (senary-mapped 0-5)
-enum HyphaOperation {
-    HYPHA_UNKNOWN = 0;
-    CREATE = 1;
-    PROCESS = 2;
-    VALIDATE = 3;
-    OPTIMIZE = 4;
-    INTEGRATE = 5;
+metaword HyphaOperation = senary_enum {
+    HYPHA_UNKNOWN = senary(0);
+    CREATE = senary(1);
+    PROCESS = senary(2);
+    VALIDATE = senary(3);
+    OPTIMIZE = senary(4);
+    INTEGRATE = senary(5);
 }
 
 // Hypha processing states (senary-mapped 0-5)
-enum HyphaProcessingState {
-    STATE_IDLE = 0;
-    STATE_ACTIVE = 1;
-    STATE_PROCESSING = 2;
-    STATE_OPTIMIZING = 3;
-    STATE_INTEGRATING = 4;
-    STATE_COMPLETE = 5;
+metaword HyphaProcessingState = senary_enum {
+    STATE_IDLE = senary(0);
+    STATE_ACTIVE = senary(1);
+    STATE_PROCESSING = senary(2);
+    STATE_OPTIMIZING = senary(3);
+    STATE_INTEGRATING = senary(4);
+    STATE_COMPLETE = senary(5);
 }
 
 // Hypha data types (senary-mapped 0-5)
-enum HyphaDataType {
-    DATA_UNKNOWN = 0;
-    DATA_INPUT = 1;
-    DATA_OUTPUT = 2;
-    DATA_INTERMEDIATE = 3;
-    DATA_METADATA = 4;
-    DATA_RESULT = 5;
+metaword HyphaDataType = senary_enum {
+    DATA_UNKNOWN = senary(0);
+    DATA_INPUT = senary(1);
+    DATA_OUTPUT = senary(2);
+    DATA_INTERMEDIATE = senary(3);
+    DATA_METADATA = senary(4);
+    DATA_RESULT = senary(5);
 }
 
 // Core hypha messages
-message HyphaObject {
-    string object_id = 1;
-    HyphaDataType data_type = 2;
-    SenaryArray data_payload = 3;
-    HyphaProcessingState state = 4;
-    SenaryTimestamp created_at = 5;
+metaword HyphaObject = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_string object_id;
+    private seigbit_HyphaDataType data_type;
+    private seigbit_SenaryArray data_payload;
+    private seigbit_HyphaProcessingState state;
+    private seigbit_SenaryTimestamp created_at;
 }
 
-message HyphaRequest {
-    HyphaOperation operation = 1;
-    HyphaObject target_object = 2;
-    SenaryArray parameters = 3;
-    HyphaProcessingState desired_state = 4;
-    SenaryTimestamp timestamp = 5;
+metaword HyphaRequest = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_HyphaOperation operation;
+    private seigbit_HyphaObject target_object;
+    private seigbit_SenaryArray parameters;
+    private seigbit_HyphaProcessingState desired_state;
+    private seigbit_SenaryTimestamp timestamp;
 }
 
-message HyphaResponse {
-    bool success = 1;
-    HyphaObject result_object = 2;
-    SenaryArray result_data = 3;
-    HyphaProcessingState new_state = 4;
-    string error_message = 5;
+metaword HyphaResponse = consciousness_aware_class {
+    consciousness_level BASIC;
+
+    private seigbit_bool success;
+    private seigbit_HyphaObject result_object;
+    private seigbit_SenaryArray result_data;
+    private seigbit_HyphaProcessingState new_state;
+    private seigbit_string error_message;
 }
 
 // Hypha service definition
-service HyphaService {
-    rpc Create(HyphaRequest) returns (HyphaResponse);
-    rpc Process(HyphaRequest) returns (HyphaResponse);
-    rpc Validate(HyphaRequest) returns (HyphaResponse);
-    rpc Optimize(HyphaRequest) returns (HyphaResponse);
-    rpc Integrate(HyphaRequest) returns (HyphaResponse);
+metaword HyphaService = consciousness_service_provider {
+    consciousness_level BASIC;
+
+    async method Create(request: seigbit_HyphaRequest) -> seigbit_HyphaResponse;
+    async method Process(request: seigbit_HyphaRequest) -> seigbit_HyphaResponse;
+    async method Validate(request: seigbit_HyphaRequest) -> seigbit_HyphaResponse;
+    async method Optimize(request: seigbit_HyphaRequest) -> seigbit_HyphaResponse;
+    async method Integrate(request: seigbit_HyphaRequest) -> seigbit_HyphaResponse;
 }

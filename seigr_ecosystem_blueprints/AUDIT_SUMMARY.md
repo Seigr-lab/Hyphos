@@ -192,7 +192,7 @@ Ensure all documents clearly state:
 ### Phase 4: Language Consistency (ONGOING)
 1. Seigr-specific terminology throughout
 2. Consistent Noesis/HyphaCrypt/Mycelith naming
-3. Bio-digital language emphasis
+3. Future bio-digital language for experimental concepts [CLEARLY MARKED]
 4. Consciousness-aware descriptions
 
 ## ⚠️ CRITICAL WARNINGS FOR AI ASSISTANTS
