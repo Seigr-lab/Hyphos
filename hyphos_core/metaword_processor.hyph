@@ -3,11 +3,11 @@
  * HYPHOS METAWORD PROCESSOR - CORE LANGUAGE INTERPRETER SYSTEM
  * ================================================================================
  * 
- * Advanced metaword processing and interpretation system providing the core
- * language infrastructure for bio-inspired metaword definitions, consciousness
- * integration, and dynamic language feature creation. This metaword implements
- * the fundamental parsing, registration, and execution framework for all Hyphos
- * metawords and language constructs.
+ * Metaword processing and interpretation system providing the core language
+ * infrastructure for bio-inspired metaword definitions, consciousness integration,
+ * and dynamic language feature creation. This metaword implements the fundamental
+ * parsing, registration, and execution framework for all Hyphos metawords and
+ * language constructs.
  * 
  * METAWORD PROCESSOR ARCHITECTURE:
  * ===============================
