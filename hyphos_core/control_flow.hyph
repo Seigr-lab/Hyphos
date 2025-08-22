@@ -45,7 +45,7 @@ metaword control {
      * =============================
      * 
      * Implements conditional execution with automatic scope management and
-     * comprehensive execution tracking. This function provides the fundamental
+     * complete execution tracking. This function provides the fundamental
      * if-then-else logic with Hyphos-specific enhancements for safety and
      * integration with the broader ecosystem.
      * 

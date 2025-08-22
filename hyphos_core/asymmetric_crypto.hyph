@@ -11,7 +11,7 @@
  * - Senary-based mathematical operations for enhanced security
  * - ECDSA digital signatures with deterministic nonces (RFC 6979)
  * - ECIES encryption scheme for secure message passing
- * - Comprehensive audit logging for all cryptographic operations
+ * - Complete audit logging for all cryptographic operations
  * - Integration with Seigr entropy system and sidereal time
  * 
  * SECURITY MODEL:
@@ -78,7 +78,7 @@ metaword asymmetric_crypto {
      * - Uses cosmic entropy from sidereal time for unpredictability
      * - Implements temporal salting to prevent replay attacks
      * - Generates unique key IDs for tracking and revocation
-     * - Comprehensive audit logging for security compliance
+     * - Complete audit logging for security compliance
      * 
      * @param entropy_source Optional external entropy source. If null, uses cosmic entropy
      * @return $Object Keypair containing:
@@ -480,7 +480,7 @@ fun deserialize_point(point_string) {
  * SECURITY FEATURES:
  * - RFC 6979 deterministic nonce prevents signature reuse vulnerabilities
  * - Temporal salting with sidereal time enhances entropy
- * - Comprehensive audit logging for compliance and forensics
+ * - Complete audit logging for compliance and forensics
  * - Quantum-resistant through senary elliptic curve parameters
  * 
  * MATHEMATICAL FOUNDATION:
@@ -581,7 +581,7 @@ fun asymmetric.sign(message, private_key) {
  * - Message hash integrity check prevents tampering
  * - Mathematical verification ensures private key possession
  * - Algorithm identifier validation prevents substitution attacks
- * - Comprehensive audit logging for security monitoring
+ * - Complete audit logging for security monitoring
  * 
  * @param message Original message that was signed
  * @param signature Digital signature object from asymmetric.sign()
@@ -745,7 +745,7 @@ fun asymmetric.encrypt(message, public_key) {
  * SECURITY VALIDATIONS:
  * - MAC verification prevents ciphertext tampering
  * - Ephemeral key validation ensures proper ECDH execution
- * - Comprehensive error handling prevents oracle attacks
+ * - Complete error handling prevents oracle attacks
  * - Audit logging for security monitoring and compliance
  * 
  * ATTACK RESISTANCE:

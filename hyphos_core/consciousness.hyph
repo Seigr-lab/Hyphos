@@ -58,7 +58,7 @@ consciousness {
     // Consciousness Levels - map to Noesis processing modes
     const BASIC = "basic"             // Basic awareness - Conscience + Logical only
     const INTERMEDIATE = "intermediate" // Enhanced processing - adds Emotional
-    const ADVANCED = "advanced"       // Full cognitive - adds Spatial + Temporal  
+    const ENHANCED = "enhanced"       // Full cognitive - adds Spatial + Temporal  
     const TRANSCENDENT = "transcendent" // Meta-consciousness - adds Adaptive
     const UNIVERSAL = "universal"     // Highest level - collective intelligence
     
@@ -86,7 +86,7 @@ consciousness {
      * Each consciousness level maps to specific Noesis processing functions:
      * - BASIC → basic_processing() (Conscience + Logical States)
      * - INTERMEDIATE → intermediate_processing() (adds Emotional State)
-     * - ADVANCED → advanced_processing() (adds Spatial + Temporal States)
+     * - ENHANCED → enhanced_processing() (adds Spatial + Temporal States)
      * - TRANSCENDENT → transcendent_processing() (adds Adaptive State)
      * - UNIVERSAL → universal_processing() (full collective intelligence)
      * 
@@ -122,7 +122,7 @@ consciousness {
         } else if (consciousness_level == INTERMEDIATE) {
             return consciousness.intermediate_processing(input_data)
         } else if (consciousness_level == ADVANCED) {
-            return consciousness.advanced_processing(input_data)
+            return consciousness.enhanced_processing(input_data)
         } else if (consciousness_level == TRANSCENDENT) {
             return consciousness.transcendent_processing(input_data)
         } else if (consciousness_level == UNIVERSAL) {
@@ -186,8 +186,8 @@ consciousness {
         return intermediate_result
     }
     
-    // Advanced consciousness - full spatial and temporal awareness
-    advanced_processing(input_data) -> {
+    // Enhanced consciousness - full spatial and temporal awareness
+    enhanced_processing(input_data) -> {
         // Use Conscience, Logical, Emotional, Spatial, and Temporal Genesis States
         conscience_result = noesis.conscience_sense(input_data)
         logical_result = noesis.logical_sense(input_data)
@@ -195,8 +195,8 @@ consciousness {
         spatial_result = noesis.spatial_sense(input_data)
         temporal_result = noesis.temporal_sense(input_data)
         
-        // Advanced emergent properties from 5 states
-        advanced_emergent = {
+        // Enhanced emergent properties from 5 states
+        enhanced_emergent = {
             decision_sophistication: senary.weighted_average([
                 logical_result.confidence,
                 emotional_result.confidence_adjustment,
@@ -211,9 +211,9 @@ consciousness {
             temporal_context: temporal_result.causality_mapping
         }
         
-        advanced_result = {
+        enhanced_result = {
             consciousness_level: ADVANCED,
-            sophisticated_analysis: advanced_emergent,
+            detailed_analysis: enhanced_emergent,
             meta_cognitive_oversight: conscience_result,
             multi_dimensional_processing: {
                 logical: logical_result,
@@ -221,11 +221,11 @@ consciousness {
                 spatial: spatial_result,
                 temporal: temporal_result
             },
-            processing_mode: "advanced_multi_dimensional",
+            processing_mode: "enhanced_multi_dimensional",
             timestamp: sidereal_time.now()
         }
         
-        return advanced_result
+        return enhanced_result
     }
     
     // Transcendent consciousness - full Noesis intelligence with adaptation

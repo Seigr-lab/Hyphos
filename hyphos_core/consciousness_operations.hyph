@@ -17,7 +17,7 @@
  * CONSCIOUSNESS LEVEL MAPPING:
  * - basic_level() → consciousness.basic_processing()
  * - intermediate_level() → consciousness.intermediate_processing()
- * - advanced_level() → consciousness.advanced_processing()
+ * - enhanced_level() → consciousness.enhanced_processing()
  * - transcendent_level() → consciousness.transcendent_processing()
  * - universal_level() → consciousness.universal_processing()
  * 
@@ -86,9 +86,9 @@ consciousness_operations {
         return consciousness.intermediate_processing(input_data)
     }
     
-    // Advanced level processing - delegates to consciousness.advanced_processing
-    advanced_level(input_data, processing_context = null, knowledge_base = null, meta_context = null) -> {
-        return consciousness.advanced_processing(input_data)
+    // Enhanced level processing - delegates to consciousness.enhanced_processing
+    enhanced_level(input_data, processing_context = null, knowledge_base = null, meta_context = null) -> {
+        return consciousness.enhanced_processing(input_data)
     }
     
     // Transcendent level processing - delegates to consciousness.transcendent_processing
