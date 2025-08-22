@@ -1,11 +1,11 @@
 /**
  * ================================================================================
- * HYPHOS TYPES METAWORD - ADVANCED TYPE SYSTEM AND VALIDATION FRAMEWORK
+ * HYPHOS TYPES METAWORD - TYPE SYSTEM AND VALIDATION FRAMEWORK
  * ================================================================================
  * 
- * Advanced type system and validation framework providing comprehensive type
- * checking, consciousness-aware type inference, and adaptive type optimization
- * for the Hyphos language's sophisticated type management infrastructure.
+ * Type system and validation framework providing type checking, consciousness-aware
+ * type inference, and adaptive type optimization for the Hyphos language's type
+ * management infrastructure.
  * 
  * @author Sergi Saldaña-Massó (sergism77)
  * @version 2.0.0
