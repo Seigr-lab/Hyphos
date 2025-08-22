@@ -108,8 +108,8 @@ metaword graphics {
      * 
      * Sets the consciousness level for graphics operations, enabling adaptive
      * rendering quality and optimization based on the current consciousness
-     * state. Higher consciousness levels provide more sophisticated graphics
-     * processing with enhanced visual quality and intelligent optimization.
+     * state. Higher consciousness levels provide enhanced graphics processing
+     * with improved visual quality and intelligent optimization.
      * 
      * CONSCIOUSNESS LEVEL EFFECTS:
      * - Level 0-1: Basic rendering with minimal processing overhead
@@ -123,7 +123,7 @@ metaword graphics {
      * - Provides immediate feedback on configuration success
      * 
      * PERFORMANCE IMPACT:
-     * - Higher levels enable more sophisticated processing
+     * - Higher levels enable enhanced processing capabilities
      * - Automatic resource allocation based on consciousness level
      * - Dynamic adjustment of rendering quality and effects
      * - Energy optimization through consciousness-driven decisions
