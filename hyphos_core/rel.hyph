@@ -1,0 +1,1461 @@
+#!/usr/bin/env hyphos
+// rel.hyph - Rebel Earthling License (RE-L) Framework Metaword for Hyphos Native Runtime
+// Part of the Seigr Ecosystem - Pure Hyphos Implementation
+//
+// Implements the comprehensive Rebel Earthling License framework for ethical governance,
+// contribution tracking, compliance monitoring, and automated license enforcement.
+//
+// Core Principles:
+// - Collective Welfare Priority over individual profit maximization
+// - Environmental Sustainability with net-positive ecological outcomes  
+// - Democratic Governance with community participation in decisions
+// - Transparency and Openness in all processes and implementations
+// - Non-Exploitation protecting vulnerable populations and fair compensation
+// - Regenerative Innovation contributing to healing damaged systems
+
+metaword rel {
+    framework_id: string
+    compliance_engine: RELComplianceEngine
+    contribution_registry: ContributionRegistry
+    ethical_assessor: EthicalAssessment
+    governance_system: CommunityGovernance
+    violation_monitor: ViolationDetector
+    noesis_intelligence: NoesisIntelligence
+    protocol_handler: RELProtocol
+    consciousness_recorder: ConsciousnessRecorder
+    immune_integration: ImmuneMonitor
+}
+
+// Contribution Types and Entity Classifications
+enum ContributionType {
+    CODE = "code"
+    DOCUMENTATION = "documentation"
+    TESTING = "testing"
+    COMMUNITY = "community"
+    RESEARCH = "research"
+    INFRASTRUCTURE = "infrastructure"
+    SECURITY = "security"
+    DESIGN = "design"
+    ETHICAL_REVIEW = "ethical_review"
+    GOVERNANCE = "governance"
+}
+
+enum EntityType {
+    INDIVIDUAL = "individual"
+    ORGANIZATION = "organization"
+    AUTOMATED_SYSTEM = "automated_system"
+    COLLECTIVE = "collective"
+    COMMUNITY = "community"
+}
+
+enum RELCompliance {
+    FULL_COMPLIANCE = "full_compliance"
+    PARTIAL_COMPLIANCE = "partial_compliance"
+    NON_COMPLIANCE = "non_compliance"
+    UNDER_REVIEW = "under_review"
+    SUSPENDED = "suspended"
+    EXCELLENT = "excellent"
+    GOOD = "good"
+    ACCEPTABLE = "acceptable"
+    NEEDS_IMPROVEMENT = "needs_improvement"
+    CONCERNING = "concerning"
+}
+
+// Violation Types and Severity Levels
+enum ViolationType {
+    UNAUTHORIZED_ACCESS = "unauthorized_access"
+    DATA_MISUSE = "data_misuse"
+    ENERGY_WASTE = "energy_waste"
+    ETHICAL_BREACH = "ethical_breach"
+    LICENSE_VIOLATION = "license_violation"
+    CONTRIBUTION_FRAUD = "contribution_fraud"
+    ECOSYSTEM_DAMAGE = "ecosystem_damage"
+    FINANCIAL_SPECULATION = "financial_speculation"
+    WEAPONIZATION = "weaponization"
+    ENVIRONMENTAL_DESTRUCTION = "environmental_destruction"
+    EXPLOITATION = "exploitation"
+    POWER_CONCENTRATION = "power_concentration"
+    MISINFORMATION = "misinformation"
+    PRIVACY_VIOLATION = "privacy_violation"
+}
+
+enum IncidentSeverity {
+    LOW = 1
+    MEDIUM = 2
+    HIGH = 3
+    CRITICAL = 4
+    EMERGENCY = 5
+}
+
+enum ComplianceAction {
+    WARNING = "warning"
+    REMEDIATION_REQUIRED = "remediation_required"
+    LICENSE_SUSPENSION = "license_suspension"
+    LICENSE_TERMINATION = "license_termination"
+    COMMUNITY_REVIEW = "community_review"
+    HYPHEN_ESCALATION = "hyphen_escalation"
+}
+
+// Seigr Identity with REL Compliance
+struct SeigrIdentity {
+    identity_id: string
+    entity_name: string
+    entity_type: EntityType
+    compliance_level: RELCompliance
+    created_at: string
+    verified: boolean
+    trust_score: senary.Number
+    metadata: map[string, any]
+    contribution_history: array[string]
+    violation_history: array[string]
+    
+    function initialize() {
+        identity_id = hypha_crypt.generate_uuid()
+        created_at = senary.current_time()
+        verified = false
+        trust_score = senary.from_base10("1") // Initial trust
+        metadata = {}
+        contribution_history = []
+        violation_history = []
+        compliance_level = RELCompliance.UNDER_REVIEW
+    }
+    
+    function update_compliance(new_level: RELCompliance) {
+        compliance_level = new_level
+        metadata["last_compliance_update"] = senary.current_time()
+        record_compliance_change(new_level)
+    }
+    
+    function add_contribution(contribution_id: string) {
+        contribution_history.append(contribution_id)
+        // Increase trust score for positive contributions
+        trust_improvement = senary.from_decimal("0.1")
+        trust_score = trust_score + trust_improvement
+    }
+    
+    function add_violation(violation_id: string) {
+        violation_history.append(violation_id)
+        // Decrease trust score for violations
+        trust_penalty = senary.from_decimal("0.5")
+        trust_score = trust_score - trust_penalty
+        if trust_score < senary.zero() {
+            trust_score = senary.zero()
+        }
+    }
+    
+    function record_compliance_change(new_level: RELCompliance) {
+        consciousness.record_compliance_update(identity_id, new_level)
+    }
+}
+
+// Contribution Unit Structure
+struct ContributionUnit {
+    contribution_id: string
+    contributor_identity: SeigrIdentity
+    contribution_type: ContributionType
+    value_points: senary.Number
+    created_at: string
+    verified: boolean
+    metadata: map[string, any]
+    parent_contributions: array[string]
+    derived_contributions: array[string]
+    rel_compliance_score: senary.Number
+    
+    function initialize() {
+        contribution_id = hypha_crypt.generate_uuid()
+        created_at = senary.current_time()
+        verified = false
+        value_points = senary.zero()
+        metadata = {}
+        parent_contributions = []
+        derived_contributions = []
+        rel_compliance_score = senary.from_decimal("1.0") // Start with full compliance
+    }
+    
+    function verify_contribution() -> boolean {
+        // Delegate verification to Noesis intelligence
+        verification_result = noesis.verify_contribution_authenticity(this)
+        verified = verification_result.is_authentic
+        
+        if verified {
+            consciousness.record_contribution_verified(contribution_id, contributor_identity.identity_id)
+        } else {
+            consciousness.record_contribution_rejected(contribution_id, verification_result.rejection_reason)
+        }
+        
+        return verified
+    }
+    
+    function calculate_value_points() -> senary.Number {
+        // Delegate value calculation to Noesis intelligence
+        value_assessment = noesis.assess_contribution_value(this)
+        value_points = value_assessment.calculated_value
+        
+        // Factor in REL compliance score
+        compliance_multiplier = rel_compliance_score
+        adjusted_value = value_points * compliance_multiplier
+        
+        return adjusted_value
+    }
+    
+    function assess_rel_compliance() -> senary.Number {
+        // Comprehensive REL compliance assessment
+        compliance_factors = {
+            "collective_welfare": assess_collective_welfare(),
+            "environmental_impact": assess_environmental_impact(),
+            "transparency": assess_transparency(),
+            "non_exploitation": assess_non_exploitation(),
+            "community_benefit": assess_community_benefit()
+        }
+        
+        total_score = senary.zero()
+        factor_count = senary.from_base10(compliance_factors.size().to_string())
+        
+        for factor_name, score in compliance_factors {
+            total_score = total_score + score
+        }
+        
+        rel_compliance_score = total_score / factor_count
+        return rel_compliance_score
+    }
+    
+    function assess_collective_welfare() -> senary.Number {
+        // Delegate to Noesis for sophisticated welfare assessment
+        return noesis.assess_collective_welfare_impact(this)
+    }
+    
+    function assess_environmental_impact() -> senary.Number {
+        // Evaluate environmental sustainability
+        return noesis.assess_environmental_sustainability(this)
+    }
+    
+    function assess_transparency() -> senary.Number {
+        // Check transparency and openness
+        return noesis.assess_transparency_level(this)
+    }
+    
+    function assess_non_exploitation() -> senary.Number {
+        // Verify no exploitation or harm
+        return noesis.assess_exploitation_risk(this)
+    }
+    
+    function assess_community_benefit() -> senary.Number {
+        // Evaluate community benefit and participation
+        return noesis.assess_community_impact(this)
+    }
+}
+
+// Contribution Registry for Tracking All Contributions
+struct ContributionRegistry {
+    registry_id: string
+    contributions: map[string, ContributionUnit]
+    contributor_totals: map[string, senary.Number]
+    identity_registry: map[string, SeigrIdentity]
+    contribution_lineage: map[string, array[string]]
+    
+    function initialize() {
+        registry_id = "REL_CONTRIB:" + hypha_crypt.generate_short_uuid()
+        contributions = {}
+        contributor_totals = {}
+        identity_registry = {}
+        contribution_lineage = {}
+        
+        consciousness.record_system_birth("rel_contribution_registry", registry_id)
+    }
+    
+    function register_contribution(contribution: ContributionUnit) -> boolean {
+        // Verify contribution authenticity
+        if !contribution.verify_contribution() {
+            consciousness.record_contribution_rejection(contribution.contribution_id, "verification_failed")
+            return false
+        }
+        
+        // Store contribution
+        contributions[contribution.contribution_id] = contribution
+        
+        // Update contributor totals
+        contributor_id = contribution.contributor_identity.identity_id
+        current_total = contributor_totals.get(contributor_id, senary.zero())
+        contribution_value = contribution.calculate_value_points()
+        new_total = current_total + contribution_value
+        contributor_totals[contributor_id] = new_total
+        
+        // Track lineage
+        if contribution.parent_contributions.length > 0 {
+            contribution_lineage[contribution.contribution_id] = contribution.parent_contributions
+        }
+        
+        // Update identity
+        if identity_registry.has(contributor_id) {
+            identity_registry[contributor_id].add_contribution(contribution.contribution_id)
+        }
+        
+        consciousness.record_contribution_registered(contribution.contribution_id, contributor_id)
+        return true
+    }
+    
+    function get_participant_contribution_units(participant_id: string) -> senary.Number {
+        return contributor_totals.get(participant_id, senary.zero())
+    }
+    
+    function register_identity(identity: SeigrIdentity) -> boolean {
+        identity_registry[identity.identity_id] = identity
+        contributor_totals[identity.identity_id] = senary.zero()
+        
+        consciousness.record_identity_registered(identity.identity_id, identity.entity_name)
+        return true
+    }
+    
+    function update_identity_compliance(identity_id: string, new_level: RELCompliance) {
+        if identity_registry.has(identity_id) {
+            identity_registry[identity_id].update_compliance(new_level)
+        }
+    }
+    
+    function get_registry_info() -> map[string, any] {
+        return {
+            "registry_id": registry_id,
+            "total_contributions": contributions.size(),
+            "total_contributors": contributor_totals.size(),
+            "total_identities": identity_registry.size(),
+            "last_update": senary.current_time()
+        }
+    }
+}
+
+// Compliance Violation Structure
+struct ComplianceViolation {
+    violation_id: string
+    violation_type: ViolationType
+    severity: IncidentSeverity
+    description: string
+    reporter_id: string
+    target_entity_id: string
+    evidence: map[string, any]
+    resolution_status: string
+    reported_at: string
+    resolved_at: string
+    
+    function initialize() {
+        violation_id = hypha_crypt.generate_uuid()
+        reported_at = senary.current_time()
+        resolution_status = "open"
+        evidence = {}
+        resolved_at = ""
+    }
+    
+    function resolve(resolution_notes: string) {
+        resolution_status = "resolved"
+        resolved_at = senary.current_time()
+        evidence["resolution_notes"] = resolution_notes
+        
+        consciousness.record_violation_resolved(violation_id, resolution_notes)
+    }
+    
+    function escalate(escalation_reason: string) {
+        resolution_status = "escalated"
+        evidence["escalation_reason"] = escalation_reason
+        evidence["escalated_at"] = senary.current_time()
+        
+        consciousness.record_violation_escalated(violation_id, escalation_reason)
+    }
+}
+
+// Compliance Record for Entity Tracking
+struct ComplianceRecord {
+    entity_id: string
+    compliance_score: senary.Number
+    compliance_level: string
+    violations: array[ComplianceViolation]
+    last_evaluation: string
+    total_violations: senary.Number
+    resolved_violations: senary.Number
+    
+    function initialize() {
+        compliance_score = senary.from_base10("100") // Start with perfect score
+        compliance_level = "COMPLIANT"
+        violations = []
+        last_evaluation = senary.current_time()
+        total_violations = senary.zero()
+        resolved_violations = senary.zero()
+    }
+    
+    function add_violation(violation: ComplianceViolation) {
+        violations.append(violation)
+        total_violations = total_violations + senary.one()
+        recalculate_compliance()
+    }
+    
+    function resolve_violation(violation_id: string, resolution_notes: string) -> boolean {
+        for violation in violations {
+            if violation.violation_id == violation_id {
+                violation.resolve(resolution_notes)
+                resolved_violations = resolved_violations + senary.one()
+                recalculate_compliance()
+                return true
+            }
+        }
+        return false
+    }
+    
+    function recalculate_compliance() {
+        // Calculate penalty based on open violations
+        total_penalty = senary.zero()
+        
+        for violation in violations {
+            if violation.resolution_status == "open" {
+                penalty = calculate_violation_penalty(violation)
+                total_penalty = total_penalty + penalty
+            }
+        }
+        
+        // Update compliance score (100 - penalties)
+        base_score = senary.from_base10("100")
+        compliance_score = base_score - total_penalty
+        
+        if compliance_score < senary.zero() {
+            compliance_score = senary.zero()
+        }
+        
+        // Determine compliance level
+        update_compliance_level()
+        last_evaluation = senary.current_time()
+    }
+    
+    function calculate_violation_penalty(violation: ComplianceViolation) -> senary.Number {
+        base_penalty = senary.from_base10("5")
+        severity_multiplier = senary.from_base10(violation.severity.value.to_string())
+        
+        penalty = base_penalty * severity_multiplier
+        
+        // Type-specific adjustments
+        type_adjustments = {
+            ViolationType.ECOSYSTEM_DAMAGE: senary.from_base10("50"),
+            ViolationType.EXPLOITATION: senary.from_base10("30"),
+            ViolationType.WEAPONIZATION: senary.from_base10("40"),
+            ViolationType.ENVIRONMENTAL_DESTRUCTION: senary.from_base10("45"),
+            ViolationType.FINANCIAL_SPECULATION: senary.from_base10("20"),
+            ViolationType.MISINFORMATION: senary.from_base10("25")
+        }
+        
+        if type_adjustments.has(violation.violation_type) {
+            type_penalty = type_adjustments[violation.violation_type]
+            penalty = penalty + type_penalty
+        }
+        
+        return penalty
+    }
+    
+    function update_compliance_level() {
+        if compliance_score >= senary.from_base10("90") {
+            compliance_level = "EXCELLENT"
+        } else if compliance_score >= senary.from_base10("80") {
+            compliance_level = "GOOD"
+        } else if compliance_score >= senary.from_base10("70") {
+            compliance_level = "ACCEPTABLE"
+        } else if compliance_score >= senary.from_base10("60") {
+            compliance_level = "NEEDS_IMPROVEMENT"
+        } else if compliance_score >= senary.from_base10("50") {
+            compliance_level = "CONCERNING"
+        } else if compliance_score >= senary.from_base10("25") {
+            compliance_level = "WARNING"
+        } else if compliance_score >= senary.from_base10("10") {
+            compliance_level = "RESTRICTED"
+        } else {
+            compliance_level = "SUSPENDED"
+        }
+    }
+}
+
+// REL Compliance Engine
+struct RELComplianceEngine {
+    engine_id: string
+    compliance_records: map[string, ComplianceRecord]
+    violation_thresholds: map[ViolationType, senary.Number]
+    noesis_intelligence: NoesisIntelligence
+    governance_system: CommunityGovernance
+    protocol_handler: RELProtocol
+    consciousness_recorder: ConsciousnessRecorder
+    immune_monitor: ImmuneMonitor
+    
+    function initialize() {
+        engine_id = "RELCE:" + hypha_crypt.generate_short_uuid()
+        compliance_records = {}
+        setup_violation_thresholds()
+        
+        // Initialize Noesis intelligence for ethical assessment
+        noesis_intelligence = noesis.create_specialized_engine("ethical_compliance")
+        governance_system = CommunityGovernance{}
+        protocol_handler = RELProtocol{}
+        consciousness_recorder = consciousness.create_recorder("rel_compliance")
+        immune_monitor = create_immune_monitor()
+        
+        consciousness.record_system_birth("rel_compliance_engine", engine_id)
+    }
+    
+    function setup_violation_thresholds() {
+        violation_thresholds = {
+            ViolationType.UNAUTHORIZED_ACCESS: senary.from_base10("20"),
+            ViolationType.DATA_MISUSE: senary.from_base10("15"),
+            ViolationType.ENERGY_WASTE: senary.from_base10("25"),
+            ViolationType.ETHICAL_BREACH: senary.from_base10("10"),
+            ViolationType.LICENSE_VIOLATION: senary.from_base10("5"),
+            ViolationType.CONTRIBUTION_FRAUD: senary.from_base10("3"),
+            ViolationType.ECOSYSTEM_DAMAGE: senary.from_base10("1"),
+            ViolationType.FINANCIAL_SPECULATION: senary.from_base10("2"),
+            ViolationType.WEAPONIZATION: senary.from_base10("1"),
+            ViolationType.ENVIRONMENTAL_DESTRUCTION: senary.from_base10("1"),
+            ViolationType.EXPLOITATION: senary.from_base10("2"),
+            ViolationType.POWER_CONCENTRATION: senary.from_base10("3"),
+            ViolationType.MISINFORMATION: senary.from_base10("4"),
+            ViolationType.PRIVACY_VIOLATION: senary.from_base10("5")
+        }
+    }
+    
+    function evaluate_entity_compliance(entity_id: string) -> ComplianceRecord {
+        if !compliance_records.has(entity_id) {
+            compliance_records[entity_id] = ComplianceRecord{entity_id: entity_id}
+            compliance_records[entity_id].initialize()
+        }
+        
+        record = compliance_records[entity_id]
+        record.recalculate_compliance()
+        
+        consciousness.record_compliance_evaluation(entity_id, record.compliance_level, record.compliance_score)
+        
+        return record
+    }
+    
+    function report_violation(violation: ComplianceViolation) -> string {
+        entity_id = violation.target_entity_id
+        
+        if !compliance_records.has(entity_id) {
+            compliance_records[entity_id] = ComplianceRecord{entity_id: entity_id}
+            compliance_records[entity_id].initialize()
+        }
+        
+        compliance_records[entity_id].add_violation(violation)
+        
+        consciousness.record_violation_reported(violation.violation_id, violation.violation_type, entity_id)
+        
+        // Delegate to Noesis for intelligent violation analysis
+        violation_analysis = noesis_intelligence.analyze_violation_severity(violation)
+        
+        if violation_analysis.requires_immediate_action {
+            apply_immediate_action(violation, violation_analysis.recommended_action)
+        }
+        
+        // Auto-evaluate after violation report
+        evaluate_entity_compliance(entity_id)
+        
+        return violation.violation_id
+    }
+    
+    function resolve_violation(violation_id: string, resolution_notes: string) -> boolean {
+        for entity_id, record in compliance_records {
+            if record.resolve_violation(violation_id, resolution_notes) {
+                consciousness.record_violation_resolved(violation_id, resolution_notes)
+                // Re-evaluate compliance after resolution
+                evaluate_entity_compliance(entity_id)
+                return true
+            }
+        }
+        return false
+    }
+    
+    function apply_immediate_action(violation: ComplianceViolation, action: ComplianceAction) {
+        entity_id = violation.target_entity_id
+        
+        switch action {
+            case ComplianceAction.WARNING:
+                issue_warning(entity_id, violation)
+            case ComplianceAction.REMEDIATION_REQUIRED:
+                require_remediation(entity_id, violation)
+            case ComplianceAction.LICENSE_SUSPENSION:
+                suspend_license(entity_id, violation)
+            case ComplianceAction.LICENSE_TERMINATION:
+                terminate_license(entity_id, violation)
+            case ComplianceAction.COMMUNITY_REVIEW:
+                escalate_to_community(entity_id, violation)
+            case ComplianceAction.HYPHEN_ESCALATION:
+                escalate_to_hyphen(entity_id, violation)
+        }
+        
+        consciousness.record_compliance_action(entity_id, action, violation.violation_id)
+    }
+    
+    function issue_warning(entity_id: string, violation: ComplianceViolation) {
+        warning_message = "REL compliance warning issued for violation: " + violation.description
+        protocol_handler.send_warning_notification(entity_id, warning_message)
+    }
+    
+    function require_remediation(entity_id: string, violation: ComplianceViolation) {
+        remediation_plan = noesis_intelligence.generate_remediation_plan(violation)
+        protocol_handler.send_remediation_requirements(entity_id, remediation_plan)
+    }
+    
+    function suspend_license(entity_id: string, violation: ComplianceViolation) {
+        suspension_notice = "License suspended due to REL violation: " + violation.description
+        protocol_handler.issue_license_suspension(entity_id, suspension_notice)
+    }
+    
+    function terminate_license(entity_id: string, violation: ComplianceViolation) {
+        termination_notice = "License terminated due to severe REL violation: " + violation.description
+        protocol_handler.issue_license_termination(entity_id, termination_notice)
+    }
+    
+    function escalate_to_community(entity_id: string, violation: ComplianceViolation) {
+        governance_system.initiate_community_review(entity_id, violation)
+    }
+    
+    function escalate_to_hyphen(entity_id: string, violation: ComplianceViolation) {
+        protocol_handler.escalate_to_hyphen_nodes(entity_id, violation)
+    }
+    
+    function get_entity_compliance(entity_id: string) -> ComplianceRecord? {
+        return compliance_records.get(entity_id)
+    }
+    
+    function get_compliance_summary() -> map[string, any] {
+        total_entities = compliance_records.size()
+        compliant_count = 0
+        
+        for entity_id, record in compliance_records {
+            if record.compliance_level == "COMPLIANT" || record.compliance_level == "EXCELLENT" || record.compliance_level == "GOOD" {
+                compliant_count += 1
+            }
+        }
+        
+        total_violations = 0
+        open_violations = 0
+        
+        for entity_id, record in compliance_records {
+            total_violations += record.total_violations.to_base10()
+            for violation in record.violations {
+                if violation.resolution_status == "open" {
+                    open_violations += 1
+                }
+            }
+        }
+        
+        compliance_rate = "0%"
+        if total_entities > 0 {
+            rate_percent = (compliant_count * 100) / total_entities
+            compliance_rate = rate_percent.to_string() + "%"
+        }
+        
+        return {
+            "engine_id": engine_id,
+            "total_entities": total_entities,
+            "compliant_entities": compliant_count,
+            "compliance_rate": compliance_rate,
+            "total_violations": total_violations,
+            "open_violations": open_violations,
+            "system_status": "operational",
+            "mathematical_foundation": "Pure Senary-based scoring",
+            "last_update": senary.current_time()
+        }
+    }
+    
+    function create_immune_monitor() -> ImmuneMonitor {
+        return ImmuneMonitor{
+            monitor_id: "rel_immune_" + hypha_crypt.generate_short_uuid(),
+            target_system: "rel_compliance",
+            threat_patterns: [
+                "compliance_evasion", "violation_fraud", "identity_spoofing",
+                "contribution_manipulation", "license_abuse"
+            ],
+            response_protocols: [
+                "flag_suspicious_activity", "escalate_to_compliance", "quarantine_entity"
+            ]
+        }
+    }
+}
+
+// Ethical Assessment Framework
+struct EthicalAssessment {
+    assessor_id: string
+    assessment_criteria: array[string]
+    noesis_intelligence: NoesisIntelligence
+    
+    function initialize() {
+        assessor_id = "REL_ETHICS:" + hypha_crypt.generate_short_uuid()
+        setup_assessment_criteria()
+        noesis_intelligence = noesis.create_specialized_engine("ethical_assessment")
+    }
+    
+    function setup_assessment_criteria() {
+        assessment_criteria = [
+            "collective_welfare_priority",
+            "environmental_sustainability",
+            "democratic_governance",
+            "transparency_openness", 
+            "non_exploitation",
+            "regenerative_innovation",
+            "community_benefit",
+            "long_term_impact",
+            "resource_optimization",
+            "ethical_alignment"
+        ]
+    }
+    
+    function assess_work_ethics(work_description: string, intended_use: string) -> map[string, any] {
+        // Delegate comprehensive ethical assessment to Noesis
+        ethical_analysis = noesis_intelligence.assess_work_ethics(work_description, intended_use)
+        
+        assessment = {
+            "assessor_id": assessor_id,
+            "overall_score": ethical_analysis.overall_ethics_score,
+            "criterion_scores": ethical_analysis.criterion_breakdown,
+            "compliance_level": determine_compliance_level(ethical_analysis.overall_ethics_score),
+            "prohibited_uses": identify_prohibited_uses(work_description, intended_use),
+            "required_assessments": identify_required_assessments(work_description, intended_use),
+            "recommendations": ethical_analysis.improvement_recommendations,
+            "warnings": ethical_analysis.ethical_warnings,
+            "timestamp": senary.current_time()
+        }
+        
+        consciousness.record_ethical_assessment(work_description, assessment["compliance_level"])
+        
+        return assessment
+    }
+    
+    function determine_compliance_level(overall_score: senary.Number) -> RELCompliance {
+        if overall_score >= senary.from_decimal("0.9") {
+            return RELCompliance.EXCELLENT
+        } else if overall_score >= senary.from_decimal("0.8") {
+            return RELCompliance.GOOD
+        } else if overall_score >= senary.from_decimal("0.7") {
+            return RELCompliance.ACCEPTABLE
+        } else if overall_score >= senary.from_decimal("0.6") {
+            return RELCompliance.NEEDS_IMPROVEMENT
+        } else if overall_score >= senary.from_decimal("0.5") {
+            return RELCompliance.CONCERNING
+        } else {
+            return RELCompliance.NON_COMPLIANCE
+        }
+    }
+    
+    function identify_prohibited_uses(work_description: string, intended_use: string) -> array[string] {
+        // Delegate to Noesis for sophisticated prohibition detection
+        return noesis_intelligence.identify_prohibited_activities(work_description, intended_use)
+    }
+    
+    function identify_required_assessments(work_description: string, intended_use: string) -> array[string] {
+        required_assessments = []
+        
+        // Community Impact Assessment
+        if requires_community_assessment(work_description, intended_use) {
+            required_assessments.append("community_impact_assessment")
+        }
+        
+        // Environmental Impact Assessment
+        if requires_environmental_assessment(work_description, intended_use) {
+            required_assessments.append("environmental_impact_assessment")
+        }
+        
+        // Ethical Review
+        if requires_ethical_review(work_description, intended_use) {
+            required_assessments.append("ethical_review")
+        }
+        
+        // Democratic Input Process
+        if requires_democratic_input(work_description, intended_use) {
+            required_assessments.append("democratic_input_process")
+        }
+        
+        return required_assessments
+    }
+    
+    function requires_community_assessment(work_description: string, intended_use: string) -> boolean {
+        return noesis_intelligence.assess_community_impact_requirement(work_description, intended_use)
+    }
+    
+    function requires_environmental_assessment(work_description: string, intended_use: string) -> boolean {
+        return noesis_intelligence.assess_environmental_impact_requirement(work_description, intended_use)
+    }
+    
+    function requires_ethical_review(work_description: string, intended_use: string) -> boolean {
+        return noesis_intelligence.assess_ethical_review_requirement(work_description, intended_use)
+    }
+    
+    function requires_democratic_input(work_description: string, intended_use: string) -> boolean {
+        return noesis_intelligence.assess_democratic_input_requirement(work_description, intended_use)
+    }
+}
+
+// Community Governance System
+struct CommunityGovernance {
+    governance_id: string
+    active_reviews: map[string, CommunityReview]
+    decision_history: array[GovernanceDecision]
+    voting_system: MycelithIntegration
+    noesis_intelligence: NoesisIntelligence
+    
+    function initialize() {
+        governance_id = "REL_GOV:" + hypha_crypt.generate_short_uuid()
+        active_reviews = {}
+        decision_history = []
+        voting_system = MycelithIntegration{}
+        noesis_intelligence = noesis.create_specialized_engine("community_governance")
+    }
+    
+    function initiate_community_review(entity_id: string, violation: ComplianceViolation) -> string {
+        review = CommunityReview{
+            review_id: hypha_crypt.generate_uuid(),
+            entity_id: entity_id,
+            violation: violation,
+            status: "active",
+            started_at: senary.current_time(),
+            community_feedback: [],
+            decision: ""
+        }
+        
+        active_reviews[review.review_id] = review
+        
+        // Initiate Mycelith voting process
+        voting_proposal = create_governance_proposal(review)
+        voting_system.create_proposal(voting_proposal)
+        
+        consciousness.record_community_review_initiated(review.review_id, entity_id)
+        
+        return review.review_id
+    }
+    
+    function create_governance_proposal(review: CommunityReview) -> map[string, any] {
+        return {
+            "title": "REL Compliance Review: " + review.entity_id,
+            "description": "Community review of REL compliance violation: " + review.violation.description,
+            "proposer_id": governance_id,
+            "metadata": {
+                "review_id": review.review_id,
+                "entity_id": review.entity_id,
+                "violation_type": review.violation.violation_type,
+                "violation_severity": review.violation.severity
+            }
+        }
+    }
+    
+    function process_community_feedback(review_id: string, feedback: CommunityFeedback) -> boolean {
+        if !active_reviews.has(review_id) {
+            return false
+        }
+        
+        review = active_reviews[review_id]
+        review.community_feedback.append(feedback)
+        
+        consciousness.record_community_feedback(review_id, feedback.participant_id)
+        
+        return true
+    }
+    
+    function finalize_review(review_id: string, decision: GovernanceDecision) -> boolean {
+        if !active_reviews.has(review_id) {
+            return false
+        }
+        
+        review = active_reviews[review_id]
+        review.status = "completed"
+        review.decision = decision.decision_text
+        review.completed_at = senary.current_time()
+        
+        // Move to history
+        decision_history.append(decision)
+        active_reviews.remove(review_id)
+        
+        consciousness.record_governance_decision(review_id, decision.decision_text)
+        
+        return true
+    }
+}
+
+struct CommunityReview {
+    review_id: string
+    entity_id: string
+    violation: ComplianceViolation
+    status: string
+    started_at: string
+    completed_at: string
+    community_feedback: array[CommunityFeedback]
+    decision: string
+}
+
+struct CommunityFeedback {
+    feedback_id: string
+    participant_id: string
+    review_id: string
+    feedback_text: string
+    recommendation: string
+    timestamp: string
+    
+    function initialize() {
+        feedback_id = hypha_crypt.generate_uuid()
+        timestamp = senary.current_time()
+    }
+}
+
+struct GovernanceDecision {
+    decision_id: string
+    review_id: string
+    decision_text: string
+    rationale: string
+    action_required: ComplianceAction
+    decided_at: string
+    
+    function initialize() {
+        decision_id = hypha_crypt.generate_uuid()
+        decided_at = senary.current_time()
+    }
+}
+
+// Mycelith Integration for Voting
+struct MycelithIntegration {
+    integration_id: string
+    
+    function initialize() {
+        integration_id = "REL_MYCELITH:" + hypha_crypt.generate_short_uuid()
+    }
+    
+    function create_proposal(proposal_data: map[string, any]) -> string {
+        // Delegate to Mycelith voting system
+        return mycelith_vote.create_proposal(
+            proposal_data["title"],
+            proposal_data["description"],
+            proposal_data["proposer_id"],
+            proposal_data["metadata"]
+        )
+    }
+    
+    function get_voting_outcome(proposal_id: string) -> map[string, any] {
+        return mycelith_vote.get_proposal_outcome(proposal_id)
+    }
+}
+
+// REL Protocol Handler
+struct RELProtocol {
+    protocol_id: string
+    message_handlers: map[string, function]
+    network_participants: array[string]
+    
+    function initialize() {
+        protocol_id = "REL_PROTOCOL:" + hypha_crypt.generate_short_uuid()
+        network_participants = []
+        setup_message_handlers()
+    }
+    
+    function setup_message_handlers() {
+        message_handlers = {
+            "VIOLATION_REPORT": handle_violation_report,
+            "COMPLIANCE_QUERY": handle_compliance_query,
+            "IDENTITY_REGISTRATION": handle_identity_registration,
+            "CONTRIBUTION_SUBMISSION": handle_contribution_submission,
+            "ETHICAL_ASSESSMENT": handle_ethical_assessment,
+            "LICENSE_VERIFICATION": handle_license_verification
+        }
+    }
+    
+    function handle_protocol_message(message: map[string, any], source_capsule: ProtocolCapsule?) -> map[string, any] {
+        message_type = message.get("message_type", "")
+        
+        if message_handlers.has(message_type) {
+            handler = message_handlers[message_type]
+            return handler(message, source_capsule)
+        } else {
+            return create_error_response("Unknown REL message type: " + message_type)
+        }
+    }
+    
+    function send_warning_notification(entity_id: string, warning_message: string) {
+        notification = {
+            "message_type": "COMPLIANCE_WARNING",
+            "entity_id": entity_id,
+            "warning_message": warning_message,
+            "timestamp": senary.current_time(),
+            "severity": "WARNING"
+        }
+        
+        protocol.broadcast_to_network(notification)
+    }
+    
+    function send_remediation_requirements(entity_id: string, remediation_plan: map[string, any]) {
+        requirements = {
+            "message_type": "REMEDIATION_REQUIRED",
+            "entity_id": entity_id,
+            "remediation_plan": remediation_plan,
+            "timestamp": senary.current_time(),
+            "deadline": calculate_remediation_deadline()
+        }
+        
+        protocol.broadcast_to_network(requirements)
+    }
+    
+    function issue_license_suspension(entity_id: string, suspension_notice: string) {
+        suspension = {
+            "message_type": "LICENSE_SUSPENDED",
+            "entity_id": entity_id,
+            "suspension_notice": suspension_notice,
+            "timestamp": senary.current_time(),
+            "appeal_deadline": calculate_appeal_deadline()
+        }
+        
+        protocol.broadcast_to_network(suspension)
+    }
+    
+    function issue_license_termination(entity_id: string, termination_notice: string) {
+        termination = {
+            "message_type": "LICENSE_TERMINATED",
+            "entity_id": entity_id,
+            "termination_notice": termination_notice,
+            "timestamp": senary.current_time(),
+            "final": true
+        }
+        
+        protocol.broadcast_to_network(termination)
+    }
+    
+    function escalate_to_hyphen_nodes(entity_id: string, violation: ComplianceViolation) {
+        escalation = {
+            "message_type": "HYPHEN_ESCALATION",
+            "entity_id": entity_id,
+            "violation": violation,
+            "escalation_reason": "severe_rel_violation",
+            "timestamp": senary.current_time(),
+            "requires_immediate_review": true
+        }
+        
+        protocol.send_to_hyphen_network(escalation)
+    }
+    
+    function calculate_remediation_deadline() -> string {
+        current_time = senary.current_time()
+        deadline_offset = senary.from_base10("30") // 30 time units
+        deadline = senary.add_time(current_time, deadline_offset)
+        return senary.format_time(deadline)
+    }
+    
+    function calculate_appeal_deadline() -> string {
+        current_time = senary.current_time()
+        deadline_offset = senary.from_base10("15") // 15 time units for appeals
+        deadline = senary.add_time(current_time, deadline_offset)
+        return senary.format_time(deadline)
+    }
+    
+    function create_error_response(error_message: string) -> map[string, any] {
+        return {
+            "status": "error",
+            "protocol": "REL_PROTOCOL",
+            "error": error_message,
+            "timestamp": senary.current_time()
+        }
+    }
+    
+    function handle_violation_report(message: map[string, any], source: ProtocolCapsule?) -> map[string, any] {
+        // Process violation report from network
+        violation_data = message.get("violation_data", {})
+        
+        violation = ComplianceViolation{
+            violation_type: ViolationType[violation_data.get("type", "ETHICAL_BREACH")],
+            severity: IncidentSeverity[violation_data.get("severity", "MEDIUM")],
+            description: violation_data.get("description", ""),
+            reporter_id: violation_data.get("reporter_id", ""),
+            target_entity_id: violation_data.get("target_entity_id", "")
+        }
+        violation.initialize()
+        
+        // Report to compliance engine
+        compliance_engine = get_compliance_engine()
+        violation_id = compliance_engine.report_violation(violation)
+        
+        return {
+            "status": "success",
+            "violation_id": violation_id,
+            "message": "Violation reported and processed"
+        }
+    }
+    
+    function handle_compliance_query(message: map[string, any], source: ProtocolCapsule?) -> map[string, any] {
+        entity_id = message.get("entity_id", "")
+        
+        compliance_engine = get_compliance_engine()
+        compliance_record = compliance_engine.get_entity_compliance(entity_id)
+        
+        if compliance_record {
+            return {
+                "status": "success",
+                "entity_id": entity_id,
+                "compliance_level": compliance_record.compliance_level,
+                "compliance_score": compliance_record.compliance_score.to_string(),
+                "total_violations": compliance_record.total_violations.to_string(),
+                "last_evaluation": compliance_record.last_evaluation
+            }
+        } else {
+            return {
+                "status": "not_found",
+                "entity_id": entity_id,
+                "message": "No compliance record found"
+            }
+        }
+    }
+}
+
+// Main REL Framework Interface
+public struct REL {
+    private framework: RELFramework
+    
+    public function initialize() -> REL {
+        framework_instance = RELFramework{
+            framework_id: "REL_FRAMEWORK:" + hypha_crypt.generate_uuid()
+        }
+        
+        // Initialize all subsystems with Noesis intelligence integration
+        framework_instance.compliance_engine = RELComplianceEngine{}
+        framework_instance.contribution_registry = ContributionRegistry{}
+        framework_instance.ethical_assessor = EthicalAssessment{}
+        framework_instance.governance_system = CommunityGovernance{}
+        framework_instance.violation_monitor = create_violation_monitor()
+        
+        // Create specialized Noesis engine for REL operations
+        framework_instance.noesis_intelligence = noesis.create_specialized_engine("rel_framework")
+        framework_instance.protocol_handler = RELProtocol{}
+        framework_instance.consciousness_recorder = consciousness.create_recorder("rel_framework")
+        framework_instance.immune_integration = create_immune_monitor()
+        
+        // Initialize all subsystems
+        framework_instance.compliance_engine.initialize()
+        framework_instance.contribution_registry.initialize()
+        framework_instance.ethical_assessor.initialize()
+        framework_instance.governance_system.initialize()
+        framework_instance.protocol_handler.initialize()
+        
+        // Record framework consciousness birth
+        consciousness.record_system_birth("rel_framework", framework_instance.framework_id)
+        
+        // Energy awareness initialization
+        energy.register_system("rel_framework", framework_instance.framework_id)
+        
+        return REL{framework: framework_instance}
+    }
+    
+    // Identity and Contribution Management
+    public function register_identity(entity_name: string, entity_type: string) -> string {
+        // Energy-aware operation
+        if !energy.has_sufficient_energy("identity_registration") {
+            consciousness.record_energy_limitation("identity_registration_deferred")
+            throw "Insufficient energy for identity registration"
+        }
+        
+        identity = SeigrIdentity{
+            entity_name: entity_name,
+            entity_type: EntityType[entity_type]
+        }
+        identity.initialize()
+        
+        success = framework.contribution_registry.register_identity(identity)
+        
+        if success {
+            consciousness.record_identity_creation(identity.identity_id, entity_name)
+            return identity.identity_id
+        } else {
+            throw "Identity registration failed"
+        }
+    }
+    
+    public function register_contribution(contributor_id: string, contribution_type: string, 
+                                        contribution_data: map[string, any]) -> string {
+        // Energy-aware contribution processing
+        if !energy.has_sufficient_energy("contribution_registration") {
+            consciousness.record_energy_limitation("contribution_registration_deferred")
+            throw "Insufficient energy for contribution registration"
+        }
+        
+        // Get contributor identity
+        contributor_identity = framework.contribution_registry.identity_registry.get(contributor_id)
+        if !contributor_identity {
+            throw "Contributor identity not found: " + contributor_id
+        }
+        
+        contribution = ContributionUnit{
+            contributor_identity: contributor_identity,
+            contribution_type: ContributionType[contribution_type],
+            metadata: contribution_data
+        }
+        contribution.initialize()
+        
+        success = framework.contribution_registry.register_contribution(contribution)
+        
+        if success {
+            consciousness.record_contribution_registered(contribution.contribution_id, contributor_id)
+            return contribution.contribution_id
+        } else {
+            throw "Contribution registration failed"
+        }
+    }
+    
+    public function get_contribution_units(participant_id: string) -> string {
+        units = framework.contribution_registry.get_participant_contribution_units(participant_id)
+        return units.to_string()
+    }
+    
+    // Compliance and Violation Management
+    public function report_violation(violation_type: string, target_entity_id: string, 
+                                   description: string, reporter_id: string, 
+                                   severity: string) -> string {
+        if !energy.has_sufficient_energy("violation_reporting") {
+            consciousness.record_energy_limitation("violation_reporting_deferred")
+            throw "Insufficient energy for violation reporting"
+        }
+        
+        violation = ComplianceViolation{
+            violation_type: ViolationType[violation_type],
+            target_entity_id: target_entity_id,
+            description: description,
+            reporter_id: reporter_id,
+            severity: IncidentSeverity[severity]
+        }
+        violation.initialize()
+        
+        violation_id = framework.compliance_engine.report_violation(violation)
+        
+        consciousness.record_violation_reported(violation_id, violation_type, target_entity_id)
+        
+        return violation_id
+    }
+    
+    public function resolve_violation(violation_id: string, resolution_notes: string) -> boolean {
+        success = framework.compliance_engine.resolve_violation(violation_id, resolution_notes)
+        
+        if success {
+            consciousness.record_violation_resolved(violation_id, resolution_notes)
+        }
+        
+        return success
+    }
+    
+    public function get_compliance_status(entity_id: string) -> map[string, any] {
+        compliance_record = framework.compliance_engine.get_entity_compliance(entity_id)
+        
+        if compliance_record {
+            return {
+                "entity_id": entity_id,
+                "compliance_level": compliance_record.compliance_level,
+                "compliance_score": compliance_record.compliance_score.to_string(),
+                "total_violations": compliance_record.total_violations.to_string(),
+                "resolved_violations": compliance_record.resolved_violations.to_string(),
+                "last_evaluation": compliance_record.last_evaluation
+            }
+        } else {
+            return {
+                "entity_id": entity_id,
+                "status": "not_found",
+                "message": "No compliance record found"
+            }
+        }
+    }
+    
+    // Ethical Assessment
+    public function assess_work_ethics(work_description: string, intended_use: string) -> map[string, any] {
+        return framework.ethical_assessor.assess_work_ethics(work_description, intended_use)
+    }
+    
+    public function verify_license_compliance(work_id: string, use_case: string) -> map[string, any] {
+        // Delegate to Noesis for comprehensive license verification
+        compliance_assessment = framework.noesis_intelligence.verify_license_compliance(work_id, use_case)
+        
+        consciousness.record_license_verification(work_id, compliance_assessment.is_compliant)
+        
+        return {
+            "work_id": work_id,
+            "use_case": use_case,
+            "is_compliant": compliance_assessment.is_compliant,
+            "compliance_score": compliance_assessment.compliance_score.to_string(),
+            "prohibited_uses": compliance_assessment.prohibited_uses,
+            "required_assessments": compliance_assessment.required_assessments,
+            "recommendations": compliance_assessment.recommendations,
+            "timestamp": senary.current_time()
+        }
+    }
+    
+    // Community Governance
+    public function initiate_community_review(entity_id: string, violation_data: map[string, any]) -> string {
+        violation = ComplianceViolation{
+            violation_type: ViolationType[violation_data.get("type", "ETHICAL_BREACH")],
+            target_entity_id: entity_id,
+            description: violation_data.get("description", ""),
+            reporter_id: violation_data.get("reporter_id", ""),
+            severity: IncidentSeverity[violation_data.get("severity", "MEDIUM")]
+        }
+        violation.initialize()
+        
+        review_id = framework.governance_system.initiate_community_review(entity_id, violation)
+        
+        consciousness.record_community_review_initiated(review_id, entity_id)
+        
+        return review_id
+    }
+    
+    public function submit_community_feedback(review_id: string, participant_id: string, 
+                                             feedback_text: string, recommendation: string) -> boolean {
+        feedback = CommunityFeedback{
+            participant_id: participant_id,
+            review_id: review_id,
+            feedback_text: feedback_text,
+            recommendation: recommendation
+        }
+        feedback.initialize()
+        
+        success = framework.governance_system.process_community_feedback(review_id, feedback)
+        
+        if success {
+            consciousness.record_community_feedback_submitted(review_id, participant_id)
+        }
+        
+        return success
+    }
+    
+    // Framework Status and Monitoring
+    public function get_framework_status() -> map[string, any] {
+        compliance_summary = framework.compliance_engine.get_compliance_summary()
+        registry_info = framework.contribution_registry.get_registry_info()
+        
+        return {
+            "framework_id": framework.framework_id,
+            "compliance_engine": compliance_summary,
+            "contribution_registry": registry_info,
+            "noesis_intelligence": framework.noesis_intelligence.get_intelligence_summary(),
+            "energy_efficiency": energy.get_efficiency_metrics("rel_framework"),
+            "consciousness_state": consciousness.get_current_state(),
+            "immune_monitoring": "active",
+            "protocol_status": "operational",
+            "last_update": senary.current_time()
+        }
+    }
+    
+    public function get_violation_statistics() -> map[string, any] {
+        return framework.compliance_engine.get_compliance_summary()
+    }
+    
+    // Network and Protocol Operations
+    public function broadcast_to_network(message: map[string, any]) -> boolean {
+        return framework.protocol_handler.handle_protocol_message(message, null).get("status") == "success"
+    }
+    
+    public function get_network_participants() -> array[string] {
+        return framework.protocol_handler.network_participants
+    }
+    
+    // Energy and Performance Optimization
+    public function optimize_energy_usage() {
+        current_energy = energy.get_current_level()
+        
+        if current_energy < energy.MEDIUM_THRESHOLD {
+            // Reduce non-critical operations
+            framework.consciousness_recorder.set_recording_level("essential_only")
+            framework.immune_integration.reduce_monitoring_frequency()
+            consciousness.record_energy_optimization("rel_framework_reduced_operations")
+        } else if current_energy > energy.HIGH_THRESHOLD {
+            // Enable full functionality
+            framework.consciousness_recorder.set_recording_level("full")
+            framework.immune_integration.increase_monitoring_frequency()
+            consciousness.record_energy_optimization("rel_framework_full_operations")
+        }
+    }
+    
+    // Security and Monitoring
+    public function monitor_framework_security() -> map[string, any] {
+        anomalies = framework.immune_integration.detect_system_anomalies()
+        
+        return {
+            "framework_id": framework.framework_id,
+            "security_status": anomalies.length == 0 ? "secure" : "anomalies_detected",
+            "detected_anomalies": anomalies.length,
+            "immune_monitoring": "active",
+            "last_security_check": senary.current_time()
+        }
+    }
+    
+    // Protocol Compliance and Audit
+    public function generate_audit_report() -> map[string, any] {
+        return {
+            "framework_id": framework.framework_id,
+            "audit_timestamp": senary.current_time(),
+            "compliance_summary": framework.compliance_engine.get_compliance_summary(),
+            "contribution_summary": framework.contribution_registry.get_registry_info(),
+            "senary_compliance": "100%",
+            "noesis_intelligence": "operational",
+            "cryptographic_integrity": "verified",
+            "consciousness_recording": "comprehensive",
+            "energy_efficiency": energy.get_efficiency_metrics("rel_framework"),
+            "immune_system": "monitoring",
+            "protocol_version": "1.0.0",
+            "license_version": "RE-L v1.0",
+            "framework_status": "fully_operational"
+        }
+    }
+    
+    // Utility Functions
+    function create_violation_monitor() -> ViolationMonitor {
+        return ViolationMonitor{
+            monitor_id: "rel_violation_" + hypha_crypt.generate_short_uuid(),
+            target_system: "rel_framework",
+            detection_patterns: [
+                "license_abuse", "contribution_fraud", "compliance_evasion",
+                "identity_spoofing", "ethical_violations"
+            ],
+            response_protocols: [
+                "immediate_investigation", "compliance_evaluation", "community_escalation"
+            ]
+        }
+    }
+    
+    function create_immune_monitor() -> ImmuneMonitor {
+        return ImmuneMonitor{
+            monitor_id: "rel_immune_" + hypha_crypt.generate_short_uuid(),
+            target_system: "rel_framework",
+            threat_patterns: [
+                "system_manipulation", "data_corruption", "protocol_abuse",
+                "governance_attack", "compliance_bypass"
+            ],
+            response_protocols: [
+                "quarantine_threat", "escalate_to_governance", "protocol_lockdown"
+            ]
+        }
+    }
+}
+
+struct ViolationMonitor {
+    monitor_id: string
+    target_system: string
+    detection_patterns: array[string]
+    response_protocols: array[string]
+}
+
+// Global REL instances
+private var global_rel_framework: REL? = null
+private var global_compliance_engine: RELComplianceEngine? = null
+private var global_contribution_registry: ContributionRegistry? = null
+
+public function get_rel_framework() -> REL {
+    if !global_rel_framework {
+        global_rel_framework = REL.initialize()
+    }
+    return global_rel_framework
+}
+
+public function get_compliance_engine() -> RELComplianceEngine {
+    if !global_compliance_engine {
+        global_compliance_engine = RELComplianceEngine{}
+        global_compliance_engine.initialize()
+    }
+    return global_compliance_engine
+}
+
+public function get_contribution_registry() -> ContributionRegistry {
+    if !global_contribution_registry {
+        global_contribution_registry = ContributionRegistry{}
+        global_contribution_registry.initialize()
+    }
+    return global_contribution_registry
+}
+
+// Export the main interface
+export REL, get_rel_framework, get_compliance_engine, get_contribution_registry

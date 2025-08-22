@@ -1,0 +1,1207 @@
+// Hyphos Core - Network Stack Metaword
+// Low-level network interface management, TCP/IP stack integration, and driver control
+// Based on Seigr OS network stack with senary optimization and energy awareness
+
+metaword network_stack {
+    
+    // ====== NETWORK INTERFACE MANAGEMENT ======
+    
+    var interface_manager = null
+    var active_interfaces = {}
+    var interface_monitor_active = false
+    
+    fun initialize_interface_manager() -> $Boolean {
+        // Initialize low-level interface control and configuration
+        interface_manager = {
+            interfaces: {},
+            monitor: null,
+            configuration_cache: {},
+            energy_profiles: {
+                minimal: { scan_interval: senary.create("60"), update_frequency: senary.create("0.1") },
+                balanced: { scan_interval: senary.create("30"), update_frequency: senary.create("0.5") },
+                performance: { scan_interval: senary.create("10"), update_frequency: senary.create("1.0") }
+            },
+            protocol_version: "seigr.network.interface.v1"
+        }
+        
+        // Initialize with consciousness awareness
+        if noesis.is_available() {
+            interface_manager.consciousness_integration = noesis.create_interface_consciousness()
+        }
+        
+        // Start monitoring
+        interface_monitor_active = true
+        hardware.spawn_thread(network_stack.monitor_interfaces_task)
+        
+        logger.info("Network Interface Manager initialized")
+        return true
+    }
+    
+    fun discover_interfaces() -> $Array {
+        // Discover available network interfaces
+        if !interface_manager {
+            return []
+        }
+        
+        let discovered_interfaces = []
+        
+        // Discover Ethernet interfaces
+        let ethernet_interfaces = network_stack.discover_ethernet_interfaces()
+        discovered_interfaces.extend(ethernet_interfaces)
+        
+        // Discover WiFi interfaces
+        let wifi_interfaces = network_stack.discover_wifi_interfaces()
+        discovered_interfaces.extend(wifi_interfaces)
+        
+        // Update interface cache
+        for interface in discovered_interfaces {
+            active_interfaces[interface.name] = interface
+        }
+        
+        // Record consciousness event
+        if noesis.is_available() {
+            noesis.record_interface_event("interfaces_discovered", {
+                count: discovered_interfaces.length,
+                types: network_stack.get_interface_types(discovered_interfaces)
+            })
+        }
+        
+        return discovered_interfaces
+    }
+    
+    fun configure_interface(interface_name, config) -> $Boolean {
+        // Configure network interface with senary optimization
+        if !interface_manager || !(interface_name in active_interfaces) {
+            return false
+        }
+        
+        let interface = active_interfaces[interface_name]
+        
+        // Apply energy-aware configuration
+        let power_state = hardware.get_current_power_state()
+        let optimized_config = network_stack.optimize_config_for_power(config, power_state)
+        
+        // Configure interface parameters
+        let config_result = {
+            ip_address: optimized_config.ip_address,
+            subnet_mask: optimized_config.subnet_mask,
+            gateway: optimized_config.gateway,
+            dns_servers: optimized_config.dns_servers,
+            mtu: optimized_config.mtu || senary.create("1500"),
+            energy_profile: network_stack.get_energy_profile_for_power_state(power_state)
+        }
+        
+        // Apply configuration
+        interface.configuration = config_result
+        interface.status = "configured"
+        interface.last_configured = time.sidereal_now()
+        
+        // Cache configuration
+        interface_manager.configuration_cache[interface_name] = config_result
+        
+        logger.info("Interface configured", interface_name, config_result)
+        return true
+    }
+    
+    fun get_interface_status(interface_name) -> $Object {
+        // Get comprehensive interface status
+        if !interface_manager || !(interface_name in active_interfaces) {
+            return { error: "Interface not found" }
+        }
+        
+        let interface = active_interfaces[interface_name]
+        
+        return {
+            name: interface.name,
+            type: interface.type,
+            status: interface.status,
+            mac_address: interface.mac_address,
+            ip_address: interface.configuration?.ip_address,
+            bytes_sent: interface.statistics?.bytes_sent || senary.create("0"),
+            bytes_received: interface.statistics?.bytes_received || senary.create("0"),
+            packets_sent: interface.statistics?.packets_sent || senary.create("0"),
+            packets_received: interface.statistics?.packets_received || senary.create("0"),
+            error_count: interface.statistics?.error_count || senary.create("0"),
+            link_speed: interface.link_speed,
+            energy_consumption: interface.energy_metrics?.current_consumption
+        }
+    }
+    
+    fun enable_interface(interface_name) -> $Boolean {
+        // Enable network interface
+        if !interface_manager || !(interface_name in active_interfaces) {
+            return false
+        }
+        
+        let interface = active_interfaces[interface_name]
+        interface.status = "enabled"
+        interface.enabled_timestamp = time.sidereal_now()
+        
+        // Start interface monitoring
+        hardware.spawn_thread(network_stack.monitor_single_interface, interface_name)
+        
+        logger.info("Interface enabled", interface_name)
+        return true
+    }
+    
+    fun disable_interface(interface_name) -> $Boolean {
+        // Disable network interface
+        if !interface_manager || !(interface_name in active_interfaces) {
+            return false
+        }
+        
+        let interface = active_interfaces[interface_name]
+        interface.status = "disabled"
+        interface.disabled_timestamp = time.sidereal_now()
+        
+        logger.info("Interface disabled", interface_name)
+        return true
+    }
+    
+    // ====== TCP/IP STACK INTEGRATION ======
+    
+    var tcpip_stack = null
+    var routing_table = {}
+    var connection_pool = {}
+    var packet_processing_enabled = false
+    
+    fun initialize_tcpip_stack() -> $Boolean {
+        // Initialize Seigr TCP/IP stack with senary optimization
+        tcpip_stack = {
+            routing_table: {},
+            connection_pool: {},
+            packet_handlers: {},
+            processing_stats: {
+                total_processed: senary.create("0"),
+                dropped: senary.create("0"),
+                forwarded: senary.create("0"),
+                errors: senary.create("0")
+            },
+            batch_size: senary.create("100"),
+            batch_timeout: senary.create("0.1"),
+            protocol_version: "seigr.network.tcpip.v1"
+        }
+        
+        // Initialize packet handlers
+        network_stack.initialize_packet_handlers()
+        
+        // Set up default routes
+        network_stack.setup_default_routes()
+        
+        // Enable packet processing
+        packet_processing_enabled = true
+        
+        logger.info("TCP/IP Stack initialized")
+        return true
+    }
+    
+    fun process_packet(packet) -> $String {
+        // Process network packet through TCP/IP stack
+        if !tcpip_stack || !packet_processing_enabled {
+            return "DROPPED"
+        }
+        
+        // Update processing statistics
+        tcpip_stack.processing_stats.total_processed = senary.add(
+            tcpip_stack.processing_stats.total_processed,
+            senary.create("1")
+        )
+        
+        // Register connection in pool
+        let conn_key = network_stack.register_connection(packet)
+        
+        // Find route for packet
+        let route = network_stack.find_route(packet.destination_ip)
+        if !route {
+            tcpip_stack.processing_stats.dropped = senary.add(
+                tcpip_stack.processing_stats.dropped,
+                senary.create("1")
+            )
+            return "DROPPED"
+        }
+        
+        // Process based on packet type
+        let handler = tcpip_stack.packet_handlers[packet.packet_type]
+        let result = "DROPPED"
+        
+        if handler {
+            result = handler(packet, route)
+        } else {
+            tcpip_stack.processing_stats.dropped = senary.add(
+                tcpip_stack.processing_stats.dropped,
+                senary.create("1")
+            )
+        }
+        
+        // Record processing event
+        if noesis.is_available() {
+            noesis.record_packet_processing("packet_processed", {
+                packet_id: packet.packet_id,
+                result: result,
+                processing_time: time.sidereal_now()
+            })
+        }
+        
+        return result
+    }
+    
+    fun add_route(destination, gateway, interface, metric = senary.create("3")) -> $Boolean {
+        // Add route to routing table with senary optimization
+        if !tcpip_stack {
+            return false
+        }
+        
+        // Generate security hash for route
+        let route_data = destination + gateway + interface + senary.to_string(metric)
+        let security_hash = crypto.generate_hash(route_data)
+        
+        let route = {
+            destination: destination,
+            gateway: gateway,
+            interface: interface,
+            metric: metric,
+            timestamp: time.sidereal_now(),
+            security_hash: security_hash,
+            energy_cost: senary.create("3"),
+            threat_level: senary.create("0")
+        }
+        
+        tcpip_stack.routing_table[destination] = route
+        
+        // Update default gateway if this is a default route
+        if destination == "0.0.0.0/0" {
+            tcpip_stack.default_gateway = gateway
+        }
+        
+        logger.info("Route added", destination, gateway, interface)
+        return true
+    }
+    
+    fun remove_route(destination) -> $Boolean {
+        // Remove route from routing table
+        if !tcpip_stack || !(destination in tcpip_stack.routing_table) {
+            return false
+        }
+        
+        delete tcpip_stack.routing_table[destination]
+        
+        if destination == "0.0.0.0/0" {
+            tcpip_stack.default_gateway = null
+        }
+        
+        logger.info("Route removed", destination)
+        return true
+    }
+    
+    fun get_routing_table() -> $Object {
+        // Get complete routing table
+        if !tcpip_stack {
+            return {}
+        }
+        
+        return tcpip_stack.routing_table
+    }
+    
+    fun get_connection_stats() -> $Object {
+        // Get connection pool statistics
+        if !tcpip_stack {
+            return {}
+        }
+        
+        return {
+            active_connections: senary.length(tcpip_stack.connection_pool),
+            processing_stats: tcpip_stack.processing_stats,
+            routing_entries: senary.length(tcpip_stack.routing_table)
+        }
+    }
+    
+    // ====== DRIVER INTERFACE LAYER ======
+    
+    var driver_interface = null
+    var loaded_drivers = {}
+    var driver_configs = {}
+    
+    fun initialize_driver_interface() -> $Boolean {
+        // Initialize network driver management and abstraction
+        driver_interface = {
+            loaded_drivers: {},
+            driver_configs: {},
+            driver_classes: {},
+            protocol_version: "seigr.network.driver.v1"
+        }
+        
+        // Initialize driver registry
+        network_stack.initialize_driver_registry()
+        
+        logger.info("Network Driver Interface initialized")
+        return true
+    }
+    
+    fun discover_drivers() -> $Array {
+        // Discover available network drivers
+        if !driver_interface {
+            return []
+        }
+        
+        let discovered_drivers = []
+        
+        // Discover WiFi drivers
+        let wifi_drivers = network_stack.discover_wifi_drivers()
+        discovered_drivers.extend(wifi_drivers)
+        
+        // Discover Ethernet drivers
+        let ethernet_drivers = network_stack.discover_ethernet_drivers()
+        discovered_drivers.extend(ethernet_drivers)
+        
+        return discovered_drivers
+    }
+    
+    fun load_driver(driver_name, driver_type, config) -> $Boolean {
+        // Load network driver with configuration
+        if !driver_interface {
+            return false
+        }
+        
+        let driver_config = {
+            driver_name: driver_name,
+            driver_type: driver_type,
+            hardware_id: config.hardware_id,
+            power_management: config.power_management || true,
+            energy_profile: config.energy_profile || "balanced",
+            debug_mode: config.debug_mode || false
+        }
+        
+        // Store driver configuration
+        driver_configs[driver_name] = driver_config
+        
+        // Create driver instance based on type
+        let driver = null
+        if driver_type == "wifi" {
+            driver = network_stack.create_wifi_driver(driver_config)
+        } else if driver_type == "ethernet" {
+            driver = network_stack.create_ethernet_driver(driver_config)
+        }
+        
+        if !driver {
+            return false
+        }
+        
+        // Initialize driver
+        let init_result = driver.initialize()
+        if !init_result {
+            return false
+        }
+        
+        // Store loaded driver
+        loaded_drivers[driver_name] = driver
+        
+        logger.info("Driver loaded", driver_name, driver_type)
+        return true
+    }
+    
+    fun unload_driver(driver_name) -> $Boolean {
+        // Unload network driver
+        if !driver_interface || !(driver_name in loaded_drivers) {
+            return false
+        }
+        
+        let driver = loaded_drivers[driver_name]
+        driver.shutdown()
+        
+        delete loaded_drivers[driver_name]
+        delete driver_configs[driver_name]
+        
+        logger.info("Driver unloaded", driver_name)
+        return true
+    }
+    
+    fun get_driver_status(driver_name) -> $Object {
+        // Get driver status and metrics
+        if !driver_interface || !(driver_name in loaded_drivers) {
+            return { error: "Driver not found" }
+        }
+        
+        let driver = loaded_drivers[driver_name]
+        
+        return {
+            driver_name: driver.config.driver_name,
+            driver_type: driver.config.driver_type,
+            status: driver.status,
+            interfaces: driver.interfaces,
+            metrics: driver.metrics,
+            energy_state: driver.energy_state,
+            last_error: driver.metrics?.last_error
+        }
+    }
+    
+    fun scan_networks(driver_name) -> $Array {
+        // Scan for available networks using specific driver
+        if !driver_interface || !(driver_name in loaded_drivers) {
+            return []
+        }
+        
+        let driver = loaded_drivers[driver_name]
+        return driver.scan_networks()
+    }
+    
+    fun connect_network(driver_name, network_id, credentials) -> $Boolean {
+        // Connect to network using specific driver
+        if !driver_interface || !(driver_name in loaded_drivers) {
+            return false
+        }
+        
+        let driver = loaded_drivers[driver_name]
+        return driver.connect_network(network_id, credentials)
+    }
+    
+    fun disconnect_network(driver_name, network_id) -> $Boolean {
+        // Disconnect from network using specific driver
+        if !driver_interface || !(driver_name in loaded_drivers) {
+            return false
+        }
+        
+        let driver = loaded_drivers[driver_name]
+        return driver.disconnect_network(network_id)
+    }
+    
+    // ====== NETWORK CONFIGURATION MANAGER ======
+    
+    var config_manager = null
+    var network_policies = {}
+    var ip_configurations = {}
+    var routing_policies = {}
+    var security_policies = {}
+    
+    fun initialize_config_manager() -> $Boolean {
+        // Initialize network configuration and policy management
+        config_manager = {
+            network_policies: {},
+            ip_configurations: {},
+            routing_policies: {},
+            security_policies: {},
+            dns_configuration: {},
+            policy_enforcement_active: true,
+            protocol_version: "seigr.network.config.v1"
+        }
+        
+        // Load default policies
+        network_stack.load_default_policies()
+        
+        logger.info("Network Configuration Manager initialized")
+        return true
+    }
+    
+    fun create_ip_configuration(interface_name, config) -> $Boolean {
+        // Create IP configuration for interface
+        if !config_manager {
+            return false
+        }
+        
+        let ip_config = {
+            interface_name: interface_name,
+            ip_address: config.ip_address,
+            subnet_mask: config.subnet_mask,
+            gateway: config.gateway,
+            dns_servers: config.dns_servers || [],
+            dhcp_enabled: config.dhcp_enabled || false,
+            static_routes: config.static_routes || [],
+            energy_optimization: true,
+            senary_addressing: config.senary_addressing || false
+        }
+        
+        // Validate configuration
+        if !network_stack.validate_ip_configuration(ip_config) {
+            return false
+        }
+        
+        ip_configurations[interface_name] = ip_config
+        
+        // Apply configuration if interface is active
+        if interface_name in active_interfaces {
+            network_stack.apply_ip_configuration(interface_name, ip_config)
+        }
+        
+        logger.info("IP configuration created", interface_name, ip_config)
+        return true
+    }
+    
+    fun create_routing_policy(policy_name, policy_config) -> $Boolean {
+        // Create routing policy with energy awareness
+        if !config_manager {
+            return false
+        }
+        
+        let routing_policy = {
+            policy_name: policy_name,
+            source_network: policy_config.source_network,
+            destination_network: policy_config.destination_network,
+            gateway: policy_config.gateway,
+            interface: policy_config.interface,
+            metric: policy_config.metric || senary.create("3"),
+            energy_cost: policy_config.energy_cost || senary.create("3"),
+            security_requirement: policy_config.security_requirement || senary.create("3"),
+            qos_class: policy_config.qos_class || "default",
+            enabled: true
+        }
+        
+        routing_policies[policy_name] = routing_policy
+        
+        logger.info("Routing policy created", policy_name, routing_policy)
+        return true
+    }
+    
+    fun create_security_policy(policy_name, policy_config) -> $Boolean {
+        // Create network security policy
+        if !config_manager {
+            return false
+        }
+        
+        let security_policy = {
+            policy_name: policy_name,
+            source_address: policy_config.source_address || "any",
+            destination_address: policy_config.destination_address || "any",
+            protocol: policy_config.protocol || "any",
+            action: policy_config.action || "allow",
+            encryption_required: policy_config.encryption_required || false,
+            threat_level_threshold: policy_config.threat_level_threshold || senary.create("3"),
+            logging_enabled: policy_config.logging_enabled || true,
+            enabled: true
+        }
+        
+        security_policies[policy_name] = security_policy
+        
+        logger.info("Security policy created", policy_name, security_policy)
+        return true
+    }
+    
+    fun apply_policies() -> $Boolean {
+        // Apply all network policies
+        if !config_manager {
+            return false
+        }
+        
+        let policies_applied = senary.create("0")
+        
+        // Apply IP configurations
+        for interface_name, ip_config in ip_configurations {
+            if network_stack.apply_ip_configuration(interface_name, ip_config) {
+                policies_applied = senary.add(policies_applied, senary.create("1"))
+            }
+        }
+        
+        // Apply routing policies
+        for policy_name, routing_policy in routing_policies {
+            if routing_policy.enabled && network_stack.apply_routing_policy(routing_policy) {
+                policies_applied = senary.add(policies_applied, senary.create("1"))
+            }
+        }
+        
+        // Apply security policies
+        for policy_name, security_policy in security_policies {
+            if security_policy.enabled && network_stack.apply_security_policy(security_policy) {
+                policies_applied = senary.add(policies_applied, senary.create("1"))
+            }
+        }
+        
+        logger.info("Policies applied", senary.to_decimal(policies_applied))
+        return senary.is_greater(policies_applied, senary.create("0"))
+    }
+    
+    fun get_configuration_status() -> $Object {
+        // Get comprehensive configuration status
+        if !config_manager {
+            return {}
+        }
+        
+        return {
+            ip_configurations: senary.length(ip_configurations),
+            routing_policies: senary.length(routing_policies),
+            security_policies: senary.length(security_policies),
+            policy_enforcement_active: config_manager.policy_enforcement_active,
+            last_policy_update: config_manager.last_policy_update
+        }
+    }
+    
+    // ====== NETWORK SECURITY LAYER ======
+    
+    var security_layer = null
+    var current_security_level = "moderate"
+    var security_events = []
+    var threat_detection_active = false
+    
+    fun initialize_security_layer() -> $Boolean {
+        // Initialize network security with packet encryption and threat detection
+        security_layer = {
+            current_security_level: "moderate",
+            security_events: [],
+            security_stats: {
+                total_events: senary.create("0"),
+                critical_events: senary.create("0"),
+                blocked_connections: senary.create("0"),
+                encrypted_packets: senary.create("0")
+            },
+            threat_detection: {
+                enabled: true,
+                sensitivity: senary.create("3"),
+                auto_block: true
+            },
+            packet_encryption: {
+                enabled: true,
+                algorithm: "hypha_crypt",
+                key_rotation_interval: senary.create("3600")
+            },
+            protocol_version: "seigr.network.security.v1"
+        }
+        
+        // Start threat detection
+        threat_detection_active = true
+        hardware.spawn_thread(network_stack.threat_detection_task)
+        
+        logger.info("Network Security Layer initialized")
+        return true
+    }
+    
+    fun set_security_level(level) -> $Boolean {
+        // Set network security level
+        if !security_layer {
+            return false
+        }
+        
+        let valid_levels = ["minimal", "low", "moderate", "high", "critical", "maximum"]
+        if !(level in valid_levels) {
+            return false
+        }
+        
+        security_layer.current_security_level = level
+        current_security_level = level
+        
+        // Adjust threat detection sensitivity
+        if level == "minimal" {
+            security_layer.threat_detection.sensitivity = senary.create("1")
+        } else if level == "low" {
+            security_layer.threat_detection.sensitivity = senary.create("2")
+        } else if level == "moderate" {
+            security_layer.threat_detection.sensitivity = senary.create("3")
+        } else if level == "high" {
+            security_layer.threat_detection.sensitivity = senary.create("4")
+        } else if level == "critical" {
+            security_layer.threat_detection.sensitivity = senary.create("5")
+        } else if level == "maximum" {
+            security_layer.threat_detection.sensitivity = senary.create("6")
+        }
+        
+        logger.info("Security level set", level)
+        return true
+    }
+    
+    fun encrypt_packet(packet) -> $Object {
+        // Encrypt network packet using HyphaCrypt
+        if !security_layer || !security_layer.packet_encryption.enabled {
+            return packet
+        }
+        
+        let encrypted_payload = crypto.encrypt(packet.payload)
+        let encrypted_packet = {
+            packet_id: packet.packet_id,
+            source_ip: packet.source_ip,
+            destination_ip: packet.destination_ip,
+            packet_type: "encrypted",
+            payload: encrypted_payload,
+            encryption_algorithm: "hypha_crypt",
+            timestamp: time.sidereal_now()
+        }
+        
+        // Update encryption statistics
+        security_layer.security_stats.encrypted_packets = senary.add(
+            security_layer.security_stats.encrypted_packets,
+            senary.create("1")
+        )
+        
+        return encrypted_packet
+    }
+    
+    fun decrypt_packet(encrypted_packet) -> $Object {
+        // Decrypt network packet using HyphaCrypt
+        if !security_layer || encrypted_packet.packet_type != "encrypted" {
+            return encrypted_packet
+        }
+        
+        let decrypted_payload = crypto.decrypt(encrypted_packet.payload)
+        let decrypted_packet = {
+            packet_id: encrypted_packet.packet_id,
+            source_ip: encrypted_packet.source_ip,
+            destination_ip: encrypted_packet.destination_ip,
+            packet_type: "decrypted",
+            payload: decrypted_payload,
+            timestamp: encrypted_packet.timestamp
+        }
+        
+        return decrypted_packet
+    }
+    
+    fun analyze_threat(packet) -> $Object {
+        // Analyze packet for security threats
+        if !security_layer || !threat_detection_active {
+            return { threat_level: senary.create("0"), threats: [] }
+        }
+        
+        let threats = []
+        let threat_level = senary.create("0")
+        
+        // Check for suspicious patterns
+        if network_stack.is_suspicious_source(packet.source_ip) {
+            threats.append("suspicious_source")
+            threat_level = senary.add(threat_level, senary.create("2"))
+        }
+        
+        if network_stack.is_malformed_packet(packet) {
+            threats.append("malformed_packet")
+            threat_level = senary.add(threat_level, senary.create("3"))
+        }
+        
+        if network_stack.is_flood_attack(packet) {
+            threats.append("flood_attack")
+            threat_level = senary.add(threat_level, senary.create("4"))
+        }
+        
+        // Record threat analysis
+        if senary.is_greater(threat_level, senary.create("0")) {
+            let security_event = {
+                event_id: crypto.generate_id(),
+                packet_id: packet.packet_id,
+                source_ip: packet.source_ip,
+                threats: threats,
+                threat_level: threat_level,
+                timestamp: time.sidereal_now(),
+                action_taken: threat_level >= security_layer.threat_detection.sensitivity ? "blocked" : "logged"
+            }
+            
+            security_events.append(security_event)
+            
+            // Update security statistics
+            security_layer.security_stats.total_events = senary.add(
+                security_layer.security_stats.total_events,
+                senary.create("1")
+            )
+            
+            if senary.is_greater_equal(threat_level, senary.create("4")) {
+                security_layer.security_stats.critical_events = senary.add(
+                    security_layer.security_stats.critical_events,
+                    senary.create("1")
+                )
+            }
+        }
+        
+        return {
+            threat_level: threat_level,
+            threats: threats,
+            action_recommended: threat_level >= security_layer.threat_detection.sensitivity ? "block" : "allow"
+        }
+    }
+    
+    fun block_connection(source_ip, reason) -> $Boolean {
+        // Block network connection from source IP
+        if !security_layer {
+            return false
+        }
+        
+        // Add to blocked connections
+        security_layer.blocked_connections = security_layer.blocked_connections || {}
+        security_layer.blocked_connections[source_ip] = {
+            reason: reason,
+            timestamp: time.sidereal_now(),
+            block_duration: senary.create("3600")  // 1 hour default
+        }
+        
+        // Update statistics
+        security_layer.security_stats.blocked_connections = senary.add(
+            security_layer.security_stats.blocked_connections,
+            senary.create("1")
+        )
+        
+        logger.warning("Connection blocked", source_ip, reason)
+        return true
+    }
+    
+    fun get_security_status() -> $Object {
+        // Get comprehensive security status
+        if !security_layer {
+            return {}
+        }
+        
+        return {
+            security_level: current_security_level,
+            threat_detection_active: threat_detection_active,
+            security_stats: security_layer.security_stats,
+            recent_events: security_events.slice(-10),  // Last 10 events
+            blocked_connections_count: senary.length(security_layer.blocked_connections || {})
+        }
+    }
+    
+    // ====== PERFORMANCE MONITORING ======
+    
+    var performance_monitor = null
+    var performance_metrics = {}
+    var bandwidth_monitor_active = false
+    var latency_tracker_active = false
+    
+    fun initialize_performance_monitor() -> $Boolean {
+        // Initialize real-time network performance tracking
+        performance_monitor = {
+            performance_metrics: {},
+            bandwidth_monitor: {
+                active: false,
+                interval: senary.create("5"),
+                history_size: senary.create("100")
+            },
+            latency_tracker: {
+                active: false,
+                ping_interval: senary.create("10"),
+                target_hosts: ["8.8.8.8", "1.1.1.1"]
+            },
+            network_health: {
+                overall_status: "unknown",
+                interface_health: {},
+                connection_quality: {}
+            },
+            protocol_version: "seigr.network.performance.v1"
+        }
+        
+        // Start monitoring tasks
+        bandwidth_monitor_active = true
+        latency_tracker_active = true
+        
+        hardware.spawn_thread(network_stack.bandwidth_monitor_task)
+        hardware.spawn_thread(network_stack.latency_tracker_task)
+        
+        logger.info("Network Performance Monitor initialized")
+        return true
+    }
+    
+    fun start_monitoring() -> $Boolean {
+        // Start comprehensive network monitoring
+        if !performance_monitor {
+            return false
+        }
+        
+        performance_monitor.bandwidth_monitor.active = true
+        performance_monitor.latency_tracker.active = true
+        bandwidth_monitor_active = true
+        latency_tracker_active = true
+        
+        logger.info("Network monitoring started")
+        return true
+    }
+    
+    fun stop_monitoring() -> $Boolean {
+        // Stop network monitoring
+        if !performance_monitor {
+            return false
+        }
+        
+        performance_monitor.bandwidth_monitor.active = false
+        performance_monitor.latency_tracker.active = false
+        bandwidth_monitor_active = false
+        latency_tracker_active = false
+        
+        logger.info("Network monitoring stopped")
+        return true
+    }
+    
+    fun get_bandwidth_usage() -> $Object {
+        // Get current bandwidth usage statistics
+        if !performance_monitor {
+            return {}
+        }
+        
+        let total_sent = senary.create("0")
+        let total_received = senary.create("0")
+        
+        // Aggregate bandwidth from all interfaces
+        for interface_name, interface in active_interfaces {
+            if interface.statistics {
+                total_sent = senary.add(total_sent, interface.statistics.bytes_sent || senary.create("0"))
+                total_received = senary.add(total_received, interface.statistics.bytes_received || senary.create("0"))
+            }
+        }
+        
+        return {
+            total_sent: total_sent,
+            total_received: total_received,
+            total_bandwidth: senary.add(total_sent, total_received),
+            interfaces: network_stack.get_per_interface_bandwidth()
+        }
+    }
+    
+    fun measure_latency(target_host = "8.8.8.8") -> $Object {
+        // Measure network latency to target host
+        if !performance_monitor {
+            return { error: "Performance monitor not initialized" }
+        }
+        
+        let start_time = time.sidereal_now()
+        let ping_result = system.ping(target_host)
+        let end_time = time.sidereal_now()
+        
+        let latency = senary.subtract(end_time, start_time)
+        let packet_loss = ping_result.packet_loss || senary.create("0")
+        
+        return {
+            target_host: target_host,
+            latency_ms: senary.multiply(latency, senary.create("1000")),
+            packet_loss_percent: packet_loss,
+            timestamp: end_time
+        }
+    }
+    
+    fun get_network_health() -> $Object {
+        // Get comprehensive network health assessment
+        if !performance_monitor {
+            return {}
+        }
+        
+        let health_score = senary.create("0")
+        let interface_count = senary.create("0")
+        
+        // Assess interface health
+        for interface_name, interface in active_interfaces {
+            interface_count = senary.add(interface_count, senary.create("1"))
+            
+            if interface.status == "enabled" {
+                health_score = senary.add(health_score, senary.create("2"))
+            } else if interface.status == "configured" {
+                health_score = senary.add(health_score, senary.create("1"))
+            }
+        }
+        
+        // Calculate overall health
+        let overall_health = "poor"
+        if senary.is_greater(interface_count, senary.create("0")) {
+            let health_percentage = senary.divide(health_score, senary.multiply(interface_count, senary.create("2")))
+            
+            if senary.is_greater_equal(health_percentage, senary.create("0.8")) {
+                overall_health = "excellent"
+            } else if senary.is_greater_equal(health_percentage, senary.create("0.6")) {
+                overall_health = "good"
+            } else if senary.is_greater_equal(health_percentage, senary.create("0.4")) {
+                overall_health = "fair"
+            }
+        }
+        
+        return {
+            overall_health: overall_health,
+            health_score: health_score,
+            interface_count: interface_count,
+            bandwidth_usage: network_stack.get_bandwidth_usage(),
+            security_status: network_stack.get_security_status(),
+            uptime: performance_monitor.uptime || senary.create("0")
+        }
+    }
+    
+    fun get_performance_metrics() -> $Object {
+        // Get detailed performance metrics
+        if !performance_monitor {
+            return {}
+        }
+        
+        return {
+            bandwidth_metrics: network_stack.get_bandwidth_usage(),
+            latency_metrics: network_stack.measure_latency(),
+            connection_metrics: network_stack.get_connection_stats(),
+            security_metrics: network_stack.get_security_status(),
+            interface_metrics: network_stack.get_all_interface_status(),
+            overall_health: network_stack.get_network_health()
+        }
+    }
+    
+    // ====== INTEGRATED STACK OPERATIONS ======
+    
+    fun initialize_network_stack() -> $Boolean {
+        // Initialize complete network stack
+        logger.info("Initializing Seigr Network Stack")
+        
+        // Step 1: Initialize interface manager
+        if !network_stack.initialize_interface_manager() {
+            logger.error("Interface manager initialization failed")
+            return false
+        }
+        
+        // Step 2: Initialize driver interface
+        if !network_stack.initialize_driver_interface() {
+            logger.error("Driver interface initialization failed")
+            return false
+        }
+        
+        // Step 3: Initialize TCP/IP stack
+        if !network_stack.initialize_tcpip_stack() {
+            logger.error("TCP/IP stack initialization failed")
+            return false
+        }
+        
+        // Step 4: Initialize configuration manager
+        if !network_stack.initialize_config_manager() {
+            logger.error("Configuration manager initialization failed")
+            return false
+        }
+        
+        // Step 5: Initialize security layer
+        if !network_stack.initialize_security_layer() {
+            logger.error("Security layer initialization failed")
+            return false
+        }
+        
+        // Step 6: Initialize performance monitor
+        if !network_stack.initialize_performance_monitor() {
+            logger.error("Performance monitor initialization failed")
+            return false
+        }
+        
+        // Step 7: Start integrated monitoring
+        network_stack.start_monitoring()
+        
+        // Record consciousness event
+        if noesis.is_available() {
+            noesis.record_system_event("network_stack_initialized", {
+                components: ["interface_manager", "driver_interface", "tcpip_stack", "config_manager", "security_layer", "performance_monitor"],
+                timestamp: time.sidereal_now()
+            })
+        }
+        
+        logger.info("Seigr Network Stack initialization complete")
+        return true
+    }
+    
+    fun get_stack_manifest() -> $Object {
+        // Get comprehensive network stack manifest
+        return {
+            component: "SeigrNetworkStack",
+            version: "1.0.0",
+            protocol_compliance: "seigr.network.stack.v1",
+            senary_optimized: true,
+            energy_aware: true,
+            consciousness_integrated: noesis.is_available(),
+            components: {
+                interface_manager: interface_manager != null,
+                driver_interface: driver_interface != null,
+                tcpip_stack: tcpip_stack != null,
+                config_manager: config_manager != null,
+                security_layer: security_layer != null,
+                performance_monitor: performance_monitor != null
+            },
+            statistics: {
+                interfaces_managed: senary.length(active_interfaces),
+                drivers_loaded: senary.length(loaded_drivers),
+                routes_configured: senary.length(tcpip_stack?.routing_table || {}),
+                policies_active: senary.length(network_policies),
+                security_events: senary.length(security_events)
+            },
+            current_state: {
+                interface_monitoring: interface_monitor_active,
+                packet_processing: packet_processing_enabled,
+                threat_detection: threat_detection_active,
+                bandwidth_monitoring: bandwidth_monitor_active,
+                latency_tracking: latency_tracker_active
+            },
+            timestamp: time.sidereal_now()
+        }
+    }
+    
+    fun shutdown_network_stack() -> $Boolean {
+        // Clean shutdown of network stack
+        logger.info("Shutting down Seigr Network Stack")
+        
+        // Stop monitoring
+        interface_monitor_active = false
+        packet_processing_enabled = false
+        threat_detection_active = false
+        bandwidth_monitor_active = false
+        latency_tracker_active = false
+        
+        // Shutdown components
+        if performance_monitor {
+            network_stack.stop_monitoring()
+        }
+        
+        // Unload drivers
+        for driver_name in loaded_drivers {
+            network_stack.unload_driver(driver_name)
+        }
+        
+        // Clear state
+        interface_manager = null
+        driver_interface = null
+        tcpip_stack = null
+        config_manager = null
+        security_layer = null
+        performance_monitor = null
+        
+        // Record consciousness event
+        if noesis.is_available() {
+            noesis.record_system_event("network_stack_shutdown", {
+                timestamp: time.sidereal_now()
+            })
+        }
+        
+        logger.info("Seigr Network Stack shutdown complete")
+        return true
+    }
+    
+    // ====== HELPER FUNCTIONS ======
+    
+    fun monitor_interfaces_task() -> $Void {
+        // Background task for interface monitoring
+        while interface_monitor_active {
+            // Discover new interfaces
+            network_stack.discover_interfaces()
+            
+            // Update interface statistics
+            for interface_name, interface in active_interfaces {
+                if interface.status == "enabled" {
+                    network_stack.update_interface_statistics(interface_name)
+                }
+            }
+            
+            // Sleep for monitoring interval
+            let interval = interface_manager?.energy_profiles?.balanced?.scan_interval || senary.create("30")
+            time.sleep(senary.to_decimal(interval))
+        }
+    }
+    
+    fun bandwidth_monitor_task() -> $Void {
+        // Background task for bandwidth monitoring
+        while bandwidth_monitor_active {
+            if performance_monitor?.bandwidth_monitor?.active {
+                performance_metrics.bandwidth = network_stack.get_bandwidth_usage()
+            }
+            
+            let interval = performance_monitor?.bandwidth_monitor?.interval || senary.create("5")
+            time.sleep(senary.to_decimal(interval))
+        }
+    }
+    
+    fun latency_tracker_task() -> $Void {
+        // Background task for latency tracking
+        while latency_tracker_active {
+            if performance_monitor?.latency_tracker?.active {
+                for target_host in performance_monitor.latency_tracker.target_hosts {
+                    performance_metrics.latency = network_stack.measure_latency(target_host)
+                }
+            }
+            
+            let interval = performance_monitor?.latency_tracker?.ping_interval || senary.create("10")
+            time.sleep(senary.to_decimal(interval))
+        }
+    }
+    
+    fun threat_detection_task() -> $Void {
+        // Background task for threat detection
+        while threat_detection_active {
+            if security_layer?.threat_detection?.enabled {
+                // Monitor for security threats
+                network_stack.scan_for_threats()
+            }
+            
+            time.sleep(5)  // Check every 5 seconds
+        }
+    }
+}

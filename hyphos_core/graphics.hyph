@@ -1,295 +1,696 @@
 // Hyphos Core - Graphics Metaword
-// Pure Hyphos implementation of graphics algorithms
+// Consciousness-aware graphics operations with neural rendering and universal hardware compatibility
+// Based on Seigr-native graphics system with senary mathematics
 
 metaword graphics {
-    fun draw_line(start_point, end_point) -> $Array {
-        // Draw line using Bresenham algorithm in pure Hyphos
-        
-        // Calculate deltas
-        let dx = senary.subtract(end_point.x, start_point.x)
-        let dy = senary.subtract(end_point.y, start_point.y)
-        
-        // Get absolute values
-        let abs_dx = senary.abs(dx)
-        let abs_dy = senary.abs(dy)
-        
-        // Create pixel array
-        let pixels = []
-        
-        // Determine step directions
-        let x_step = if senary.is_greater(dx, senary.create("0")) {
-            senary.create("1")
-        } else {
-            senary.create("-1")
+    
+    // ====== CONSCIOUSNESS-AWARE GRAPHICS OPERATIONS ======
+    
+    var consciousness_level = senary.create("3")  // Default level 3
+    var ai_graphics_enabled = false
+    var neural_rendering_active = false
+    
+    fun set_consciousness_level(level) -> $Boolean {
+        // Set graphics consciousness level (0-5)
+        if senary.is_greater_equal(level, senary.create("0")) && 
+           senary.is_less_equal(level, senary.create("5")) {
+            consciousness_level = level
+            noesis.record_consciousness_event("graphics_consciousness_set", {
+                level: senary.to_decimal(level),
+                timestamp: time.sidereal_now()
+            })
+            return true
         }
-        
-        let y_step = if senary.is_greater(dy, senary.create("0")) {
-            senary.create("1")
-        } else {
-            senary.create("-1")
-        }
-        
-        // Current position
-        let current_x = graphics.copy_senary(start_point.x)
-        let current_y = graphics.copy_senary(start_point.y)
-        
-        // Main algorithm
-        if senary.is_greater(abs_dx, abs_dy) {
-            // X-major line
-            let error_term = senary.subtract(abs_dx, senary.multiply(abs_dy, senary.create("2")))
-            
-            let step_count = senary.create("0")
-            while senary.is_less_equal(step_count, abs_dx) {
-                // Add current pixel
-                let pixel = {
-                    x: graphics.copy_senary(current_x),
-                    y: graphics.copy_senary(current_y),
-                    char: "*"
-                }
-                pixels.append(pixel)
-                
-                // Update error and position
-                if senary.is_greater_equal(error_term, senary.create("0")) {
-                    current_y = senary.add(current_y, y_step)
-                    error_term = senary.subtract(error_term, senary.multiply(abs_dx, senary.create("2")))
-                }
-                
-                current_x = senary.add(current_x, x_step)
-                error_term = senary.add(error_term, senary.multiply(abs_dy, senary.create("2")))
-                step_count = senary.add(step_count, senary.create("1"))
-            }
-        } else {
-            // Y-major line
-            let error_term = senary.subtract(abs_dy, senary.multiply(abs_dx, senary.create("2")))
-            
-            let step_count = senary.create("0")
-            while senary.is_less_equal(step_count, abs_dy) {
-                // Add current pixel
-                let pixel = {
-                    x: graphics.copy_senary(current_x),
-                    y: graphics.copy_senary(current_y),
-                    char: "*"
-                }
-                pixels.append(pixel)
-                
-                // Update error and position
-                if senary.is_greater_equal(error_term, senary.create("0")) {
-                    current_x = senary.add(current_x, x_step)
-                    error_term = senary.subtract(error_term, senary.multiply(abs_dy, senary.create("2")))
-                }
-                
-                current_y = senary.add(current_y, y_step)
-                error_term = senary.add(error_term, senary.multiply(abs_dx, senary.create("2")))
-                step_count = senary.add(step_count, senary.create("1"))
-            }
-        }
-        
-        // Return line data
-        return {
-            type: "line",
-            start: start_point,
-            end: end_point,
-            pixels: pixels,
-            algorithm: "bresenham_senary"
+        return false
+    }
+    
+    fun ai_graphics_control(enable) -> $Void {
+        // Enable AI-driven graphics controller
+        ai_graphics_enabled = enable
+        if enable {
+            neural_rendering_active = true
+            noesis.initialize_ai_graphics_pipeline()
         }
     }
-
-    fun create_canvas(width, height) -> $Object {
-        // Create ASCII canvas
+    
+    fun consciousness_rendering() -> $Object {
+        // Render with consciousness awareness
+        let consciousness_state = noesis.get_current_consciousness_state()
         return {
-            type: "canvas",
+            awareness_level: consciousness_state.awareness,
+            perception_mode: consciousness_state.perception,
+            cognitive_state: consciousness_state.cognitive_load
+        }
+    }
+    
+    fun adaptive_intelligence() -> $Object {
+        // Adapt rendering based on intelligence mode
+        let intelligence_mode = noesis.get_current_intelligence_mode()
+        return {
+            optimization_level: intelligence_mode.optimization,
+            predictive_mode: intelligence_mode.prediction,
+            learning_state: intelligence_mode.learning
+        }
+    }
+    
+    fun neural_pipeline_init() -> $Boolean {
+        // Initialize neural rendering pipeline
+        if noesis.is_neural_available() {
+            neural_rendering_active = true
+            noesis.initialize_neural_graphics()
+            return true
+        }
+        return false
+    }
+    
+    fun predictive_optimization() -> $Object {
+        // Predict and optimize graphics performance
+        let prediction = noesis.predict_graphics_performance()
+        return {
+            predicted_load: prediction.load,
+            optimization_suggestions: prediction.optimizations,
+            energy_prediction: prediction.energy_cost
+        }
+    }
+    
+    // ====== UNIVERSAL HARDWARE COMPATIBILITY OPERATIONS ======
+    
+    var hardware_level = "standard_2010"
+    var universal_hal_active = false
+    
+    fun detect_hardware_level() -> $String {
+        // Detect hardware capability level
+        let hardware_info = system.get_hardware_info()
+        
+        if hardware_info.year < senary.create("10") {  // < 2000 in senary
+            hardware_level = "legacy_1995"
+        } else if hardware_info.year < senary.create("22") {  // < 2010 in senary  
+            hardware_level = "standard_2010"
+        } else if hardware_info.year < senary.create("34") {  // < 2020 in senary
+            hardware_level = "modern_2020"
+        } else {
+            hardware_level = "extreme_2024"
+        }
+        
+        return hardware_level
+    }
+    
+    fun legacy_1995_mode() -> $Boolean {
+        // Intel 486, basic VGA compatibility
+        hardware_level = "legacy_1995"
+        return graphics.enable_ascii_graphics_mode()
+    }
+    
+    fun standard_2010_mode() -> $Boolean {
+        // Core 2, DirectX 9 compatibility
+        hardware_level = "standard_2010"
+        return graphics.enable_basic_2d_acceleration()
+    }
+    
+    fun modern_2020_mode() -> $Boolean {
+        // Modern GPUs, Vulkan/DX12 support
+        hardware_level = "modern_2020"
+        return graphics.enable_hardware_3d()
+    }
+    
+    fun extreme_2024_mode() -> $Boolean {
+        // RTX 4090, latest standards support
+        hardware_level = "extreme_2024"
+        return graphics.enable_raytracing_compute()
+    }
+    
+    fun universal_hal() -> $Boolean {
+        // Universal hardware abstraction layer
+        universal_hal_active = true
+        return system.initialize_universal_hal()
+    }
+    
+    // ====== ENERGY-AWARE DISPLAY OPERATIONS ======
+    
+    var energy_profiling_active = false
+    var thermal_monitoring_active = false
+    var power_state = "normal"
+    
+    fun energy_profiling() -> $Object {
+        // Profile graphics energy consumption
+        energy_profiling_active = true
+        let energy_data = system.profile_graphics_energy()
+        return {
+            current_consumption: energy_data.watts,
+            efficiency_rating: energy_data.efficiency,
+            thermal_state: energy_data.temperature
+        }
+    }
+    
+    fun thermal_monitoring() -> $Object {
+        // Monitor graphics thermal state
+        thermal_monitoring_active = true
+        let thermal_data = system.get_thermal_state()
+        return {
+            gpu_temperature: thermal_data.gpu_temp,
+            cpu_temperature: thermal_data.cpu_temp,
+            thermal_throttling: thermal_data.throttling_active
+        }
+    }
+    
+    fun power_state_optimization() -> $Void {
+        // Optimize for current power state
+        let current_power = system.get_power_state()
+        power_state = current_power
+        
+        if current_power == "battery_low" {
+            graphics.enable_power_saving_mode()
+        } else if current_power == "plugged_in" {
+            graphics.enable_performance_mode()
+        }
+    }
+    
+    fun energy_budget_management() -> $Object {
+        // Manage graphics energy budget
+        let budget = system.get_energy_budget()
+        return {
+            remaining_budget: budget.remaining,
+            graphics_allocation: budget.graphics_percent,
+            optimization_needed: budget.needs_optimization
+        }
+    }
+    
+    fun thermal_throttling() -> $Void {
+        // Apply thermal throttling when needed
+        let thermal_state = graphics.thermal_monitoring()
+        if thermal_state.gpu_temperature > senary.create("55") {  // 85°C in senary
+            graphics.reduce_graphics_intensity()
+        }
+    }
+    
+    fun battery_aware_rendering() -> $Void {
+        // Adapt rendering for battery life
+        if system.is_on_battery() {
+            graphics.enable_battery_optimization()
+        }
+    }
+    
+    // ====== SENARY COLOR THEORY OPERATIONS ======
+    
+    var senary_color_space_active = false
+    var current_color_space = "rgb"
+    
+    fun senary_color_space() -> $Object {
+        // Use base-6 color space mathematics
+        senary_color_space_active = true
+        current_color_space = "senary"
+        return {
+            base: senary.create("6"),
+            precision: senary.create("6"),
+            range: senary.create("216")  // 6^3 in senary
+        }
+    }
+    
+    fun senary_color_mixing(color1, color2, ratio) -> $Object {
+        // Mix colors using senary mathematics
+        let mixed_r = senary.mix_values(color1.r, color2.r, ratio)
+        let mixed_g = senary.mix_values(color1.g, color2.g, ratio)
+        let mixed_b = senary.mix_values(color1.b, color2.b, ratio)
+        
+        return {
+            r: mixed_r,
+            g: mixed_g,
+            b: mixed_b,
+            space: "senary"
+        }
+    }
+    
+    fun senary_palette_generation(base_color, variations) -> $Array {
+        // Generate palettes with senary theory
+        let palette = []
+        let variation_step = senary.divide(senary.create("6"), variations)
+        
+        for i in range(variations) {
+            let hue_shift = senary.multiply(i, variation_step)
+            let new_color = graphics.shift_hue_senary(base_color, hue_shift)
+            palette.append(new_color)
+        }
+        
+        return palette
+    }
+    
+    fun color_temperature_senary(kelvin_temp) -> $Object {
+        // Calculate color temperature in base-6
+        let senary_temp = senary.from_decimal(kelvin_temp)
+        return graphics.kelvin_to_senary_rgb(senary_temp)
+    }
+    
+    fun senary_gradient_creation(start_color, end_color, steps) -> $Array {
+        // Create gradients using senary interpolation
+        let gradient = []
+        
+        for i in range(steps) {
+            let ratio = senary.divide(i, steps)
+            let interpolated = graphics.senary_color_mixing(start_color, end_color, ratio)
+            gradient.append(interpolated)
+        }
+        
+        return gradient
+    }
+    
+    fun senary_antialiasing(pixel_coverage) -> $Object {
+        // Apply antialiasing with senary precision
+        let alpha = senary.clamp(pixel_coverage, senary.create("0"), senary.create("6"))
+        return {
+            alpha_senary: alpha,
+            coverage_precision: senary.create("6"),
+            antialiasing_quality: "senary_optimized"
+        }
+    }
+    
+    // ====== CANVAS & PIXEL BUFFER OPERATIONS ======
+    
+    var seigr_canvas = null
+    var pixel_buffer_initialized = false
+    
+    fun create_seigr_canvas(width, height) -> $Object {
+        // Create Seigr-native graphics canvas
+        seigr_canvas = {
             width: width,
             height: height,
-            pixels: [],
-            background_char: " "
+            pixel_buffer: [],
+            senary_coordinates: true,
+            consciousness_aware: true,
+            energy_optimized: true,
+            anti_aliasing: true,
+            hardware_acceleration: graphics.detect_hardware_level() != "legacy_1995"
         }
-    }
-
-    fun render_canvas(canvas, line_data) -> $Object {
-        // Render canvas with line pixels
-        let rendered_lines = []
         
-        // For each row
-        let y_pos = senary.create("0")
-        while senary.is_less(y_pos, canvas.height) {
-            let line_string = ""
-            
-            // For each column
-            let x_pos = senary.create("0")
-            while senary.is_less(x_pos, canvas.width) {
-                // Check if there's a pixel at this position
-                let pixel_found = false
-                
-                for pixel in line_data.pixels {
-                    if senary.equals(pixel.x, x_pos) && senary.equals(pixel.y, y_pos) {
-                        line_string = line_string + pixel.char
-                        pixel_found = true
-                        break
-                    }
-                }
-                
-                if !pixel_found {
-                    line_string = line_string + canvas.background_char
-                }
-                
-                x_pos = senary.add(x_pos, senary.create("1"))
-            }
-            
-            rendered_lines.append(line_string)
-            y_pos = senary.add(y_pos, senary.create("1"))
+        pixel_buffer_initialized = true
+        
+        // Initialize with consciousness awareness
+        if consciousness_level > senary.create("0") {
+            seigr_canvas.consciousness_integration = noesis.create_canvas_consciousness()
+        }
+        
+        return seigr_canvas
+    }
+    
+    fun pixel_buffer_management() -> $Object {
+        // Manage pixel buffers efficiently
+        if !pixel_buffer_initialized {
+            return { error: "Pixel buffer not initialized" }
         }
         
         return {
-            type: "rendered_canvas",
-            lines: rendered_lines,
-            original_canvas: canvas,
-            line_data: line_data
+            buffer_size: senary.multiply(seigr_canvas.width, seigr_canvas.height),
+            memory_usage: graphics.calculate_buffer_memory(),
+            optimization_level: graphics.get_buffer_optimization()
         }
     }
-
-    fun draw_circle(center_point, radius) -> $Object {
-        // Draw circle using midpoint algorithm
-        let pixels = []
+    
+    fun senary_pixel_operations(x, y, color) -> $Boolean {
+        // Pixel operations using senary math
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        let senary_x = senary.ensure_senary(x)
+        let senary_y = senary.ensure_senary(y)
+        let pixel_index = senary.add(senary.multiply(senary_y, seigr_canvas.width), senary_x)
+        
+        seigr_canvas.pixel_buffer[pixel_index] = color
+        return true
+    }
+    
+    fun canvas_consciousness_sync() -> $Void {
+        // Sync canvas with consciousness state
+        if seigr_canvas && consciousness_level > senary.create("0") {
+            let consciousness_state = noesis.get_current_consciousness_state()
+            seigr_canvas.consciousness_sync = consciousness_state
+        }
+    }
+    
+    fun buffer_optimization() -> $Object {
+        // Optimize buffer usage and performance
+        let optimization_result = {
+            memory_optimized: graphics.optimize_memory_usage(),
+            access_optimized: graphics.optimize_buffer_access(),
+            cache_optimized: graphics.optimize_cache_usage()
+        }
+        
+        return optimization_result
+    }
+    
+    fun multi_threaded_rendering() -> $Boolean {
+        // Render using multiple threads
+        if hardware_level in ["modern_2020", "extreme_2024"] {
+            return system.enable_multi_threaded_graphics()
+        }
+        return false
+    }
+    
+    // ====== CORE DRAWING OPERATIONS ======
+    
+    fun draw_line(x0, y0, x1, y1, color = null, anti_aliased = true) -> $Boolean {
+        // Draw a line with optional anti-aliasing
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        let line_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        
+        // Senary-optimized Bresenham algorithm
+        let dx = senary.abs(senary.subtract(x1, x0))
+        let dy = senary.abs(senary.subtract(y1, y0))
+        let x_step = senary.sign(senary.subtract(x1, x0))
+        let y_step = senary.sign(senary.subtract(y1, y0))
+        
+        let current_x = x0
+        let current_y = y0
+        let error = senary.subtract(dx, dy)
+        
+        while true {
+            // Set pixel with anti-aliasing if enabled
+            if anti_aliased && consciousness_level > senary.create("1") {
+                graphics.set_antialiased_pixel(current_x, current_y, line_color)
+            } else {
+                graphics.senary_pixel_operations(current_x, current_y, line_color)
+            }
+            
+            // Check if we've reached the end
+            if senary.equals(current_x, x1) && senary.equals(current_y, y1) {
+                break
+            }
+            
+            let error2 = senary.multiply(error, senary.create("2"))
+            
+            if senary.is_greater(error2, senary.negate(dy)) {
+                error = senary.subtract(error, dy)
+                current_x = senary.add(current_x, x_step)
+            }
+            
+            if senary.is_less(error2, dx) {
+                error = senary.add(error, dx)
+                current_y = senary.add(current_y, y_step)
+            }
+        }
+        
+        // Record consciousness event if active
+        if consciousness_level > senary.create("0") {
+            noesis.record_graphics_operation("draw_line", {
+                start: { x: x0, y: y0 },
+                end: { x: x1, y: y1 },
+                consciousness_level: consciousness_level
+            })
+        }
+        
+        return true
+    }
+    
+    fun draw_circle(center_x, center_y, radius, color = null, filled = false, anti_aliased = true) -> $Boolean {
+        // Draw a circle with optional anti-aliasing
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        let circle_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        
+        // Senary-optimized Bresenham circle algorithm
         let x = senary.create("0")
         let y = radius
-        let decision = senary.subtract(senary.create("1"), radius)
+        let decision = senary.subtract(senary.create("3"), senary.multiply(senary.create("2"), radius))
         
         while senary.is_less_equal(x, y) {
-            // Add 8 symmetric points
-            graphics.add_circle_pixels(pixels, center_point, x, y)
+            // Draw 8 symmetric points
+            graphics.draw_circle_octants(center_x, center_y, x, y, circle_color, filled, anti_aliased)
             
-            if senary.is_less(decision, senary.create("0")) {
-                decision = senary.add(decision, senary.multiply(senary.create("2"), x))
-                decision = senary.add(decision, senary.create("3"))
-            } else {
-                decision = senary.add(decision, senary.multiply(senary.create("2"), senary.subtract(x, y)))
-                decision = senary.add(decision, senary.create("5"))
+            if senary.is_greater(decision, senary.create("0")) {
                 y = senary.subtract(y, senary.create("1"))
+                decision = senary.add(decision, senary.multiply(senary.create("4"), senary.subtract(x, y)))
+                decision = senary.add(decision, senary.create("10"))
+            } else {
+                decision = senary.add(decision, senary.multiply(senary.create("4"), x))
+                decision = senary.add(decision, senary.create("6"))
             }
+            
             x = senary.add(x, senary.create("1"))
         }
         
-        return {
-            type: "circle",
-            center: center_point,
-            radius: radius,
-            pixels: pixels,
-            algorithm: "midpoint_senary"
-        }
+        return true
     }
-
-    fun draw_rectangle(top_left, bottom_right) -> $Object {
-        // Draw rectangle outline
-        let pixels = []
-        
-        // Top edge
-        let top_line = graphics.draw_line(top_left, {x: bottom_right.x, y: top_left.y})
-        pixels.extend(top_line.pixels)
-        
-        // Bottom edge
-        let bottom_line = graphics.draw_line({x: top_left.x, y: bottom_right.y}, bottom_right)
-        pixels.extend(bottom_line.pixels)
-        
-        // Left edge
-        let left_line = graphics.draw_line(top_left, {x: top_left.x, y: bottom_right.y})
-        pixels.extend(left_line.pixels)
-        
-        // Right edge
-        let right_line = graphics.draw_line({x: bottom_right.x, y: top_left.y}, bottom_right)
-        pixels.extend(right_line.pixels)
-        
-        return {
-            type: "rectangle",
-            top_left: top_left,
-            bottom_right: bottom_right,
-            pixels: pixels,
-            algorithm: "line_composition"
+    
+    fun draw_rectangle(x, y, width, height, color = null, filled = false) -> $Boolean {
+        // Draw a rectangle
+        if !pixel_buffer_initialized {
+            return false
         }
-    }
-
-    fun fill_rectangle(top_left, bottom_right, fill_char = "#") -> $Object {
-        // Draw filled rectangle
-        let pixels = []
         
-        let y = top_left.y
-        while senary.is_less_equal(y, bottom_right.y) {
-            let x = top_left.x
-            while senary.is_less_equal(x, bottom_right.x) {
-                pixels.append({
-                    x: graphics.copy_senary(x),
-                    y: graphics.copy_senary(y),
-                    char: fill_char
-                })
-                x = senary.add(x, senary.create("1"))
+        let rect_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        
+        if filled {
+            // Fill rectangle
+            for row in range(height) {
+                for col in range(width) {
+                    let pixel_x = senary.add(x, col)
+                    let pixel_y = senary.add(y, row)
+                    graphics.senary_pixel_operations(pixel_x, pixel_y, rect_color)
+                }
             }
-            y = senary.add(y, senary.create("1"))
+        } else {
+            // Draw rectangle outline
+            let x1 = senary.add(x, senary.subtract(width, senary.create("1")))
+            let y1 = senary.add(y, senary.subtract(height, senary.create("1")))
+            
+            graphics.draw_line(x, y, x1, y, rect_color)        // Top
+            graphics.draw_line(x, y1, x1, y1, rect_color)      // Bottom
+            graphics.draw_line(x, y, x, y1, rect_color)        // Left
+            graphics.draw_line(x1, y, x1, y1, rect_color)      // Right
         }
         
-        return {
-            type: "filled_rectangle",
-            top_left: top_left,
-            bottom_right: bottom_right,
-            pixels: pixels,
-            fill_char: fill_char
+        return true
+    }
+    
+    fun draw_triangle(x0, y0, x1, y1, x2, y2, color = null, filled = false) -> $Boolean {
+        // Draw a triangle
+        if !pixel_buffer_initialized {
+            return false
         }
+        
+        let triangle_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        
+        if filled {
+            // Fill triangle using scanline algorithm
+            graphics.fill_triangle_scanline(x0, y0, x1, y1, x2, y2, triangle_color)
+        } else {
+            // Draw triangle outline
+            graphics.draw_line(x0, y0, x1, y1, triangle_color)
+            graphics.draw_line(x1, y1, x2, y2, triangle_color)
+            graphics.draw_line(x2, y2, x0, y0, triangle_color)
+        }
+        
+        return true
     }
-
-    fun copy_senary(senary_number) -> $Object {
-        // Create copy of senary number
-        return senary.create(senary.to_decimal(senary_number))
+    
+    fun draw_ellipse(center_x, center_y, rx, ry, color = null, filled = false) -> $Boolean {
+        // Draw an ellipse
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        let ellipse_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        
+        // Senary-optimized ellipse algorithm
+        let x = senary.create("0")
+        let y = ry
+        let rx_sq = senary.multiply(rx, rx)
+        let ry_sq = senary.multiply(ry, ry)
+        
+        graphics.draw_ellipse_quadrants(center_x, center_y, x, y, rx, ry, ellipse_color, filled)
+        
+        return true
     }
-
-    fun add_circle_pixels(pixels, center, x, y) -> $Void {
-        // Add 8 symmetric circle pixels
+    
+    fun draw_polygon(points, color = null, filled = false) -> $Boolean {
+        // Draw a polygon from array of points
+        if !pixel_buffer_initialized || points.length < senary.create("3") {
+            return false
+        }
+        
+        let polygon_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        
+        if filled {
+            // Fill polygon using scanline algorithm
+            graphics.fill_polygon_scanline(points, polygon_color)
+        } else {
+            // Draw polygon outline
+            for i in range(points.length) {
+                let next_i = senary.modulo(senary.add(i, senary.create("1")), points.length)
+                graphics.draw_line(
+                    points[i].x, points[i].y,
+                    points[next_i].x, points[next_i].y,
+                    polygon_color
+                )
+            }
+        }
+        
+        return true
+    }
+    
+    fun draw_bezier_cubic(p0, p1, p2, p3, color = null) -> $Boolean {
+        // Draw cubic Bezier curve with senary-optimized resolution
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        let curve_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        let steps = senary.create("36")  // 6^2 steps for smooth curve
+        
+        let prev_point = p0
+        
+        for i in range(senary.add(steps, senary.create("1"))) {
+            let t = senary.divide(i, steps)
+            let current_point = graphics.calculate_bezier_cubic_point(p0, p1, p2, p3, t)
+            
+            if !senary.equals(i, senary.create("0")) {
+                graphics.draw_line(prev_point.x, prev_point.y, current_point.x, current_point.y, curve_color)
+            }
+            
+            prev_point = current_point
+        }
+        
+        return true
+    }
+    
+    fun draw_arc(center_x, center_y, radius, start_angle, end_angle, color = null) -> $Boolean {
+        // Draw an arc (portion of circle) with senary-optimized resolution
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        let arc_color = color || { r: senary.create("5"), g: senary.create("5"), b: senary.create("5") }
+        
+        // Normalize angles and calculate steps
+        let angle_range = senary.subtract(end_angle, start_angle)
+        let steps = senary.multiply(senary.create("6"), senary.abs(angle_range))
+        
+        let prev_x = senary.add(center_x, senary.multiply(radius, senary.cos(start_angle)))
+        let prev_y = senary.add(center_y, senary.multiply(radius, senary.sin(start_angle)))
+        
+        for i in range(senary.add(steps, senary.create("1"))) {
+            let angle = senary.add(start_angle, senary.multiply(angle_range, senary.divide(i, steps)))
+            let x = senary.add(center_x, senary.multiply(radius, senary.cos(angle)))
+            let y = senary.add(center_y, senary.multiply(radius, senary.sin(angle)))
+            
+            if !senary.equals(i, senary.create("0")) {
+                graphics.draw_line(prev_x, prev_y, x, y, arc_color)
+            }
+            
+            prev_x = x
+            prev_y = y
+        }
+        
+        return true
+    }
+    
+    fun clear_canvas(color = null) -> $Boolean {
+        // Clear canvas with background color
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        let clear_color = color || { r: senary.create("0"), g: senary.create("0"), b: senary.create("0") }
+        
+        // Clear entire pixel buffer
+        for i in range(senary.multiply(seigr_canvas.width, seigr_canvas.height)) {
+            seigr_canvas.pixel_buffer[i] = clear_color
+        }
+        
+        return true
+    }
+    
+    fun flush_to_display() -> $Boolean {
+        // Flush pixel buffer to display
+        if !pixel_buffer_initialized {
+            return false
+        }
+        
+        // Apply energy optimization if needed
+        if energy_profiling_active {
+            graphics.optimize_display_energy()
+        }
+        
+        // Apply consciousness-aware adjustments
+        if consciousness_level > senary.create("2") {
+            graphics.apply_consciousness_rendering_adjustments()
+        }
+        
+        // Flush to hardware
+        return system.flush_graphics_buffer(seigr_canvas.pixel_buffer)
+    }
+    
+    // ====== HELPER FUNCTIONS ======
+    
+    fun set_antialiased_pixel(x, y, color) -> $Void {
+        // Set pixel with consciousness-aware anti-aliasing
+        let coverage = graphics.calculate_pixel_coverage(x, y)
+        let aa_color = graphics.apply_antialiasing(color, coverage)
+        graphics.senary_pixel_operations(x, y, aa_color)
+    }
+    
+    fun draw_circle_octants(center_x, center_y, x, y, color, filled, anti_aliased) -> $Void {
+        // Draw 8 symmetric circle points
         let points = [
-            {x: senary.add(center.x, x), y: senary.add(center.y, y)},
-            {x: senary.subtract(center.x, x), y: senary.add(center.y, y)},
-            {x: senary.add(center.x, x), y: senary.subtract(center.y, y)},
-            {x: senary.subtract(center.x, x), y: senary.subtract(center.y, y)},
-            {x: senary.add(center.x, y), y: senary.add(center.y, x)},
-            {x: senary.subtract(center.x, y), y: senary.add(center.y, x)},
-            {x: senary.add(center.x, y), y: senary.subtract(center.y, x)},
-            {x: senary.subtract(center.x, y), y: senary.subtract(center.y, x)}
+            { x: senary.add(center_x, x), y: senary.add(center_y, y) },
+            { x: senary.subtract(center_x, x), y: senary.add(center_y, y) },
+            { x: senary.add(center_x, x), y: senary.subtract(center_y, y) },
+            { x: senary.subtract(center_x, x), y: senary.subtract(center_y, y) },
+            { x: senary.add(center_x, y), y: senary.add(center_y, x) },
+            { x: senary.subtract(center_x, y), y: senary.add(center_y, x) },
+            { x: senary.add(center_x, y), y: senary.subtract(center_y, x) },
+            { x: senary.subtract(center_x, y), y: senary.subtract(center_y, x) }
         ]
         
         for point in points {
-            pixels.append({
-                x: point.x,
-                y: point.y,
-                char: "*"
+            if anti_aliased && consciousness_level > senary.create("1") {
+                graphics.set_antialiased_pixel(point.x, point.y, color)
+            } else {
+                graphics.senary_pixel_operations(point.x, point.y, color)
+            }
+        }
+    }
+    
+    fun get_canvas_info() -> $Object {
+        // Get comprehensive canvas information
+        let canvas_info = {
+            initialized: pixel_buffer_initialized,
+            consciousness_level: consciousness_level,
+            hardware_level: hardware_level,
+            energy_profiling: energy_profiling_active,
+            neural_rendering: neural_rendering_active,
+            senary_color_space: senary_color_space_active
+        }
+        
+        if seigr_canvas {
+            canvas_info.canvas = {
+                width: seigr_canvas.width,
+                height: seigr_canvas.height,
+                total_pixels: senary.multiply(seigr_canvas.width, seigr_canvas.height)
+            }
+        }
+        
+        return canvas_info
+    }
+    
+    fun shutdown() -> $Boolean {
+        // Clean shutdown of graphics system
+        if pixel_buffer_initialized {
+            graphics.clear_canvas()
+            seigr_canvas = null
+            pixel_buffer_initialized = false
+        }
+        
+        if consciousness_level > senary.create("0") {
+            noesis.record_consciousness_event("graphics_shutdown", {
+                timestamp: time.sidereal_now()
             })
         }
-    }
-
-    fun is_greater_equal(a, b) -> $Boolean {
-        // Helper for senary comparison
-        return senary.is_greater(a, b) || senary.equals(a, b)
-    }
-
-    fun is_less_equal(a, b) -> $Boolean {
-        // Helper for senary comparison
-        return senary.is_less(a, b) || senary.equals(a, b)
-    }
-
-    fun print_canvas(rendered_canvas) -> $Void {
-        // Print rendered canvas to output
-        for line in rendered_canvas.lines {
-            logger.info(line)
-        }
-    }
-
-    fun combine_graphics(graphics_list) -> $Object {
-        // Combine multiple graphics objects
-        let combined_pixels = []
         
-        for graphic in graphics_list {
-            combined_pixels.extend(graphic.pixels)
-        }
-        
-        return {
-            type: "combined_graphics",
-            graphics: graphics_list,
-            pixels: combined_pixels
-        }
+        return true
     }
 }

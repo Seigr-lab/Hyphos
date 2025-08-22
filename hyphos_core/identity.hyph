@@ -18,15 +18,15 @@ metaword identity {
         // Check for existing identities first
         let existing_path = check_existing_identity()
         if existing_path {
-            let choice = get_user_input("Import existing identity? (y/n): ")
+            let choice = system.get_user_input("Import existing identity? (y/n): ")
             if choice == "y" {
                 return import_existing_identity(existing_path)
             }
         }
         
         // Create new identity with user entropy
-        print("SEIGR IDENTITY CREATION")
-        print("Welcome to Seigr OS! Creating your secure digital identity...")
+        system.output_info("SEIGR IDENTITY CREATION")
+        system.output_info("Welcome to Seigr OS! Creating your secure digital identity...")
         
         let user_entropy = get_secure_user_input("Personal entropy (hidden): ")
         let system_entropy = senary.random_token(32)
@@ -47,9 +47,9 @@ metaword identity {
         let selected_usb = select_usb_device(usb_devices)
         let save_result = save_to_usb(new_identity, selected_usb)
         
-        print("SUCCESS: SEIGR IDENTITY CREATION COMPLETE!")
-        print("Your Human Seigr ID:", new_identity.senary_id)
-        print("(FLOPPY) Cold Storage Location:", selected_usb)
+        system.output_info("SUCCESS: SEIGR IDENTITY CREATION COMPLETE!")
+        system.output_info("Your Human Seigr ID: " + new_identity.senary_id)
+        system.output_info("(FLOPPY) Cold Storage Location: " + selected_usb)
         
         return new_identity
     }

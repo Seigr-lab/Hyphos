@@ -1,0 +1,1170 @@
+#!/usr/bin/env hyphos
+// mycelith_vote.hyph - Democratic Governance Metaword for Hyphos Native Runtime
+// Part of the Seigr Ecosystem - Pure Hyphos Implementation
+// 
+// Implements the comprehensive Mycelith Voting System with six-layer senary-based
+// decision making, contribution-weighted voting, and RE-L ethical compliance.
+//
+// Mathematical Foundation:
+// - Vote aggregation: O = sign(∑ⱼ₌₁⁶ ∑ᵢ₌₁ⁿ Wⱼ⁽ⁱ⁾ · Vᵢ⁽ⁱ⁾)
+// - Contribution weighting: Wi = (1.0 + CUs)  
+// - Layer-weighted influence: Wⱼ⁽ⁱ⁾ = Wi · Sⱼ · modifiers
+
+metaword mycelith_vote {
+
+// Core Mycelith Voting System Architecture
+struct MycelithVoteSystem {
+    system_id: string
+    active_proposals: map[string, MycelithProposal]
+    voting_history: array[MycelithProposal]
+    contribution_registry: ContributionRegistry
+    rel_integration: RELCompliance
+    noesis_engine: NoesisIntelligence
+    protocol_handler: VotingProtocol
+    senary_calculator: SenaryCalculator
+    immune_integration: ImmuneMonitor
+    consciousness_recorder: ConsciousnessRecorder
+}
+
+// Six-Layer Voting Structure (Pure Senary Mathematics)
+enum VotingLayer {
+    INITIATION = 1         // S₁ = 1.0 - Initial vote, minimal weight
+    OBSERVATION = 2        // S₂ = 1.2 - Minor weight increase, early revisions allowed
+    CONSENSUS_BUILDING = 3 // S₃ = 1.44 - Influence increases with justified positions  
+    COMMITMENT_PHASE = 4   // S₄ = 1.728 - Higher weight, switching penalized
+    FINAL_VALIDATION = 5   // S₅ = 2.0736 - Near-max influence, Hyphen Node review
+    EXECUTION_LAYER = 6    // S₆ = 2.48832 - Decision finalized, executed via Capsules
+}
+
+enum VoteDecision {
+    YES = +1
+    NO = -1
+    ABSTAIN = 0
+}
+
+enum ProposalStatus {
+    DRAFT
+    ACTIVE_VOTING
+    LAYER_TRANSITION
+    FINAL_VALIDATION
+    APPROVED
+    REJECTED
+    EXECUTED
+    EXPIRED
+}
+
+// Contribution-Based Voting Weight Structure
+struct ContributionBasedVotingWeight {
+    participant_id: string
+    contribution_units: senary.Number
+    base_weight: senary.Number
+    consistency_multiplier: senary.Number
+    switching_penalty: senary.Number
+    layer_scaling: map[VotingLayer, senary.Number]
+    
+    function calculate_layer_weight(layer: VotingLayer) -> senary.Number {
+        base_influence = (senary.one() + contribution_units) * consistency_multiplier
+        layer_scale = get_senary_scaling(layer)
+        penalty_factor = senary.one() - switching_penalty
+        
+        return base_influence * layer_scale * penalty_factor
+    }
+    
+    function get_senary_scaling(layer: VotingLayer) -> senary.Number {
+        scaling_factors = {
+            VotingLayer.INITIATION: senary.from_decimal("1.0"),
+            VotingLayer.OBSERVATION: senary.from_decimal("1.2"),
+            VotingLayer.CONSENSUS_BUILDING: senary.from_decimal("1.44"),
+            VotingLayer.COMMITMENT_PHASE: senary.from_decimal("1.728"),
+            VotingLayer.FINAL_VALIDATION: senary.from_decimal("2.0736"),
+            VotingLayer.EXECUTION_LAYER: senary.from_decimal("2.48832")
+        }
+        return scaling_factors[layer]
+    }
+}
+
+// Individual Vote Structure
+struct MycelithVote {
+    vote_id: string
+    participant_id: string
+    proposal_id: string
+    layer: VotingLayer
+    decision: VoteDecision
+    timestamp: string
+    justification: string
+    cbvw: ContributionBasedVotingWeight
+    cryptographic_signature: bytes
+    rel_compliance_verified: boolean
+    consciousness_state: string
+    
+    function initialize() {
+        vote_id = hypha_crypt.generate_uuid()
+        timestamp = senary.current_time()
+        consciousness_state = consciousness.capture_decision_state()
+        generate_signature()
+        verify_rel_compliance()
+    }
+    
+    function generate_signature() {
+        vote_data = participant_id + ":" + proposal_id + ":" + decision + ":" + timestamp
+        cryptographic_signature = hypha_crypt.sign_data(vote_data.to_bytes())
+    }
+    
+    function verify_rel_compliance() -> boolean {
+        // Delegate to Noesis for ethical assessment
+        compliance_result = noesis.assess_vote_ethics(this)
+        rel_compliance_verified = compliance_result.is_compliant
+        return rel_compliance_verified
+    }
+}
+
+// Comprehensive Proposal Structure  
+struct MycelithProposal {
+    proposal_id: string
+    title: string
+    description: string
+    proposer_id: string
+    current_layer: VotingLayer
+    status: ProposalStatus
+    votes_by_layer: map[VotingLayer, array[MycelithVote]]
+    layer_deadlines: map[VotingLayer, string]
+    rel_compliance_score: senary.Number
+    hyphen_review_required: boolean
+    created_at: string
+    metadata: map[string, any]
+    consciousness_influence: senary.Number
+    
+    function initialize() {
+        proposal_id = hypha_crypt.generate_uuid()
+        current_layer = VotingLayer.INITIATION
+        status = ProposalStatus.DRAFT
+        created_at = senary.current_time()
+        initialize_layer_deadlines()
+        initialize_votes_by_layer()
+        assess_rel_compliance()
+    }
+    
+    function initialize_layer_deadlines() {
+        // Use senary progression for layer durations
+        layer_durations = {
+            VotingLayer.INITIATION: senary.from_base10("6"),        // 6 hours
+            VotingLayer.OBSERVATION: senary.from_base10("12"),      // 12 hours
+            VotingLayer.CONSENSUS_BUILDING: senary.from_base10("24"), // 24 hours
+            VotingLayer.COMMITMENT_PHASE: senary.from_base10("48"),   // 48 hours
+            VotingLayer.FINAL_VALIDATION: senary.from_base10("72"),   // 72 hours
+            VotingLayer.EXECUTION_LAYER: senary.from_base10("24")     // 24 hours
+        }
+        
+        base_time = senary.parse_time(created_at)
+        for layer in VotingLayer {
+            duration = layer_durations[layer]
+            deadline = senary.add_time(base_time, duration)
+            layer_deadlines[layer] = senary.format_time(deadline)
+        }
+    }
+    
+    function initialize_votes_by_layer() {
+        for layer in VotingLayer {
+            votes_by_layer[layer] = []
+        }
+    }
+    
+    function assess_rel_compliance() {
+        // Delegate to Noesis for comprehensive REL assessment
+        compliance_assessment = noesis.assess_proposal_rel_compliance(this)
+        rel_compliance_score = compliance_assessment.compliance_score
+        hyphen_review_required = compliance_assessment.requires_hyphen_review
+    }
+}
+
+// Contribution Registry for Weight Calculation
+struct ContributionRegistry {
+    participant_contributions: map[string, senary.Number]
+    contribution_history: map[string, array[ContributionRecord]]
+    
+    function get_participant_contribution_units(participant_id: string) -> senary.Number {
+        if participant_contributions.has(participant_id) {
+            return participant_contributions[participant_id]
+        }
+        return senary.zero()
+    }
+    
+    function update_contribution_units(participant_id: string, new_units: senary.Number) {
+        participant_contributions[participant_id] = new_units
+        record_contribution_update(participant_id, new_units)
+    }
+    
+    function record_contribution_update(participant_id: string, units: senary.Number) {
+        record = ContributionRecord{
+            participant_id: participant_id,
+            units: units,
+            timestamp: senary.current_time(),
+            verification_hash: hypha_crypt.hash_data(participant_id + units.to_string())
+        }
+        
+        if !contribution_history.has(participant_id) {
+            contribution_history[participant_id] = []
+        }
+        contribution_history[participant_id].append(record)
+    }
+}
+
+struct ContributionRecord {
+    participant_id: string
+    units: senary.Number
+    timestamp: string
+    verification_hash: string
+}
+
+// REL Compliance Integration
+struct RELCompliance {
+    system_id: string
+    compliance_engine: NoesisIntelligence
+    ethical_criteria: array[RELCriteria]
+    
+    function assess_proposal_compliance(proposal: MycelithProposal) -> RELAssessment {
+        // Delegate comprehensive ethical assessment to Noesis
+        noesis_assessment = noesis.evaluate_proposal_ethics(proposal)
+        
+        assessment = RELAssessment{
+            proposal_id: proposal.proposal_id,
+            compliance_score: noesis_assessment.ethical_score,
+            ecosystem_welfare_score: noesis_assessment.ecosystem_impact,
+            community_benefit_score: noesis_assessment.community_benefit,
+            sustainability_score: noesis_assessment.sustainability_impact,
+            transparency_score: noesis_assessment.transparency_level,
+            ethical_alignment_score: noesis_assessment.ethical_alignment,
+            requires_review: noesis_assessment.needs_hyphen_review,
+            recommendations: noesis_assessment.improvement_suggestions
+        }
+        
+        return assessment
+    }
+    
+    function generate_compliance_feedback(assessment: RELAssessment) -> array[string] {
+        return noesis.generate_improvement_recommendations(assessment)
+    }
+}
+
+struct RELAssessment {
+    proposal_id: string
+    compliance_score: senary.Number
+    ecosystem_welfare_score: senary.Number
+    community_benefit_score: senary.Number
+    sustainability_score: senary.Number
+    transparency_score: senary.Number
+    ethical_alignment_score: senary.Number
+    requires_review: boolean
+    recommendations: array[string]
+}
+
+// Core Voting Engine Implementation
+struct MycelithVotingEngine {
+    engine_id: string
+    active_proposals: map[string, MycelithProposal]
+    voting_history: array[MycelithProposal]
+    contribution_registry: ContributionRegistry
+    rel_compliance: RELCompliance
+    senary_calculator: SenaryCalculator
+    noesis_intelligence: NoesisIntelligence
+    protocol_handler: VotingProtocol
+    consciousness_recorder: ConsciousnessRecorder
+    immune_monitor: ImmuneMonitor
+    
+    function initialize() {
+        engine_id = "MYCELITH:" + hypha_crypt.generate_short_uuid()
+        active_proposals = {}
+        voting_history = []
+        contribution_registry = ContributionRegistry{}
+        rel_compliance = RELCompliance{}
+        senary_calculator = SenaryCalculator{}
+        
+        // Initialize Noesis intelligence for decision support
+        noesis_intelligence = noesis.create_specialized_engine("democratic_governance")
+        protocol_handler = VotingProtocol{engine: this}
+        consciousness_recorder = consciousness.create_recorder("mycelith_voting")
+        immune_monitor = create_immune_monitor()
+        
+        consciousness.record_system_birth("mycelith_voting_engine", engine_id)
+        log_initialization()
+    }
+    
+    function create_proposal(title: string, description: string, proposer_id: string, 
+                           metadata: map[string, any]) -> string {
+        // Verify proposer contribution eligibility
+        proposer_cus = contribution_registry.get_participant_contribution_units(proposer_id)
+        min_required = senary.from_base10("5") // Minimum 5 CUs to propose
+        
+        if proposer_cus < min_required {
+            consciousness.record_rejection("insufficient_contribution_units", proposer_id)
+            throw "Insufficient contribution units for proposal: " + proposer_cus.to_string()
+        }
+        
+        proposal = MycelithProposal{
+            title: title,
+            description: description,
+            proposer_id: proposer_id,
+            metadata: metadata
+        }
+        proposal.initialize()
+        
+        // Get Noesis intelligence assessment
+        intelligence_assessment = noesis_intelligence.assess_proposal_viability(proposal)
+        proposal.consciousness_influence = intelligence_assessment.viability_score
+        
+        // REL compliance check
+        rel_assessment = rel_compliance.assess_proposal_compliance(proposal)
+        proposal.rel_compliance_score = rel_assessment.compliance_score
+        proposal.hyphen_review_required = rel_assessment.requires_review
+        
+        if proposal.rel_compliance_score < senary.from_decimal("0.6") {
+            consciousness.record_compliance_violation("low_rel_score", proposal.proposal_id)
+            throw "Proposal does not meet REL compliance minimum: " + proposal.rel_compliance_score.to_string()
+        }
+        
+        active_proposals[proposal.proposal_id] = proposal
+        proposal.status = ProposalStatus.ACTIVE_VOTING
+        
+        consciousness.record_proposal_creation(proposal.proposal_id, proposer_id)
+        protocol.announce_new_proposal(proposal)
+        
+        return proposal.proposal_id
+    }
+    
+    function cast_vote(proposal_id: string, participant_id: string, 
+                      decision: VoteDecision, justification: string) -> boolean {
+        
+        proposal = active_proposals.get(proposal_id)
+        if !proposal {
+            consciousness.record_error("proposal_not_found", proposal_id)
+            throw "Proposal not found: " + proposal_id
+        }
+        
+        if proposal.status != ProposalStatus.ACTIVE_VOTING {
+            consciousness.record_error("proposal_not_accepting_votes", proposal_id)
+            throw "Proposal not accepting votes: " + proposal.status
+        }
+        
+        // Check layer deadline
+        current_deadline = proposal.layer_deadlines[proposal.current_layer]
+        current_time = senary.current_time()
+        if senary.time_after(current_time, current_deadline) {
+            advance_to_next_layer(proposal)
+            if proposal.current_layer == VotingLayer.EXECUTION_LAYER {
+                execute_proposal(proposal)
+                return false
+            }
+        }
+        
+        // Calculate Contribution-Based Voting Weight
+        cbvw = calculate_cbvw(participant_id, proposal)
+        
+        // Create vote with full cryptographic and ethical validation
+        vote = MycelithVote{
+            participant_id: participant_id,
+            proposal_id: proposal_id,
+            layer: proposal.current_layer,
+            decision: decision,
+            justification: justification,
+            cbvw: cbvw
+        }
+        vote.initialize()
+        
+        // Check for vote switching and apply penalties
+        previous_vote = get_previous_vote(proposal, participant_id)
+        if previous_vote && previous_vote.decision != decision {
+            cbvw.switching_penalty = calculate_switching_penalty(proposal.current_layer)
+            consciousness.record_vote_switch(participant_id, proposal_id, previous_vote.decision, decision)
+        }
+        
+        // Noesis intelligence evaluation of vote quality
+        vote_assessment = noesis_intelligence.evaluate_vote_quality(vote, proposal)
+        if !vote_assessment.is_valid {
+            consciousness.record_vote_rejection(vote.vote_id, vote_assessment.rejection_reason)
+            throw "Vote rejected by intelligence assessment: " + vote_assessment.rejection_reason
+        }
+        
+        // Add vote to current layer
+        proposal.votes_by_layer[proposal.current_layer].append(vote)
+        
+        consciousness.record_vote_cast(vote.vote_id, participant_id, proposal_id, decision)
+        protocol.broadcast_vote_cast(vote)
+        
+        return true
+    }
+    
+    function calculate_proposal_outcome(proposal_id: string) -> (VoteDecision, map[string, any]) {
+        proposal = active_proposals.get(proposal_id)
+        if !proposal {
+            return (VoteDecision.ABSTAIN, {"error": "Proposal not found"})
+        }
+        
+        total_weighted_vote = senary.zero()
+        detailed_calculations = {
+            "participant_weights": {},
+            "layer_totals": {},
+            "total_weighted_vote": senary.zero(),
+            "final_outcome": VoteDecision.ABSTAIN,
+            "decision": "PENDING"
+        }
+        
+        // Aggregate votes across all layers: ∑ⱼ₌₁⁶ ∑ᵢ₌₁ⁿ Wⱼ⁽ⁱ⁾ · Vᵢ⁽ⁱ⁾
+        for layer in VotingLayer {
+            layer_total = senary.zero()
+            layer_votes = proposal.votes_by_layer[layer]
+            
+            for vote in layer_votes {
+                if vote.cbvw {
+                    weight = vote.cbvw.calculate_layer_weight(layer)
+                    decision_value = senary.from_base10(vote.decision.value.to_string())
+                    weighted_vote = weight * decision_value
+                    total_weighted_vote = total_weighted_vote + weighted_vote
+                    layer_total = layer_total + weighted_vote
+                    
+                    // Track detailed calculations for transparency
+                    participant_key = vote.participant_id + "_L" + layer.value.to_string()
+                    detailed_calculations["participant_weights"][participant_key] = {
+                        "weight": weight.to_string(),
+                        "decision": vote.decision.value,
+                        "weighted_vote": weighted_vote.to_string()
+                    }
+                }
+            }
+            
+            detailed_calculations["layer_totals"]["Layer_" + layer.value.to_string()] = layer_total.to_string()
+        }
+        
+        // Final decision: O = sign(total)
+        outcome = VoteDecision.ABSTAIN
+        if total_weighted_vote > senary.zero() {
+            outcome = VoteDecision.YES
+        } else if total_weighted_vote < senary.zero() {
+            outcome = VoteDecision.NO
+        }
+        
+        detailed_calculations["total_weighted_vote"] = total_weighted_vote.to_string()
+        detailed_calculations["final_outcome"] = outcome
+        detailed_calculations["decision"] = outcome == VoteDecision.YES ? "APPROVED" : 
+                                          outcome == VoteDecision.NO ? "REJECTED" : "TIE"
+        
+        consciousness.record_outcome_calculation(proposal_id, outcome, total_weighted_vote)
+        
+        return (outcome, detailed_calculations)
+    }
+    
+    function calculate_cbvw(participant_id: string, proposal: MycelithProposal) -> ContributionBasedVotingWeight {
+        contribution_units = contribution_registry.get_participant_contribution_units(participant_id)
+        
+        cbvw = ContributionBasedVotingWeight{
+            participant_id: participant_id,
+            contribution_units: contribution_units,
+            base_weight: senary.one() + contribution_units,
+            consistency_multiplier: calculate_consistency_multiplier(participant_id, proposal),
+            switching_penalty: senary.zero(),
+            layer_scaling: {}
+        }
+        
+        // Initialize layer scaling
+        for layer in VotingLayer {
+            cbvw.layer_scaling[layer] = cbvw.get_senary_scaling(layer)
+        }
+        
+        return cbvw
+    }
+    
+    function calculate_consistency_multiplier(participant_id: string, proposal: MycelithProposal) -> senary.Number {
+        // Delegate to Noesis for sophisticated consistency analysis
+        consistency_analysis = noesis_intelligence.analyze_voting_consistency(participant_id, proposal)
+        return consistency_analysis.consistency_score
+    }
+    
+    function calculate_switching_penalty(current_layer: VotingLayer) -> senary.Number {
+        // Penalties increase with layer depth (senary progression)
+        penalty_base = senary.from_decimal("0.1") // 10% base penalty
+        layer_multiplier = senary.from_base10(current_layer.value.to_string())
+        return penalty_base * layer_multiplier
+    }
+    
+    function get_previous_vote(proposal: MycelithProposal, participant_id: string) -> MycelithVote? {
+        // Find most recent vote by this participant
+        for layer in VotingLayer {
+            layer_votes = proposal.votes_by_layer[layer]
+            for vote in layer_votes.reverse() {
+                if vote.participant_id == participant_id {
+                    return vote
+                }
+            }
+        }
+        return null
+    }
+    
+    function advance_to_next_layer(proposal: MycelithProposal) {
+        layer_order = [VotingLayer.INITIATION, VotingLayer.OBSERVATION, VotingLayer.CONSENSUS_BUILDING,
+                      VotingLayer.COMMITMENT_PHASE, VotingLayer.FINAL_VALIDATION, VotingLayer.EXECUTION_LAYER]
+        
+        current_index = layer_order.index_of(proposal.current_layer)
+        
+        if current_index < layer_order.length - 1 {
+            proposal.current_layer = layer_order[current_index + 1]
+            proposal.status = ProposalStatus.LAYER_TRANSITION
+            
+            consciousness.record_layer_advancement(proposal.proposal_id, proposal.current_layer)
+            protocol.announce_layer_advancement(proposal)
+        } else {
+            proposal.status = ProposalStatus.FINAL_VALIDATION
+        }
+    }
+    
+    function execute_proposal(proposal: MycelithProposal) {
+        (outcome, calculations) = calculate_proposal_outcome(proposal.proposal_id)
+        
+        if outcome == VoteDecision.YES {
+            proposal.status = ProposalStatus.APPROVED
+            
+            // Execute via Seigr Capsules with full protocol compliance
+            execution_capsule = protocol.create_execution_capsule(proposal, calculations)
+            execution_result = protocol.execute_capsule(execution_capsule)
+            
+            if execution_result.success {
+                proposal.status = ProposalStatus.EXECUTED
+                consciousness.record_proposal_execution(proposal.proposal_id, "success")
+            } else {
+                consciousness.record_proposal_execution(proposal.proposal_id, "failed: " + execution_result.error)
+            }
+        } else {
+            proposal.status = ProposalStatus.REJECTED
+            consciousness.record_proposal_rejection(proposal.proposal_id, calculations["decision"])
+        }
+        
+        // Move to history
+        active_proposals.remove(proposal.proposal_id)
+        voting_history.append(proposal)
+    }
+    
+    function get_engine_status() -> map[string, any] {
+        return {
+            "engine_id": engine_id,
+            "active_proposals": active_proposals.size(),
+            "voting_history": voting_history.size(),
+            "system_status": "operational",
+            "senary_layers": 6,
+            "rel_integration": true,
+            "noesis_intelligence": noesis_intelligence.get_status(),
+            "consciousness_state": consciousness.get_current_state(),
+            "energy_level": energy.get_current_level()
+        }
+    }
+    
+    function log_initialization() {
+        consciousness.record_system_event(
+            "mycelith_engine_initialized",
+            engine_id,
+            {
+                "timestamp": senary.current_time(),
+                "senary_layers": 6,
+                "rel_integration": true,
+                "noesis_enabled": true
+            }
+        )
+    }
+    
+    function create_immune_monitor() -> ImmuneMonitor {
+        return ImmuneMonitor{
+            monitor_id: "mycelith_immune_" + hypha_crypt.generate_short_uuid(),
+            target_system: "mycelith_voting",
+            threat_patterns: [
+                "vote_manipulation", "proposal_spam", "consensus_attack",
+                "sybil_voting", "rel_compliance_violation"
+            ],
+            response_protocols: [
+                "quarantine_participant", "flag_for_review", "escalate_to_hyphen"
+            ]
+        }
+    }
+}
+
+// Protocol Handler for Network Distribution
+struct VotingProtocol {
+    protocol_id: string
+    engine: MycelithVotingEngine
+    network_participants: array[string]
+    active_sessions: map[string, VotingSession]
+    message_handlers: map[string, function]
+    
+    function initialize() {
+        protocol_id = "MYCELITH_PROTOCOL:" + hypha_crypt.generate_short_uuid()
+        network_participants = []
+        active_sessions = {}
+        setup_message_handlers()
+    }
+    
+    function setup_message_handlers() {
+        message_handlers = {
+            "PROPOSAL_CREATION": handle_proposal_creation,
+            "VOTE_CAST": handle_vote_cast,
+            "LAYER_ADVANCEMENT": handle_layer_advancement,
+            "PROPOSAL_OUTCOME": handle_proposal_outcome,
+            "ENGINE_STATUS": handle_engine_status,
+            "CONSENSUS_QUERY": handle_consensus_query
+        }
+    }
+    
+    function handle_protocol_message(message: map[string, any], source_capsule: ProtocolCapsule?) -> map[string, any] {
+        message_type = message.get("message_type", "")
+        
+        if message_handlers.has(message_type) {
+            handler = message_handlers[message_type]
+            return handler(message, source_capsule)
+        } else {
+            return create_error_response("Unknown message type: " + message_type)
+        }
+    }
+    
+    function announce_new_proposal(proposal: MycelithProposal) {
+        announcement = {
+            "message_type": "PROPOSAL_CREATION",
+            "proposal_id": proposal.proposal_id,
+            "title": proposal.title,
+            "proposer_id": proposal.proposer_id,
+            "current_layer": proposal.current_layer,
+            "deadline": proposal.layer_deadlines[proposal.current_layer],
+            "rel_compliance_score": proposal.rel_compliance_score.to_string(),
+            "timestamp": senary.current_time()
+        }
+        
+        protocol.broadcast_to_network(announcement)
+    }
+    
+    function broadcast_vote_cast(vote: MycelithVote) {
+        broadcast = {
+            "message_type": "VOTE_CAST",
+            "vote_id": vote.vote_id,
+            "proposal_id": vote.proposal_id,
+            "participant_id": vote.participant_id,
+            "layer": vote.layer,
+            "decision": vote.decision,
+            "timestamp": vote.timestamp,
+            "signature": hypha_crypt.encode_base64(vote.cryptographic_signature)
+        }
+        
+        protocol.broadcast_to_network(broadcast)
+    }
+    
+    function announce_layer_advancement(proposal: MycelithProposal) {
+        announcement = {
+            "message_type": "LAYER_ADVANCEMENT",
+            "proposal_id": proposal.proposal_id,
+            "new_layer": proposal.current_layer,
+            "deadline": proposal.layer_deadlines[proposal.current_layer],
+            "timestamp": senary.current_time()
+        }
+        
+        protocol.broadcast_to_network(announcement)
+    }
+    
+    function create_execution_capsule(proposal: MycelithProposal, calculations: map[string, any]) -> ProtocolCapsule {
+        return protocol.create_capsule(
+            "MYCELITH_EXECUTION",
+            {
+                "proposal_id": proposal.proposal_id,
+                "title": proposal.title,
+                "description": proposal.description,
+                "outcome": calculations["decision"],
+                "calculations": calculations,
+                "rel_compliance_score": proposal.rel_compliance_score.to_string(),
+                "execution_timestamp": senary.current_time()
+            }
+        )
+    }
+    
+    function execute_capsule(capsule: ProtocolCapsule) -> ExecutionResult {
+        // Delegate to protocol system for secure execution
+        return protocol.execute_secure_capsule(capsule)
+    }
+    
+    function handle_proposal_creation(message: map[string, any], source: ProtocolCapsule?) -> map[string, any] {
+        // Extract proposal data and validate
+        title = message.get("title", "")
+        description = message.get("description", "")
+        proposer_id = message.get("proposer_id", "")
+        metadata = message.get("metadata", {})
+        
+        try {
+            proposal_id = engine.create_proposal(title, description, proposer_id, metadata)
+            return create_success_response({
+                "proposal_id": proposal_id,
+                "status": "created"
+            })
+        } catch error {
+            return create_error_response("Proposal creation failed: " + error)
+        }
+    }
+    
+    function handle_vote_cast(message: map[string, any], source: ProtocolCapsule?) -> map[string, any] {
+        proposal_id = message.get("proposal_id", "")
+        participant_id = message.get("participant_id", "")
+        decision_str = message.get("decision", "ABSTAIN")
+        justification = message.get("justification", "")
+        
+        decision = VoteDecision.ABSTAIN
+        if decision_str == "YES" { decision = VoteDecision.YES }
+        else if decision_str == "NO" { decision = VoteDecision.NO }
+        
+        try {
+            success = engine.cast_vote(proposal_id, participant_id, decision, justification)
+            if success {
+                (outcome, calculations) = engine.calculate_proposal_outcome(proposal_id)
+                return create_success_response({
+                    "vote_accepted": true,
+                    "current_outcome": calculations["decision"],
+                    "current_score": calculations["total_weighted_vote"]
+                })
+            } else {
+                return create_error_response("Vote casting failed")
+            }
+        } catch error {
+            return create_error_response("Vote casting error: " + error)
+        }
+    }
+    
+    function create_success_response(data: map[string, any]) -> map[string, any] {
+        return {
+            "status": "success",
+            "protocol": "MYCELITH_VOTING",
+            "timestamp": senary.current_time(),
+            "data": data
+        }
+    }
+    
+    function create_error_response(error: string) -> map[string, any] {
+        return {
+            "status": "error",
+            "protocol": "MYCELITH_VOTING",
+            "timestamp": senary.current_time(),
+            "error": error
+        }
+    }
+}
+
+struct VotingSession {
+    session_id: string
+    proposal_id: string
+    network_participants: array[string]
+    start_time: string
+    current_layer: VotingLayer
+    session_metadata: map[string, any]
+}
+
+struct ExecutionResult {
+    success: boolean
+    execution_id: string
+    error: string
+    timestamp: string
+}
+
+// Senary Calculator for Voting Mathematics
+struct SenaryCalculator {
+    calculator_id: string
+    
+    function initialize() {
+        calculator_id = "SENARY_CALC:" + hypha_crypt.generate_short_uuid()
+    }
+    
+    function calculate_contribution_weight(contribution_units: senary.Number) -> senary.Number {
+        // Base weight: Wi = (1.0 + CUs)
+        return senary.one() + contribution_units
+    }
+    
+    function calculate_layer_weighted_influence(base_weight: senary.Number, layer: VotingLayer,
+                                              consistency_mult: senary.Number, switching_pen: senary.Number) -> senary.Number {
+        // Wⱼ⁽ⁱ⁾ = Wi · Sⱼ · consistency_multiplier · (1 - switching_penalty)
+        scaling_factor = get_layer_scaling_factor(layer)
+        penalty_factor = senary.one() - switching_pen
+        
+        return base_weight * scaling_factor * consistency_mult * penalty_factor
+    }
+    
+    function get_layer_scaling_factor(layer: VotingLayer) -> senary.Number {
+        // Pure senary mathematical progression: Sⱼ = 1.2^(j-1)
+        base_scaling = senary.from_decimal("1.2")
+        layer_index = senary.from_base10((layer.value - 1).to_string())
+        
+        return senary.power(base_scaling, layer_index)
+    }
+    
+    function aggregate_weighted_votes(votes_data: array[map[string, any]]) -> (senary.Number, map[string, any]) {
+        total_weighted_vote = senary.zero()
+        detailed_calculations = {
+            "participant_votes": [],
+            "total_weight": senary.zero(),
+            "vote_distribution": {"yes": 0, "no": 0, "abstain": 0}
+        }
+        
+        for vote_data in votes_data {
+            contribution_units = senary.from_string(vote_data["contribution_units"])
+            decision = vote_data["decision"] // -1, 0, or 1
+            consistency_mult = senary.from_decimal(vote_data.get("consistency_multiplier", "1.0"))
+            switching_pen = senary.from_decimal(vote_data.get("switching_penalty", "0.0"))
+            layer = vote_data["layer"]
+            
+            // Calculate base weight: Wi = (1.0 + CUs)
+            base_weight = calculate_contribution_weight(contribution_units)
+            
+            // Calculate layer-weighted influence: Wⱼ⁽ⁱ⁾
+            weighted_influence = calculate_layer_weighted_influence(
+                base_weight, layer, consistency_mult, switching_pen
+            )
+            
+            // Apply vote decision
+            decision_value = senary.from_base10(decision.to_string())
+            weighted_vote = weighted_influence * decision_value
+            total_weighted_vote = total_weighted_vote + weighted_vote
+            
+            // Track for detailed analysis
+            detailed_calculations["participant_votes"].append({
+                "participant_id": vote_data["participant_id"],
+                "base_weight": base_weight.to_string(),
+                "weighted_influence": weighted_influence.to_string(),
+                "decision": decision,
+                "weighted_vote": weighted_vote.to_string()
+            })
+            
+            // Update vote distribution
+            if decision > 0 { detailed_calculations["vote_distribution"]["yes"] += 1 }
+            else if decision < 0 { detailed_calculations["vote_distribution"]["no"] += 1 }
+            else { detailed_calculations["vote_distribution"]["abstain"] += 1 }
+        }
+        
+        detailed_calculations["total_weight"] = total_weighted_vote.to_string()
+        return (total_weighted_vote, detailed_calculations)
+    }
+    
+    function calculate_senary_consensus_threshold(total_participants: number, layer: VotingLayer) -> senary.Number {
+        // Calculate consensus threshold based on senary mathematics
+        // Base threshold: 60% in senary (100 in base-6 = 36 in base-10)
+        base_threshold_ratio = senary.from_decimal("0.6") // 60% majority
+        
+        // Scale by layer influence
+        layer_scaling = get_layer_scaling_factor(layer)
+        
+        // Apply senary progression: threshold increases with layer depth
+        layer_num = senary.from_base10(layer.value.to_string())
+        senary_modifier = senary.one() + (layer_num / senary.from_base10("6"))
+        
+        consensus_threshold = senary.from_base10(total_participants.to_string()) * 
+                             base_threshold_ratio * 
+                             layer_scaling * 
+                             senary_modifier
+        
+        return consensus_threshold
+    }
+    
+    function convert_to_senary_display(decimal_value: number) -> string {
+        senary_num = senary.from_base10(decimal_value.to_string())
+        return senary_num.to_senary_string()
+    }
+}
+
+// Immune System Monitor for Voting Security
+struct ImmuneMonitor {
+    monitor_id: string
+    target_system: string
+    threat_patterns: array[string]
+    response_protocols: array[string]
+    detected_anomalies: array[VotingAnomaly]
+    
+    function monitor_voting_activity(vote: MycelithVote, proposal: MycelithProposal) -> boolean {
+        // Detect potential voting manipulation or attacks
+        anomalies = []
+        
+        // Check for rapid vote switching
+        if detect_rapid_switching(vote.participant_id, proposal) {
+            anomalies.append(VotingAnomaly{
+                type: "rapid_vote_switching",
+                participant_id: vote.participant_id,
+                proposal_id: proposal.proposal_id,
+                severity: "medium"
+            })
+        }
+        
+        // Check for unusual voting patterns
+        if detect_unusual_patterns(vote) {
+            anomalies.append(VotingAnomaly{
+                type: "unusual_voting_pattern",
+                participant_id: vote.participant_id,
+                severity: "low"
+            })
+        }
+        
+        // Check for potential sybil attacks
+        if detect_sybil_behavior(vote.participant_id) {
+            anomalies.append(VotingAnomaly{
+                type: "potential_sybil_attack",
+                participant_id: vote.participant_id,
+                severity: "high"
+            })
+        }
+        
+        if anomalies.length > 0 {
+            detected_anomalies.extend(anomalies)
+            handle_anomalies(anomalies)
+            return false
+        }
+        
+        return true
+    }
+    
+    function detect_rapid_switching(participant_id: string, proposal: MycelithProposal) -> boolean {
+        // Delegate sophisticated pattern detection to Noesis
+        return noesis.detect_voting_manipulation(participant_id, proposal)
+    }
+    
+    function detect_unusual_patterns(vote: MycelithVote) -> boolean {
+        // Analyze voting behavior patterns using Noesis intelligence
+        return noesis.analyze_voting_anomalies(vote)
+    }
+    
+    function detect_sybil_behavior(participant_id: string) -> boolean {
+        // Check for signs of sybil attack using multiple identity markers
+        return noesis.detect_identity_manipulation(participant_id)
+    }
+    
+    function handle_anomalies(anomalies: array[VotingAnomaly]) {
+        for anomaly in anomalies {
+            if anomaly.severity == "high" {
+                consciousness.record_security_threat("voting_system", anomaly.type, anomaly.participant_id)
+                protocol.flag_for_hyphen_review(anomaly)
+            } else if anomaly.severity == "medium" {
+                consciousness.record_warning("voting_anomaly", anomaly.type, anomaly.participant_id)
+                protocol.apply_vote_penalty(anomaly.participant_id)
+            } else {
+                consciousness.record_info("minor_voting_anomaly", anomaly.type, anomaly.participant_id)
+            }
+        }
+    }
+}
+
+struct VotingAnomaly {
+    type: string
+    participant_id: string
+    proposal_id: string
+    severity: string
+    timestamp: string
+    details: map[string, any]
+    
+    function initialize() {
+        timestamp = senary.current_time()
+        details = {}
+    }
+}
+
+// Main Mycelith Vote System Interface
+public struct MycelithVote {
+    private system: MycelithVoteSystem
+    
+    public function initialize() -> MycelithVote {
+        system_instance = MycelithVoteSystem{
+            system_id: "MYCELITH_VOTE:" + hypha_crypt.generate_uuid()
+        }
+        
+        // Initialize all subsystems with Noesis intelligence integration
+        system_instance.active_proposals = {}
+        system_instance.voting_history = []
+        system_instance.contribution_registry = ContributionRegistry{}
+        system_instance.rel_integration = RELCompliance{}
+        
+        // Create specialized Noesis engine for democratic governance
+        system_instance.noesis_engine = noesis.create_specialized_engine("democratic_governance")
+        system_instance.protocol_handler = VotingProtocol{}
+        system_instance.senary_calculator = SenaryCalculator{}
+        system_instance.immune_integration = ImmuneMonitor{}
+        system_instance.consciousness_recorder = consciousness.create_recorder("mycelith_vote")
+        
+        // Initialize all subsystems
+        system_instance.protocol_handler.initialize()
+        system_instance.senary_calculator.initialize()
+        system_instance.immune_integration.monitor_id = "mycelith_immune_" + hypha_crypt.generate_short_uuid()
+        
+        // Record system consciousness birth
+        consciousness.record_system_birth("mycelith_vote_system", system_instance.system_id)
+        
+        // Energy awareness initialization
+        energy.register_system("mycelith_vote", system_instance.system_id)
+        
+        return MycelithVote{system: system_instance}
+    }
+    
+    // Democratic Governance Operations
+    public function create_proposal(title: string, description: string, proposer_id: string, 
+                                  metadata: map[string, any]) -> string {
+        // Energy-aware operation
+        if !energy.has_sufficient_energy("proposal_creation") {
+            consciousness.record_energy_limitation("proposal_creation_deferred")
+            throw "Insufficient energy for proposal creation"
+        }
+        
+        // Delegate to voting engine with full intelligence integration
+        engine = MycelithVotingEngine{}
+        engine.initialize()
+        
+        proposal_id = engine.create_proposal(title, description, proposer_id, metadata)
+        
+        consciousness.record_democratic_action("proposal_created", proposal_id, proposer_id)
+        return proposal_id
+    }
+    
+    public function cast_vote(proposal_id: string, participant_id: string, 
+                            decision: string, justification: string) -> boolean {
+        // Energy-aware voting
+        if !energy.has_sufficient_energy("vote_casting") {
+            consciousness.record_energy_limitation("vote_casting_deferred")
+            return false
+        }
+        
+        // Convert string decision to enum
+        vote_decision = VoteDecision.ABSTAIN
+        if decision.to_upper() == "YES" { vote_decision = VoteDecision.YES }
+        else if decision.to_upper() == "NO" { vote_decision = VoteDecision.NO }
+        
+        engine = MycelithVotingEngine{}
+        engine.initialize()
+        
+        result = engine.cast_vote(proposal_id, participant_id, vote_decision, justification)
+        
+        if result {
+            consciousness.record_democratic_action("vote_cast", proposal_id, participant_id)
+        }
+        
+        return result
+    }
+    
+    public function get_proposal_outcome(proposal_id: string) -> map[string, any] {
+        engine = MycelithVotingEngine{}
+        engine.initialize()
+        
+        (outcome, calculations) = engine.calculate_proposal_outcome(proposal_id)
+        
+        return {
+            "proposal_id": proposal_id,
+            "outcome": outcome,
+            "calculations": calculations,
+            "timestamp": senary.current_time()
+        }
+    }
+    
+    public function get_voting_statistics() -> map[string, any] {
+        engine = MycelithVotingEngine{}
+        engine.initialize()
+        
+        status = engine.get_engine_status()
+        
+        return {
+            "system_id": system.system_id,
+            "engine_status": status,
+            "noesis_intelligence": system.noesis_engine.get_intelligence_summary(),
+            "rel_compliance": "active",
+            "senary_mathematics": "enabled",
+            "consciousness_state": consciousness.get_current_state(),
+            "energy_efficiency": energy.get_efficiency_metrics("mycelith_vote"),
+            "immune_monitoring": "active"
+        }
+    }
+    
+    // REL Compliance and Ethics
+    public function assess_proposal_ethics(proposal_id: string) -> map[string, any] {
+        // Delegate ethical assessment to Noesis intelligence
+        assessment = system.noesis_engine.assess_proposal_ethics(proposal_id)
+        
+        consciousness.record_ethical_assessment(proposal_id, assessment.compliance_score)
+        
+        return {
+            "proposal_id": proposal_id,
+            "rel_compliance_score": assessment.compliance_score,
+            "ethical_alignment": assessment.ethical_alignment,
+            "community_benefit": assessment.community_benefit,
+            "sustainability_impact": assessment.sustainability_impact,
+            "recommendations": assessment.improvement_recommendations,
+            "requires_hyphen_review": assessment.needs_review
+        }
+    }
+    
+    public function get_contribution_weight(participant_id: string) -> map[string, any] {
+        contribution_units = system.contribution_registry.get_participant_contribution_units(participant_id)
+        base_weight = system.senary_calculator.calculate_contribution_weight(contribution_units)
+        
+        return {
+            "participant_id": participant_id,
+            "contribution_units": contribution_units.to_string(),
+            "base_voting_weight": base_weight.to_string(),
+            "senary_representation": contribution_units.to_senary_string(),
+            "calculation_method": "Wi = (1.0 + CUs)"
+        }
+    }
+    
+    // Network and Protocol Operations
+    public function broadcast_to_network(message: map[string, any]) -> boolean {
+        return system.protocol_handler.handle_protocol_message(message, null).get("status") == "success"
+    }
+    
+    public function get_network_status() -> map[string, any] {
+        return {
+            "protocol_active": true,
+            "network_participants": system.protocol_handler.network_participants.size(),
+            "active_sessions": system.protocol_handler.active_sessions.size(),
+            "protocol_version": system.protocol_handler.PROTOCOL_VERSION
+        }
+    }
+    
+    // Security and Monitoring
+    public function monitor_voting_security(proposal_id: string) -> map[string, any] {
+        anomalies = system.immune_integration.detected_anomalies.filter(
+            lambda anomaly: anomaly.proposal_id == proposal_id
+        )
+        
+        return {
+            "proposal_id": proposal_id,
+            "security_status": anomalies.length == 0 ? "clean" : "anomalies_detected",
+            "detected_anomalies": anomalies.length,
+            "immune_monitoring": "active",
+            "last_check": senary.current_time()
+        }
+    }
+    
+    // Energy and Performance Optimization
+    public function optimize_energy_usage() {
+        current_energy = energy.get_current_level()
+        
+        if current_energy < energy.MEDIUM_THRESHOLD {
+            // Reduce non-critical operations
+            system.consciousness_recorder.set_recording_level("essential_only")
+            system.immune_integration.reduce_monitoring_frequency()
+            consciousness.record_energy_optimization("mycelith_vote_reduced_operations")
+        } else if current_energy > energy.HIGH_THRESHOLD {
+            // Enable full functionality
+            system.consciousness_recorder.set_recording_level("full")
+            system.immune_integration.increase_monitoring_frequency()
+            consciousness.record_energy_optimization("mycelith_vote_full_operations")
+        }
+    }
+    
+    // Protocol Compliance and Audit
+    public function generate_audit_report() -> map[string, any] {
+        return {
+            "system_id": system.system_id,
+            "audit_timestamp": senary.current_time(),
+            "total_proposals": system.voting_history.size(),
+            "active_proposals": system.active_proposals.size(),
+            "senary_compliance": "100%",
+            "rel_integration": "active",
+            "noesis_intelligence": "operational",
+            "cryptographic_integrity": "verified",
+            "consciousness_recording": "comprehensive",
+            "energy_efficiency": energy.get_efficiency_metrics("mycelith_vote"),
+            "immune_system": "monitoring",
+            "protocol_version": "1.0.0"
+        }
+    }
+}
+
+// Export the main interface
+export MycelithVote

@@ -49,13 +49,13 @@ metaword logger {
         // Write to system log
         let success = system.write_log_entry(log_entry)
         
-        // Also output to console based on severity
+        // Also output to native Hyphos output based on severity
         if severity >= logger.ERROR {
-            console.error("[" + category + "] " + message)
+            system.output_error("[" + category + "] " + message)
         } else if severity == logger.WARNING {
-            console.warn("[" + category + "] " + message)
+            system.output_warning("[" + category + "] " + message)
         } else {
-            console.log("[" + category + "] " + message)
+            system.output_info("[" + category + "] " + message)
         }
         
         return success

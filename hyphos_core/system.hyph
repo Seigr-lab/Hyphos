@@ -293,7 +293,7 @@ system.has_built_in_function = {
     // Check if built-in function exists
     function_name = args.0
     
-    built_in_functions = ["error", "typeof", "console.log", "Date.now", "Math.random"]
+    built_in_functions = ["error", "typeof", "output_info", "current_time", "random"]
     built_in_functions.contains(function_name)
 }
 
