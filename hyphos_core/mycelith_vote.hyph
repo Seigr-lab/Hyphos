@@ -576,7 +576,7 @@ struct MycelithVotingEngine {
     }
     
     function calculate_consistency_multiplier(participant_id: string, proposal: MycelithProposal) -> senary.Number {
-        // Delegate to Noesis for sophisticated consistency analysis
+        // Delegate to Noesis for detailed consistency analysis
         consistency_analysis = noesis_intelligence.analyze_voting_consistency(participant_id, proposal)
         return consistency_analysis.consistency_score
     }
@@ -1018,7 +1018,7 @@ struct ImmuneMonitor {
     }
     
     function detect_rapid_switching(participant_id: string, proposal: MycelithProposal) -> boolean {
-        // Delegate sophisticated pattern detection to Noesis
+        // Delegate detailed pattern detection to Noesis
         return noesis.detect_voting_manipulation(participant_id, proposal)
     }
     

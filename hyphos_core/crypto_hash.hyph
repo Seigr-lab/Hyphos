@@ -206,7 +206,7 @@ metaword hash {
      * 
      * Provides secure verification of data integrity using senary hash comparison.
      * This function implements constant-time comparison to prevent timing attacks
-     * and provides comprehensive logging for security audit trails.
+     * and provides complete logging for security audit trails.
      * 
      * VERIFICATION PROCESS:
      * 1. Compute fresh hash of input data using same salt

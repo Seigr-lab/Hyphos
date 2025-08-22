@@ -1,0 +1,12 @@
+.vscode/**
+.vscode-test/**
+src/**
+.gitignore
+tsconfig.json
+vsc-extension-quickstart.md
+**/node_modules/**
+**/*.map
+.nyc_output
+coverage
+**/.DS_Store
+install.sh

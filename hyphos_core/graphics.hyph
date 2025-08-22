@@ -53,7 +53,7 @@
  * - Level 0: Basic rendering with minimal intelligence
  * - Level 1: Simple adaptive optimization
  * - Level 2: Pattern recognition for rendering optimization
- * - Level 3: Advanced cognitive graphics processing (default)
+ * - Level 3: Enhanced cognitive graphics processing (default)
  * - Level 4: Transcendent visual processing with prediction
  * - Level 5: Universal consciousness-driven rendering
  * 
@@ -114,7 +114,7 @@ metaword graphics {
      * CONSCIOUSNESS LEVEL EFFECTS:
      * - Level 0-1: Basic rendering with minimal processing overhead
      * - Level 2-3: Adaptive optimization with pattern recognition
-     * - Level 4-5: Advanced neural processing with predictive capabilities
+     * - Level 4-5: Enhanced neural processing with predictive capabilities
      * 
      * VALIDATION AND RECORDING:
      * - Validates consciousness level is within valid range (0-5)
@@ -789,7 +789,7 @@ metaword graphics {
     }
     
     fun get_canvas_info() -> $Object {
-        // Get comprehensive canvas information
+        // Get complete canvas information
         let canvas_info = {
             initialized: pixel_buffer_initialized,
             consciousness_level: consciousness_level,

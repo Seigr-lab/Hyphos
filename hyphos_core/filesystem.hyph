@@ -144,7 +144,7 @@ metaword file {
      * 
      * Reads file content from the specified path with support for multiple
      * encoding formats including binary and text modes. This function provides
-     * comprehensive file reading capabilities with automatic format detection
+     * complete file reading capabilities with automatic format detection
      * and error handling.
      * 
      * READING PROCESS:
@@ -162,7 +162,7 @@ metaword file {
      * ERROR HANDLING:
      * - Graceful handling of non-existent files
      * - Appropriate default returns based on encoding mode
-     * - Comprehensive error logging for debugging
+     * - Complete error logging for debugging
      * - Fallback strategies for corrupted files
      * 
      * PERFORMANCE OPTIMIZATION:

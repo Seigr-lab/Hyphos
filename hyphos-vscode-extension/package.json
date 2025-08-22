@@ -1,0 +1,99 @@
+{
+  "name": "hyphos-language-support",
+  "displayName": "Hyphos Language Support",
+  "description": "Complete Hyphos development environment with syntax highlighting, autocomplete, and documentation",
+  "version": "0.1.0",
+  "publisher": "seigr-lab",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "hyphos",
+    "seigr",
+    "metawords",
+    "senary",
+    "consciousness"
+  ],
+  "activationEvents": [
+    "onLanguage:hyphos"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "hyphos",
+        "aliases": [
+          "Hyphos",
+          "hyphos"
+        ],
+        "extensions": [
+          ".hyph"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/hyphos-light.svg",
+          "dark": "./icons/hyphos-dark.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "hyphos",
+        "scopeName": "source.hyphos",
+        "path": "./syntaxes/hyphos.tmGrammar.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "hyphos",
+        "path": "./snippets/hyphos.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "hyphos.run",
+        "title": "Run Hyphos File",
+        "category": "Hyphos"
+      },
+      {
+        "command": "hyphos.check",
+        "title": "Check Hyphos Syntax",
+        "category": "Hyphos"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "hyphos.run",
+        "key": "ctrl+f5",
+        "when": "resourceExtname == .hyph"
+      }
+    ],
+    "themes": [
+      {
+        "label": "Hyphos Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/hyphos-dark.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.60.0",
+    "@types/node": "14.x",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,72 @@
+{
+  "Basic Metaword": {
+    "prefix": "invoke",
+    "body": [
+      "invoke ${1:metaword_name}:",
+      "    ${2:functionality}",
+      "    transcend"
+    ],
+    "description": "Basic metaword invocation pattern"
+  },
+  "Senary Number": {
+    "prefix": "senary",
+    "body": "${1:123}s",
+    "description": "Senary (base-6) number literal"
+  },
+  "Consciousness Flow": {
+    "prefix": "conscious",
+    "body": [
+      "invoke noesis:",
+      "    conscious_reflect(${1:input_data})",
+      "    neural_process(${2:pattern})",
+      "    transcend"
+    ],
+    "description": "Consciousness processing pattern"
+  },
+  "Energy Pulse": {
+    "prefix": "energy",
+    "body": [
+      "invoke energy:",
+      "    energy_pulse(${1:amplitude}, ${2:frequency})",
+      "    transcend"
+    ],
+    "description": "Energy manipulation pattern"
+  },
+  "Graphics Render": {
+    "prefix": "graphics",
+    "body": [
+      "invoke graphics:",
+      "    render_visual(${1:scene_data})",
+      "    coordinate_transform(${2:coords})",
+      "    transcend"
+    ],
+    "description": "Graphics rendering pattern"
+  },
+  "Network Operation": {
+    "prefix": "network",
+    "body": [
+      "invoke network_stack:",
+      "    network_send(${1:data}, ${2:destination})",
+      "    transcend"
+    ],
+    "description": "Network communication pattern"
+  },
+  "Temporal Flow": {
+    "prefix": "temporal",
+    "body": [
+      "invoke temporal:",
+      "    temporal_flow(${1:time_delta})",
+      "    transcend"
+    ],
+    "description": "Temporal manipulation pattern"
+  },
+  "Quantum Operation": {
+    "prefix": "quantum",
+    "body": [
+      "invoke quantum_field:",
+      "    quantum_entangle(${1:particle_a}, ${2:particle_b})",
+      "    transcend"
+    ],
+    "description": "Quantum field manipulation"
+  }
+}

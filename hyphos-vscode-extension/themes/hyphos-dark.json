@@ -1,0 +1,89 @@
+{
+  "name": "Hyphos Dark Theme",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#0a0f1a",
+    "editor.foreground": "#e8f4fd",
+    "activityBar.background": "#1a2332",
+    "sideBar.background": "#151e2b",
+    "statusBar.background": "#2a3f5f"
+  },
+  "tokenColors": [
+    {
+      "name": "Comment",
+      "scope": [
+        "comment"
+      ],
+      "settings": {
+        "fontStyle": "italic",
+        "foreground": "#6a7b8a"
+      }
+    },
+    {
+      "name": "String",
+      "scope": [
+        "string"
+      ],
+      "settings": {
+        "foreground": "#98d982"
+      }
+    },
+    {
+      "name": "Number",
+      "scope": [
+        "constant.numeric"
+      ],
+      "settings": {
+        "foreground": "#f39c12"
+      }
+    },
+    {
+      "name": "Senary Number",
+      "scope": [
+        "constant.numeric.senary"
+      ],
+      "settings": {
+        "foreground": "#e74c3c",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Metaword Control",
+      "scope": [
+        "keyword.control.hyphos"
+      ],
+      "settings": {
+        "foreground": "#9b59b6",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Metaword Type",
+      "scope": [
+        "entity.name.type.metaword"
+      ],
+      "settings": {
+        "foreground": "#3498db",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Builtin Function",
+      "scope": [
+        "support.function.builtin"
+      ],
+      "settings": {
+        "foreground": "#e67e22"
+      }
+    },
+    {
+      "name": "Operator",
+      "scope": [
+        "keyword.operator"
+      ],
+      "settings": {
+        "foreground": "#ecf0f1"
+      }
+    }
+  ]
+}

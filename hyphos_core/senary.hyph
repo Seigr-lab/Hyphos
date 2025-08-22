@@ -217,7 +217,7 @@ metaword senary {
      * 
      * Performs senary subtraction using digit-by-digit arithmetic with
      * proper borrow handling. Implements the standard subtraction algorithm
-     * adapted for base-6 mathematics with comprehensive borrow logic.
+     * adapted for base-6 mathematics with complete borrow logic.
      * 
      * ALGORITHM PROCESS:
      * 1. Start from least significant digit (rightmost)

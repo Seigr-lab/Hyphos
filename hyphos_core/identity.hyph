@@ -61,7 +61,7 @@
  * ========================
  * 
  * - Elliptic curve cryptography for digital signatures
- * - Advanced hash functions for identity derivation
+ * - Enhanced hash functions for identity derivation
  * - Key derivation functions for secure key generation
  * - Threshold cryptography for distributed identity management
  * 
@@ -105,7 +105,7 @@ metaword identity {
      * 1. Process and validate entropy source for randomness quality
      * 2. Generate cryptographic identity core using validated entropy
      * 3. Bind identity to current sidereal time for temporal uniqueness
-     * 4. Create comprehensive identity data structure with metadata
+     * 4. Create complete identity data structure with metadata
      * 5. Log identity creation for audit and security monitoring
      * 
      * ENTROPY PROCESSING:
@@ -127,7 +127,7 @@ metaword identity {
      * - Security metadata for threat assessment integration
      * 
      * @param entropy_source High-quality entropy for identity generation
-     * @return Comprehensive identity data structure with security metadata
+     * @return Complete identity data structure with security metadata
      * 
      * @complexity O(1) with cryptographic operation overhead
      * @quantum_resistant Uses post-quantum cryptographic algorithms
@@ -300,7 +300,7 @@ metaword identity {
     }
     
     fun get_trust_score(identity_id) {
-        // Calculate comprehensive trust score
+        // Calculate complete trust score
         logger.info("Calculating trust score", identity_id)
         
         // Base trust factors

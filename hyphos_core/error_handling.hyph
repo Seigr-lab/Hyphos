@@ -91,7 +91,7 @@ metaword error {
      * ERROR THROWING FUNCTION
      * ======================
      * 
-     * Creates and throws a structured error with comprehensive context information.
+     * Creates and throws a structured error with complete context information.
      * This function implements the core error creation mechanism with support for
      * different error types, severity levels, and detailed contextual data.
      * 
@@ -126,7 +126,7 @@ metaword error {
      * @param message Human-readable error description
      * @param error_data Optional structured data payload for error context
      * @param error_type Error classification (RuntimeError, CriticalError, etc.)
-     * @return $Object Comprehensive error object with full context
+     * @return $Object Complete error object with full context
      * 
      * @complexity O(1) error creation with logging overhead
      * @thread_safe Error creation is atomic and thread-safe
@@ -187,7 +187,7 @@ metaword error {
      * =============================================
      * 
      * Implements structured exception handling with support for try-catch-finally
-     * blocks, providing comprehensive error recovery and resource cleanup capabilities.
+     * blocks, providing complete error recovery and resource cleanup capabilities.
      * This function forms the foundation of Hyphos exception handling architecture.
      * 
      * EXECUTION FLOW:

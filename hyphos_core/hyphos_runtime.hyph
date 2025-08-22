@@ -11,10 +11,9 @@
  * RUNTIME ARCHITECTURE:
  * ====================
  * 
- * The Hyphos runtime implements a sophisticated execution engine that goes beyond
- * traditional interpreters by incorporating consciousness-driven optimization,
- * quantum state management, and adaptive execution strategies based on program
- * behavior analysis.
+ * The Hyphos runtime implements an execution engine that goes beyond traditional
+ * interpreters by incorporating consciousness-driven optimization, quantum state
+ * management, and adaptive execution strategies based on program behavior analysis.
  * 
  * CORE DESIGN PRINCIPLES:
  * 

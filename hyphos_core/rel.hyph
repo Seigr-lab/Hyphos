@@ -272,7 +272,7 @@ struct ContributionUnit {
     }
     
     function assess_collective_welfare() -> senary.Number {
-        // Delegate to Noesis for sophisticated welfare assessment
+        // Delegate to Noesis for detailed welfare assessment
         return noesis.assess_collective_welfare_impact(this)
     }
     
@@ -789,7 +789,7 @@ struct EthicalAssessment {
     }
     
     function identify_prohibited_uses(work_description: string, intended_use: string) -> array[string] {
-        // Delegate to Noesis for sophisticated prohibition detection
+        // Delegate to Noesis for detailed prohibition detection
         return noesis_intelligence.identify_prohibited_activities(work_description, intended_use)
     }
     

@@ -75,9 +75,9 @@
  * 
  * - Minimal: Basic functionality for embedded systems
  * - Basic: Standard functionality for typical systems
- * - Enhanced: Advanced features with optimization
- * - Advanced: High-performance with consciousness integration
- * - Maximum: Full capabilities with quantum enhancement
+ * - Enhanced: Extended features with optimization
+ * - Full: High-performance with consciousness integration
+ * - Maximum: Complete capabilities with quantum enhancement
  * 
  * MATHEMATICAL FOUNDATION:
  * =======================
@@ -130,7 +130,7 @@ metaword hardware {
     const MINIMAL = "minimal"
     const BASIC = "basic"
     const ENHANCED = "enhanced"
-    const ADVANCED = "advanced"
+    const FULL = "full"
     const MAXIMUM = "maximum"
 
     // Component states
@@ -152,7 +152,7 @@ metaword hardware {
  * 
  * HAL CREATION PROCESS:
  * 1. Initialize hardware discovery subsystem
- * 2. Perform comprehensive platform-agnostic hardware scan
+ * 2. Perform complete platform-agnostic hardware scan
  * 3. Create adaptive interfaces for discovered hardware
  * 4. Establish consciousness-driven optimization framework
  * 5. Configure security and energy management systems
@@ -176,7 +176,7 @@ metaword hardware {
  * - Secure hardware enclave utilization
  * - Fault tolerance and recovery systems
  * 
- * @return Universal HAL object with comprehensive hardware management
+ * @return Universal HAL object with complete hardware management
  * 
  * @complexity O(n) where n is number of hardware components
  * @platform_agnostic Works on any hardware architecture
@@ -1105,7 +1105,7 @@ export {
     CAPABILITY_LEVEL_MINIMAL,
     CAPABILITY_LEVEL_BASIC,
     CAPABILITY_LEVEL_ENHANCED,
-    CAPABILITY_LEVEL_ADVANCED,
+    CAPABILITY_LEVEL_FULL,
     CAPABILITY_LEVEL_MAXIMUM,
     COMPONENT_STATE_UNKNOWN,
     COMPONENT_STATE_ACTIVE,

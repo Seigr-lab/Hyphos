@@ -13,7 +13,7 @@
  * @classification Core Metaword - System Management
  * @dependencies consciousness, hardware, security, performance
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @system_comprehensive Provides complete system management capabilities
+ * @system_complete Provides complete system management capabilities
  */
 
 // Hyphos Core - System Metaword
