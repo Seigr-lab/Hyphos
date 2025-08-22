@@ -1,13 +1,13 @@
 /**
  * ================================================================================
- * HYPHOS FILESYSTEM METAWORD - ADVANCED FILE SYSTEM OPERATIONS
+ * HYPHOS FILESYSTEM METAWORD - FILE SYSTEM OPERATIONS
  * ================================================================================
  * 
- * Comprehensive file system operations metaword providing native Hyphos access
- * to file operations with consciousness integration and quantum file handling.
- * This metaword serves as the foundation for all file I/O operations within
- * the Seigr ecosystem, offering both traditional file operations and quantum
- * .seigr file format support.
+ * File system operations metaword providing native Hyphos access to file
+ * operations with consciousness integration and quantum file handling. This
+ * metaword serves as the foundation for all file I/O operations within the
+ * Seigr ecosystem, offering both traditional file operations and quantum .seigr
+ * file format support.
  * 
  * FILESYSTEM ARCHITECTURE:
  * =======================
@@ -15,7 +15,7 @@
  * The filesystem metaword implements a dual-layer architecture supporting both
  * traditional file operations and quantum .seigr file format operations. This
  * design enables seamless integration with existing file systems while providing
- * advanced capabilities for Seigr-native file formats.
+ * capabilities for Seigr-native file formats.
  * 
  * CORE DESIGN PRINCIPLES:
  * 

@@ -1,12 +1,12 @@
 /**
  * ================================================================================
- * HYPHOS ERROR HANDLING METAWORD - COMPREHENSIVE EXCEPTION MANAGEMENT
+ * HYPHOS ERROR HANDLING METAWORD - EXCEPTION MANAGEMENT
  * ================================================================================
  * 
- * Advanced error handling and exception management system for the Hyphos language.
- * This metaword provides comprehensive error management capabilities including
- * structured exception handling, error recovery mechanisms, and integration with
- * the consciousness system for adaptive error response.
+ * Error handling and exception management system for the Hyphos language. This
+ * metaword provides error management capabilities including structured exception
+ * handling, error recovery mechanisms, and integration with the consciousness
+ * system for adaptive error response.
  * 
  * ERROR HANDLING ARCHITECTURE:
  * ===========================
@@ -19,7 +19,7 @@
  * 
  * 1. STRUCTURED EXCEPTION HANDLING:
  *    - Hierarchical error type classification
- *    - Comprehensive error context preservation
+ *    - Error context preservation
  *    - Stack trace analysis and reporting
  *    - Correlation ID tracking for distributed debugging
  * 

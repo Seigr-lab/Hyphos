@@ -21,7 +21,7 @@
  * - Automatic cleanup on abnormal termination or exceptions
  * 
  * EXECUTION TRACKING:
- * - Comprehensive logging of control flow execution paths
+ * - Detailed logging of control flow execution paths
  * - Performance metrics collection for optimization
  * - Debugging support with execution trace information
  * - Integration with Hyphos consciousness system for adaptive behavior

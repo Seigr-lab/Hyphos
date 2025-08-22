@@ -4,8 +4,8 @@
  * 
  * Simplified interface layer for consciousness operations that provides convenient
  * access to the main consciousness processing system. This metaword serves as a
- * delegation layer that maps simplified function calls to the comprehensive
- * consciousness processing architecture.
+ * delegation layer that maps simplified function calls to the consciousness
+ * processing architecture.
  * 
  * DELEGATION ARCHITECTURE:
  * This metaword acts as a facade pattern, providing:
