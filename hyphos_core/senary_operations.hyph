@@ -1,19 +1,37 @@
 /**
- * ================================================================================
- * HYPHOS SENARY OPERATIONS METAWORD - BASE-6 MATHEMATICAL SYSTEM
- * ================================================================================
+ * HYPHOS CORE - SENARY OPERATIONS METAWORD
+ * ========================================
  * 
- * Senary mathematical operations system providing base-6 arithmetic, quantum
- * mathematical functions, and consciousness-driven computational optimization
- * for the Seigr ecosystem's mathematical foundation.
+ * Base-6 mathematical operations system providing senary arithmetic and quantum mathematical functions.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Enhanced Senary Mathematics
+ * MAIN FUNCTIONS:
+ * - create(input) -> senary_number
+ * - add(senary1, senary2) -> senary_result
+ * - subtract(senary1, senary2) -> senary_result
+ * - multiply(senary1, senary2) -> senary_result
+ * - divide(senary1, senary2) -> senary_result
+ * - power(base, exponent) -> senary_result
+ * - to_decimal(senary_number) -> decimal_number
+ * - to_string(senary_number) -> string_representation
+ * 
+ * STRUCTURES:
+ * - SenaryNumber: {digits, sign, precision, quantum_state}
+ * - SenaryFloat: {integer_part, fractional_part, exponent, precision}
+ * - MathContext: {precision_level, rounding_mode, quantum_coherence}
+ * 
+ * SENARY SYSTEM:
+ * - Base: 6 (digits 0, 1, 2, 3, 4, 5)
+ * - Precision: Configurable decimal places
+ * - Operations: All standard arithmetic operations
+ * - Conversion: Bidirectional decimal/senary conversion
+ * 
+ * USAGE EXAMPLE:
+ * num1 = senary_operations.create("123")  // Creates senary 123
+ * num2 = senary_operations.create(42)     // Converts decimal 42 to senary
+ * result = senary_operations.add(num1, num2)
+ * 
  * @dependencies senary, consciousness, quantum, optimization
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @quantum_mathematical Provides quantum-enhanced mathematical operations
  */
 
 // Hyphos Core - Senary Operations Metaword

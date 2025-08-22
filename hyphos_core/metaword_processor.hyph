@@ -1,33 +1,36 @@
 /**
- * ================================================================================
- * HYPHOS METAWORD PROCESSOR - CORE LANGUAGE INTERPRETER SYSTEM
- * ================================================================================
+ * HYPHOS CORE - METAWORD PROCESSOR METAWORD
+ * =========================================
  * 
- * Metaword processing and interpretation system providing the core language
- * infrastructure for bio-inspired metaword definitions, consciousness integration,
- * and dynamic language feature creation. This metaword implements the fundamental
- * parsing, registration, and execution framework for all Hyphos metawords and
- * language constructs.
+ * Metaword processing and interpretation system providing core language infrastructure for dynamic metaword definitions.
  * 
- * METAWORD PROCESSOR ARCHITECTURE:
- * ===============================
+ * MAIN FUNCTIONS:
+ * - parse_metaword(metaword_source) -> parsed_definition
+ * - register_metaword(metaword_name, definition) -> registration_result
+ * - execute_metaword(metaword_name, parameters) -> execution_result
+ * - validate_metaword_syntax(source_code) -> validation_report
+ * - compile_metaword(definition) -> compiled_metaword
+ * - optimize_metaword_execution(metaword_name) -> optimization_result
  * 
- * The metaword processor serves as the core interpreter engine that transforms
- * Hyphos metaword definitions into executable language features, enabling
- * dynamic language extension and consciousness-driven language evolution.
+ * STRUCTURES:
+ * - MetawordDefinition: {name, parameters, body, dependencies, metadata}
+ * - ExecutionContext: {scope, variables, call_stack, security_context}
+ * - CompilationResult: {success, bytecode, symbol_table, error_messages}
  * 
- * CORE DESIGN PRINCIPLES:
+ * PROCESSING STAGES:
+ * - LEXICAL_ANALYSIS: Tokenization of metaword source
+ * - SYNTAX_PARSING: Abstract syntax tree generation
+ * - SEMANTIC_ANALYSIS: Type checking and validation
+ * - CODE_GENERATION: Executable bytecode generation
+ * - OPTIMIZATION: Performance and memory optimization
+ * - REGISTRATION: Runtime metaword registration
  * 
- * 1. DYNAMIC METAWORD INTERPRETATION:
- *    - Runtime metaword definition parsing and compilation
- *    - Dynamic language feature creation and registration
- *    - Adaptive metaword behavior based on consciousness state
- *    - Real-time metaword modification and recompilation
+ * USAGE EXAMPLE:
+ * definition = metaword_processor.parse_metaword(source_code)
+ * result = metaword_processor.register_metaword("my_metaword", definition)
+ * output = metaword_processor.execute_metaword("my_metaword", params)
  * 
- * 2. CONSCIOUSNESS-INTEGRATED LANGUAGE PROCESSING:
- *    - Consciousness-aware metaword interpretation
- *    - Adaptive language behavior based on consciousness levels
- *    - Intelligent metaword optimization through consciousness analysis
+ * @dependencies parser, compiler, consciousness, security, optimization
  *    - Context-sensitive language feature activation
  * 
  * 3. BIO-INSPIRED METAWORD SYSTEM:

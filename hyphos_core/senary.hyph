@@ -2,32 +2,41 @@
 // Pure base-6 mathematical operations as core language feature
 
 /**
- * HYPHOS CORE - SENARY NUMBER SYSTEM METAWORD
- * ============================================
+ * HYPHOS CORE - SENARY METAWORD
+ * =============================
  * 
- * Core implementation of the senary (base-6) number system that forms the
- * mathematical foundation of the Seigr ecosystem. This metaword provides
- * fundamental arithmetic operations, conversions, and validations for
- * senary number manipulation with high precision and efficiency.
+ * Core senary (base-6) number system providing fundamental arithmetic operations and conversions.
  * 
- * MATHEMATICAL FOUNDATION:
- * Senary (base-6) uses digits {0, 1, 2, 3, 4, 5} where each position
- * represents a power of 6:
+ * MAIN FUNCTIONS:
+ * - from_decimal(decimal_number) -> senary_representation
+ * - to_decimal(senary_string) -> decimal_number
+ * - validate(senary_string) -> bool
+ * - add_senary(senary1, senary2) -> senary_sum
+ * - subtract_senary(senary1, senary2) -> senary_difference
+ * - multiply_senary(senary1, senary2) -> senary_product
+ * - divide_senary(senary1, senary2) -> senary_quotient
+ * - compare_senary(senary1, senary2) -> comparison_result
+ * 
+ * STRUCTURES:
+ * - SenaryValue: {digits, is_negative, decimal_places, raw_value}
+ * - ConversionResult: {senary_string, decimal_value, precision_level}
+ * - ArithmeticResult: {result_value, overflow, underflow, precision_loss}
+ * 
+ * SENARY DIGITS: {0, 1, 2, 3, 4, 5}
+ * POSITIONAL VALUES:
  * - Position 0: 6⁰ = 1
- * - Position 1: 6¹ = 6  
+ * - Position 1: 6¹ = 6
  * - Position 2: 6² = 36
  * - Position n: 6ⁿ
  * 
- * ADVANTAGES OF SENARY:
- * - Natural alignment with biological systems (6 fingers historically)
- * - Optimal trade-off between digit count and computational efficiency
- * - Enhanced cryptographic properties through non-standard base
- * - Reduced computational complexity in certain algorithms
- * - Natural compatibility with quantum computing (6-state systems)
+ * USAGE EXAMPLE:
+ * senary_val = senary.from_decimal(42)     // Returns "110" (42 in base-6)
+ * decimal_val = senary.to_decimal("110")   // Returns 42
+ * sum_result = senary.add_senary("110", "12")  // Adds in base-6
  * 
- * PRECISION AND ACCURACY:
- * - Supports arbitrary precision arithmetic
- * - Handles both integer and fractional senary numbers
+ * @precision Arbitrary precision arithmetic support
+ * @efficiency Optimized for quantum computing compatibility
+ */
  * - Maintains exact representations without floating-point errors
  * - Optimized algorithms for carry/borrow operations
  * 

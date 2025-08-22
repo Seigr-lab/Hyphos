@@ -1,16 +1,27 @@
 /**
- * ================================================================================
- * HYPHOS SEIGR TOKEN METAWORD - NATIVE CRYPTOCURRENCY & ECONOMICS ENGINE
- * ================================================================================
+ * HYPHOS CORE - SEIGR TOKEN METAWORD
+ * ==================================
  * 
- * Native cryptocurrency and economics engine providing quantum-secured token
- * generation, transaction processing, and economic management with consciousness
- * integration and adaptive economic policy optimization.
+ * Native cryptocurrency and token management with quantum-secured transactions.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Cryptocurrency & Economics
+ * MAIN FUNCTIONS:
+ * - create_token(initial_supply, token_config) -> token_id
+ * - transfer_tokens(from_address, to_address, amount) -> transaction_id
+ * - validate_transaction(transaction_data) -> bool
+ * - get_balance(address) -> token_amount
+ * - mint_tokens(amount, recipient_address) -> transaction_id
+ * - burn_tokens(amount, owner_address) -> transaction_id
+ * 
+ * STRUCTURES:
+ * - TokenConfig: {name, symbol, decimals, total_supply, mint_policy}
+ * - Transaction: {from_address, to_address, amount, timestamp, signature}
+ * - Account: {address, balance, transaction_history, permissions}
+ * 
+ * USAGE EXAMPLE:
+ * token_id = seigr_token.create_token(1000000, token_config)
+ * tx_id = seigr_token.transfer_tokens(alice_addr, bob_addr, 100)
+ * balance = seigr_token.get_balance(alice_addr)
+ * 
  * @dependencies crypto, consciousness, network, governance
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @economic_intelligent Provides AI-driven economic optimization

@@ -1,33 +1,36 @@
 /**
- * HYPHOS CORE - CRYPTOGRAPHIC HASH METAWORD
- * ==========================================
+ * HYPHOS CORE - CRYPTO HASH METAWORD
+ * ==================================
  * 
- * Pure Hyphos implementation of cryptographic hash functions using senary
- * mathematics and Seigr-specific algorithms. This metaword provides secure,
- * quantum-resistant hashing capabilities optimized for the base-6 mathematical
- * foundation of the Seigr ecosystem.
+ * Cryptographic hash functions using senary mathematics and quantum-resistant algorithms.
  * 
- * SENARY HASH ALGORITHM:
- * - Utilizes base-6 mathematics for enhanced quantum resistance
- * - Implements avalanche effect through senary arithmetic operations
- * - Uses cosmic entropy integration via sidereal time variations
- * - Provides collision resistance through large senary modulus operations
+ * MAIN FUNCTIONS:
+ * - hash_data(data, algorithm) -> hash_string
+ * - verify_hash(data, expected_hash) -> bool
+ * - hash_with_salt(data, salt) -> salted_hash
+ * - create_merkle_tree(data_array) -> merkle_root
+ * - verify_merkle_proof(data, proof, root) -> bool
+ * - hash_chain(previous_hash, new_data) -> chained_hash
  * 
- * CRYPTOGRAPHIC PROPERTIES:
- * - Deterministic: Same input always produces same output
- * - Avalanche effect: Small input changes cause dramatic output changes
- * - Collision resistant: Computationally infeasible to find hash collisions
- * - Pre-image resistant: Cannot reverse-engineer input from hash output
- * - Quantum resistant: Senary base provides protection against quantum attacks
+ * ALGORITHMS:
+ * - SEIGR_HASH_256: 256-bit senary-based hash
+ * - SEIGR_HASH_512: 512-bit senary-based hash
+ * - QUANTUM_RESISTANT: Post-quantum hash algorithm
+ * - MERKLE_TREE: For blockchain and verification
  * 
- * INTEGRATION FEATURES:
- * - Seamless integration with asymmetric cryptography operations
- * - Support for salted hashing to prevent rainbow table attacks
- * - Merkle tree construction for blockchain and verification applications
- * - Hash chain support for temporal integrity verification
- * - Integration with Seigr entropy system for enhanced randomness
+ * STRUCTURES:
+ * - HashResult: {hash_string, algorithm_used, computation_time, entropy_level}
+ * - MerkleTree: {root_hash, leaf_hashes, proof_paths, depth}
+ * - HashChain: {current_hash, previous_hash, chain_length, integrity_status}
  * 
- * APPLICATIONS IN SEIGR:
+ * USAGE EXAMPLE:
+ * hash_result = crypto_hash.hash_data(my_data, "SEIGR_HASH_256")
+ * is_valid = crypto_hash.verify_hash(my_data, expected_hash)
+ * merkle_root = crypto_hash.create_merkle_tree(data_blocks)
+ * 
+ * @security Quantum-resistant through senary mathematics
+ * @performance Optimized for base-6 computational efficiency
+ */
  * - Digital signature algorithms (ECDSA with senary curves)
  * - Data integrity verification in .seigr file format
  * - Blockchain and distributed ledger operations

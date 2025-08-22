@@ -2,32 +2,42 @@
  * HYPHOS CORE - CONTROL FLOW METAWORD
  * ====================================
  * 
- * Fundamental control flow constructs that form the backbone of Hyphos program
- * execution. This metaword implements traditional control structures (if, while, for)
- * with Hyphos-specific enhancements including scope management, execution tracking,
- * and safety mechanisms to prevent infinite loops and resource exhaustion.
+ * Fundamental control flow constructs with scope management and safety mechanisms.
  * 
- * SCOPE-AWARE EXECUTION:
- * All control flow operations integrate with the Hyphos scope management system:
- * - Automatic scope creation and cleanup for isolated execution contexts
- * - Variable lifecycle management within control blocks
- * - Memory leak prevention through deterministic scope destruction
- * - Nested scope support for complex control flow patterns
+ * MAIN FUNCTIONS:
+ * - if_statement(condition, then_block, else_block) -> execution_result
+ * - while_loop(condition, body_block, max_iterations) -> loop_result
+ * - for_loop(initialization, condition, increment, body) -> iteration_result
+ * - switch_statement(value, case_map, default_block) -> switch_result
+ * - break_execution(loop_context) -> bool
+ * - continue_execution(loop_context) -> bool
+ * 
+ * STRUCTURES:
+ * - ExecutionContext: {scope_id, variables, iteration_count, safety_limits}
+ * - LoopResult: {iterations_completed, final_state, execution_time, exit_reason}
+ * - ConditionalResult: {branch_taken, execution_result, condition_value}
  * 
  * SAFETY MECHANISMS:
- * - Iteration limits prevent infinite loops and resource exhaustion
- * - Execution monitoring tracks performance and resource usage
- * - Graceful error handling with detailed execution context
- * - Automatic cleanup on abnormal termination or exceptions
+ * - MAX_ITERATIONS: Prevents infinite loops (default: 1,000,000)
+ * - TIMEOUT_PROTECTION: Maximum execution time limits
+ * - MEMORY_MONITORING: Prevents excessive memory allocation
+ * - SCOPE_ISOLATION: Automatic variable cleanup
  * 
- * EXECUTION TRACKING:
- * - Detailed logging of control flow execution paths
- * - Performance metrics collection for optimization
- * - Debugging support with execution trace information
- * - Integration with Hyphos consciousness system for adaptive behavior
+ * CONTROL STRUCTURES:
+ * - IF/ELSE: Conditional execution
+ * - WHILE: Condition-based loops
+ * - FOR: Counter-based iteration
+ * - SWITCH: Multi-branch selection
+ * - BREAK/CONTINUE: Loop control
  * 
- * INTEGRATION FEATURES:
- * - Seamless integration with bio_control_flow for adaptive patterns
+ * USAGE EXAMPLE:
+ * result = control_flow.if_statement(x > 5, then_action, else_action)
+ * loop_result = control_flow.while_loop(condition, loop_body, 1000)
+ * iteration = control_flow.for_loop(i=0, i<10, i++, action)
+ * 
+ * @safety Iteration limits and resource monitoring
+ * @scope Automatic scope management and cleanup
+ */
  * - Consciousness-aware execution for intelligent control decisions
  * - Energy-aware processing to optimize power consumption
  * - Network-distributed execution capabilities for cluster computing

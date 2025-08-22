@@ -1,22 +1,35 @@
 /**
- * ================================================================================
- * HYPHOS REPLICATION METAWORD - INTELLIGENT 6RR REPLICATION ENGINE
- * ================================================================================
+ * HYPHOS CORE - REPLICATION METAWORD
+ * ==================================
  * 
- * Intelligent replication engine implementing the Six-fold Redundancy and Recovery
- * (6RR) protocol with consciousness-driven optimization, adaptive distribution
- * strategies, and quantum-enhanced data integrity verification. This metaword
- * provides the core replication infrastructure for the Seigr ecosystem's
- * distributed storage and resilience framework.
+ * Six-fold Redundancy and Recovery (6RR) protocol for distributed data replication.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 4.0.0
- * @since 2024
- * @classification Core Metaword - Distributed Replication
+ * MAIN FUNCTIONS:
+ * - replicate_data(data_id, replication_policy) -> replication_job_id
+ * - retrieve_replicated_data(data_id) -> data_with_verification
+ * - verify_replication_integrity(data_id) -> integrity_report
+ * - update_replication_policy(data_id, new_policy) -> bool
+ * - get_replication_status(data_id) -> {node_count, health_score, last_verified}
+ * - recover_from_failure(failed_node_id) -> recovery_plan
+ * 
+ * STRUCTURES:
+ * - ReplicationPolicy: {redundancy_level, geographic_distribution, priority}
+ * - ReplicationNode: {node_id, capacity, reliability_score, location}
+ * - IntegrityReport: {verified_copies, corrupted_copies, missing_copies, repair_actions}
+ * 
+ * REDUNDANCY LEVELS:
+ * - MINIMAL: 3 copies across different nodes
+ * - STANDARD: 6 copies with geographic distribution  
+ * - HIGH: 9 copies with enhanced verification
+ * - CRITICAL: 12 copies with real-time monitoring
+ * 
+ * USAGE EXAMPLE:
+ * job_id = replication.replicate_data("file_123", standard_policy)
+ * status = replication.get_replication_status("file_123")
+ * data = replication.retrieve_replicated_data("file_123")
+ * 
  * @dependencies consciousness, crypto, network, storage, immune
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @replication_intelligent Adapts replication strategy based on analysis
- */
 
 // ╔══════════════════════════════════════════════════════════════╗
 // ║                     HYPHOS REPLICATION METAWORD             ║

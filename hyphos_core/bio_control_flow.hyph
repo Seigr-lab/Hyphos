@@ -1,33 +1,38 @@
 /**
- * HYPHOS CORE - BIO-INSPIRED CONTROL FLOW METAWORD
- * =================================================
+ * HYPHOS CORE - BIO CONTROL FLOW METAWORD
+ * =======================================
  * 
- * Control flow paradigm inspired by biological systems, evolutionary
- * algorithms, and natural adaptation mechanisms. This metaword implements control
- * structures that mimic organic growth patterns, neural networks, and ecosystem
- * behaviors for adaptive program flow.
+ * Bio-inspired control flow paradigm with evolutionary algorithms and natural adaptation mechanisms.
  * 
- * BIOLOGICAL PARADIGMS IMPLEMENTED:
- * - Evolutionary Loops: Control structures that adapt and evolve over iterations
- * - Mycelial Networks: Distributed parallel processing like fungal networks
- * - Neural Branching: Decision trees that learn and adapt based on outcomes
- * - Ecosystem Feedback: Control flow influenced by environmental conditions
- * - Genetic Algorithms: Self-modifying loops with fitness-based selection
+ * MAIN FUNCTIONS:
+ * - evolve_loop(initial_condition, fitness_function, generations) -> evolved_result
+ * - mycelial_parallel(task_array, network_topology) -> parallel_results
+ * - neural_branch(decision_tree, learning_rate) -> branch_decision
+ * - ecosystem_feedback(control_state, environment) -> adapted_state
+ * - genetic_algorithm(population, selection_criteria) -> optimized_population
+ * - symbiotic_execution(process_array, cooperation_rules) -> cooperative_result
  * 
- * ADAPTIVE CONTROL FEATURES:
- * - Growth Probability: Conditions evaluated with biological growth patterns
- * - Fitness Tracking: Loop performance monitoring and optimization
- * - Generation Evolution: Iterative improvement of control flow efficiency
- * - Environmental Adaptation: Control flow responds to system state changes
- * - Symbiotic Execution: Cooperative parallel processing mechanisms
+ * STRUCTURES:
+ * - EvolutionContext: {generation, fitness_score, mutation_rate, selection_pressure}
+ * - MycelialNetwork: {nodes, connections, message_routing, load_distribution}
+ * - NeuralBranch: {condition, weight, learning_history, adaptation_rate}
  * 
- * APPLICATIONS IN SEIGR ECOSYSTEM:
- * - AI consciousness processing with organic decision patterns
- * - Network routing with ecosystem-inspired load balancing
- * - Resource allocation using natural selection principles
- * - Error handling with immune system responses
- * - Learning algorithms with evolutionary improvement
+ * BIOLOGICAL PATTERNS:
+ * - EVOLUTIONARY: Adaptive loops that improve over iterations
+ * - MYCELIAL: Distributed parallel processing like fungal networks
+ * - NEURAL: Decision trees that learn from outcomes
+ * - ECOSYSTEM: Control flow influenced by environmental conditions
+ * - GENETIC: Self-modifying algorithms with fitness selection
+ * - SYMBIOTIC: Cooperative parallel processing
  * 
+ * USAGE EXAMPLE:
+ * result = bio_control_flow.evolve_loop(initial_state, fitness_func, 100)
+ * parallel_out = bio_control_flow.mycelial_parallel(tasks, network_config)
+ * decision = bio_control_flow.neural_branch(decision_tree, 0.01)
+ * 
+ * @dependencies evolutionary_algorithms, neural_networks, parallel_processing, adaptation
+ * @paradigm Bio-inspired adaptive control structures
+ */
  * PERFORMANCE CHARACTERISTICS:
  * - Self-optimizing: Control flow improves over time through adaptation
  * - Resilient: Biological redundancy provides fault tolerance

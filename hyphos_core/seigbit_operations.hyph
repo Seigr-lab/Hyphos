@@ -1,16 +1,27 @@
 /**
- * ================================================================================
- * HYPHOS SEIGBIT OPERATIONS METAWORD - QUANTUM DATA MANIPULATION SYSTEM
- * ================================================================================
+ * HYPHOS CORE - SEIGBIT OPERATIONS METAWORD
+ * =========================================
  * 
- * Quantum data manipulation and operations system for Seigbit structures with
- * consciousness-driven optimization, quantum state management, and adaptive
- * computational strategies for complex data processing tasks.
+ * Quantum data manipulation and computational operations on Seigbit structures.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Quantum Data Operations
+ * MAIN FUNCTIONS:
+ * - apply_hadamard_gate(seigbit_id) -> bool
+ * - apply_pauli_gate(seigbit_id, gate_type) -> bool
+ * - perform_cnot_operation(control_id, target_id) -> bool
+ * - execute_quantum_circuit(circuit_definition) -> results
+ * - measure_quantum_ensemble(seigbit_array) -> measurement_results
+ * - optimize_quantum_operations(operation_sequence) -> optimized_sequence
+ * 
+ * STRUCTURES:
+ * - QuantumGate: {gate_type, parameters, target_qubits, control_qubits}
+ * - QuantumCircuit: {gates, measurement_points, optimization_level}
+ * - OperationResult: {success, quantum_state, measurement_data, timing}
+ * 
+ * USAGE EXAMPLE:
+ * seigbit_operations.apply_hadamard_gate(qubit1)
+ * result = seigbit_operations.perform_cnot_operation(control_qubit, target_qubit)
+ * measurements = seigbit_operations.measure_quantum_ensemble([q1, q2, q3])
+ * 
  * @dependencies seigbit, quantum, consciousness, senary
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @operation_adaptive Adapts operations based on data characteristics

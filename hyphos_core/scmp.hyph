@@ -1,17 +1,33 @@
 /**
- * ================================================================================
- * HYPHOS SCMP METAWORD - SEIGR CAPSULE MANAGEMENT PROTOCOL ENGINE
- * ================================================================================
+ * HYPHOS CORE - SCMP METAWORD
+ * ===========================
  * 
- * Seigr Capsule Management Protocol (SCMP) engine providing secure, efficient
- * communication and data encapsulation for the Seigr ecosystem. This metaword
- * implements the core communication infrastructure with consciousness integration
- * and adaptive protocol optimization.
+ * Seigr Capsule Management Protocol for secure communication and data encapsulation.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 4.0.0
- * @since 2024
- * @classification Core Metaword - Communication Protocol
+ * MAIN FUNCTIONS:
+ * - create_capsule(data, metadata, security_level) -> capsule_id
+ * - send_capsule(capsule_id, destination_address) -> transmission_id
+ * - receive_capsule(transmission_id) -> capsule_data
+ * - verify_capsule_integrity(capsule_id) -> bool
+ * - establish_secure_channel(remote_address) -> channel_id
+ * - close_channel(channel_id) -> bool
+ * 
+ * STRUCTURES:
+ * - SeigrCapsule: {capsule_id, data, metadata, security_signature, timestamp}
+ * - SecureChannel: {channel_id, encryption_key, remote_address, status}
+ * - TransmissionStatus: {transmission_id, status, progress, error_count}
+ * 
+ * SECURITY LEVELS:
+ * - PUBLIC: No encryption, basic integrity checks
+ * - PRIVATE: Standard encryption with authentication
+ * - CONFIDENTIAL: High-grade encryption with perfect forward secrecy
+ * - TOP_SECRET: Quantum-resistant encryption with multiple validation layers
+ * 
+ * USAGE EXAMPLE:
+ * capsule_id = scmp.create_capsule(my_data, metadata, "PRIVATE")
+ * transmission_id = scmp.send_capsule(capsule_id, remote_node)
+ * response = scmp.receive_capsule(transmission_id)
+ * 
  * @dependencies crypto, network, consciousness, security
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @secure_transport Provides encrypted communication channels

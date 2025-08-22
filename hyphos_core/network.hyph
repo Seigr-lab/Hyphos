@@ -1,21 +1,35 @@
 /**
- * ================================================================================
- * HYPHOS NETWORK METAWORD - NETWORK MANAGEMENT SYSTEM
- * ================================================================================
+ * HYPHOS CORE - NETWORK METAWORD
+ * ==============================
  * 
- * Network management and communication system providing networking capabilities
- * with consciousness integration, quantum-enhanced communication protocols, and
- * adaptive network optimization for the Seigr ecosystem's distributed
- * infrastructure requirements.
+ * Network management and communication system with quantum-enhanced protocols and adaptive optimization.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Network Management
+ * MAIN FUNCTIONS:
+ * - initialize_network() -> network_status
+ * - connect_to_peer(peer_address, connection_type) -> connection_id
+ * - send_message(connection_id, message_data) -> transmission_result
+ * - receive_message(connection_id, timeout) -> message_data
+ * - discover_peers(search_criteria) -> peer_list
+ * - manage_bandwidth(connection_id, bandwidth_limit) -> bool
+ * 
+ * STRUCTURES:
+ * - NetworkConnection: {connection_id, peer_address, status, protocol_type, metrics}
+ * - PeerInfo: {peer_id, address, capabilities, trust_level, last_seen}
+ * - MessageData: {sender, recipient, payload, encryption_level, timestamp}
+ * 
+ * CONNECTION TYPES:
+ * - DIRECT_TCP: Direct TCP connection
+ * - SECURE_TLS: TLS-encrypted connection
+ * - P2P_MESH: Peer-to-peer mesh networking
+ * - QUANTUM_SECURE: Quantum-encrypted communication
+ * 
+ * USAGE EXAMPLE:
+ * status = network.initialize_network()
+ * conn_id = network.connect_to_peer("192.168.1.50", "SECURE_TLS")
+ * result = network.send_message(conn_id, message_payload)
+ * 
  * @dependencies logger, consciousness, hardware, crypto, immune
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @network_adaptive Adapts to varying network conditions and topologies
- */
 
 // Hyphos Network Metaword - Core Network Management and Communication
 

@@ -1,33 +1,34 @@
 /**
- * ================================================================================
- * HYPHOS IDENTITY METAWORD - IDENTITY MANAGEMENT SYSTEM
- * ================================================================================
+ * HYPHOS CORE - IDENTITY METAWORD
+ * ===============================
  * 
- * Identity management system providing secure, quantum-resistant identity creation,
- * management, and verification for the Seigr ecosystem. This metaword implements
- * cryptographic identity protocols with consciousness integration and adaptive
- * security features based on threat assessment and usage patterns.
+ * Identity management system providing secure, quantum-resistant identity creation and verification.
  * 
- * IDENTITY ARCHITECTURE:
- * =====================
+ * MAIN FUNCTIONS:
+ * - create_identity(identity_type, security_level) -> identity_id
+ * - authenticate_identity(identity_id, credentials) -> authentication_result
+ * - verify_identity_signature(signature, identity_id) -> bool
+ * - update_identity_credentials(identity_id, new_credentials) -> bool
+ * - revoke_identity(identity_id, revocation_reason) -> bool
+ * - get_identity_info(identity_id) -> identity_details
  * 
- * The identity metaword provides an identity management framework that combines
- * cryptographic security, consciousness-driven behavior analysis,
- * and quantum-resistant identity protocols to create secure, verifiable digital
- * identities for users and entities within the Seigr ecosystem.
+ * STRUCTURES:
+ * - Identity: {identity_id, public_key, creation_time, security_level, metadata}
+ * - Credentials: {password_hash, biometric_data, security_tokens, recovery_keys}
+ * - AuthenticationResult: {success, identity_verified, trust_level, session_token}
  * 
- * CORE DESIGN PRINCIPLES:
+ * SECURITY LEVELS:
+ * - BASIC: Standard password-based authentication
+ * - ENHANCED: Multi-factor authentication required
+ * - QUANTUM_SECURE: Post-quantum cryptographic protection
+ * - BIOMETRIC: Biometric verification required
  * 
- * 1. QUANTUM-RESISTANT IDENTITY SECURITY:
- *    - Post-quantum cryptographic identity generation
- *    - Senary mathematics for quantum computing resistance
- *    - Multiple entropy sources for enhanced randomness
- *    - Forward secrecy through ephemeral identity components
+ * USAGE EXAMPLE:
+ * identity_id = identity.create_identity("USER", "ENHANCED")
+ * auth_result = identity.authenticate_identity(identity_id, user_credentials)
+ * is_valid = identity.verify_identity_signature(signature, identity_id)
  * 
- * 2. CONSCIOUSNESS-INTEGRATED IDENTITY:
- *    - Identity behavior pattern learning and analysis
- *    - Adaptive authentication based on consciousness state
- *    - Predictive identity verification through behavior modeling
+ * @dependencies cryptography, biometrics, quantum_security, authentication
  *    - Intelligent identity risk assessment and response
  * 
  * 3. MULTI-LAYER ENTROPY INTEGRATION:

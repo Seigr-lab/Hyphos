@@ -1,16 +1,32 @@
 /**
- * ================================================================================
- * HYPHOS SIDEREAL TIME METAWORD - COSMIC TIME SYNCHRONIZATION SYSTEM
- * ================================================================================
+ * HYPHOS CORE - SIDEREAL TIME METAWORD
+ * ====================================
  * 
- * Cosmic time synchronization system providing sidereal time calculations,
- * astronomical positioning, and consciousness-integrated temporal coordination
- * for the Seigr ecosystem's time-sensitive operations.
+ * Cosmic time synchronization providing sidereal time calculations and astronomical positioning.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Cosmic Time Synchronization
+ * MAIN FUNCTIONS:
+ * - get_current_sidereal_time() -> sidereal_timestamp
+ * - convert_utc_to_sidereal(utc_time) -> sidereal_time
+ * - calculate_star_position(star_catalog_id) -> {ra, dec, altitude, azimuth}
+ * - get_time_entropy_sample() -> entropy_bytes
+ * - sync_cosmic_time() -> bool
+ * - get_astronomical_coordinates(location) -> coordinates
+ * 
+ * CONSTANTS:
+ * - SOLAR_TO_SIDEREAL_RATIO: 1.00273790935
+ * - SIDEREAL_DAY_SECONDS: 86164.0905
+ * - EARTH_ROTATION_RATE: 15.041067 degrees/hour
+ * 
+ * STRUCTURES:
+ * - SiderealTime: {hours, minutes, seconds, microseconds}
+ * - AstronomicalPosition: {right_ascension, declination, distance}
+ * - CosmicSync: {last_sync, drift_correction, precision_level}
+ * 
+ * USAGE EXAMPLE:
+ * sidereal_now = sidereal_time.get_current_sidereal_time()
+ * star_pos = sidereal_time.calculate_star_position("SIRIUS")
+ * entropy = sidereal_time.get_time_entropy_sample()
+ * 
  * @dependencies astronomy, consciousness, senary, precision
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @cosmic_synchronized Provides cosmic time coordination and synchronization

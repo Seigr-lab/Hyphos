@@ -1,16 +1,33 @@
 /**
- * ================================================================================
- * HYPHOS SCOPE METAWORD - SCOPE MANAGEMENT SYSTEM
- * ================================================================================
+ * HYPHOS CORE - SCOPE METAWORD
+ * ============================
  * 
- * Scope and variable management system providing hierarchical scope control,
- * consciousness-aware variable resolution, and quantum-enhanced memory management
- * for the Hyphos language execution environment.
+ * Scope and variable management system with hierarchical scope control.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Scope Management
+ * MAIN FUNCTIONS:
+ * - create_scope(parent_scope_id) -> scope_id
+ * - enter_scope(scope_id) -> bool
+ * - exit_scope(scope_id) -> bool
+ * - declare_variable(name, value, type) -> bool
+ * - resolve_variable(name) -> {value, type, scope_level}
+ * - set_variable(name, value) -> bool
+ * 
+ * STRUCTURES:
+ * - ScopeLevel: {scope_id, parent_scope, variables, access_level}
+ * - Variable: {name, value, type, visibility, lifetime}
+ * - ScopeHierarchy: {current_scope, scope_chain, global_scope}
+ * 
+ * SCOPE TYPES:
+ * - GLOBAL_SCOPE: Module-level variables
+ * - FUNCTION_SCOPE: Function-local variables
+ * - BLOCK_SCOPE: Block-level variables
+ * - TEMP_SCOPE: Temporary computation scope
+ * 
+ * USAGE EXAMPLE:
+ * scope_id = scope.create_scope(current_scope)
+ * scope.declare_variable("x", 42, "SENARY_INT")
+ * result = scope.resolve_variable("x")
+ * 
  * @dependencies consciousness, memory, security, quantum
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @memory_managed Provides automatic memory management and cleanup

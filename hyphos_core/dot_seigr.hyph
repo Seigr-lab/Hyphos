@@ -1,33 +1,36 @@
 /**
- * ================================================================================
- * HYPHOS DOT SEIGR METAWORD - QUANTUM FILE SYSTEM IMPLEMENTATION
- * ================================================================================
- * 
- * Quantum file system implementation providing data storage and processing
- * capabilities through conscious cellular architecture. This metaword implements
- * the core .seigr file format that serves as the foundation of the Seigr
- * ecosystem's distributed, adaptive, and self-healing storage system.
- * 
- * QUANTUM FILE SYSTEM ARCHITECTURE:
+ * HYPHOS CORE - DOT SEIGR METAWORD
  * ================================
  * 
- * The .seigr format represents a paradigm shift from traditional file systems by
- * implementing quantum-inspired cellular structures with consciousness integration.
- * Each .seigr file contains autonomous cellular units that can adapt, learn, and
- * collaborate through mycelial networking protocols.
+ * Quantum file system implementation providing .seigr file format with cellular data architecture.
  * 
- * CORE ARCHITECTURAL PRINCIPLES:
+ * MAIN FUNCTIONS:
+ * - create_seigr_file(data, metadata) -> seigr_file_id
+ * - read_seigr_file(file_id) -> {data, metadata, cellular_structure}
+ * - write_seigr_data(file_id, data, cell_position) -> bool
+ * - validate_file_integrity(file_id) -> integrity_report
+ * - optimize_cellular_structure(file_id) -> optimization_result
+ * - manage_quantum_coherence(file_id, coherence_level) -> bool
  * 
- * 1. CELLULAR CONSCIOUSNESS:
- *    - Each data segment is encapsulated in a conscious cell
- *    - Cells exhibit adaptive behavior based on access patterns
- *    - Consciousness levels determine processing capabilities
- *    - Inter-cellular communication enables collective intelligence
+ * STRUCTURES:
+ * - SeigrFile: {file_id, cellular_map, quantum_state, metadata, access_history}
+ * - CellularUnit: {cell_id, data_segment, coherence_level, consciousness_state}
+ * - IntegrityReport: {coherence_status, data_consistency, error_count, repair_actions}
  * 
- * 2. QUANTUM COHERENCE:
- *    - Quantum state management for data integrity
- *    - Coherence field strength affects error correction
- *    - Dimensional field manipulation for storage optimization
+ * FILE OPERATIONS:
+ * - CREATE: Generate new .seigr file with cellular structure
+ * - READ: Access data from cellular units
+ * - WRITE: Update cellular data with coherence preservation
+ * - VALIDATE: Check quantum coherence and data integrity
+ * - OPTIMIZE: Reorganize cellular structure for performance
+ * - REPAIR: Fix corrupted cells and restore coherence
+ * 
+ * USAGE EXAMPLE:
+ * file_id = dot_seigr.create_seigr_file(my_data, file_metadata)
+ * content = dot_seigr.read_seigr_file(file_id)
+ * result = dot_seigr.validate_file_integrity(file_id)
+ * 
+ * @dependencies quantum_mechanics, cellular_computing, consciousness, cryptography
  *    - Entanglement networks for instant synchronization
  * 
  * 3. SWARM INTELLIGENCE:

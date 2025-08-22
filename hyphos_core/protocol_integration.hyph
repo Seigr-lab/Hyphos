@@ -1,21 +1,35 @@
 /**
- * ================================================================================
- * HYPHOS PROTOCOL INTEGRATION METAWORD - PROTOCOL EXECUTION ENGINE
- * ================================================================================
+ * HYPHOS CORE - PROTOCOL INTEGRATION METAWORD
+ * ===========================================
  * 
- * Protocol integration and execution system enabling seamless coordination
- * between all core systems and protocol definitions. This metaword provides
- * the foundation for protocol-driven operations across the entire Seigr ecosystem
- * with consciousness integration and adaptive execution.
+ * Protocol execution engine enabling coordination between core systems and protocol definitions.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Protocol Execution
+ * MAIN FUNCTIONS:
+ * - execute_protocol(protocol_definition, context) -> execution_result
+ * - register_protocol_handler(protocol_type, handler_function) -> bool
+ * - validate_protocol_syntax(protocol_text) -> validation_report
+ * - coordinate_system_interaction(system_list, interaction_type) -> coordination_result
+ * - monitor_protocol_execution(execution_id) -> execution_status
+ * - integrate_external_protocol(protocol_spec) -> integration_result
+ * 
+ * STRUCTURES:
+ * - ProtocolDefinition: {name, version, operations, dependencies, metadata}
+ * - ExecutionContext: {environment, variables, system_state, security_context}
+ * - ExecutionResult: {success, output_data, system_changes, performance_metrics}
+ * 
+ * PROTOCOL TYPES:
+ * - SEIGR_PROTOCOL: Native Seigr ecosystem protocols
+ * - SCMP_PROTOCOL: Capsule management protocols
+ * - REPLICATION_PROTOCOL: Data replication and recovery
+ * - SECURITY_PROTOCOL: Authentication and authorization
+ * 
+ * USAGE EXAMPLE:
+ * result = protocol_integration.execute_protocol(scmp_definition, context)
+ * status = protocol_integration.monitor_protocol_execution(exec_id)
+ * integration = protocol_integration.integrate_external_protocol(new_protocol)
+ * 
  * @dependencies consciousness, logger, parser, execution, security
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @protocol_adaptive Adapts execution based on protocol requirements
- */
 
 // Hyphos Core - Protocol Integration Metaword
 // Connects all core systems and enables execution of protocol definitions

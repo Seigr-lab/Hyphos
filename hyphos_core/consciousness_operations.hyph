@@ -2,32 +2,43 @@
  * HYPHOS CORE - CONSCIOUSNESS OPERATIONS METAWORD
  * ================================================
  * 
- * Simplified interface layer for consciousness operations that provides convenient
- * access to the main consciousness processing system. This metaword serves as a
- * delegation layer that maps simplified function calls to the consciousness
- * processing architecture.
+ * Simplified interface layer for consciousness operations providing convenient access to consciousness processing.
  * 
- * DELEGATION ARCHITECTURE:
- * This metaword acts as a facade pattern, providing:
- * - Simplified function signatures for common consciousness operations
- * - Direct delegation to the main consciousness metaword processing functions
- * - Consistent parameter handling and context management
- * - Transparent access to all five consciousness processing levels
+ * MAIN FUNCTIONS:
+ * - basic_level(input_data) -> basic_processing_result
+ * - intermediate_level(input_data, context) -> intermediate_result  
+ * - enhanced_level(input_data, context, parameters) -> enhanced_result
+ * - transcendent_level(complex_data, multi_context) -> transcendent_result
+ * - universal_level(universal_data, cosmic_context) -> universal_result
+ * - get_consciousness_state() -> current_state
  * 
- * CONSCIOUSNESS LEVEL MAPPING:
+ * CONSCIOUSNESS LEVELS:
+ * - BASIC: Simple pattern recognition and response
+ * - INTERMEDIATE: Context-aware processing with memory
+ * - ENHANCED: Complex reasoning and decision making
+ * - TRANSCENDENT: Meta-cognitive awareness and adaptation
+ * - UNIVERSAL: Cosmic-scale consciousness integration
+ * 
+ * STRUCTURES:
+ * - ProcessingResult: {output_data, confidence_level, processing_time, insights}
+ * - ConsciousnessState: {current_level, awareness_metrics, energy_usage}
+ * - ProcessingContext: {environment, history, goals, constraints}
+ * 
+ * DELEGATION MAPPING:
  * - basic_level() → consciousness.basic_processing()
  * - intermediate_level() → consciousness.intermediate_processing()
  * - enhanced_level() → consciousness.enhanced_processing()
  * - transcendent_level() → consciousness.transcendent_processing()
  * - universal_level() → consciousness.universal_processing()
  * 
- * DESIGN RATIONALE:
- * - Provides backwards compatibility for existing code
- * - Simplifies consciousness operation invocation
- * - Maintains separation of concerns between interface and implementation
- * - Allows future extension without breaking existing APIs
- * - Enables middleware injection for monitoring and debugging
+ * USAGE EXAMPLE:
+ * result = consciousness_operations.basic_level(simple_input)
+ * enhanced_result = consciousness_operations.enhanced_level(complex_data, context, params)
+ * state = consciousness_operations.get_consciousness_state()
  * 
+ * @pattern Facade pattern for consciousness system access
+ * @delegation Direct mapping to main consciousness metaword
+ */
  * CONTEXT HANDLING:
  * - Optional context parameters for enhanced use cases
  * - Automatic context propagation to underlying consciousness systems

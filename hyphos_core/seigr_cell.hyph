@@ -1,19 +1,29 @@
 /**
- * ================================================================================
- * HYPHOS SEIGR CELL METAWORD - CELLULAR COMPUTATION SYSTEM
- * ================================================================================
+ * HYPHOS CORE - SEIGR CELL METAWORD
+ * =================================
  * 
- * Autonomous secure data processing and storage units implementing cellular
- * computation with consciousness integration, tamper-proof operations, and
- * policy-enforced cellular behaviors for the Seigr ecosystem.
+ * Secure data processing and storage units with cryptographic integrity.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Cellular Computation
+ * MAIN FUNCTIONS:
+ * - create_seigr_cell(segment_id, data, access_policy) -> cell_id
+ * - encode_cell_data(cell_id, data, password) -> encrypted_bytes
+ * - decode_cell_data(encoded_cell, password) -> {data, metadata, verification_status}
+ * - validate_seigr_cell(cell_id) -> bool
+ * - list_active_cells(filter_criteria) -> array_of_cells
+ * - retire_cell(cell_id, reason) -> bool
+ * 
+ * STRUCTURES:
+ * - SeigrCellCore: {cell_id, segment_id, data_hash, lineage_hash, access_level, encryption_key, metadata}
+ * - SeigrCellMetrics: {encode_operations, decode_operations, validation_successes, energy_consumption}
+ * - CellularComputeState: {active_cells, processing_queue, validation_cache, policy_registry}
+ * 
+ * USAGE EXAMPLE:
+ * cell_id = seigr_cell.create_seigr_cell("segment_001", my_data, {"level": "private"})
+ * encoded = seigr_cell.encode_cell_data(cell_id, my_data, "password123")
+ * result = seigr_cell.decode_cell_data(encoded, "password123")
+ * 
  * @dependencies identity, network, dot_seigr, noesis, replication, scmp
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @cellular_autonomous Provides autonomous cellular behavior and intelligence
  */
 
 // seigr_cell.hyph - Complete Cellular Computation Metaword

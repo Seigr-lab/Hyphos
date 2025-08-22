@@ -1,33 +1,46 @@
 /**
- * ================================================================================
- * HYPHOS RUNTIME METAWORD - CORE LANGUAGE EXECUTION ENGINE
- * ================================================================================
+ * HYPHOS CORE - HYPHOS RUNTIME METAWORD
+ * =====================================
  * 
- * The heart of the Hyphos language execution system, providing statement parsing,
- * execution, and runtime management. This metaword implements the core interpreter
- * functionality with consciousness integration, quantum state management, and
- * adaptive execution optimization.
+ * Core language execution engine providing statement parsing, execution, and runtime management.
  * 
- * RUNTIME ARCHITECTURE:
- * ====================
+ * MAIN FUNCTIONS:
+ * - execute_statement(statement, context) -> execution_result
+ * - parse_expression(expression_string) -> parsed_expression
+ * - evaluate_expression(expression, scope) -> value
+ * - manage_execution_context(context_operations) -> context_state
+ * - handle_runtime_error(error_data) -> error_resolution
+ * - optimize_execution_path(program_analysis) -> optimization_plan
+ * - get_runtime_metrics() -> performance_metrics
  * 
- * The Hyphos runtime implements an execution engine that goes beyond traditional
- * interpreters by incorporating consciousness-driven optimization, quantum state
- * management, and adaptive execution strategies based on program behavior analysis.
+ * EXECUTION MODES:
+ * - SEQUENTIAL: Standard sequential execution
+ * - PARALLEL: Multi-threaded parallel execution
+ * - QUANTUM: Quantum superposition-based execution
+ * - ADAPTIVE: Consciousness-aware adaptive execution
+ * - DEBUG: Step-by-step debugging mode
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - ExecutionResult: {return_value, side_effects, execution_time, memory_usage}
+ * - ExecutionContext: {scope_stack, variable_bindings, call_stack, error_handlers}
+ * - RuntimeMetrics: {execution_speed, memory_efficiency, error_rate, optimization_level}
  * 
- * 1. CONSCIOUSNESS-AWARE EXECUTION:
- *    - Execution optimization based on consciousness state analysis
- *    - Adaptive interpretation strategies through learning algorithms
- *    - Predictive execution path optimization
- *    - Intelligent resource allocation during runtime
+ * RUNTIME FEATURES:
+ * - Statement parsing and execution
+ * - Expression evaluation with type checking
+ * - Dynamic scope management
+ * - Error handling and recovery
+ * - Performance optimization
+ * - Quantum state management
  * 
- * 2. QUANTUM EXECUTION STATES:
- *    - Superposition-based parallel execution paths
- *    - Quantum coherence preservation during interpretation
- *    - Entanglement-aware distributed execution
- *    - Quantum error correction for execution reliability
+ * USAGE EXAMPLE:
+ * result = hyphos_runtime.execute_statement("x = 42", context)
+ * value = hyphos_runtime.evaluate_expression("x + 10", scope)
+ * metrics = hyphos_runtime.get_runtime_metrics()
+ * 
+ * @architecture Consciousness-aware quantum execution engine
+ * @optimization Adaptive execution strategies with learning
+ */
  * 
  * 3. ADAPTIVE STATEMENT PROCESSING:
  *    - Dynamic statement type recognition and classification

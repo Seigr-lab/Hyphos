@@ -1,16 +1,27 @@
 /**
- * ================================================================================
- * HYPHOS SEIGBIT METAWORD - QUANTUM DATA PROCESSING AND STORAGE SYSTEM
- * ================================================================================
+ * HYPHOS CORE - SEIGBIT METAWORD
+ * ==============================
  * 
- * Quantum data processing and storage system implementing Seigbit data structures
- * with consciousness integration, quantum coherence preservation, and adaptive
- * optimization for the Seigr ecosystem's distributed data management.
+ * Quantum data structures with senary-based quantum state representation.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Quantum Data Processing
+ * MAIN FUNCTIONS:
+ * - create_seigbit(initial_state) -> seigbit_id
+ * - measure_seigbit(seigbit_id) -> quantum_state
+ * - entangle_seigbits(seigbit_id1, seigbit_id2) -> entanglement_id
+ * - apply_quantum_gate(seigbit_id, gate_type, parameters) -> bool
+ * - get_quantum_state(seigbit_id) -> {amplitude, phase, coherence}
+ * - validate_quantum_coherence(seigbit_id) -> bool
+ * 
+ * STRUCTURES:
+ * - SeigbitCore: {seigbit_id, quantum_state, coherence_level, entanglement_map}
+ * - QuantumState: {amplitude, phase, superposition_coefficients}
+ * - EntanglementRegistry: {entangled_pairs, correlation_matrix}
+ * 
+ * USAGE EXAMPLE:
+ * seigbit_id = seigbit.create_seigbit(SENARY[0.5])
+ * state = seigbit.measure_seigbit(seigbit_id)
+ * entanglement = seigbit.entangle_seigbits(seigbit1, seigbit2)
+ * 
  * @dependencies quantum, consciousness, senary, crypto
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @quantum_enhanced Provides quantum data processing capabilities

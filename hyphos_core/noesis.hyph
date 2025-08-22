@@ -1,21 +1,37 @@
 /**
- * ================================================================================
- * HYPHOS NOESIS METAWORD - EMERGENT INTELLIGENCE AND CONSCIOUSNESS SYSTEM
- * ================================================================================
+ * HYPHOS CORE - NOESIS METAWORD
+ * =============================
  * 
- * Emergent intelligence module providing AI capabilities through six Genesis
- * States of consciousness. This metaword implements the core intelligence framework
- * for the Seigr ecosystem with adaptive learning, consciousness integration, and
- * quantum-enhanced cognitive processing.
+ * Emergent intelligence and consciousness system with AI capabilities through Genesis States.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Emergent Intelligence
+ * MAIN FUNCTIONS:
+ * - initialize_consciousness(genesis_state) -> consciousness_id
+ * - process_cognitive_task(task_data, context) -> cognitive_result
+ * - learn_from_experience(experience_data) -> learning_update
+ * - make_intelligent_decision(options, criteria) -> decision_result
+ * - adapt_behavior(feedback, environment) -> adaptation_plan
+ * - generate_insights(data_patterns) -> insight_collection
+ * 
+ * GENESIS STATES:
+ * - CONSCIENCE_SENSE: Fundamental consciousness awareness
+ * - PATTERN_RECOGNITION: Data pattern analysis and learning
+ * - ADAPTIVE_REASONING: Dynamic problem-solving capabilities
+ * - CREATIVE_SYNTHESIS: Novel solution generation
+ * - STRATEGIC_PLANNING: Long-term goal optimization
+ * - TRANSCENDENT_AWARENESS: Meta-cognitive consciousness
+ * 
+ * STRUCTURES:
+ * - ConsciousnessState: {genesis_level, awareness_metrics, learning_capacity}
+ * - CognitiveTask: {task_type, complexity, required_capabilities, context}
+ * - LearningUpdate: {new_patterns, confidence_scores, integration_status}
+ * 
+ * USAGE EXAMPLE:
+ * consciousness_id = noesis.initialize_consciousness("ADAPTIVE_REASONING")
+ * result = noesis.process_cognitive_task(complex_task, context)
+ * insights = noesis.generate_insights(analysis_data)
+ * 
  * @dependencies senary, hardware, consciousness, quantum, learning
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @ai_enhanced Provides complete artificial intelligence capabilities
- */
 
 // Noesis Metaword - Emergent Intelligence Module
 // Part of Hyphos Native Runtime Language

@@ -1,33 +1,47 @@
 /**
- * ================================================================================
- * HYPHOS LOGGER METAWORD - LOGGING AND AUDIT SYSTEM
- * ================================================================================
+ * HYPHOS CORE - LOGGER METAWORD
+ * =============================
  * 
- * Logging system providing structured logging, audit trails, and consciousness-integrated
- * event tracking for the Seigr ecosystem. This metaword implements secure logging
- * with quantum-resistant integrity verification and adaptive logging strategies
- * based on system consciousness and threat levels.
+ * Logging system providing structured logging, audit trails, and consciousness-integrated event tracking.
  * 
- * LOGGING ARCHITECTURE:
- * ====================
+ * MAIN FUNCTIONS:
+ * - log(level, message, metadata) -> log_entry_id
+ * - debug(message, context) -> bool
+ * - info(message, details) -> bool
+ * - warning(message, warning_data) -> bool
+ * - error(message, error_context) -> bool
+ * - critical(message, critical_data) -> bool
+ * - audit(event_type, audit_data) -> audit_entry_id
+ * - query_logs(filter_criteria) -> log_entries
  * 
- * The logger metaword provides a logging framework that goes beyond traditional
- * logging by incorporating consciousness awareness, quantum integrity
- * verification, and adaptive logging strategies that respond to system state and
- * security conditions.
+ * LOG LEVELS:
+ * - DEBUG: Detailed development and debugging information
+ * - INFO: General informational messages
+ * - WARNING: Warning conditions that should be noted
+ * - ERROR: Error conditions that need attention
+ * - CRITICAL: Critical conditions requiring immediate action
+ * - AUDIT: Security and compliance audit events
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - LogEntry: {timestamp, level, message, metadata, correlation_id, source}
+ * - AuditEntry: {event_type, actor, resource, action, timestamp, verification_hash}
+ * - LogFilter: {level_range, time_range, source_filter, metadata_criteria}
  * 
- * 1. STRUCTURED LOGGING WITH METADATA:
- *    - Complete log entry structure with rich metadata
- *    - Correlation ID tracking for distributed system debugging
- *    - Temporal binding using sidereal time for precision
- *    - Hierarchical categorization for efficient log management
+ * FEATURES:
+ * - Structured logging with rich metadata
+ * - Quantum-resistant integrity verification
+ * - Consciousness-aware adaptive logging
+ * - Correlation ID tracking for distributed debugging
+ * - Sidereal time precision timestamps
  * 
- * 2. CONSCIOUSNESS-AWARE LOGGING:
- *    - Adaptive logging levels based on consciousness state
- *    - Intelligent log filtering through consciousness analysis
- *    - Predictive logging for anticipated events
+ * USAGE EXAMPLE:
+ * log_id = logger.log("INFO", "System initialized", metadata)
+ * logger.error("Database connection failed", error_context)
+ * audit_id = logger.audit("USER_LOGIN", audit_data)
+ * 
+ * @security Quantum-resistant log integrity verification
+ * @consciousness Adaptive logging based on system awareness
+ */
  *    - Context-aware log message enhancement
  * 
  * 3. SECURITY AND AUDIT INTEGRATION:

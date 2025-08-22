@@ -1,33 +1,46 @@
 /**
- * ================================================================================
- * HYPHOS FILESYSTEM METAWORD - FILE SYSTEM OPERATIONS
- * ================================================================================
+ * HYPHOS CORE - FILESYSTEM METAWORD
+ * =================================
  * 
- * File system operations metaword providing native Hyphos access to file
- * operations with consciousness integration and quantum file handling. This
- * metaword serves as the foundation for all file I/O operations within the
- * Seigr ecosystem, offering both traditional file operations and quantum .seigr
- * file format support.
+ * File system operations providing native Hyphos access to files with consciousness integration and quantum file handling.
  * 
- * FILESYSTEM ARCHITECTURE:
- * =======================
+ * MAIN FUNCTIONS:
+ * - read_file(file_path) -> file_content
+ * - write_file(file_path, content, mode) -> bool
+ * - create_directory(directory_path) -> bool
+ * - list_directory(directory_path) -> file_list
+ * - delete_file(file_path) -> bool
+ * - copy_file(source_path, destination_path) -> bool
+ * - move_file(source_path, destination_path) -> bool
+ * - get_file_info(file_path) -> file_metadata
+ * - watch_directory(directory_path, callback) -> watch_handle
  * 
- * The filesystem metaword implements a dual-layer architecture supporting both
- * traditional file operations and quantum .seigr file format operations. This
- * design enables seamless integration with existing file systems while providing
- * capabilities for Seigr-native file formats.
+ * FILE FORMATS:
+ * - TRADITIONAL: Standard file system formats (txt, json, xml, etc.)
+ * - SEIGR: Quantum .seigr file format with cellular structure
+ * - BINARY: Binary file handling with type detection
+ * - COMPRESSED: Archive and compression format support
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - FileInfo: {name, size, type, creation_time, modification_time, permissions}
+ * - DirectoryListing: {files, subdirectories, total_size, item_count}
+ * - FileHandle: {path, mode, buffer, position, lock_status}
  * 
- * 1. UNIVERSAL FILE SUPPORT:
- *    - Traditional file system operations for compatibility
- *    - Native .seigr quantum file format support
- *    - Automatic format detection and appropriate handling
- *    - Seamless conversion between traditional and quantum formats
+ * ACCESS MODES:
+ * - READ: Read-only access to file content
+ * - WRITE: Write access, creates or overwrites
+ * - APPEND: Append content to existing file
+ * - READ_WRITE: Both read and write access
+ * - CREATE: Create new file, fail if exists
  * 
- * 2. CONSCIOUSNESS-DRIVEN I/O:
- *    - Adaptive file access patterns based on usage analysis
- *    - Intelligent caching through consciousness prediction
+ * USAGE EXAMPLE:
+ * content = filesystem.read_file("/path/to/file.txt")
+ * success = filesystem.write_file("/path/to/output.txt", data, "WRITE")
+ * files = filesystem.list_directory("/path/to/directory")
+ * 
+ * @compatibility Universal file system support
+ * @quantum Native .seigr quantum file format integration
+ */
  *    - Self-optimizing file organization strategies
  *    - Error recovery through consciousness-driven repair
  * 

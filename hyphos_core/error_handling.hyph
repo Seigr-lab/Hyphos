@@ -1,33 +1,46 @@
 /**
- * ================================================================================
- * HYPHOS ERROR HANDLING METAWORD - EXCEPTION MANAGEMENT
- * ================================================================================
+ * HYPHOS CORE - ERROR HANDLING METAWORD
+ * =====================================
  * 
- * Error handling and exception management system for the Hyphos language. This
- * metaword provides error management capabilities including structured exception
- * handling, error recovery mechanisms, and integration with the consciousness
- * system for adaptive error response.
+ * Error handling and exception management system with consciousness-driven adaptive error response.
  * 
- * ERROR HANDLING ARCHITECTURE:
- * ===========================
+ * MAIN FUNCTIONS:
+ * - try_catch(try_block, catch_handlers, finally_block) -> execution_result
+ * - throw_error(error_type, message, context) -> never_returns
+ * - handle_error(error_object, recovery_strategy) -> recovery_result
+ * - register_error_handler(error_type, handler_function) -> bool
+ * - get_error_info(error_object) -> error_details
+ * - create_custom_error(error_name, properties) -> error_type
+ * - log_error(error_object, severity) -> log_entry_id
  * 
- * The error handling system implements a multi-layered approach to exception
- * management, combining traditional try-catch mechanisms with consciousness-driven
- * adaptive responses and quantum-inspired error recovery protocols.
+ * ERROR TYPES:
+ * - SYNTAX_ERROR: Code parsing and syntax issues
+ * - TYPE_ERROR: Type mismatch and validation errors
+ * - RUNTIME_ERROR: Execution-time errors and exceptions
+ * - MEMORY_ERROR: Memory allocation and management issues
+ * - NETWORK_ERROR: Communication and connectivity problems
+ * - QUANTUM_ERROR: Quantum coherence and state errors
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - ErrorObject: {type, message, stack_trace, context, timestamp, correlation_id}
+ * - RecoveryResult: {success, actions_taken, remaining_issues, recommendations}
+ * - ErrorHandler: {error_pattern, handler_function, priority, scope}
  * 
- * 1. STRUCTURED EXCEPTION HANDLING:
- *    - Hierarchical error type classification
- *    - Error context preservation
- *    - Stack trace analysis and reporting
- *    - Correlation ID tracking for distributed debugging
+ * RECOVERY STRATEGIES:
+ * - RETRY: Attempt operation again with exponential backoff
+ * - FALLBACK: Use alternative method or default value
+ * - ESCALATE: Pass error to higher-level handler
+ * - IGNORE: Continue execution without addressing error
+ * - ABORT: Terminate execution gracefully
  * 
- * 2. CONSCIOUSNESS-DRIVEN ERROR RESPONSE:
- *    - Adaptive error recovery based on learned patterns
- *    - Intelligent error escalation through consciousness levels
- *    - Predictive error prevention using pattern analysis
- *    - Self-healing capabilities for common error scenarios
+ * USAGE EXAMPLE:
+ * result = error_handling.try_catch(risky_operation, catch_handlers, cleanup)
+ * error_handling.throw_error("TYPE_ERROR", "Invalid input", context)
+ * recovery = error_handling.handle_error(error_obj, "RETRY")
+ * 
+ * @consciousness Adaptive error response through learned patterns
+ * @recovery Multi-strategy error recovery mechanisms
+ */
  * 
  * 3. QUANTUM ERROR CORRECTION:
  *    - Quantum state preservation during error conditions

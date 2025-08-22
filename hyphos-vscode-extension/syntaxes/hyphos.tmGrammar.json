@@ -26,18 +26,22 @@
     "comments": {
       "patterns": [
         {
-          "name": "comment.line.hash.hyphos",
-          "match": "#.*$"
+          "name": "comment.line.double-slash.hyphos",
+          "match": "//.*$"
         },
         {
           "name": "comment.block.hyphos",
-          "begin": "<!--",
-          "end": "-->",
+          "begin": "/\\*",
+          "end": "\\*/",
           "patterns": [
             {
               "include": "#comments"
             }
           ]
+        },
+        {
+          "name": "comment.line.hash.hyphos", 
+          "match": "#.*$"
         }
       ]
     },

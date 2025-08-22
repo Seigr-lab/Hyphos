@@ -1,33 +1,37 @@
 #!/usr/bin/env hyphos
 /**
- * ================================================================================
- * HYPHOS MYCELITH VOTE METAWORD - DEMOCRATIC GOVERNANCE SYSTEM
- * ================================================================================
+ * HYPHOS CORE - MYCELITH VOTE METAWORD
+ * ====================================
  * 
- * Democratic governance system implementing the Mycelith Voting protocol with
- * six-layer senary-based decision making, contribution-weighted voting, and RE-L
- * ethical compliance. This metaword provides the foundation for distributed
- * consensus and democratic governance within the Seigr ecosystem.
+ * Democratic governance system implementing Mycelith Voting protocol with six-layer senary-based decision making.
  * 
- * MYCELITH VOTING ARCHITECTURE:
- * =============================
+ * MAIN FUNCTIONS:
+ * - create_proposal(proposal_data, voting_parameters) -> proposal_id
+ * - cast_vote(proposal_id, vote_choice, voter_credentials) -> vote_receipt
+ * - calculate_vote_weight(voter_id, contribution_history) -> weight_score
+ * - validate_consensus(proposal_id) -> consensus_result
+ * - execute_proposal(proposal_id, execution_context) -> execution_result
+ * - audit_voting_process(proposal_id) -> audit_report
  * 
- * The Mycelith voting system implements a democratic governance
- * framework inspired by fungal network consensus mechanisms, incorporating
- * consciousness integration, quantum-resistant voting protocols, and adaptive
- * consensus algorithms for optimal decision-making.
+ * VOTING LAYERS:
+ * - LAYER_1: Basic participation (1x weight)
+ * - LAYER_2: Regular contributors (2x weight)
+ * - LAYER_3: Active validators (3x weight)
+ * - LAYER_4: System maintainers (4x weight)
+ * - LAYER_5: Core developers (5x weight)
+ * - LAYER_6: Ecosystem stewards (6x weight)
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - Proposal: {proposal_id, title, description, voting_deadline, required_consensus}
+ * - Vote: {voter_id, proposal_id, choice, weight, timestamp, cryptographic_proof}
+ * - ConsensusResult: {proposal_id, total_votes, consensus_reached, final_decision}
  * 
- * 1. SIX-LAYER SENARY VOTING STRUCTURE:
- *    - Progressive voting layers with increasing weight and commitment
- *    - Mathematical foundation using base-6 arithmetic for natural harmony
- *    - Layer-specific voting behavior and penalty mechanisms
- *    - Quantum-resistant cryptographic vote verification
+ * USAGE EXAMPLE:
+ * proposal_id = mycelith_vote.create_proposal(governance_proposal, voting_params)
+ * receipt = mycelith_vote.cast_vote(proposal_id, "APPROVE", voter_creds)
+ * result = mycelith_vote.validate_consensus(proposal_id)
  * 
- * 2. CONTRIBUTION-WEIGHTED DEMOCRACY:
- *    - Vote weight based on ecosystem contribution units (CUs)
- *    - Fair distribution preventing concentration of voting power
+ * @dependencies governance, cryptography, consensus, democracy
  *    - Meritocratic elements balanced with democratic principles
  *    - Dynamic contribution assessment and weight adjustment
  * 

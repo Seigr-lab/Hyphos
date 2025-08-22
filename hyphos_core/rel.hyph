@@ -1,33 +1,35 @@
 #!/usr/bin/env hyphos
 /**
- * ================================================================================
- * HYPHOS REL METAWORD - REBEL EARTHLING LICENSE FRAMEWORK
- * ================================================================================
+ * HYPHOS CORE - REL METAWORD
+ * ==========================
  * 
- * Rebel Earthling License (RE-L) framework implementation for ethical governance,
- * contribution tracking, compliance monitoring, and automated license enforcement.
- * This metaword provides the ethical foundation for all Seigr ecosystem operations
- * with consciousness-integrated moral reasoning.
+ * Rebel Earthling License (RE-L) framework for ethical governance and compliance monitoring.
  * 
- * CORE RE-L PRINCIPLES:
- * ====================
+ * MAIN FUNCTIONS:
+ * - check_license_compliance(action, context) -> compliance_result
+ * - register_contribution(contributor, contribution_data) -> contribution_id
+ * - validate_ethical_requirements(proposal) -> validation_report
+ * - track_resource_usage(resource_type, amount) -> usage_record
+ * - assess_collective_impact(action_set) -> impact_assessment
+ * - enforce_license_terms(violation_type, context) -> enforcement_action
  * 
- * 1. COLLECTIVE WELFARE PRIORITY:
- *    - Community benefit prioritized over individual profit maximization
- *    - Resource distribution based on collective needs and sustainability
- *    - Decision-making frameworks favoring collective welfare outcomes
+ * STRUCTURES:
+ * - ComplianceResult: {compliant, requirements_met, violations, recommendations}
+ * - Contribution: {contributor_id, type, value, timestamp, validation_status}
+ * - EthicalAssessment: {welfare_impact, sustainability_score, transparency_level}
  * 
- * 2. ENVIRONMENTAL SUSTAINABILITY:
- *    - Net-positive ecological impact requirement for all operations
- *    - Carbon-negative computing infrastructure and operations
- *    - Regenerative technology development and deployment
+ * RE-L PRINCIPLES:
+ * - COLLECTIVE_WELFARE: Community benefit over individual profit
+ * - ENVIRONMENTAL_SUSTAINABILITY: Net-positive ecological impact
+ * - DEMOCRATIC_GOVERNANCE: Community participation in decisions
+ * - TRANSPARENCY: Open processes and accessible information
  * 
- * 3. DEMOCRATIC GOVERNANCE:
- *    - Community participation in all significant decisions
- *    - Transparent governance processes with open deliberation
- *    - Inclusive decision-making across diverse stakeholder groups
+ * USAGE EXAMPLE:
+ * result = rel.check_license_compliance("data_processing", context)
+ * contrib_id = rel.register_contribution(user_id, contribution_data)
+ * assessment = rel.assess_collective_impact(proposed_actions)
  * 
- * 4. TRANSPARENCY AND OPENNESS:
+ * @dependencies governance, ethics, transparency, sustainability
  *    - Open-source development with full code transparency
  *    - Public documentation of all processes and implementations
  *    - Accessible governance records and decision rationale

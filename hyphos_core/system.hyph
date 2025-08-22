@@ -1,19 +1,37 @@
 /**
- * ================================================================================
- * HYPHOS SYSTEM METAWORD - SYSTEM MANAGEMENT FRAMEWORK
- * ================================================================================
+ * HYPHOS CORE - SYSTEM METAWORD
+ * =============================
  * 
- * System management framework providing core system operations, resource
- * management, and consciousness-integrated system optimization for the Seigr
- * ecosystem's foundational infrastructure and operational control.
+ * System management framework providing core system operations and resource management.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - System Management
+ * MAIN FUNCTIONS:
+ * - initialize() -> initialization_status
+ * - shutdown() -> shutdown_status
+ * - get_system_info() -> {version, uptime, memory_usage, cpu_usage}
+ * - manage_resources(resource_type, operation) -> resource_status
+ * - monitor_performance() -> performance_metrics
+ * - handle_system_error(error_data) -> error_resolution
+ * 
+ * STRUCTURES:
+ * - SystemInfo: {version, build_date, platform, architecture, capabilities}
+ * - ResourceStatus: {type, allocated, available, usage_percentage, limits}
+ * - PerformanceMetrics: {cpu_usage, memory_usage, disk_io, network_io, uptime}
+ * 
+ * SYSTEM OPERATIONS:
+ * - INITIALIZE: Start system components and services
+ * - SHUTDOWN: Gracefully stop all system operations
+ * - MONITOR: Track system performance and resource usage
+ * - OPTIMIZE: Adjust system parameters for better performance
+ * - BACKUP: Create system state backups
+ * - RESTORE: Restore system from backup state
+ * 
+ * USAGE EXAMPLE:
+ * status = system.initialize()
+ * info = system.get_system_info()
+ * metrics = system.monitor_performance()
+ * 
  * @dependencies consciousness, hardware, security, performance
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @system_complete Provides complete system management capabilities
  */
 
 // Hyphos Core - System Metaword

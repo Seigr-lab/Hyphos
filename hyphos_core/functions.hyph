@@ -1,33 +1,47 @@
 /**
- * ================================================================================
- * HYPHOS FUNCTIONS METAWORD - FUNCTION MANAGEMENT SYSTEM
- * ================================================================================
+ * HYPHOS CORE - FUNCTIONS METAWORD
+ * ================================
  * 
  * Function definition, management, and execution system for the Hyphos language.
- * This metaword provides the core infrastructure for function operations including
- * definition, invocation, scope management, and features like consciousness-driven
- * optimization and quantum function states.
  * 
- * FUNCTION ARCHITECTURE:
- * =====================
+ * MAIN FUNCTIONS:
+ * - define_function(name, parameters, body, return_type) -> function_definition
+ * - call_function(function_name, arguments) -> return_value
+ * - validate_parameters(function_def, arguments) -> validation_result
+ * - get_function_info(function_name) -> function_metadata
+ * - list_functions(scope) -> function_list
+ * - delete_function(function_name) -> bool
+ * - optimize_function(function_name) -> optimization_result
  * 
- * The functions metaword implements a function management system that goes beyond
- * traditional function calls to include consciousness integration, quantum state
- * management, and adaptive optimization based on usage patterns.
+ * FUNCTION TYPES:
+ * - PURE: No side effects, deterministic output
+ * - IMPURE: May have side effects or non-deterministic behavior
+ * - RECURSIVE: Self-calling functions with termination conditions
+ * - LAMBDA: Anonymous inline functions
+ * - ASYNC: Asynchronous functions with promise-based execution
+ * - QUANTUM: Functions utilizing quantum computation
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - FunctionDefinition: {name, parameters, body, return_type, scope, metadata}
+ * - Parameter: {name, type, default_value, constraints, optional}
+ * - CallResult: {return_value, execution_time, memory_usage, side_effects}
  * 
- * 1. DYNAMIC FUNCTION DEFINITION:
- *    - Runtime function creation and modification
- *    - Parameter type validation and constraint checking
- *    - Return type verification for type safety
- *    - Scope-aware function registration and lookup
+ * FUNCTION FEATURES:
+ * - Dynamic function creation and modification
+ * - Parameter type validation and constraints
+ * - Return type verification
+ * - Scope-aware function management
+ * - Performance optimization
+ * - Recursive call detection
  * 
- * 2. CONSCIOUSNESS-ENHANCED EXECUTION:
- *    - Adaptive function optimization based on call patterns
- *    - Intelligent parameter validation using learned constraints
- *    - Performance prediction through consciousness analysis
- *    - Error pattern recognition for proactive debugging
+ * USAGE EXAMPLE:
+ * func_def = functions.define_function("add", [a, b], "return a + b", "SENARY_INT")
+ * result = functions.call_function("add", [5, 3])
+ * info = functions.get_function_info("add")
+ * 
+ * @management Complete function lifecycle management
+ * @optimization Consciousness-driven adaptive optimization
+ */
  * 
  * 3. QUANTUM FUNCTION STATES:
  *    - Superposition-based parallel function execution

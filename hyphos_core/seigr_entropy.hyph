@@ -1,16 +1,27 @@
 /**
- * ================================================================================
- * HYPHOS SEIGR ENTROPY METAWORD - QUANTUM ENTROPY GENERATION SYSTEM
- * ================================================================================
+ * HYPHOS CORE - SEIGR ENTROPY METAWORD
+ * ====================================
  * 
- * Quantum entropy generation and management system providing cryptographically
- * secure randomness with consciousness integration, cosmic entropy harvesting,
- * and adaptive entropy quality optimization.
+ * Cryptographically secure entropy generation using quantum and cosmic sources.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Quantum Entropy Generation
+ * MAIN FUNCTIONS:
+ * - generate_quantum_entropy(byte_count) -> entropy_bytes
+ * - collect_cosmic_entropy() -> cosmic_entropy_data
+ * - create_entropy_pool(pool_size) -> pool_id
+ * - get_random_bytes(count) -> random_bytes
+ * - assess_entropy_quality(entropy_data) -> quality_score
+ * - harvest_hardware_entropy() -> hardware_entropy
+ * 
+ * STRUCTURES:
+ * - EntropyPool: {pool_id, entropy_data, quality_score, last_refresh}
+ * - EntropySource: {source_type, collection_rate, quality_metrics}
+ * - RandomnessMetrics: {entropy_bits, quality_score, source_distribution}
+ * 
+ * USAGE EXAMPLE:
+ * pool_id = seigr_entropy.create_entropy_pool(1024)
+ * random_data = seigr_entropy.get_random_bytes(256)
+ * quality = seigr_entropy.assess_entropy_quality(random_data)
+ * 
  * @dependencies quantum, sidereal_time, consciousness, crypto
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @entropy_quantum Provides quantum-grade entropy generation

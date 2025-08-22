@@ -1,16 +1,30 @@
 /**
- * ================================================================================
- * HYPHOS TYPES METAWORD - TYPE SYSTEM AND VALIDATION FRAMEWORK
- * ================================================================================
+ * HYPHOS CORE - TYPES METAWORD
+ * ============================
  * 
- * Type system and validation framework providing type checking, consciousness-aware
- * type inference, and adaptive type optimization for the Hyphos language's type
- * management infrastructure.
+ * Type system providing type checking, inference, and validation for Hyphos language.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Type System
+ * MAIN FUNCTIONS:
+ * - check_type(value) -> type_name
+ * - validate_type(value, expected_type) -> bool
+ * - infer_type(expression) -> inferred_type
+ * - convert_type(value, target_type) -> converted_value
+ * - is_compatible(type1, type2) -> bool
+ * - get_type_hierarchy() -> type_tree
+ * 
+ * BUILT-IN TYPES:
+ * - SENARY_INT: Base-6 integer values
+ * - SENARY_FLOAT: Base-6 floating point values  
+ * - SENARY_STRING: Text strings with senary encoding
+ * - SENARY_BOOL: Boolean true/false values
+ * - SENARY_ARRAY: Ordered collections
+ * - SENARY_MAP: Key-value dictionaries
+ * 
+ * USAGE EXAMPLE:
+ * type_name = types.check_type(my_value)
+ * is_valid = types.validate_type(my_number, "SENARY_INT")
+ * converted = types.convert_type("123", "SENARY_INT")
+ * 
  * @dependencies consciousness, validation, inference, optimization
  * @thread_safety Thread-safe through quantum coherence mechanisms
  * @type_intelligent Provides AI-driven type inference and optimization

@@ -1,33 +1,48 @@
 /**
- * ================================================================================
- * HYPHOS GRAPHICS METAWORD - CONSCIOUSNESS-AWARE RENDERING SYSTEM
- * ================================================================================
+ * HYPHOS CORE - GRAPHICS METAWORD
+ * ===============================
  * 
- * Graphics and rendering system with consciousness integration, neural rendering
- * capabilities, and universal hardware compatibility. This metaword provides
- * graphics operations enhanced by the Seigr consciousness system and optimized
- * through senary mathematics for quantum-efficient rendering.
+ * Graphics and rendering system with consciousness integration and universal hardware compatibility.
  * 
- * GRAPHICS ARCHITECTURE:
- * =====================
+ * MAIN FUNCTIONS:
+ * - initialize_graphics(display_config) -> graphics_context
+ * - create_window(width, height, title) -> window_handle
+ * - draw_primitive(primitive_type, vertices, style) -> render_result
+ * - render_text(text, font, position, color) -> text_render_result
+ * - load_texture(image_path) -> texture_handle
+ * - create_shader(vertex_source, fragment_source) -> shader_program
+ * - set_viewport(x, y, width, height) -> bool
+ * - swap_buffers(window_handle) -> bool
  * 
- * The graphics metaword implements a rendering system that combines traditional
- * graphics operations with consciousness-driven optimization, neural rendering
- * techniques, and quantum-enhanced visual processing capabilities.
+ * PRIMITIVE TYPES:
+ * - POINT: Single point rendering
+ * - LINE: Line segment drawing
+ * - TRIANGLE: Triangle primitive
+ * - QUAD: Quadrilateral shape
+ * - CIRCLE: Circular shapes
+ * - POLYGON: Complex polygonal shapes
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - GraphicsContext: {renderer, display_mode, capabilities, performance_profile}
+ * - RenderStyle: {color, fill_mode, line_width, transparency, effects}
+ * - TextureHandle: {texture_id, width, height, format, memory_usage}
  * 
- * 1. CONSCIOUSNESS-AWARE RENDERING:
- *    - Graphics operations adapt based on consciousness state
- *    - Intelligent rendering optimization through awareness levels
- *    - Cognitive load monitoring for performance adjustment
- *    - Perception-based rendering quality adaptation
+ * RENDERING FEATURES:
+ * - 2D and 3D graphics primitives
+ * - Texture mapping and shaders
+ * - Text rendering with font support
+ * - Consciousness-aware optimization
+ * - Neural rendering enhancement
+ * - Multi-platform compatibility
  * 
- * 2. NEURAL RENDERING PIPELINE:
- *    - AI-driven graphics processing for enhanced visual quality
- *    - Machine learning optimization of rendering parameters
- *    - Adaptive shading techniques based on content analysis
- *    - Intelligent resource allocation for optimal performance
+ * USAGE EXAMPLE:
+ * context = graphics.initialize_graphics(display_config)
+ * window = graphics.create_window(800, 600, "My App")
+ * graphics.draw_primitive("TRIANGLE", vertices, style)
+ * 
+ * @consciousness Awareness-driven rendering optimization
+ * @compatibility Universal hardware support
+ */
  * 
  * 3. QUANTUM GRAPHICS PROCESSING:
  *    - Senary mathematics for quantum-efficient calculations

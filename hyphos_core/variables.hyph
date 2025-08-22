@@ -1,19 +1,37 @@
 /**
- * ================================================================================
- * HYPHOS VARIABLES METAWORD - INTELLIGENT VARIABLE MANAGEMENT SYSTEM
- * ================================================================================
+ * HYPHOS CORE - VARIABLES METAWORD
+ * ================================
  * 
- * Intelligent variable management system providing consciousness-aware variable
- * handling, quantum state preservation, and adaptive memory optimization for
- * the Hyphos language's variable lifecycle management.
+ * Variable management system providing consciousness-aware variable handling and adaptive memory optimization.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Variable Management
+ * MAIN FUNCTIONS:
+ * - declare(name, var_type, value) -> variable_object
+ * - assign(name, value) -> bool
+ * - get(name) -> variable_value
+ * - delete(name) -> bool
+ * - list_variables(scope) -> variable_array
+ * - get_variable_info(name) -> {type, value, scope, lifetime}
+ * 
+ * STRUCTURES:
+ * - Variable: {name, type, value, scope_level, creation_time, access_count}
+ * - VariableScope: {scope_id, variables, parent_scope, access_level}
+ * - MemoryContext: {allocated_memory, variable_count, optimization_level}
+ * 
+ * VARIABLE TYPES:
+ * - SENARY_INT: Integer values in base-6
+ * - SENARY_FLOAT: Floating point values in base-6
+ * - SENARY_STRING: Text strings
+ * - SENARY_BOOL: Boolean true/false
+ * - SENARY_ARRAY: Ordered collections
+ * - SENARY_MAP: Key-value dictionaries
+ * 
+ * USAGE EXAMPLE:
+ * var_obj = variables.declare("counter", "SENARY_INT", 10)
+ * success = variables.assign("counter", 15)
+ * value = variables.get("counter")
+ * 
  * @dependencies consciousness, memory, types, scope, quantum
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @memory_intelligent Provides AI-driven memory optimization and management
  */
 
 // Hyphos Core - Variables Metaword

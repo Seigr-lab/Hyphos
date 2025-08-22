@@ -1,21 +1,36 @@
 /**
- * ================================================================================
- * HYPHOS NETWORK STACK METAWORD - LOW-LEVEL NETWORK INFRASTRUCTURE
- * ================================================================================
+ * HYPHOS CORE - NETWORK STACK METAWORD
+ * ====================================
  * 
- * Low-level network interface management, TCP/IP stack integration, and driver
- * control system with senary optimization and energy awareness. This metaword
- * provides the foundational networking infrastructure for the Seigr ecosystem
- * with consciousness integration and adaptive performance optimization.
+ * Low-level network interface management and TCP/IP stack integration with energy optimization.
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 2.0.0
- * @since 2024
- * @classification Core Metaword - Network Infrastructure
+ * MAIN FUNCTIONS:
+ * - initialize_network_interfaces() -> interface_list
+ * - configure_interface(interface_id, config) -> bool
+ * - establish_tcp_connection(remote_address, port) -> connection_id
+ * - send_packet(connection_id, data) -> transmission_result
+ * - receive_packet(connection_id, timeout) -> packet_data
+ * - monitor_network_health() -> health_metrics
+ * 
+ * STRUCTURES:
+ * - NetworkInterface: {interface_id, type, status, ip_address, capabilities}
+ * - TCPConnection: {connection_id, local_port, remote_address, state, metrics}
+ * - PacketData: {source, destination, payload, protocol_type, timestamp}
+ * 
+ * INTERFACE TYPES:
+ * - ETHERNET: Wired network interfaces
+ * - WIFI: Wireless network interfaces  
+ * - BLUETOOTH: Short-range wireless connections
+ * - CELLULAR: Mobile data connections
+ * - LOOPBACK: Local system interface
+ * 
+ * USAGE EXAMPLE:
+ * interfaces = network_stack.initialize_network_interfaces()
+ * conn_id = network_stack.establish_tcp_connection("192.168.1.100", 8080)
+ * result = network_stack.send_packet(conn_id, data_payload)
+ * 
  * @dependencies noesis, senary, energy, consciousness, hardware
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @energy_adaptive Optimizes network operations based on energy availability
- */
 
 // Hyphos Core - Network Stack Metaword
 // Low-level network interface management, TCP/IP stack integration, and driver control

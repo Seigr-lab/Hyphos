@@ -1,33 +1,47 @@
 /**
- * ================================================================================
- * HYPHOS HARDWARE METAWORD - UNIVERSAL HARDWARE ABSTRACTION LAYER
- * ================================================================================
+ * HYPHOS CORE - HARDWARE METAWORD
+ * ===============================
  * 
- * Hardware discovery, management, and abstraction system providing universal
- * hardware compatibility across all platforms and architectures. This metaword
- * implements a consciousness-aware hardware management system with adaptive
- * optimization and quantum-enhanced hardware interaction capabilities.
+ * Universal hardware abstraction layer providing hardware discovery, management, and optimization.
  * 
- * HARDWARE ARCHITECTURE:
- * =====================
+ * MAIN FUNCTIONS:
+ * - discover_hardware() -> hardware_inventory
+ * - get_cpu_info() -> {architecture, cores, frequency, capabilities}
+ * - get_memory_info() -> {total, available, type, speed}
+ * - get_storage_info() -> {devices, capacity, type, performance}
+ * - get_network_interfaces() -> interface_list
+ * - get_graphics_devices() -> graphics_capabilities
+ * - monitor_hardware_performance() -> performance_metrics
+ * - optimize_hardware_usage(optimization_target) -> optimization_result
  * 
- * The hardware metaword provides a unified interface for hardware interaction
- * that adapts to any platform or architecture through dynamic discovery and
- * consciousness-driven optimization. This approach enables Hyphos to run
- * efficiently on any hardware from embedded devices to quantum computers.
+ * HARDWARE CATEGORIES:
+ * - CPU: Processor architecture and capabilities
+ * - MEMORY: RAM type, capacity, and performance
+ * - STORAGE: Disk drives, SSDs, and storage systems
+ * - NETWORK: Network interfaces and capabilities
+ * - GRAPHICS: GPU and display hardware
+ * - SENSORS: Environmental and input sensors
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - HardwareInventory: {cpu, memory, storage, network, graphics, sensors}
+ * - PerformanceMetrics: {cpu_usage, memory_usage, io_rates, thermal_state}
+ * - OptimizationResult: {changes_made, performance_improvement, energy_savings}
  * 
- * 1. UNIVERSAL HARDWARE ABSTRACTION:
- *    - Dynamic hardware discovery without platform dependencies
- *    - Adaptive interface generation for unknown hardware
- *    - Capability-based hardware classification
- *    - Runtime hardware optimization and management
+ * PLATFORM SUPPORT:
+ * - x86/x64: Intel and AMD processors
+ * - ARM: ARM-based processors and SoCs
+ * - RISC-V: Open-source RISC-V architecture
+ * - QUANTUM: Quantum computing hardware
+ * - EMBEDDED: Microcontrollers and IoT devices
  * 
- * 2. CONSCIOUSNESS-DRIVEN HARDWARE MANAGEMENT:
- *    - Intelligent resource allocation based on consciousness state
- *    - Adaptive performance tuning through learning algorithms
- *    - Predictive hardware behavior modeling
+ * USAGE EXAMPLE:
+ * inventory = hardware.discover_hardware()
+ * cpu_info = hardware.get_cpu_info()
+ * metrics = hardware.monitor_hardware_performance()
+ * 
+ * @abstraction Universal platform compatibility
+ * @optimization Consciousness-driven adaptive management
+ */
  *    - Self-optimizing hardware utilization patterns
  * 
  * 3. QUANTUM HARDWARE INTEGRATION:

@@ -2,32 +2,35 @@
  * HYPHOS CORE - ASYMMETRIC CRYPTO METAWORD
  * ========================================
  * 
- * Pure Hyphos implementation of quantum-resistant asymmetric cryptography using
- * senary (base-6) mathematics and elliptic curve cryptography specifically 
- * designed for the Seigr ecosystem.
+ * Quantum-resistant asymmetric cryptography using senary mathematics and elliptic curve cryptography.
  * 
- * FEATURES:
- * - Quantum-resistant elliptic curve cryptography
- * - Senary-based mathematical operations for enhanced security
- * - ECDSA digital signatures with deterministic nonces (RFC 6979)
- * - ECIES encryption scheme for secure message passing
- * - Complete audit logging for all cryptographic operations
- * - Integration with Seigr entropy system and sidereal time
+ * MAIN FUNCTIONS:
+ * - generate_keypair(curve_type) -> {private_key, public_key}
+ * - sign_message(private_key, message) -> digital_signature
+ * - verify_signature(public_key, message, signature) -> bool
+ * - encrypt_message(public_key, plaintext) -> encrypted_data
+ * - decrypt_message(private_key, encrypted_data) -> plaintext
+ * - derive_shared_secret(private_key, peer_public_key) -> shared_secret
  * 
- * SECURITY MODEL:
- * - Uses 256-bit equivalent security through senary curve parameters
- * - Leverages cosmic entropy from sidereal time variations
- * - Implements quantum-resistant algorithms designed for post-quantum era
- * - All operations logged with audit trails for security compliance
+ * STRUCTURES:
+ * - KeyPair: {private_key, public_key, curve_parameters, creation_time}
+ * - Signature: {r_value, s_value, recovery_id, hash_algorithm}
+ * - EncryptedData: {ciphertext, ephemeral_key, mac_tag, iv}
  * 
- * MATHEMATICAL FOUNDATION:
- * - Elliptic curve: y² = x³ + ax + b (mod p) where a=0, b=5 in senary
- * - Base field: Large senary prime for quantum resistance
- * - Point arithmetic: Double-and-add algorithm optimized for senary digits
+ * SUPPORTED CURVES:
+ * - SEIGR_P256: 256-bit senary prime curve
+ * - SEIGR_P384: 384-bit senary prime curve  
+ * - SEIGR_P521: 521-bit senary prime curve
+ * - QUANTUM_RESISTANT: Post-quantum elliptic curve
  * 
- * @author Sergi Saldaña-Massó (sergism77)
- * @version 1.0.0
- * @since Hyphos Core v1.0
+ * USAGE EXAMPLE:
+ * keypair = asymmetric_crypto.generate_keypair("SEIGR_P256")
+ * signature = asymmetric_crypto.sign_message(keypair.private_key, message)
+ * is_valid = asymmetric_crypto.verify_signature(keypair.public_key, message, signature)
+ * 
+ * @dependencies senary_math, entropy, elliptic_curves, quantum_resistance
+ * @security_level 256-bit equivalent quantum resistance
+ */
  */
 
 metaword asymmetric_crypto {

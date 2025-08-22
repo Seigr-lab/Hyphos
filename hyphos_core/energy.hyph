@@ -2,32 +2,45 @@
  * HYPHOS CORE - ENERGY METAWORD  
  * ==============================
  * 
- * Energy management system implementing quantum-optimized power control with
- * 6-layer energy architecture. This metaword provides energy monitoring,
- * optimization, and intelligent power state management throughout the Seigr
- * ecosystem.
+ * Energy management system with quantum-optimized power control and 6-layer energy architecture.
  * 
- * QUANTUM ENERGY ARCHITECTURE:
- * Six-layer quantum energy management system:
- * 1. Base Layer - Fundamental system power (CPU, memory)
- * 2. Computation Layer - Processing-intensive operations
- * 3. Network Layer - Communication and data transfer
- * 4. Storage Layer - Data persistence and retrieval
- * 5. Graphics Layer - Visual rendering and display
- * 6. Consciousness Layer - AI and consciousness processing
+ * MAIN FUNCTIONS:
+ * - get_power_state() -> current_power_level
+ * - set_power_mode(mode) -> bool
+ * - monitor_energy_usage() -> energy_metrics
+ * - optimize_power_consumption() -> optimization_result
+ * - get_battery_status() -> {level, time_remaining, charging_status}
+ * - allocate_energy(layer, amount) -> allocation_result
  * 
- * POWER STATE MANAGEMENT:
- * - NORMAL: Full operational capability with optimal performance
- * - LOW_POWER: Reduced capabilities to extend battery life
- * - CRITICAL: Essential operations only, maximum conservation
- * - HARVESTING: Active energy collection and storage mode
+ * POWER STATES:
+ * - NORMAL: Full operational capability
+ * - LOW_POWER: Reduced capabilities for battery conservation
+ * - CRITICAL: Essential operations only
+ * - HARVESTING: Active energy collection mode
  * - EXTERNAL: Unlimited power from external source
  * - UNKNOWN: Power state requires determination
  * 
- * INTELLIGENT OPTIMIZATION:
- * - Predictive power management based on usage patterns
- * - Adaptive scaling of consciousness processing complexity
- * - Dynamic resource allocation across six energy layers
+ * ENERGY LAYERS:
+ * 1. BASE_LAYER: CPU, memory, fundamental system power
+ * 2. COMPUTATION_LAYER: Processing-intensive operations
+ * 3. NETWORK_LAYER: Communication and data transfer
+ * 4. STORAGE_LAYER: Data persistence and retrieval
+ * 5. GRAPHICS_LAYER: Visual rendering and display
+ * 6. CONSCIOUSNESS_LAYER: AI and consciousness processing
+ * 
+ * STRUCTURES:
+ * - EnergyMetrics: {total_consumption, layer_usage, efficiency_score, prediction}
+ * - PowerProfile: {current_mode, available_energy, consumption_rate, optimization_level}
+ * - BatteryStatus: {charge_level, time_remaining, health, charging_rate}
+ * 
+ * USAGE EXAMPLE:
+ * power_level = energy.get_power_state()
+ * success = energy.set_power_mode("LOW_POWER")
+ * metrics = energy.monitor_energy_usage()
+ * 
+ * @architecture Six-layer quantum energy management
+ * @optimization Predictive and adaptive power control
+ */
  * - Automatic hibernation of non-essential subsystems
  * 
  * INTEGRATION WITH HARDWARE:

@@ -1,33 +1,44 @@
 /**
- * ================================================================================
- * HYPHOS HYPHA CRYPT METAWORD - ADAPTIVE BIOMIMETIC ENCRYPTION SYSTEM
- * ================================================================================
+ * HYPHOS CORE - HYPHA CRYPT METAWORD
+ * ==================================
  * 
- * Adaptive encryption system inspired by fungal network cryptography and
- * biomimetic security patterns. This metaword provides dynamic encryption
- * capabilities that adapt to threat levels and energy constraints while
- * maintaining quantum resistance through senary mathematical foundations.
+ * Adaptive biomimetic encryption system with dynamic security based on threat levels and energy constraints.
  * 
- * CRYPTOGRAPHIC ARCHITECTURE:
- * ==========================
+ * MAIN FUNCTIONS:
+ * - encrypt_data(plaintext, key, security_level) -> encrypted_data
+ * - decrypt_data(encrypted_data, key) -> plaintext
+ * - generate_adaptive_key(entropy_sources, threat_level) -> encryption_key
+ * - assess_threat_level(environmental_data) -> threat_assessment
+ * - adjust_encryption_strength(current_level, new_threat) -> updated_parameters
+ * - distribute_keys_mycelial(key_data, network_topology) -> distribution_result
  * 
- * HyphaCrypt implements an encryption system that mimics the adaptive security
- * mechanisms found in fungal networks, providing dynamic encryption strength
- * based on environmental threat assessment and available energy resources.
+ * SECURITY LEVELS:
+ * - MINIMAL: Basic encryption for low-sensitivity data
+ * - STANDARD: Balanced security for general use
+ * - HIGH: Enhanced encryption for sensitive data
+ * - QUANTUM_RESISTANT: Maximum security with post-quantum algorithms
+ * - ADAPTIVE: Dynamic adjustment based on threat assessment
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - EncryptedData: {ciphertext, iv, authentication_tag, parameters_used}
+ * - ThreatAssessment: {threat_level, confidence, recommended_security, energy_cost}
+ * - AdaptiveKey: {key_material, generation_parameters, adaptation_history}
  * 
- * 1. ADAPTIVE ENCRYPTION STRENGTH:
- *    - Dynamic encryption rounds based on threat assessment
- *    - Energy-aware cryptographic parameter adjustment
- *    - Real-time security level adaptation
- *    - Performance-security balance optimization
+ * BIOMIMETIC FEATURES:
+ * - Fungal network-inspired key distribution
+ * - Mycelial communication security protocols
+ * - Adaptive immune response to attacks
+ * - Self-healing encryption mechanisms
+ * - Energy-aware parameter adjustment
  * 
- * 2. BIOMIMETIC SECURITY PATTERNS:
- *    - Fungal network-inspired key distribution
- *    - Mycelial communication security protocols
- *    - Adaptive immune response to cryptographic attacks
- *    - Self-healing encryption mechanisms
+ * USAGE EXAMPLE:
+ * encrypted = hypha_crypt.encrypt_data(data, key, "ADAPTIVE")
+ * decrypted = hypha_crypt.decrypt_data(encrypted, key)
+ * threat = hypha_crypt.assess_threat_level(env_data)
+ * 
+ * @paradigm Biomimetic adaptive encryption inspired by fungal networks
+ * @resistance Quantum-resistant through senary mathematical foundations
+ */
  * 
  * 3. QUANTUM-RESISTANT FOUNDATIONS:
  *    - Senary mathematics for quantum computing resistance

@@ -1,33 +1,45 @@
 /**
- * ================================================================================
- * HYPHOS IMMUNE SYSTEM METAWORD - ADAPTIVE DEFENSE AND SECURITY SYSTEM
- * ================================================================================
+ * HYPHOS CORE - IMMUNE SYSTEM METAWORD
+ * ====================================
  * 
- * Immune defense system providing threat detection, response, and self-healing
- * capabilities for the Seigr ecosystem. This metaword implements AI-driven security
- * mechanisms with consciousness integration and adaptive threat response protocols
- * inspired by biological immune systems.
+ * Adaptive defense system providing threat detection, response, and self-healing capabilities.
  * 
- * IMMUNE SYSTEM ARCHITECTURE:
- * ===========================
+ * MAIN FUNCTIONS:
+ * - detect_threats(monitoring_scope) -> threat_list
+ * - analyze_threat(threat_data) -> threat_assessment
+ * - respond_to_threat(threat_id, response_level) -> response_result
+ * - quarantine_resource(resource_id, isolation_level) -> bool
+ * - heal_system_damage(damage_assessment) -> healing_result
+ * - update_threat_signatures(new_signatures) -> bool
+ * - get_system_health() -> health_metrics
  * 
- * The immune system metaword implements a defense framework that mimics biological
- * immune responses while incorporating AI, consciousness
- * integration, and quantum-enhanced security mechanisms to protect the Seigr
- * ecosystem from various threats and anomalies.
+ * THREAT LEVELS:
+ * - LOW: Minor anomalies requiring monitoring
+ * - MEDIUM: Suspicious activity requiring investigation
+ * - HIGH: Confirmed threats requiring immediate response
+ * - CRITICAL: System-threatening attacks requiring full defense
+ * - EXTREME: Existential threats requiring emergency protocols
  * 
- * CORE DESIGN PRINCIPLES:
+ * STRUCTURES:
+ * - ThreatAssessment: {threat_id, severity, confidence, attack_vector, countermeasures}
+ * - ResponseResult: {action_taken, effectiveness, resources_used, follow_up_required}
+ * - HealthMetrics: {overall_health, vulnerabilities, active_threats, recovery_status}
  * 
- * 1. ADAPTIVE THREAT DETECTION:
- *    - AI-driven anomaly detection with machine learning
- *    - Pattern recognition for emerging threat identification
- *    - Behavioral analysis for insider threat detection
- *    - Multi-layered security monitoring and assessment
+ * DEFENSE MECHANISMS:
+ * - DETECTION: AI-driven anomaly detection and pattern recognition
+ * - ANALYSIS: Threat assessment and classification
+ * - RESPONSE: Automated countermeasures and isolation
+ * - HEALING: Self-repair and system recovery
+ * - LEARNING: Adaptive improvement from security incidents
  * 
- * 2. CONSCIOUSNESS-INTEGRATED SECURITY:
- *    - Consciousness-driven threat assessment and response
- *    - Intelligent security decision-making through awareness
- *    - Adaptive security policies based on consciousness state
+ * USAGE EXAMPLE:
+ * threats = immune_system.detect_threats("FULL_SYSTEM")
+ * assessment = immune_system.analyze_threat(threat_data)
+ * result = immune_system.respond_to_threat(threat_id, "HIGH")
+ * 
+ * @paradigm Bio-inspired adaptive defense system
+ * @integration AI-driven consciousness-aware security
+ */
  *    - Predictive threat modeling through consciousness analysis
  * 
  * 3. BIOLOGICAL IMMUNE SYSTEM MIMICRY:
