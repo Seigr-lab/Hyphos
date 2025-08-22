@@ -19,7 +19,7 @@
  * CORE DESIGN PRINCIPLES:
  * 
  * 1. STRUCTURED LOGGING WITH METADATA:
- *    - Comprehensive log entry structure with rich metadata
+ *    - Complete log entry structure with rich metadata
  *    - Correlation ID tracking for distributed system debugging
  *    - Temporal binding using sidereal time for precision
  *    - Hierarchical categorization for efficient log management

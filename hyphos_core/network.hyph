@@ -24,13 +24,13 @@ metaword network {
      * NETWORK STACK INITIALIZATION FUNCTION
      * =====================================
      * 
-     * Initializes the complete network stack with comprehensive component
+     * Initializes the complete network stack with complete component
      * management, error handling, and consciousness integration for optimal
      * network performance and reliability.
      * 
      * @complexity O(n) where n is number of network interfaces
      * @consciousness_integrated Adapts network behavior based on awareness
-     * @fault_tolerant Comprehensive error handling and recovery
+     * @fault_tolerant Complete error handling and recovery
      * 
      * @example
      * invoke network:
@@ -567,7 +567,7 @@ metaword network {
             module: "SeigrNetwork",
             version: "1.0.0",
             protocol_compliance: ["seigr.network.v1"],
-            description: "Comprehensive network management and communication for Seigr OS",
+            description: "Complete network management and communication for Seigr OS",
             capabilities: [
                 "tcp_ip_stack",
                 "interface_management",

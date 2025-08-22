@@ -1330,7 +1330,7 @@ entity SCMPRouter {
     }
     
     method get_system_status() {
-        // Get comprehensive SCMP system status
+        // Get complete SCMP system status
         queue_status = self.message_queue.get_queue_status()
         transport_stats = self.transport_layer.get_transport_statistics()
         
@@ -1651,7 +1651,7 @@ interface scmp {
     }
     
     method get_system_status() {
-        // Get comprehensive SCMP system status
+        // Get complete SCMP system status
         return scmp_router.get_system_status()
     }
     

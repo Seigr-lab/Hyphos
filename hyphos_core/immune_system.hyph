@@ -103,7 +103,7 @@
  */
 
 // Hyphos Core - Immune System Metaword
-// Pure Hyphos implementation of Seigr's advanced immune defense system
+// Pure Hyphos implementation of Seigr's enhanced immune defense system
 
 metaword immune {
     // Threat levels from 0 (minimal) to 10 (critical)
@@ -113,7 +113,7 @@ metaword immune {
     const HIGH = 7
     const CRITICAL = 10
 
-    // Threat types for comprehensive security coverage
+    // Threat types for complete security coverage
     const NETWORK_ATTACK = "NETWORK_ATTACK"
     const THERMAL_ANOMALY = "THERMAL_ANOMALY" 
     const POWER_FLUCTUATION = "POWER_FLUCTUATION"
@@ -141,7 +141,7 @@ metaword immune {
      * IMMUNE SYSTEM INITIALIZATION FUNCTION
      * =====================================
      * 
-     * Initializes the comprehensive Seigr Adaptive Immune Defense System with
+     * Initializes the complete Seigr Adaptive Immune Defense System with
      * AI-driven components, consciousness integration, and multi-layered security
      * monitoring. This function establishes the foundation for all security
      * operations within the Seigr ecosystem.
@@ -170,11 +170,11 @@ metaword immune {
      * MONITORING INFRASTRUCTURE:
      * - Multi-domain threat monitoring (network, hardware, data)
      * - Real-time threat level assessment and escalation
-     * - Comprehensive security event logging and analysis
+     * - Complete security event logging and analysis
      * - Distributed monitoring across Seigr ecosystem components
      * 
      * @param critical_threshold Threat level triggering emergency protocols
-     * @return $Object Comprehensive immune system with all security components
+     * @return $Object Complete immune system with all security components
      * 
      * @complexity O(n) where n is number of monitored system components
      * @ai_enhanced Includes machine learning-based threat detection
@@ -343,7 +343,7 @@ fun immune.initialize_anomaly_detection() {
 }
 
 fun immune.initialize_self_healing() {
-    // Initialize advanced self-healing with multiple strategies (from self_healing.py)
+    // Initialize enhanced self-healing with multiple strategies (from self_healing.py)
     let self_healing = {
         healing_strategies: {
             "integrity_restoration": {

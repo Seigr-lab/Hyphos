@@ -25,12 +25,12 @@ metaword protocol_integration {
      * PROTOCOL EXECUTION ENGINE
      * ========================
      * 
-     * Main protocol execution engine providing comprehensive protocol
+     * Main protocol execution engine providing complete protocol
      * interpretation, execution environment setup, and component coordination.
      * 
      * @param protocol_file Protocol definition file to execute
      * @param execution_context Optional execution context for customization
-     * @return $Object Comprehensive execution results and metadata
+     * @return $Object Complete execution results and metadata
      */
     fun execute_protocol(protocol_file, execution_context = null) -> $Object {
         // Main protocol execution engine
@@ -367,8 +367,8 @@ protocol.enable_full_runtime = {
         runtime_start_time: system.current_time()
     }
     
-    # Enable advanced features
-    runtime_state.advanced_features = {
+    # Enable enhanced features
+    runtime_state.enhanced_features = {
         quantum_classical_hybrid: true,
         consciousness_aware_computing: true,
         bio_inspired_algorithms: true,

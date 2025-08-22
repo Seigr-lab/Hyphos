@@ -16,7 +16,7 @@
  * @cellular_autonomous Provides autonomous cellular behavior and intelligence
  */
 
-// seigr_cell.hyph - Comprehensive Cellular Computation Metaword
+// seigr_cell.hyph - Complete Cellular Computation Metaword
 // Autonomous secure data processing and storage units for Hyphos native runtime
 // Integrates with Seigr ecosystem for tamper-proof, policy-enforced cellular operations
 
@@ -433,7 +433,7 @@ METAWORD seigr_cell {
         
         GET seigr_cells.active_cells[cell_id] -> cell_core
         
-        // Comprehensive validation with Noesis intelligence
+        // Complete validation with Noesis intelligence
         CALL noesis.analyze_cell_integrity({
             "cell_id": cell_id,
             "data_hash": cell_core.data_hash,
@@ -532,7 +532,7 @@ METAWORD seigr_cell {
         CALL hypha_crypt.generate_senary_uuid() -> metadata_id
         CALL hypha_time.current_senary_time() -> current_time
         
-        // Generate comprehensive metadata with Noesis enhancement
+        // Generate complete metadata with Noesis enhancement
         SET base_metadata = {
             "cell_id": metadata_id,
             "contributor_id": segment_id,
@@ -853,7 +853,7 @@ METAWORD seigr_cell {
     FUNCTION get_cellular_metrics() -> SENARY_MAP {
         CALL hypha_energy.get_power_state() -> current_power
         
-        // Calculate advanced metrics with Noesis intelligence
+        // Calculate enhanced metrics with Noesis intelligence
         CALL noesis.analyze_cellular_performance({
             "base_metrics": cell_metrics,
             "active_cells": SENARY_MAP_SIZE(seigr_cells.active_cells),
@@ -861,7 +861,7 @@ METAWORD seigr_cell {
             "processing_history": seigr_cells.consciousness_traces
         }) -> performance_analysis
         
-        SET comprehensive_metrics = {
+        SET complete_metrics = {
             "basic_metrics": cell_metrics,
             "active_cell_count": SENARY_MAP_SIZE(seigr_cells.active_cells),
             "processing_queue_size": SENARY_ARRAY_SIZE(seigr_cells.processing_queue),
@@ -878,11 +878,11 @@ METAWORD seigr_cell {
         // Record metrics in consciousness for trend analysis
         CALL hypha_consciousness.record_experience({
             "event_type": "cellular_metrics_analysis",
-            "metrics_snapshot": comprehensive_metrics,
+            "metrics_snapshot": complete_metrics,
             "analysis_timestamp": CALL hypha_time.current_senary_time()
         })
         
-        RETURN comprehensive_metrics
+        RETURN complete_metrics
     }
     
     // ================================================================

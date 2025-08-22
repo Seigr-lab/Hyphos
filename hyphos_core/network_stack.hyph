@@ -137,7 +137,7 @@ metaword network_stack {
     }
     
     fun get_interface_status(interface_name) -> $Object {
-        // Get comprehensive interface status
+        // Get complete interface status
         if !interface_manager || !(interface_name in active_interfaces) {
             return { error: "Interface not found" }
         }
@@ -641,7 +641,7 @@ metaword network_stack {
     }
     
     fun get_configuration_status() -> $Object {
-        // Get comprehensive configuration status
+        // Get complete configuration status
         if !config_manager {
             return {}
         }
@@ -857,7 +857,7 @@ metaword network_stack {
     }
     
     fun get_security_status() -> $Object {
-        // Get comprehensive security status
+        // Get complete security status
         if !security_layer {
             return {}
         }
@@ -912,7 +912,7 @@ metaword network_stack {
     }
     
     fun start_monitoring() -> $Boolean {
-        // Start comprehensive network monitoring
+        // Start complete network monitoring
         if !performance_monitor {
             return false
         }
@@ -988,7 +988,7 @@ metaword network_stack {
     }
     
     fun get_network_health() -> $Object {
-        // Get comprehensive network health assessment
+        // Get complete network health assessment
         if !performance_monitor {
             return {}
         }
@@ -1105,7 +1105,7 @@ metaword network_stack {
     }
     
     fun get_stack_manifest() -> $Object {
-        // Get comprehensive network stack manifest
+        // Get complete network stack manifest
         return {
             component: "SeigrNetworkStack",
             version: "1.0.0",

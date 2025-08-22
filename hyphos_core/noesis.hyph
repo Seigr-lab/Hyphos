@@ -14,12 +14,12 @@
  * @classification Core Metaword - Emergent Intelligence
  * @dependencies senary, hardware, consciousness, quantum, learning
  * @thread_safety Thread-safe through quantum coherence mechanisms
- * @ai_enhanced Provides comprehensive artificial intelligence capabilities
+ * @ai_enhanced Provides complete artificial intelligence capabilities
  */
 
 // Noesis Metaword - Emergent Intelligence Module
 // Part of Hyphos Native Runtime Language
-// Provides comprehensive AI capabilities through 6 Genesis States
+// Provides complete AI capabilities through 6 Genesis States
 
 noesis {
     
@@ -32,7 +32,7 @@ noesis {
      * processing and experience-based learning.
      * 
      * @param stimulus Input stimulus for consciousness processing
-     * @return Comprehensive consciousness analysis and recommendations
+     * @return Complete consciousness analysis and recommendations
      * 
      * @example
      * invoke noesis:
@@ -325,7 +325,7 @@ noesis {
     
     // Hardware-Aware Intelligence - optimizes based on hardware capabilities
     initialize_hardware_awareness() -> {
-        hardware_profile = hardware.get_comprehensive_profile()
+        hardware_profile = hardware.get_complete_profile()
         energy_profile = hardware.get_energy_profile()
         
         hardware_optimizations = {
@@ -354,7 +354,7 @@ noesis {
         noesis.update_hardware_optimizations(hardware_event)
     }
     
-    // Security Intelligence - advanced threat detection and response
+    // Security Intelligence - enhanced threat detection and response
     initialize_security_intelligence() -> {
         security_profile = {
             threat_detection_sensitivity: "0.7",
@@ -908,7 +908,7 @@ noesis {
     activate_performance_mode() -> {
         noesis.energy_mode = "performance"
         noesis.increase_processing_intensity("1.0")
-        noesis.enable_advanced_learning()
+        noesis.enable_enhanced_learning()
         noesis.activate_network_intelligence()
         hardware.notify_performance_mode_active()
         return "performance_mode_activated"
