@@ -102,23 +102,23 @@ metaword network {
         
         logger.info("Secure connection established", capsule.sender_id, addr)
         
-        // Handle consciousness-driven connections
-        if capsule.message_type == "consciousness_connection_request" {
-            let response = handle_consciousness_connection(capsule.sender_id, addr)
+        // Handle Noesis-intelligent connections
+        if (capsule.message_type == "consciousness_connection_request") {
+            response = network.handle_consciousness_connection(capsule.sender_id, addr)
             
-            let response_message = create_scmp_message()
+            response_message = network.create_scmp_message()
             response_message.sender_id = node_id
             response_message.message_type = response
-            response_message.timestamp = sidereal_time.current()
+            response_message.timestamp = sidereal_time.now()
             
             conn.send(response_message.serialize())
             
-            if response == "consciousness_connection_accepted" {
-                store_connection(capsule.sender_id, conn)
-                logger.info("Consciousness-driven connection accepted", capsule.sender_id)
+            if (response == "consciousness_connection_accepted") {
+                network.store_connection(capsule.sender_id, conn)
+                logger.info("Noesis-intelligent connection accepted", capsule.sender_id)
                 return // Keep connection alive
             } else {
-                logger.warning("Consciousness-driven connection rejected", capsule.sender_id)
+                logger.warning("Noesis-intelligent connection rejected", capsule.sender_id)
                 conn.close()
                 return
             }
@@ -300,14 +300,24 @@ metaword network {
         return connection_result
     }
     
-    fun enable_consciousness_topology(conscious_topology) {
-        // Enable consciousness-driven network topology
-        logger.info("Enabling consciousness-driven network topology")
+    enable_noesis_topology(intelligent_topology) {
+        // Enable Noesis-intelligent network topology
+        logger.info("Enabling Noesis-intelligent network topology")
         
-        set_consciousness_topology(conscious_topology)
-        set_consciousness_enabled(true)
+        network.set_noesis_topology(intelligent_topology)
+        network.set_intelligence_enabled(true)
         
-        logger.info("Consciousness-driven network topology enabled")
+        // Initialize network intelligence coordination with Noesis
+        network_intelligence_config = {
+            topology: intelligent_topology,
+            noesis_integration: true,
+            peer_prediction_enabled: true,
+            adaptive_routing_enabled: true
+        }
+        
+        noesis.initialize_network_intelligence_coordination(network_intelligence_config)
+        
+        logger.info("Noesis-intelligent network topology enabled")
     }
     
     fun create_secure_tunnel(peer_id, tunnel_config) {
@@ -524,8 +534,10 @@ metaword network {
                 "interface_management",
                 "driver_abstraction",
                 "security_layer",
-                "performance_monitoring",
-                "consciousness_topology",
+                "performance_monitoring", 
+                "noesis_intelligent_topology",
+                "ai_driven_peer_prediction",
+                "adaptive_network_optimization",
                 "time_synchronization",
                 "threat_detection",
                 "packet_encryption",
@@ -644,28 +656,35 @@ fun create_scmp_message() {
 }
 
 fun handle_consciousness_connection(peer_id, addr) {
-    // Handle consciousness-driven connection request
-    let max_connections = 50
-    let current_connections = get_connection_count()
+    // Handle intelligent connection request using Noesis network intelligence
+    max_connections = "50"
+    current_connections = senary.from_base_10(network.get_connection_count())
     
-    if current_connections >= max_connections {
+    if (senary.greater_than_or_equal(current_connections, max_connections)) {
         return "consciousness_connection_rejected"
     }
     
-    let identity_valid = identity.verify_identity(peer_id)
-    if not identity_valid {
+    identity_valid = identity.verify_identity(peer_id)
+    if (!identity_valid) {
         return "consciousness_connection_rejected"
     }
     
-    // Check with consciousness topology if available
-    let consciousness_topology = get_consciousness_topology()
-    if consciousness_topology {
-        // Delegate to consciousness decision making
+    // Use Noesis network intelligence to evaluate connection value
+    peer_evaluation_data = {
+        peer_id: peer_id,
+        peer_address: addr,
+        current_network_load: current_connections,
+        timestamp: sidereal_time.now()
+    }
+    
+    connection_prediction = noesis.predict_peer_value(peer_evaluation_data)
+    
+    // Make intelligent decision based on Noesis recommendation
+    if (senary.greater_than(connection_prediction.predicted_value, "0.6")) {
         return "consciousness_connection_accepted"
+    } else {
+        return "consciousness_connection_rejected"
     }
-    
-    // Default acceptance for valid requests
-    return "consciousness_connection_accepted"
 }
 
 fun store_connection(peer_id, connection) {
@@ -759,16 +778,23 @@ fun get_wifi_driver() {
     return driver_interface.get_driver("wifi")
 }
 
-fun set_consciousness_topology(topology) {
-    // Set consciousness topology
-    let network_state = get_network_state()
-    network_state.consciousness_topology = topology
+set_noesis_topology(topology) {
+    // Set Noesis-intelligent topology
+    network_state = network.get_network_state()
+    network_state.noesis_topology = topology
+    network_state.intelligence_coordination_enabled = true
 }
 
-fun set_consciousness_enabled(enabled) {
-    // Enable/disable consciousness features
-    let network_state = get_network_state()
-    network_state.consciousness_enabled = enabled
+set_intelligence_enabled(enabled) {
+    // Enable/disable Noesis intelligence features
+    network_state = network.get_network_state()
+    network_state.noesis_intelligence_enabled = enabled
+    
+    if (enabled) {
+        noesis.enable_network_intelligence_monitoring()
+    } else {
+        noesis.disable_network_intelligence_monitoring()
+    }
 }
 
 fun generate_tunnel_id() {
